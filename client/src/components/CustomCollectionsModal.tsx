@@ -10,6 +10,7 @@ interface CustomCollectionsModalProps {
   onSelectCollection: (id: string) => void;
   onCreateCollection: (name: string, description?: string, color?: string) => Promise<any>;
   onDeleteCollection: (id: string) => Promise<void>;
+  onOpenEditor: (collection: CustomCollection) => void;
 }
 
 const PALETTE = [
@@ -24,7 +25,8 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   activeCollectionId,
   onSelectCollection,
   onCreateCollection,
-  onDeleteCollection
+  onDeleteCollection,
+  onOpenEditor
 }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -168,7 +170,19 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-1.5 ml-3">
+                      <div className="flex items-center gap-2 ml-3">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onOpenEditor(c);
+                            onClose();
+                          }}
+                          className="px-2.5 py-1.5 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 text-xs font-semibold rounded-xl transition-colors flex items-center gap-1.5"
+                          title="Choose Pokémon to track"
+                        >
+                          <Bookmark className="w-3.5 h-3.5" />
+                          <span>Select Pokémon</span>
+                        </button>
                         <button
                           type="button"
                           onClick={() => {

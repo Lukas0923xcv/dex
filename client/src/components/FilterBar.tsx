@@ -63,6 +63,21 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           )}
         </div>
 
+        {/* Released in Pokémon GO Availability Toggle */}
+        <button
+          type="button"
+          onClick={() => onFilterChange({ releasedOnly: !filters.releasedOnly })}
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 select-none ${
+            filters.releasedOnly
+              ? 'bg-emerald-600/20 text-emerald-300 border-emerald-500/40 shadow-sm'
+              : 'bg-slate-800/80 text-slate-400 border-slate-700/80 hover:text-slate-200'
+          }`}
+          title="Toggle to show only Pokémon currently released in Pokémon GO vs all 1025 National Pokédex species"
+        >
+          <span className={`w-2 h-2 rounded-full ${filters.releasedOnly ? 'bg-emerald-400 shadow-sm shadow-emerald-400' : 'bg-slate-500'}`} />
+          <span>{filters.releasedOnly ? 'Released in GO' : 'All 1,025 Dex'}</span>
+        </button>
+
         {/* Status Quick Filter Chips */}
         <div className="flex items-center bg-slate-800/80 p-1 rounded-xl border border-slate-700/80 shrink-0">
           {(['all', 'caught', 'uncaught'] as StatusFilter[]).map((st) => (

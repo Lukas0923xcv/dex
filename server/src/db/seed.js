@@ -5,12 +5,6 @@ const db = require('./index');
 function seedDatabase() {
   console.log('Checking if Pokémon database needs seeding...');
   
-  const countRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
-  if (countRow && countRow.count > 0) {
-    console.log(`Database already seeded with ${countRow.count} Pokémon.`);
-    return;
-  }
-
   const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
   if (!fs.existsSync(jsonPath)) {
     console.error(`Error: Data file not found at ${jsonPath}. Run compile-pogo-data.js first!`);
@@ -18,14 +12,21 @@ function seedDatabase() {
   }
 
   const pokemonList = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+  const countRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
+  if (countRow && countRow.count === pokemonList.length) {
+    console.log(`Database already up-to-date with ${countRow.count} Pokémon.`);
+    return;
+  }
+
   console.log(`Seeding ${pokemonList.length} Pokémon records into SQLite...`);
+  db.exec('DELETE FROM pokemon;');
 
   const insertStmt = db.prepare(`
     INSERT INTO pokemon (
       id, dex_nr, name, form_id, form_name, category, generation,
       type1, type2, sprite_url, shiny_sprite_url, fallback_sprite_url,
-      fallback_shiny_url, official_artwork_url, has_shiny, is_mega, is_form, released_in_go
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      fallback_shiny_url, official_artwork_url, has_shiny, is_mega, is_form, is_costume, released_in_go
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   db.exec('BEGIN TRANSACTION;');
@@ -50,6 +51,7 @@ function seedDatabase() {
         p.hasShiny ? 1 : 0,
         p.isMega ? 1 : 0,
         p.isForm ? 1 : 0,
+        p.isCostume ? 1 : 0,
         p.releasedInGo ? 1 : 0
       );
     }

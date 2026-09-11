@@ -35,8 +35,21 @@ async function main() {
     stdio: 'inherit'
   });
 
-  // Wait 1.5s for server to start
-  await new Promise(r => setTimeout(r, 1500));
+  // Wait for server to become ready
+  let ready = false;
+  for (let i = 0; i < 15; i++) {
+    await new Promise(r => setTimeout(r, 400));
+    try {
+      const res = await request('http://127.0.0.1:3456/api/health');
+      if (res.status === 200) {
+        ready = true;
+        break;
+      }
+    } catch {}
+  }
+  if (!ready) {
+    throw new Error('Server failed to start within timeout');
+  }
 
   try {
     // 1. Static HTML Frontend Test
@@ -61,6 +74,17 @@ async function main() {
     console.log('First Pokémon:', pokeRes.data[0].name, '(#', pokeRes.data[0].dexNr, ') Caught:', pokeRes.data[0].caught);
     console.log('✓ Pokémon API query passed');
 
+    // 3b. Costume and Released in GO Filter Test
+    const costumeRes = await request('http://localhost:3456/api/pokemon?category=costume&limit=3');
+    console.log(`[TEST 3b] Costumes API: HTTP ${costumeRes.status}, count: ${costumeRes.data.length}, sample: ${costumeRes.data[0]?.name}`);
+    if (costumeRes.data.length === 0 || !costumeRes.data[0].isCostume) throw new Error('Costumes query failed');
+    console.log('✓ Costumes API passed');
+
+    const releasedRes = await request('http://localhost:3456/api/pokemon?releasedOnly=true&limit=10');
+    console.log(`[TEST 3c] Released Only: HTTP ${releasedRes.status}, count: ${releasedRes.data.length}`);
+    if (releasedRes.data.some(p => !p.releasedInGo)) throw new Error('Unreleased pokemon returned when releasedOnly=true');
+    console.log('✓ Released in GO filter passed');
+
     // 4. Progress Toggle Test
     const toggleRes = await request('http://localhost:3456/api/progress/toggle', {
       method: 'POST',
@@ -71,11 +95,21 @@ async function main() {
     if (!toggleRes.data.value) throw new Error('Toggle failed to mark caught');
     console.log('✓ Toggle caught passed');
 
-    // 5. Custom Collections Test
+    // 5. Custom Collections & Batch Test
     const collsRes = await request('http://localhost:3456/api/collections');
     console.log(`[TEST 5] Collections: HTTP ${collsRes.status}, collections count: ${collsRes.data.length}`);
     console.log('Collections:', collsRes.data.map(c => c.name).join(', '));
-    console.log('✓ Collections query passed');
+    const targetColl = collsRes.data[0];
+
+    // Batch item set test (like Vivillon preset)
+    const batchRes = await request(`http://localhost:3456/api/collections/${targetColl.id}/items/batch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { pokemonIds: ['poke_1_base', 'poke_2_base', 'poke_3_base'], mode: 'replace' }
+    });
+    console.log(`[TEST 5b] Batch Items Set: HTTP ${batchRes.status}, count: ${batchRes.data.count}`);
+    if (!batchRes.data.success) throw new Error('Batch set failed');
+    console.log('✓ Batch collection items passed');
 
     // 6. Export Test
     const exportRes = await request('http://localhost:3456/api/export');

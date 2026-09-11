@@ -5,12 +5,14 @@ import { ProgressBar } from './components/ProgressBar';
 import { FilterBar } from './components/FilterBar';
 import { PokemonGrid } from './components/PokemonGrid';
 import { CustomCollectionsModal } from './components/CustomCollectionsModal';
+import { CollectionEditorModal } from './components/CollectionEditorModal';
 import { AddToCollectionModal } from './components/AddToCollectionModal';
 import { SettingsModal } from './components/SettingsModal';
-import { Pokemon } from './types';
+import { Pokemon, CustomCollection } from './types';
 
 export const App: React.FC = () => {
   const {
+    pokemonList,
     filteredPokemon,
     collections,
     mode,
@@ -25,6 +27,7 @@ export const App: React.FC = () => {
     createCollection,
     deleteCollection,
     toggleCollectionItem,
+    setCollectionItems,
     exportBackup,
     importBackup,
     resetAllProgress
@@ -33,6 +36,7 @@ export const App: React.FC = () => {
   // Modals state
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCollectionsModalOpen, setIsCollectionsModalOpen] = useState(false);
+  const [targetCollectionForEdit, setTargetCollectionForEdit] = useState<CustomCollection | null>(null);
   const [targetPokemonForAdd, setTargetPokemonForAdd] = useState<Pokemon | null>(null);
 
   const activeCollection = collections.find(c => c.id === filters.activeCollectionId);
@@ -46,6 +50,7 @@ export const App: React.FC = () => {
     }
     if (mode === 'mega') return 'Mega & Primal Dex';
     if (mode === 'form') return 'Regional & Alternate Forms Dex';
+    if (mode === 'costume') return 'Event Costumes Dex';
     if (mode === 'custom') return activeCollection ? `${activeCollection.name} Progress` : 'Custom Checklist Progress';
     return 'Dex Progress';
   };
@@ -75,6 +80,7 @@ export const App: React.FC = () => {
         activeCollectionId={filters.activeCollectionId}
         onSelectCollection={(id) => setFilters(f => ({ ...f, activeCollectionId: id }))}
         onOpenCollectionsModal={() => setIsCollectionsModalOpen(true)}
+        onOpenCollectionEditor={() => setTargetCollectionForEdit(activeCollection || collections[0] || null)}
         onOpenSettingsModal={() => setIsSettingsOpen(true)}
         isBackendConnected={storageStatus.isBackendConnected}
       />
@@ -135,6 +141,15 @@ export const App: React.FC = () => {
         onSelectCollection={(id) => setFilters(f => ({ ...f, activeCollectionId: id }))}
         onCreateCollection={createCollection}
         onDeleteCollection={deleteCollection}
+        onOpenEditor={(coll) => setTargetCollectionForEdit(coll)}
+      />
+
+      <CollectionEditorModal
+        isOpen={Boolean(targetCollectionForEdit)}
+        onClose={() => setTargetCollectionForEdit(null)}
+        collection={targetCollectionForEdit}
+        allPokemon={pokemonList}
+        onSaveItems={setCollectionItems}
       />
 
       <AddToCollectionModal
