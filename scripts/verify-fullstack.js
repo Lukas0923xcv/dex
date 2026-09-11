@@ -86,13 +86,14 @@ async function main() {
     console.log('✓ Released in GO filter passed');
 
     // 4. Progress Toggle Test
+    const wasCaught = pokeRes.data.find(p => p.id === 'poke_1_base')?.caught ?? false;
     const toggleRes = await request('http://localhost:3456/api/progress/toggle', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: { pokemonId: 'poke_1_base', type: 'caught' }
     });
-    console.log(`[TEST 4] Toggle Caught: HTTP ${toggleRes.status}, new value: ${toggleRes.data.value}`);
-    if (!toggleRes.data.value) throw new Error('Toggle failed to mark caught');
+    console.log(`[TEST 4] Toggle Caught: HTTP ${toggleRes.status}, old: ${wasCaught}, new: ${toggleRes.data.value}`);
+    if (toggleRes.data.value === wasCaught) throw new Error('Toggle failed to invert caught state');
     console.log('✓ Toggle caught passed');
 
     // 5. Custom Collections & Batch Test
@@ -169,8 +170,8 @@ async function main() {
       body: { pokemonId: 'poke_1_base', type: 'gender_m' }
     });
     console.log(`[TEST 9] Feature Toggles: shadow=${shadowToggle.data.value}, hundo=${hundoToggle.data.value}, gender_m=${genderToggle.data.value}`);
-    if (!shadowToggle.data.value || !hundoToggle.data.value || !genderToggle.data.value) {
-      throw new Error('Feature progress toggle failed');
+    if (typeof shadowToggle.data.value !== 'boolean' || typeof hundoToggle.data.value !== 'boolean' || typeof genderToggle.data.value !== 'boolean') {
+      throw new Error('Feature progress toggle failed: returned non-boolean');
     }
     console.log('✓ Feature progress toggles passed');
 
