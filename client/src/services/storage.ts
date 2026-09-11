@@ -20,6 +20,7 @@ class StorageAdapter {
   private isConnectedToBackend = false;
   private backendUrl = '';
   private isInitialized = false;
+  private collectionItemsCache: Map<string, Set<string>> = new Map();
 
   constructor() {
     this.detectEnvironment();
@@ -181,9 +182,20 @@ class StorageAdapter {
   public async getCollections(): Promise<CustomCollection[]> {
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/collections`);
-        if (res.ok) {
-          return await res.json();
+        const [collsRes, itemsRes] = await Promise.all([
+          fetch(`${this.backendUrl}/api/collections`),
+          fetch(`${this.backendUrl}/api/collection-items`)
+        ]);
+        if (collsRes.ok) {
+          const collections: CustomCollection[] = await collsRes.json();
+          if (itemsRes.ok) {
+            const itemsMap: Record<string, string[]> = await itemsRes.json();
+            this.collectionItemsCache.clear();
+            for (const [cId, pIds] of Object.entries(itemsMap)) {
+              this.collectionItemsCache.set(cId, new Set(pIds));
+            }
+          }
+          return collections;
         }
       } catch (err) {
         console.warn('Backend getCollections failed, falling back to local:', err);
@@ -194,24 +206,55 @@ class StorageAdapter {
     const collections = this.getLocalCollections();
     const items = this.getLocalCollectionItems();
     const progress = this.getLocalProgress();
+    const baseList = localPokemonData as Pokemon[];
 
     return collections.map(c => {
       const cItems = items.filter(i => i.collection_id === c.id);
-      const caughtCount = cItems.filter(i => {
-        const prog = progress[i.pokemon_id];
-        if (!prog) return false;
-        if (c.categoryType === 'lucky') return Boolean(prog.luckyCaught);
-        if (c.categoryType === 'shadow') return Boolean(prog.shadowCaught);
-        if (c.categoryType === 'purified') return Boolean(prog.purifiedCaught);
-        if (c.trackShiny && c.categoryType === 'normal') return Boolean(prog.shinyCaught);
-        return Boolean(prog.caught);
-      }).length;
+      let totalCount = cItems.length;
+      let caughtCount = 0;
+
+      if (totalCount > 0) {
+        caughtCount = cItems.filter(i => {
+          const prog = progress[i.pokemon_id];
+          if (!prog) return false;
+          if (c.categoryType === 'lucky') return Boolean(prog.luckyCaught);
+          if (c.categoryType === 'shadow') return Boolean(prog.shadowCaught);
+          if (c.categoryType === 'purified') return Boolean(prog.purifiedCaught);
+          if (c.trackShiny && c.categoryType === 'normal') return Boolean(prog.shinyCaught);
+          return Boolean(prog.caught);
+        }).length;
+      } else {
+        // Fallback for rule-based collections with no explicit items
+        let matching = baseList;
+        if (c.categoryType === 'mega') {
+          matching = matching.filter(p => p.category === 'mega' || p.isMega);
+        } else if (c.categoryType === 'event') {
+          matching = matching.filter(p => p.category === 'costume' || p.isCostume);
+        } else if (c.variantMode === 'single') {
+          matching = matching.filter(p => p.category === 'standard');
+        } else {
+          matching = matching.filter(p => p.category === 'standard' || p.category === 'form');
+        }
+        if (c.trackShiny && c.categoryType === 'normal') {
+          matching = matching.filter(p => p.hasShiny);
+        }
+        totalCount = matching.length;
+        caughtCount = matching.filter(p => {
+          const prog = progress[p.id];
+          if (!prog) return false;
+          if (c.categoryType === 'lucky') return Boolean(prog.luckyCaught);
+          if (c.categoryType === 'shadow') return Boolean(prog.shadowCaught);
+          if (c.categoryType === 'purified') return Boolean(prog.purifiedCaught);
+          if (c.trackShiny && c.categoryType === 'normal') return Boolean(prog.shinyCaught);
+          return Boolean(prog.caught);
+        }).length;
+      }
 
       return {
         ...c,
         categoryType: c.categoryType || 'normal',
         variantMode: c.variantMode || 'multi',
-        totalItems: cItems.length,
+        totalItems: totalCount,
         caughtItems: caughtCount
       };
     });
@@ -254,7 +297,11 @@ class StorageAdapter {
           body: JSON.stringify(payload)
         });
         if (res.ok) {
-          return await res.json();
+          const created: CustomCollection = await res.json();
+          if (payload.pokemonIds.length > 0) {
+            this.collectionItemsCache.set(created.id, new Set(payload.pokemonIds));
+          }
+          return created;
         }
       } catch (err) {
         console.warn('Backend createCollection failed, using local:', err);
@@ -283,6 +330,7 @@ class StorageAdapter {
     localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(collections));
 
     if (payload.pokemonIds.length > 0) {
+      this.collectionItemsCache.set(newColl.id, new Set(payload.pokemonIds));
       const items = this.getLocalCollectionItems();
       const now = new Date().toISOString();
       for (const pid of payload.pokemonIds) {
@@ -299,6 +347,7 @@ class StorageAdapter {
   }
 
   public async deleteCollection(collectionId: string): Promise<boolean> {
+    this.collectionItemsCache.delete(collectionId);
     if (this.isConnectedToBackend) {
       try {
         await fetch(`${this.backendUrl}/api/collections/${collectionId}`, { method: 'DELETE' });
@@ -316,6 +365,13 @@ class StorageAdapter {
   }
 
   public async addItemToCollection(collectionId: string, pokemonId: string): Promise<boolean> {
+    let set = this.collectionItemsCache.get(collectionId);
+    if (!set) {
+      set = new Set();
+      this.collectionItemsCache.set(collectionId, set);
+    }
+    set.add(pokemonId);
+
     if (this.isConnectedToBackend) {
       try {
         await fetch(`${this.backendUrl}/api/collections/${collectionId}/items`, {
@@ -341,6 +397,11 @@ class StorageAdapter {
   }
 
   public async removeItemFromCollection(collectionId: string, pokemonId: string): Promise<boolean> {
+    const set = this.collectionItemsCache.get(collectionId);
+    if (set) {
+      set.delete(pokemonId);
+    }
+
     if (this.isConnectedToBackend) {
       try {
         await fetch(`${this.backendUrl}/api/collections/${collectionId}/items/${pokemonId}`, {
@@ -359,6 +420,8 @@ class StorageAdapter {
   }
 
   public async setCollectionItems(collectionId: string, pokemonIds: string[]): Promise<boolean> {
+    this.collectionItemsCache.set(collectionId, new Set(pokemonIds));
+
     if (this.isConnectedToBackend) {
       try {
         await fetch(`${this.backendUrl}/api/collections/${collectionId}/items/batch`, {
@@ -386,8 +449,15 @@ class StorageAdapter {
   }
 
   public getCollectionItemIds(collectionId: string): Set<string> {
+    if (this.collectionItemsCache.has(collectionId)) {
+      return this.collectionItemsCache.get(collectionId)!;
+    }
     const items = this.getLocalCollectionItems();
-    return new Set(items.filter(i => i.collection_id === collectionId).map(i => i.pokemon_id));
+    const ids = new Set(items.filter(i => i.collection_id === collectionId).map(i => i.pokemon_id));
+    if (ids.size > 0) {
+      this.collectionItemsCache.set(collectionId, ids);
+    }
+    return ids;
   }
 
   // --- JSON Export & Import ---

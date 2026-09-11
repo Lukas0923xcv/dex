@@ -284,20 +284,89 @@ router.get('/collections', (req, res) => {
       ORDER BY c.created_at ASC
     `).all();
 
-    const collections = rawCollections.map(c => ({
-      ...c,
-      categoryType: c.categoryType || 'normal',
-      variantMode: c.variantMode || 'multi',
-      trackShiny: Boolean(c.trackShiny),
-      trackHundo: Boolean(c.trackHundo),
-      trackGender: Boolean(c.trackGender),
-      trackBackground: Boolean(c.trackBackground),
-      trackSize: Boolean(c.trackSize),
-      totalItems: c.totalItems || 0,
-      caughtItems: c.caughtItems || 0
-    }));
+    const collections = rawCollections.map(c => {
+      let total = c.totalItems || 0;
+      let caught = c.caughtItems || 0;
+
+      // If collection has no explicit items (e.g. preset/rule-based), calculate dynamic pool count
+      if (total === 0) {
+        let condition = '1=1';
+        if (c.categoryType === 'mega') {
+          condition = "(p.category = 'mega' OR p.is_mega = 1)";
+        } else if (c.categoryType === 'event') {
+          condition = "(p.category = 'costume' OR p.is_costume = 1)";
+        } else if (c.variantMode === 'single') {
+          condition = "p.category = 'standard'";
+        } else {
+          condition = "(p.category = 'standard' OR p.category = 'form')";
+        }
+
+        if (c.trackShiny && c.categoryType === 'normal') {
+          condition += ' AND p.has_shiny = 1';
+        }
+
+        let caughtCol = 'up.caught';
+        if (c.categoryType === 'lucky') caughtCol = 'up.lucky_caught';
+        else if (c.categoryType === 'shadow') caughtCol = 'up.shadow_caught';
+        else if (c.categoryType === 'purified') caughtCol = 'up.purified_caught';
+        else if (c.trackShiny && c.categoryType === 'normal') caughtCol = 'up.shiny_caught';
+
+        const fallbackRow = db.prepare(`
+          SELECT 
+            COUNT(*) as total,
+            SUM(CASE WHEN ${caughtCol} = 1 THEN 1 ELSE 0 END) as caught
+          FROM pokemon p
+          LEFT JOIN user_progress up ON p.id = up.pokemon_id
+          WHERE ${condition}
+        `).get();
+
+        if (fallbackRow) {
+          total = fallbackRow.total || 0;
+          caught = fallbackRow.caught || 0;
+        }
+      }
+
+      return {
+        ...c,
+        categoryType: c.categoryType || 'normal',
+        variantMode: c.variantMode || 'multi',
+        trackShiny: Boolean(c.trackShiny),
+        trackHundo: Boolean(c.trackHundo),
+        trackGender: Boolean(c.trackGender),
+        trackBackground: Boolean(c.trackBackground),
+        trackSize: Boolean(c.trackSize),
+        totalItems: total,
+        caughtItems: caught
+      };
+    });
 
     res.json(collections);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/collection-items
+router.get('/collection-items', (req, res) => {
+  try {
+    const rows = db.prepare('SELECT collection_id, pokemon_id FROM custom_collection_items').all();
+    const map = {};
+    for (const r of rows) {
+      if (!map[r.collection_id]) map[r.collection_id] = [];
+      map[r.collection_id].push(r.pokemon_id);
+    }
+    res.json(map);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// GET /api/collections/:id/items
+router.get('/collections/:id/items', (req, res) => {
+  try {
+    const { id } = req.params;
+    const rows = db.prepare('SELECT pokemon_id FROM custom_collection_items WHERE collection_id = ?').all(id);
+    res.json({ pokemonIds: rows.map(r => r.pokemon_id) });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

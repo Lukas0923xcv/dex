@@ -158,6 +158,18 @@ async function main() {
     if (!batchRes.data.success) throw new Error('Batch set failed');
     console.log('✓ Batch collection items passed');
 
+    // 5c. Collection Items API map and single collection items test
+    const allItemsRes = await request('http://localhost:3456/api/collection-items');
+    console.log(`[TEST 5c] All Collection Items Map: HTTP ${allItemsRes.status}, keys: ${Object.keys(allItemsRes.data).length}`);
+    if (typeof allItemsRes.data !== 'object') throw new Error('Failed to get collection-items map');
+
+    const singleItemsRes = await request(`http://localhost:3456/api/collections/${targetColl.id}/items`);
+    console.log(`[TEST 5d] Single Collection Items: HTTP ${singleItemsRes.status}, count: ${singleItemsRes.data.pokemonIds?.length}`);
+    if (!Array.isArray(singleItemsRes.data.pokemonIds) || singleItemsRes.data.pokemonIds.length !== 3) {
+      throw new Error('Single collection items query mismatch');
+    }
+    console.log('✓ Collection item retrieval endpoints verified (no 0/0 error)');
+
     // 6. Export Test
     const exportRes = await request('http://localhost:3456/api/export');
     console.log(`[TEST 6] Export: HTTP ${exportRes.status}, progress count: ${exportRes.data.data.progress.length}`);
