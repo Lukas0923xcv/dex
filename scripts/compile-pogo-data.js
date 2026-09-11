@@ -59,6 +59,10 @@ function cleanFormName(formId) {
 
 function formatCostumeName(costume) {
   if (!costume) return 'Costume';
+  if (costume.includes('JAN_2020')) return 'Party Hat';
+  if (costume.includes('SPRING_2020') || costume.includes('VISOR')) return 'Pikachu Visor';
+  if (costume === 'FALL_2019') return 'Halloween Costume';
+  if (costume === 'SUMMER_2018') return 'Sunglasses';
   return costume
     .replace(/_NOEVOLVE/g, '')
     .replace(/^COSTUME_/, 'Costume ')
@@ -317,7 +321,7 @@ async function main() {
         if (af.costume) return true;
         if (!af.form) return false;
         const f = af.form.toUpperCase();
-        if (f.includes('ALOLA') || f.includes('GALAR') || f.includes('HISUI') || f.includes('PALDEA') || f.includes('MEGA') || f === 'NORMAL' || dexNr === 666) {
+        if (f.includes('ALOLA') || f.includes('GALAR') || f.includes('HISUI') || f.includes('PALDEA') || f.includes('MEGA') || f === 'NORMAL' || dexNr === 666 || dexNr === 585 || dexNr === 586) {
           return false;
         }
         return f.includes('201') || f.includes('202') || f.includes('FALL') ||
@@ -945,6 +949,174 @@ async function main() {
         isMega: false,
         isForm: true,
         isCostume: false,
+        releasedInGo: true
+      });
+    }
+  });
+
+  // 7. Verified Bulbapedia Costume Additions (Costume evolutions, recent event debuts, and special variants missing from base snapshot)
+  const bulbapediaCostumes = [
+    // Starter Evolutions with Pikachu Visor (2026 Debuts)
+    {
+      dexNr: 2, name: 'Ivysaur (Pikachu Visor)', formId: 'SPRING_2020', formName: 'Pikachu Visor', gen: 1, type1: 'Grass', type2: 'Poison',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/5/51/GO0002Visor.png'
+    },
+    {
+      dexNr: 3, name: 'Venusaur (Pikachu Visor)', formId: 'SPRING_2020', formName: 'Pikachu Visor', gen: 1, type1: 'Grass', type2: 'Poison',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/7/75/GO0003Visor.png'
+    },
+    {
+      dexNr: 5, name: 'Charmeleon (Pikachu Visor)', formId: 'SPRING_2020', formName: 'Pikachu Visor', gen: 1, type1: 'Fire', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/7/73/GO0005Visor.png'
+    },
+    {
+      dexNr: 6, name: 'Charizard (Pikachu Visor)', formId: 'SPRING_2020', formName: 'Pikachu Visor', gen: 1, type1: 'Fire', type2: 'Flying',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/5/55/GO0006Visor.png'
+    },
+    {
+      dexNr: 8, name: 'Wartortle (Pikachu Visor)', formId: 'SPRING_2020', formName: 'Pikachu Visor', gen: 1, type1: 'Water', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/0/0e/GO0008Visor.png'
+    },
+    {
+      dexNr: 9, name: 'Blastoise (Pikachu Visor)', formId: 'SPRING_2020', formName: 'Pikachu Visor', gen: 1, type1: 'Water', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/2/2e/GO0009Visor.png'
+    },
+
+    // Pokémon Horizons / Friede's Goggles Series
+    {
+      dexNr: 4, name: "Charmander (Friede's Goggles)", formId: 'FRIEDE', formName: "Friede's Goggles", gen: 1, type1: 'Fire', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/1/13/GO0004Friede.png'
+    },
+    {
+      dexNr: 5, name: "Charmeleon (Friede's Goggles)", formId: 'FRIEDE', formName: "Friede's Goggles", gen: 1, type1: 'Fire', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/2/21/GO0005Friede.png'
+    },
+    {
+      dexNr: 6, name: "Charizard (Friede's Goggles)", formId: 'FRIEDE', formName: "Friede's Goggles", gen: 1, type1: 'Fire', type2: 'Flying',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/d/da/GO0006Friede.png'
+    },
+
+    // Recent Event Debuts
+    {
+      dexNr: 10, name: 'Caterpie (Poké Ball Hat)', formId: 'GOFEST_2026', formName: 'Poké Ball Hat', gen: 1, type1: 'Bug', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/b/be/GO0010GOFest2026.png'
+    },
+    {
+      dexNr: 68, name: 'Machamp (Modern Jacket)', formId: 'MODERN_JACKET', formName: 'Modern Jacket', gen: 1, type1: 'Fighting', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/c/c4/GO0068.png'
+    },
+    {
+      dexNr: 222, name: 'Corsola (Pink Sunglasses)', formId: 'SUNGLASSES', formName: 'Pink Sunglasses', gen: 2, type1: 'Water', type2: 'Rock',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/c/c7/GO0222GSunglasses.png'
+    },
+    {
+      dexNr: 132, name: 'Ditto (Pokopia Hat)', formId: 'POKOPIA_HAT', formName: 'Pokopia Hat', gen: 1, type1: 'Normal', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/a/ac/GO0132PokopiaHat.png'
+    },
+    {
+      dexNr: 132, name: 'Ditto (Pokopia Cap)', formId: 'POKOPIA_CAP', formName: 'Pokopia Cap', gen: 1, type1: 'Normal', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/5/59/GO0132PokopiaCap.png'
+    },
+    {
+      dexNr: 999, name: 'Gimmighoul (9th Anniversary Coin)', formId: 'ANNIVERSARY_9', formName: '9th Anniversary Coin', gen: 9, type1: 'Ghost', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/0/01/GO0999Anniversary9.png'
+    },
+    {
+      dexNr: 999, name: 'Gimmighoul (10th Anniversary Coin)', formId: 'ANNIVERSARY_10', formName: '10th Anniversary Coin', gen: 9, type1: 'Ghost', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/8/8c/GO0999Anniversary10.png'
+    },
+
+    // Pumpkaboo & Gourgeist Spooky Festival Sizes
+    {
+      dexNr: 710, name: 'Pumpkaboo (Spooky Festival - Small Size)', formId: 'SPOOKY_SMALL', formName: 'Spooky Festival (Small)', gen: 6, type1: 'Ghost', type2: 'Grass',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/8/8e/GO0710SmHalloween2022.png'
+    },
+    {
+      dexNr: 710, name: 'Pumpkaboo (Spooky Festival - Large Size)', formId: 'SPOOKY_LARGE', formName: 'Spooky Festival (Large)', gen: 6, type1: 'Ghost', type2: 'Grass',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/c/c8/GO0710LaHalloween2022.png'
+    },
+    {
+      dexNr: 710, name: 'Pumpkaboo (Spooky Festival - Super Size)', formId: 'SPOOKY_SUPER', formName: 'Spooky Festival (Super)', gen: 6, type1: 'Ghost', type2: 'Grass',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/c/c9/GO0710SuHalloween2022.png'
+    },
+    {
+      dexNr: 711, name: 'Gourgeist (Spooky Festival - Small Size)', formId: 'SPOOKY_SMALL', formName: 'Spooky Festival (Small)', gen: 6, type1: 'Ghost', type2: 'Grass',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/b/b3/GO0711SmHalloween2022.png'
+    },
+    {
+      dexNr: 711, name: 'Gourgeist (Spooky Festival - Large Size)', formId: 'SPOOKY_LARGE', formName: 'Spooky Festival (Large)', gen: 6, type1: 'Ghost', type2: 'Grass',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/7/7e/GO0711LaHalloween2022.png'
+    },
+    {
+      dexNr: 711, name: 'Gourgeist (Spooky Festival - Super Size)', formId: 'SPOOKY_SUPER', formName: 'Spooky Festival (Super)', gen: 6, type1: 'Ghost', type2: 'Grass',
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/4/44/GO0711SuHalloween2022.png'
+    },
+
+    // Special Pikachu Costumes
+    {
+      dexNr: 25, name: 'Pikachu (Captain Pikachu)', formId: 'CAPTAIN', formName: 'Captain Pikachu', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/1/14/GO0025Captain.png'
+    },
+    {
+      dexNr: 25, name: 'Pikachu (Marathon Visor)', formId: 'MARATHON_VISOR', formName: 'Marathon Visor', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/f/f8/GO0025MarathonVisor.png'
+    },
+    {
+      dexNr: 25, name: 'Pikachu (Excavator Pikachu)', formId: 'EXCAVATOR', formName: 'Excavator Pikachu', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/6/62/GO0025Fossil.png'
+    },
+    {
+      dexNr: 25, name: 'Pikachu (Team Mystic Hat)', formId: 'MYSTIC_HAT', formName: 'Team Mystic Hat', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/e/ea/GO0025MysticHat.png'
+    },
+    {
+      dexNr: 25, name: 'Pikachu (Team Instinct Hat)', formId: 'INSTINCT_HAT', formName: 'Team Instinct Hat', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/8/84/GO0025InstinctHat.png'
+    },
+    {
+      dexNr: 25, name: 'Pikachu (Team Valor Hat)', formId: 'VALOR_HAT', formName: 'Team Valor Hat', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/0/06/GO0025ValorHat.png'
+    },
+    {
+      dexNr: 25, name: "Pikachu (Professor Willow's Assistant)", formId: 'WILLOW_ASSISTANT', formName: "Professor Willow's Assistant", gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/8/8c/GO0025Willow.png'
+    },
+    {
+      dexNr: 25, name: 'Pikachu (Cosmog Spacesuit)', formId: 'COSMOG_SPACESUIT', formName: 'Cosmog Spacesuit', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/0/06/GO0025Cosmog.png'
+    },
+    {
+      dexNr: 25, name: 'Pikachu (Baseball Shirt)', formId: 'BASEBALL_SHIRT', formName: 'Baseball Shirt', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://archives.bulbagarden.net/media/upload/c/c0/GO0025BaseballJersey.png'
+    }
+  ];
+
+  bulbapediaCostumes.forEach(bc => {
+    const costumeId = `poke_${bc.dexNr}_costume_${bc.formId.toLowerCase()}`;
+    if (!processedIds.has(costumeId)) {
+      processedIds.add(costumeId);
+      const homeFallback = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${bc.dexNr}.png`;
+      const homeShinyFallback = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${bc.dexNr}.png`;
+      allItems.push({
+        id: costumeId,
+        dexNr: bc.dexNr,
+        name: bc.name,
+        names: { English: bc.name },
+        formId: bc.formId,
+        formName: bc.formName,
+        category: 'costume',
+        generation: bc.gen,
+        type1: bc.type1,
+        type2: bc.type2 || null,
+        spriteUrl: bc.spriteUrl,
+        shinySpriteUrl: bc.spriteUrl,
+        fallbackSpriteUrl: homeFallback,
+        fallbackShinyUrl: homeShinyFallback,
+        officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${bc.dexNr}.png`,
+        hasShiny: true,
+        isMega: false,
+        isForm: false,
+        isCostume: true,
         releasedInGo: true
       });
     }
