@@ -64,6 +64,12 @@ db.exec(`
     shiny_caught INTEGER DEFAULT 0,
     lucky_caught INTEGER DEFAULT 0,
     hundo_caught INTEGER DEFAULT 0,
+    shadow_caught INTEGER DEFAULT 0,
+    purified_caught INTEGER DEFAULT 0,
+    gender_m_caught INTEGER DEFAULT 0,
+    gender_f_caught INTEGER DEFAULT 0,
+    xxl_caught INTEGER DEFAULT 0,
+    xxs_caught INTEGER DEFAULT 0,
     notes TEXT,
     updated_at TEXT,
     FOREIGN KEY(pokemon_id) REFERENCES pokemon(id) ON DELETE CASCADE
@@ -74,6 +80,13 @@ db.exec(`
     name TEXT NOT NULL,
     description TEXT,
     color TEXT DEFAULT '#3b82f6',
+    category_type TEXT DEFAULT 'normal',
+    variant_mode TEXT DEFAULT 'multi',
+    track_shiny INTEGER DEFAULT 0,
+    track_hundo INTEGER DEFAULT 0,
+    track_gender INTEGER DEFAULT 0,
+    track_background INTEGER DEFAULT 0,
+    track_size INTEGER DEFAULT 0,
     created_at TEXT NOT NULL
   );
 
@@ -86,6 +99,29 @@ db.exec(`
     FOREIGN KEY(pokemon_id) REFERENCES pokemon(id) ON DELETE CASCADE
   );
 `);
+
+// Migrations for existing tables
+const migrations = [
+  'ALTER TABLE user_progress ADD COLUMN shadow_caught INTEGER DEFAULT 0;',
+  'ALTER TABLE user_progress ADD COLUMN purified_caught INTEGER DEFAULT 0;',
+  'ALTER TABLE user_progress ADD COLUMN gender_m_caught INTEGER DEFAULT 0;',
+  'ALTER TABLE user_progress ADD COLUMN gender_f_caught INTEGER DEFAULT 0;',
+  'ALTER TABLE user_progress ADD COLUMN xxl_caught INTEGER DEFAULT 0;',
+  'ALTER TABLE user_progress ADD COLUMN xxs_caught INTEGER DEFAULT 0;',
+  "ALTER TABLE custom_collections ADD COLUMN category_type TEXT DEFAULT 'normal';",
+  "ALTER TABLE custom_collections ADD COLUMN variant_mode TEXT DEFAULT 'multi';",
+  'ALTER TABLE custom_collections ADD COLUMN track_shiny INTEGER DEFAULT 0;',
+  'ALTER TABLE custom_collections ADD COLUMN track_hundo INTEGER DEFAULT 0;',
+  'ALTER TABLE custom_collections ADD COLUMN track_gender INTEGER DEFAULT 0;',
+  'ALTER TABLE custom_collections ADD COLUMN track_background INTEGER DEFAULT 0;',
+  'ALTER TABLE custom_collections ADD COLUMN track_size INTEGER DEFAULT 0;'
+];
+
+for (const sql of migrations) {
+  try {
+    db.exec(sql);
+  } catch {}
+}
 
 console.log('Database tables verified and WAL mode enabled.');
 

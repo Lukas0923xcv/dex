@@ -24,6 +24,7 @@ export const App: React.FC = () => {
     setFilters,
     toggleCaught,
     toggleShiny,
+    toggleFeature,
     createCollection,
     deleteCollection,
     toggleCollectionItem,
@@ -112,8 +113,10 @@ export const App: React.FC = () => {
         <PokemonGrid
           pokemonList={filteredPokemon}
           mode={mode}
+          collection={activeCollection}
           onToggleCaught={toggleCaught}
           onToggleShiny={toggleShiny}
+          onToggleFeature={toggleFeature}
           onOpenAddModal={(p) => setTargetPokemonForAdd(p)}
           onResetFilters={() => setFilters(f => ({
             ...f,
@@ -138,6 +141,7 @@ export const App: React.FC = () => {
         onClose={() => setIsCollectionsModalOpen(false)}
         collections={collections}
         activeCollectionId={filters.activeCollectionId}
+        allPokemon={pokemonList}
         onSelectCollection={(id) => setFilters(f => ({ ...f, activeCollectionId: id }))}
         onCreateCollection={createCollection}
         onDeleteCollection={deleteCollection}

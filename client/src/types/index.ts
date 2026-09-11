@@ -24,15 +24,40 @@ export interface Pokemon {
   shinyCaught?: boolean;
   luckyCaught?: boolean;
   hundoCaught?: boolean;
+  shadowCaught?: boolean;
+  purifiedCaught?: boolean;
+  genderMCaught?: boolean;
+  genderFCaught?: boolean;
+  xxlCaught?: boolean;
+  xxsCaught?: boolean;
   notes?: string;
   inCollection?: boolean;
 }
+
+export type CollectionCategoryType = 
+  | 'normal' 
+  | 'event' 
+  | 'lucky' 
+  | 'mega' 
+  | 'shadow' 
+  | 'purified' 
+  | 'dynamax' 
+  | 'gigantamax';
+
+export type CollectionVariantMode = 'multi' | 'single';
 
 export interface CustomCollection {
   id: string;
   name: string;
   description?: string;
   color: string;
+  categoryType?: CollectionCategoryType;
+  variantMode?: CollectionVariantMode;
+  trackShiny?: boolean;
+  trackHundo?: boolean;
+  trackGender?: boolean;
+  trackBackground?: boolean;
+  trackSize?: boolean;
   createdAt: string;
   totalItems: number;
   caughtItems: number;

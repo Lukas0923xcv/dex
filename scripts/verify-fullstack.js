@@ -129,8 +129,53 @@ async function main() {
     if (!importRes.data.success) throw new Error('Import failed');
     console.log('✓ Backup import passed');
 
+    // 8. Advanced Custom Collection Test (Screenshot Builder Features)
+    const newCollRes = await request('http://localhost:3456/api/collections', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: {
+        name: 'Crypto 100% Sammlung',
+        description: 'SHADOW - Multivariante',
+        color: '#a855f7',
+        categoryType: 'shadow',
+        variantMode: 'multi',
+        trackShiny: true,
+        trackHundo: true,
+        trackGender: true,
+        trackSize: true,
+        pokemonIds: ['poke_1_base', 'poke_4_base', 'poke_7_base']
+      }
+    });
+    console.log(`[TEST 8] Create Custom Collection: HTTP ${newCollRes.status}, id: ${newCollRes.data.id}, type: ${newCollRes.data.categoryType}`);
+    if (newCollRes.data.categoryType !== 'shadow' || !newCollRes.data.trackHundo) {
+      throw new Error('Custom collection attributes not saved properly');
+    }
+    console.log('✓ Advanced custom collection created successfully');
+
+    // 9. Multi-Feature Progress Toggle Test (Shadow, Hundo, Gender, Size)
+    const shadowToggle = await request('http://localhost:3456/api/progress/toggle', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { pokemonId: 'poke_1_base', type: 'shadow' }
+    });
+    const hundoToggle = await request('http://localhost:3456/api/progress/toggle', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { pokemonId: 'poke_1_base', type: 'hundo' }
+    });
+    const genderToggle = await request('http://localhost:3456/api/progress/toggle', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { pokemonId: 'poke_1_base', type: 'gender_m' }
+    });
+    console.log(`[TEST 9] Feature Toggles: shadow=${shadowToggle.data.value}, hundo=${hundoToggle.data.value}, gender_m=${genderToggle.data.value}`);
+    if (!shadowToggle.data.value || !hundoToggle.data.value || !genderToggle.data.value) {
+      throw new Error('Feature progress toggle failed');
+    }
+    console.log('✓ Feature progress toggles passed');
+
     console.log('\n=========================================');
-    console.log('🎉 ALL 7 FULL-STACK TESTS PASSED 100%! 🎉');
+    console.log('🎉 ALL 9 FULL-STACK TESTS PASSED 100%! 🎉');
     console.log('=========================================\n');
   } finally {
     serverProc.kill();

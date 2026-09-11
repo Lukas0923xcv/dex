@@ -120,14 +120,23 @@ class StorageAdapter {
         shinyCaught: Boolean(prog.shinyCaught),
         luckyCaught: Boolean(prog.luckyCaught),
         hundoCaught: Boolean(prog.hundoCaught),
+        shadowCaught: Boolean(prog.shadowCaught),
+        purifiedCaught: Boolean(prog.purifiedCaught),
+        genderMCaught: Boolean(prog.genderMCaught),
+        genderFCaught: Boolean(prog.genderFCaught),
+        xxlCaught: Boolean(prog.xxlCaught),
+        xxsCaught: Boolean(prog.xxsCaught),
         notes: prog.notes || '',
         inCollection: inAnyColl
       };
     });
   }
 
-  // --- Toggle Caught / Shiny ---
-  public async toggleProgress(pokemonId: string, type: 'caught' | 'shiny' | 'lucky'): Promise<boolean> {
+  // --- Toggle Progress (Caught, Shiny, Lucky, Shadow, Purified, Gender, Size) ---
+  public async toggleProgress(
+    pokemonId: string,
+    type: 'caught' | 'shiny' | 'lucky' | 'hundo' | 'shadow' | 'purified' | 'gender_m' | 'gender_f' | 'xxl' | 'xxs'
+  ): Promise<boolean> {
     if (this.isConnectedToBackend) {
       try {
         const res = await fetch(`${this.backendUrl}/api/progress/toggle`, {
@@ -146,8 +155,20 @@ class StorageAdapter {
 
     // Local Mode
     const progress = this.getLocalProgress();
-    const current = progress[pokemonId] || { caught: false, shinyCaught: false, luckyCaught: false };
-    const field = type === 'shiny' ? 'shinyCaught' : type === 'lucky' ? 'luckyCaught' : 'caught';
+    const current = progress[pokemonId] || {};
+    const fieldMap: Record<string, string> = {
+      caught: 'caught',
+      shiny: 'shinyCaught',
+      lucky: 'luckyCaught',
+      hundo: 'hundoCaught',
+      shadow: 'shadowCaught',
+      purified: 'purifiedCaught',
+      gender_m: 'genderMCaught',
+      gender_f: 'genderFCaught',
+      xxl: 'xxlCaught',
+      xxs: 'xxsCaught'
+    };
+    const field = fieldMap[type] || 'caught';
     const newVal = !current[field];
     current[field] = newVal;
     current.updatedAt = new Date().toISOString();
@@ -176,22 +197,61 @@ class StorageAdapter {
 
     return collections.map(c => {
       const cItems = items.filter(i => i.collection_id === c.id);
-      const caughtCount = cItems.filter(i => progress[i.pokemon_id]?.caught).length;
+      const caughtCount = cItems.filter(i => {
+        const prog = progress[i.pokemon_id];
+        if (!prog) return false;
+        if (c.categoryType === 'lucky') return Boolean(prog.luckyCaught);
+        if (c.categoryType === 'shadow') return Boolean(prog.shadowCaught);
+        if (c.categoryType === 'purified') return Boolean(prog.purifiedCaught);
+        if (c.trackShiny && c.categoryType === 'normal') return Boolean(prog.shinyCaught);
+        return Boolean(prog.caught);
+      }).length;
+
       return {
         ...c,
+        categoryType: c.categoryType || 'normal',
+        variantMode: c.variantMode || 'multi',
         totalItems: cItems.length,
         caughtItems: caughtCount
       };
     });
   }
 
-  public async createCollection(name: string, description = '', color = '#3b82f6'): Promise<CustomCollection> {
+  public async createCollection(
+    name: string,
+    description = '',
+    color = '#3b82f6',
+    options?: {
+      categoryType?: any;
+      variantMode?: any;
+      trackShiny?: boolean;
+      trackHundo?: boolean;
+      trackGender?: boolean;
+      trackBackground?: boolean;
+      trackSize?: boolean;
+      pokemonIds?: string[];
+    }
+  ): Promise<CustomCollection> {
+    const payload = {
+      name: name.trim(),
+      description: description.trim(),
+      color,
+      categoryType: options?.categoryType || 'normal',
+      variantMode: options?.variantMode || 'multi',
+      trackShiny: Boolean(options?.trackShiny),
+      trackHundo: Boolean(options?.trackHundo),
+      trackGender: Boolean(options?.trackGender),
+      trackBackground: Boolean(options?.trackBackground),
+      trackSize: Boolean(options?.trackSize),
+      pokemonIds: options?.pokemonIds || []
+    };
+
     if (this.isConnectedToBackend) {
       try {
         const res = await fetch(`${this.backendUrl}/api/collections`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, description, color })
+          body: JSON.stringify(payload)
         });
         if (res.ok) {
           return await res.json();
@@ -205,15 +265,36 @@ class StorageAdapter {
     const collections = this.getLocalCollections();
     const newColl: CustomCollection = {
       id: `coll_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-      name: name.trim(),
-      description: description.trim(),
-      color,
+      name: payload.name,
+      description: payload.description,
+      color: payload.color,
+      categoryType: payload.categoryType,
+      variantMode: payload.variantMode,
+      trackShiny: payload.trackShiny,
+      trackHundo: payload.trackHundo,
+      trackGender: payload.trackGender,
+      trackBackground: payload.trackBackground,
+      trackSize: payload.trackSize,
       createdAt: new Date().toISOString(),
-      totalItems: 0,
+      totalItems: payload.pokemonIds.length,
       caughtItems: 0
     };
     collections.push(newColl);
     localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(collections));
+
+    if (payload.pokemonIds.length > 0) {
+      const items = this.getLocalCollectionItems();
+      const now = new Date().toISOString();
+      for (const pid of payload.pokemonIds) {
+        items.push({
+          collection_id: newColl.id,
+          pokemon_id: pid,
+          added_at: now
+        });
+      }
+      localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+    }
+
     return newColl;
   }
 

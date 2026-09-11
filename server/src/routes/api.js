@@ -58,6 +58,12 @@ router.get('/pokemon', (req, res) => {
         COALESCE(up.shiny_caught, 0) as shinyCaught,
         COALESCE(up.lucky_caught, 0) as luckyCaught,
         COALESCE(up.hundo_caught, 0) as hundoCaught,
+        COALESCE(up.shadow_caught, 0) as shadowCaught,
+        COALESCE(up.purified_caught, 0) as purifiedCaught,
+        COALESCE(up.gender_m_caught, 0) as genderMCaught,
+        COALESCE(up.gender_f_caught, 0) as genderFCaught,
+        COALESCE(up.xxl_caught, 0) as xxlCaught,
+        COALESCE(up.xxs_caught, 0) as xxsCaught,
         up.notes,
         up.updated_at as updatedAt,
         CASE WHEN cci.pokemon_id IS NOT NULL THEN 1 ELSE 0 END as inCollection
@@ -143,6 +149,12 @@ router.get('/pokemon', (req, res) => {
       shinyCaught: Boolean(r.shinyCaught),
       luckyCaught: Boolean(r.luckyCaught),
       hundoCaught: Boolean(r.hundoCaught),
+      shadowCaught: Boolean(r.shadowCaught),
+      purifiedCaught: Boolean(r.purifiedCaught),
+      genderMCaught: Boolean(r.genderMCaught),
+      genderFCaught: Boolean(r.genderFCaught),
+      xxlCaught: Boolean(r.xxlCaught),
+      xxsCaught: Boolean(r.xxsCaught),
       inCollection: Boolean(r.inCollection)
     }));
 
@@ -161,7 +173,19 @@ router.post('/progress/toggle', (req, res) => {
       return res.status(400).json({ error: 'pokemonId is required' });
     }
 
-    const field = type === 'shiny' ? 'shiny_caught' : type === 'lucky' ? 'lucky_caught' : 'caught';
+    const fieldMap = {
+      caught: 'caught',
+      shiny: 'shiny_caught',
+      lucky: 'lucky_caught',
+      hundo: 'hundo_caught',
+      shadow: 'shadow_caught',
+      purified: 'purified_caught',
+      gender_m: 'gender_m_caught',
+      gender_f: 'gender_f_caught',
+      xxl: 'xxl_caught',
+      xxs: 'xxs_caught'
+    };
+    const field = fieldMap[type] || 'caught';
     const now = new Date().toISOString();
 
     const existing = db.prepare('SELECT * FROM user_progress WHERE pokemon_id = ?').get(pokemonId);
@@ -231,21 +255,47 @@ router.post('/progress/batch', (req, res) => {
 // GET /api/collections
 router.get('/collections', (req, res) => {
   try {
-    const collections = db.prepare(`
+    const rawCollections = db.prepare(`
       SELECT 
         c.id,
         c.name,
         c.description,
         c.color,
+        c.category_type as categoryType,
+        c.variant_mode as variantMode,
+        c.track_shiny as trackShiny,
+        c.track_hundo as trackHundo,
+        c.track_gender as trackGender,
+        c.track_background as trackBackground,
+        c.track_size as trackSize,
         c.created_at as createdAt,
         COUNT(cci.pokemon_id) as totalItems,
-        SUM(CASE WHEN up.caught = 1 THEN 1 ELSE 0 END) as caughtItems
+        SUM(CASE 
+          WHEN c.category_type = 'lucky' THEN (CASE WHEN up.lucky_caught = 1 THEN 1 ELSE 0 END)
+          WHEN c.category_type = 'shadow' THEN (CASE WHEN up.shadow_caught = 1 THEN 1 ELSE 0 END)
+          WHEN c.category_type = 'purified' THEN (CASE WHEN up.purified_caught = 1 THEN 1 ELSE 0 END)
+          WHEN c.track_shiny = 1 AND c.category_type = 'normal' THEN (CASE WHEN up.shiny_caught = 1 THEN 1 ELSE 0 END)
+          ELSE (CASE WHEN up.caught = 1 THEN 1 ELSE 0 END)
+        END) as caughtItems
       FROM custom_collections c
       LEFT JOIN custom_collection_items cci ON c.id = cci.collection_id
       LEFT JOIN user_progress up ON cci.pokemon_id = up.pokemon_id
       GROUP BY c.id
       ORDER BY c.created_at ASC
     `).all();
+
+    const collections = rawCollections.map(c => ({
+      ...c,
+      categoryType: c.categoryType || 'normal',
+      variantMode: c.variantMode || 'multi',
+      trackShiny: Boolean(c.trackShiny),
+      trackHundo: Boolean(c.trackHundo),
+      trackGender: Boolean(c.trackGender),
+      trackBackground: Boolean(c.trackBackground),
+      trackSize: Boolean(c.trackSize),
+      totalItems: c.totalItems || 0,
+      caughtItems: c.caughtItems || 0
+    }));
 
     res.json(collections);
   } catch (err) {
@@ -256,7 +306,20 @@ router.get('/collections', (req, res) => {
 // POST /api/collections
 router.post('/collections', (req, res) => {
   try {
-    const { name, description = '', color = '#3b82f6' } = req.body;
+    const {
+      name,
+      description = '',
+      color = '#3b82f6',
+      categoryType = 'normal',
+      variantMode = 'multi',
+      trackShiny = false,
+      trackHundo = false,
+      trackGender = false,
+      trackBackground = false,
+      trackSize = false,
+      pokemonIds = []
+    } = req.body;
+
     if (!name || !name.trim()) {
       return res.status(400).json({ error: 'Collection name is required' });
     }
@@ -265,17 +328,51 @@ router.post('/collections', (req, res) => {
     const now = new Date().toISOString();
 
     db.prepare(`
-      INSERT INTO custom_collections (id, name, description, color, created_at)
-      VALUES (?, ?, ?, ?, ?)
-    `).run(id, name.trim(), description.trim(), color, now);
+      INSERT INTO custom_collections (
+        id, name, description, color, category_type, variant_mode,
+        track_shiny, track_hundo, track_gender, track_background, track_size, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      id,
+      name.trim(),
+      description.trim(),
+      color,
+      categoryType,
+      variantMode,
+      trackShiny ? 1 : 0,
+      trackHundo ? 1 : 0,
+      trackGender ? 1 : 0,
+      trackBackground ? 1 : 0,
+      trackSize ? 1 : 0,
+      now
+    );
+
+    if (Array.isArray(pokemonIds) && pokemonIds.length > 0) {
+      const insertItem = db.prepare(`
+        INSERT OR IGNORE INTO custom_collection_items (collection_id, pokemon_id, added_at)
+        VALUES (?, ?, ?)
+      `);
+      db.exec('BEGIN TRANSACTION;');
+      for (const pid of pokemonIds) {
+        insertItem.run(id, pid, now);
+      }
+      db.exec('COMMIT;');
+    }
 
     res.status(201).json({
       id,
       name: name.trim(),
       description: description.trim(),
       color,
+      categoryType,
+      variantMode,
+      trackShiny: Boolean(trackShiny),
+      trackHundo: Boolean(trackHundo),
+      trackGender: Boolean(trackGender),
+      trackBackground: Boolean(trackBackground),
+      trackSize: Boolean(trackSize),
       createdAt: now,
-      totalItems: 0,
+      totalItems: Array.isArray(pokemonIds) ? pokemonIds.length : 0,
       caughtItems: 0
     });
   } catch (err) {
@@ -435,13 +532,23 @@ router.post('/import', (req, res) => {
     try {
       // Restore Progress
       const progressStmt = db.prepare(`
-        INSERT INTO user_progress (pokemon_id, caught, shiny_caught, lucky_caught, hundo_caught, notes, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO user_progress (
+          pokemon_id, caught, shiny_caught, lucky_caught, hundo_caught,
+          shadow_caught, purified_caught, gender_m_caught, gender_f_caught,
+          xxl_caught, xxs_caught, notes, updated_at
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(pokemon_id) DO UPDATE SET
           caught = excluded.caught,
           shiny_caught = excluded.shiny_caught,
           lucky_caught = excluded.lucky_caught,
           hundo_caught = excluded.hundo_caught,
+          shadow_caught = excluded.shadow_caught,
+          purified_caught = excluded.purified_caught,
+          gender_m_caught = excluded.gender_m_caught,
+          gender_f_caught = excluded.gender_f_caught,
+          xxl_caught = excluded.xxl_caught,
+          xxs_caught = excluded.xxs_caught,
           notes = excluded.notes,
           updated_at = excluded.updated_at
       `);
@@ -449,10 +556,16 @@ router.post('/import', (req, res) => {
       for (const p of progress) {
         progressStmt.run(
           p.pokemon_id,
-          p.caught || 0,
-          p.shiny_caught || 0,
-          p.lucky_caught || 0,
-          p.hundo_caught || 0,
+          p.caught ? 1 : 0,
+          p.shiny_caught ? 1 : 0,
+          p.lucky_caught ? 1 : 0,
+          p.hundo_caught ? 1 : 0,
+          p.shadow_caught ? 1 : 0,
+          p.purified_caught ? 1 : 0,
+          p.gender_m_caught ? 1 : 0,
+          p.gender_f_caught ? 1 : 0,
+          p.xxl_caught ? 1 : 0,
+          p.xxs_caught ? 1 : 0,
           p.notes || null,
           p.updated_at || new Date().toISOString()
         );
@@ -460,16 +573,39 @@ router.post('/import', (req, res) => {
 
       // Restore Collections
       const collStmt = db.prepare(`
-        INSERT INTO custom_collections (id, name, description, color, created_at)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO custom_collections (
+          id, name, description, color, category_type, variant_mode,
+          track_shiny, track_hundo, track_gender, track_background, track_size, created_at
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(id) DO UPDATE SET
           name = excluded.name,
           description = excluded.description,
-          color = excluded.color
+          color = excluded.color,
+          category_type = excluded.category_type,
+          variant_mode = excluded.variant_mode,
+          track_shiny = excluded.track_shiny,
+          track_hundo = excluded.track_hundo,
+          track_gender = excluded.track_gender,
+          track_background = excluded.track_background,
+          track_size = excluded.track_size
       `);
 
       for (const c of collections) {
-        collStmt.run(c.id, c.name, c.description || '', c.color || '#3b82f6', c.created_at || new Date().toISOString());
+        collStmt.run(
+          c.id,
+          c.name,
+          c.description || '',
+          c.color || '#3b82f6',
+          c.category_type || c.categoryType || 'normal',
+          c.variant_mode || c.variantMode || 'multi',
+          c.track_shiny ? 1 : 0,
+          c.track_hundo ? 1 : 0,
+          c.track_gender ? 1 : 0,
+          c.track_background ? 1 : 0,
+          c.track_size ? 1 : 0,
+          c.created_at || c.createdAt || new Date().toISOString()
+        );
       }
 
       // Restore Collection Items
