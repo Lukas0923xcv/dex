@@ -19968,8 +19968,8 @@
     "generation": 6,
     "type1": "Bug",
     "type2": "Flying",
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm666.fARCHIPELAGO.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm666.fARCHIPELAGO.s.icon.png",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/666.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/666.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/666.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/666.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/666.png",
@@ -21528,8 +21528,8 @@
     "generation": 6,
     "type1": "Dragon",
     "type2": "Ground",
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm718.fTEN_PERCENT.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm718.fTEN_PERCENT.s.icon.png",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/718.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/718.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/718.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/718.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/718.png",
@@ -32212,7 +32212,8 @@
     "dexNr": 19,
     "name": "Alolan Rattata",
     "names": {
-      "English": "Alolan Rattata"
+      "English": "Alolan Rattata",
+      "German": "Alola-Rattfratz"
     },
     "formId": "RATTATA_ALOLA",
     "formName": "Alolan",
@@ -32236,7 +32237,8 @@
     "dexNr": 20,
     "name": "Alolan Raticate",
     "names": {
-      "English": "Alolan Raticate"
+      "English": "Alolan Raticate",
+      "German": "Alola-Rattikarl"
     },
     "formId": "RATICATE_ALOLA",
     "formName": "Alolan",
@@ -32260,7 +32262,8 @@
     "dexNr": 26,
     "name": "Alolan Raichu",
     "names": {
-      "English": "Alolan Raichu"
+      "English": "Alolan Raichu",
+      "German": "Alola-Raichu"
     },
     "formId": "RAICHU_ALOLA",
     "formName": "Alolan",
@@ -32284,7 +32287,8 @@
     "dexNr": 27,
     "name": "Alolan Sandshrew",
     "names": {
-      "English": "Alolan Sandshrew"
+      "English": "Alolan Sandshrew",
+      "German": "Alola-Sandan"
     },
     "formId": "SANDSHREW_ALOLA",
     "formName": "Alolan",
@@ -32308,7 +32312,8 @@
     "dexNr": 28,
     "name": "Alolan Sandslash",
     "names": {
-      "English": "Alolan Sandslash"
+      "English": "Alolan Sandslash",
+      "German": "Alola-Sandamer"
     },
     "formId": "SANDSLASH_ALOLA",
     "formName": "Alolan",
@@ -32332,7 +32337,8 @@
     "dexNr": 37,
     "name": "Alolan Vulpix",
     "names": {
-      "English": "Alolan Vulpix"
+      "English": "Alolan Vulpix",
+      "German": "Alola-Vulpix"
     },
     "formId": "VULPIX_ALOLA",
     "formName": "Alolan",
@@ -32356,7 +32362,8 @@
     "dexNr": 38,
     "name": "Alolan Ninetales",
     "names": {
-      "English": "Alolan Ninetales"
+      "English": "Alolan Ninetales",
+      "German": "Alola-Vulnona"
     },
     "formId": "NINETALES_ALOLA",
     "formName": "Alolan",
@@ -32380,7 +32387,8 @@
     "dexNr": 50,
     "name": "Alolan Diglett",
     "names": {
-      "English": "Alolan Diglett"
+      "English": "Alolan Diglett",
+      "German": "Alola-Digda"
     },
     "formId": "DIGLETT_ALOLA",
     "formName": "Alolan",
@@ -32404,7 +32412,8 @@
     "dexNr": 51,
     "name": "Alolan Dugtrio",
     "names": {
-      "English": "Alolan Dugtrio"
+      "English": "Alolan Dugtrio",
+      "German": "Alola-Digdri"
     },
     "formId": "DUGTRIO_ALOLA",
     "formName": "Alolan",
@@ -32428,7 +32437,8 @@
     "dexNr": 52,
     "name": "Alolan Meowth",
     "names": {
-      "English": "Alolan Meowth"
+      "English": "Alolan Meowth",
+      "German": "Alola-Mauzi"
     },
     "formId": "MEOWTH_ALOLA",
     "formName": "Alolan",
@@ -32452,7 +32462,8 @@
     "dexNr": 52,
     "name": "Galarian Meowth",
     "names": {
-      "English": "Galarian Meowth"
+      "English": "Galarian Meowth",
+      "German": "Galar-Mauzi"
     },
     "formId": "MEOWTH_GALARIAN",
     "formName": "Galarian",
@@ -32476,7 +32487,8 @@
     "dexNr": 53,
     "name": "Alolan Persian",
     "names": {
-      "English": "Alolan Persian"
+      "English": "Alolan Persian",
+      "German": "Alola-Snobilikat"
     },
     "formId": "PERSIAN_ALOLA",
     "formName": "Alolan",
@@ -32500,7 +32512,8 @@
     "dexNr": 58,
     "name": "Hisuian Growlithe",
     "names": {
-      "English": "Hisuian Growlithe"
+      "English": "Hisuian Growlithe",
+      "German": "Hisui-Fukano"
     },
     "formId": "GROWLITHE_HISUIAN",
     "formName": "Hisuian",
@@ -32524,7 +32537,8 @@
     "dexNr": 59,
     "name": "Hisuian Arcanine",
     "names": {
-      "English": "Hisuian Arcanine"
+      "English": "Hisuian Arcanine",
+      "German": "Hisui-Arkani"
     },
     "formId": "ARCANINE_HISUIAN",
     "formName": "Hisuian",
@@ -32548,7 +32562,8 @@
     "dexNr": 74,
     "name": "Alolan Geodude",
     "names": {
-      "English": "Alolan Geodude"
+      "English": "Alolan Geodude",
+      "German": "Alola-Kleinstein"
     },
     "formId": "GEODUDE_ALOLA",
     "formName": "Alolan",
@@ -32572,7 +32587,8 @@
     "dexNr": 75,
     "name": "Alolan Graveler",
     "names": {
-      "English": "Alolan Graveler"
+      "English": "Alolan Graveler",
+      "German": "Alola-Georok"
     },
     "formId": "GRAVELER_ALOLA",
     "formName": "Alolan",
@@ -32596,7 +32612,8 @@
     "dexNr": 76,
     "name": "Alolan Golem",
     "names": {
-      "English": "Alolan Golem"
+      "English": "Alolan Golem",
+      "German": "Alola-Geowaz"
     },
     "formId": "GOLEM_ALOLA",
     "formName": "Alolan",
@@ -32620,7 +32637,8 @@
     "dexNr": 77,
     "name": "Galarian Ponyta",
     "names": {
-      "English": "Galarian Ponyta"
+      "English": "Galarian Ponyta",
+      "German": "Galar-Ponita"
     },
     "formId": "PONYTA_GALARIAN",
     "formName": "Galarian",
@@ -32644,7 +32662,8 @@
     "dexNr": 78,
     "name": "Galarian Rapidash",
     "names": {
-      "English": "Galarian Rapidash"
+      "English": "Galarian Rapidash",
+      "German": "Galar-Gallopa"
     },
     "formId": "RAPIDASH_GALARIAN",
     "formName": "Galarian",
@@ -32668,7 +32687,8 @@
     "dexNr": 79,
     "name": "Galarian Slowpoke",
     "names": {
-      "English": "Galarian Slowpoke"
+      "English": "Galarian Slowpoke",
+      "German": "Galar-Flegmon"
     },
     "formId": "SLOWPOKE_GALARIAN",
     "formName": "Galarian",
@@ -32692,7 +32712,8 @@
     "dexNr": 80,
     "name": "Galarian Slowbro",
     "names": {
-      "English": "Galarian Slowbro"
+      "English": "Galarian Slowbro",
+      "German": "Galar-Lahmus"
     },
     "formId": "SLOWBRO_GALARIAN",
     "formName": "Galarian",
@@ -32716,7 +32737,8 @@
     "dexNr": 83,
     "name": "Galarian Farfetch'd",
     "names": {
-      "English": "Galarian Farfetch'd"
+      "English": "Galarian Farfetch'd",
+      "German": "Galar-Porenta"
     },
     "formId": "FARFETCHD_GALARIAN",
     "formName": "Galarian",
@@ -32740,7 +32762,8 @@
     "dexNr": 88,
     "name": "Alolan Grimer",
     "names": {
-      "English": "Alolan Grimer"
+      "English": "Alolan Grimer",
+      "German": "Alola-Sleima"
     },
     "formId": "GRIMER_ALOLA",
     "formName": "Alolan",
@@ -32764,7 +32787,8 @@
     "dexNr": 89,
     "name": "Alolan Muk",
     "names": {
-      "English": "Alolan Muk"
+      "English": "Alolan Muk",
+      "German": "Alola-Sleimok"
     },
     "formId": "MUK_ALOLA",
     "formName": "Alolan",
@@ -32788,7 +32812,8 @@
     "dexNr": 100,
     "name": "Hisuian Voltorb",
     "names": {
-      "English": "Hisuian Voltorb"
+      "English": "Hisuian Voltorb",
+      "German": "Hisui-Voltobal"
     },
     "formId": "VOLTORB_HISUIAN",
     "formName": "Hisuian",
@@ -32812,7 +32837,8 @@
     "dexNr": 101,
     "name": "Hisuian Electrode",
     "names": {
-      "English": "Hisuian Electrode"
+      "English": "Hisuian Electrode",
+      "German": "Hisui-Lektrobal"
     },
     "formId": "ELECTRODE_HISUIAN",
     "formName": "Hisuian",
@@ -32836,7 +32862,8 @@
     "dexNr": 103,
     "name": "Alolan Exeggutor",
     "names": {
-      "English": "Alolan Exeggutor"
+      "English": "Alolan Exeggutor",
+      "German": "Alola-Kokowei"
     },
     "formId": "EXEGGUTOR_ALOLA",
     "formName": "Alolan",
@@ -32860,7 +32887,8 @@
     "dexNr": 105,
     "name": "Alolan Marowak",
     "names": {
-      "English": "Alolan Marowak"
+      "English": "Alolan Marowak",
+      "German": "Alola-Knogga"
     },
     "formId": "MAROWAK_ALOLA",
     "formName": "Alolan",
@@ -32884,7 +32912,8 @@
     "dexNr": 110,
     "name": "Galarian Weezing",
     "names": {
-      "English": "Galarian Weezing"
+      "English": "Galarian Weezing",
+      "German": "Galar-Smogmog"
     },
     "formId": "WEEZING_GALARIAN",
     "formName": "Galarian",
@@ -32908,7 +32937,8 @@
     "dexNr": 122,
     "name": "Galarian Mr. Mime",
     "names": {
-      "English": "Galarian Mr. Mime"
+      "English": "Galarian Mr. Mime",
+      "German": "Galar-Pantimos"
     },
     "formId": "MR_MIME_GALARIAN",
     "formName": "Galarian",
@@ -32930,12 +32960,13 @@
   {
     "id": "poke_128_form_tauros_paldea_aqua",
     "dexNr": 128,
-    "name": "Paldean Tauros",
+    "name": "Paldean Tauros (Aqua Breed)",
     "names": {
-      "English": "Paldean Tauros"
+      "English": "Paldean Tauros (Aqua Breed)",
+      "German": "Paldea-Tauros (Flutenvariante)"
     },
     "formId": "TAUROS_PALDEA_AQUA",
-    "formName": "Paldean",
+    "formName": "Paldean (Aqua Breed)",
     "category": "form",
     "generation": 1,
     "type1": "Fighting",
@@ -32954,12 +32985,13 @@
   {
     "id": "poke_128_form_tauros_paldea_blaze",
     "dexNr": 128,
-    "name": "Paldean Tauros",
+    "name": "Paldean Tauros (Blaze Breed)",
     "names": {
-      "English": "Paldean Tauros"
+      "English": "Paldean Tauros (Blaze Breed)",
+      "German": "Paldea-Tauros (Flammenvariante)"
     },
     "formId": "TAUROS_PALDEA_BLAZE",
-    "formName": "Paldean",
+    "formName": "Paldean (Blaze Breed)",
     "category": "form",
     "generation": 1,
     "type1": "Fighting",
@@ -32978,12 +33010,13 @@
   {
     "id": "poke_128_form_tauros_paldea_combat",
     "dexNr": 128,
-    "name": "Paldean Tauros",
+    "name": "Paldean Tauros (Combat Breed)",
     "names": {
-      "English": "Paldean Tauros"
+      "English": "Paldean Tauros (Combat Breed)",
+      "German": "Paldea-Tauros (Gefechtsvariante)"
     },
     "formId": "TAUROS_PALDEA_COMBAT",
-    "formName": "Paldean",
+    "formName": "Paldean (Combat Breed)",
     "category": "form",
     "generation": 1,
     "type1": "Fighting",
@@ -33004,7 +33037,8 @@
     "dexNr": 144,
     "name": "Galarian Articuno",
     "names": {
-      "English": "Galarian Articuno"
+      "English": "Galarian Articuno",
+      "German": "Galar-Arktos"
     },
     "formId": "ARTICUNO_GALARIAN",
     "formName": "Galarian",
@@ -33028,7 +33062,8 @@
     "dexNr": 145,
     "name": "Galarian Zapdos",
     "names": {
-      "English": "Galarian Zapdos"
+      "English": "Galarian Zapdos",
+      "German": "Galar-Zapdos"
     },
     "formId": "ZAPDOS_GALARIAN",
     "formName": "Galarian",
@@ -33052,7 +33087,8 @@
     "dexNr": 146,
     "name": "Galarian Moltres",
     "names": {
-      "English": "Galarian Moltres"
+      "English": "Galarian Moltres",
+      "German": "Galar-Lavados"
     },
     "formId": "MOLTRES_GALARIAN",
     "formName": "Galarian",
@@ -33076,7 +33112,8 @@
     "dexNr": 157,
     "name": "Hisuian Typhlosion",
     "names": {
-      "English": "Hisuian Typhlosion"
+      "English": "Hisuian Typhlosion",
+      "German": "Hisui-Tornupto"
     },
     "formId": "TYPHLOSION_HISUIAN",
     "formName": "Hisuian",
@@ -33100,7 +33137,8 @@
     "dexNr": 194,
     "name": "Paldean Wooper",
     "names": {
-      "English": "Paldean Wooper"
+      "English": "Paldean Wooper",
+      "German": "Paldea-Felino"
     },
     "formId": "WOOPER_PALDEA",
     "formName": "Paldean",
@@ -33124,7 +33162,8 @@
     "dexNr": 199,
     "name": "Galarian Slowking",
     "names": {
-      "English": "Galarian Slowking"
+      "English": "Galarian Slowking",
+      "German": "Galar-Laschoking"
     },
     "formId": "SLOWKING_GALARIAN",
     "formName": "Galarian",
@@ -33848,7 +33887,8 @@
     "dexNr": 211,
     "name": "Hisuian Qwilfish",
     "names": {
-      "English": "Hisuian Qwilfish"
+      "English": "Hisuian Qwilfish",
+      "German": "Hisui-Baldorfish"
     },
     "formId": "QWILFISH_HISUIAN",
     "formName": "Hisuian",
@@ -33872,7 +33912,8 @@
     "dexNr": 215,
     "name": "Hisuian Sneasel",
     "names": {
-      "English": "Hisuian Sneasel"
+      "English": "Hisuian Sneasel",
+      "German": "Hisui-Sniebel"
     },
     "formId": "SNEASEL_HISUIAN",
     "formName": "Hisuian",
@@ -33896,7 +33937,8 @@
     "dexNr": 222,
     "name": "Galarian Corsola",
     "names": {
-      "English": "Galarian Corsola"
+      "English": "Galarian Corsola",
+      "German": "Galar-Corasonn"
     },
     "formId": "CORSOLA_GALARIAN",
     "formName": "Galarian",
@@ -33920,7 +33962,8 @@
     "dexNr": 263,
     "name": "Galarian Zigzagoon",
     "names": {
-      "English": "Galarian Zigzagoon"
+      "English": "Galarian Zigzagoon",
+      "German": "Galar-Zigzachs"
     },
     "formId": "ZIGZAGOON_GALARIAN",
     "formName": "Galarian",
@@ -33944,7 +33987,8 @@
     "dexNr": 264,
     "name": "Galarian Linoone",
     "names": {
-      "English": "Galarian Linoone"
+      "English": "Galarian Linoone",
+      "German": "Galar-Geradaks"
     },
     "formId": "LINOONE_GALARIAN",
     "formName": "Galarian",
@@ -34518,7 +34562,8 @@
     "dexNr": 503,
     "name": "Hisuian Samurott",
     "names": {
-      "English": "Hisuian Samurott"
+      "English": "Hisuian Samurott",
+      "German": "Hisui-Admurai"
     },
     "formId": "SAMUROTT_HISUIAN",
     "formName": "Hisuian",
@@ -34542,7 +34587,8 @@
     "dexNr": 549,
     "name": "Hisuian Lilligant",
     "names": {
-      "English": "Hisuian Lilligant"
+      "English": "Hisuian Lilligant",
+      "German": "Hisui-Dressella"
     },
     "formId": "LILLIGANT_HISUIAN",
     "formName": "Hisuian",
@@ -34616,7 +34662,8 @@
     "dexNr": 554,
     "name": "Galarian Darumaka",
     "names": {
-      "English": "Galarian Darumaka"
+      "English": "Galarian Darumaka",
+      "German": "Galar-Flampion"
     },
     "formId": "DARUMAKA_GALARIAN",
     "formName": "Galarian",
@@ -34638,12 +34685,13 @@
   {
     "id": "poke_555_form_darmanitan_galarian_standard",
     "dexNr": 555,
-    "name": "Galarian Darmanitan",
+    "name": "Galarian Darmanitan (Standard Mode)",
     "names": {
-      "English": "Galarian Darmanitan"
+      "English": "Galarian Darmanitan (Standard Mode)",
+      "German": "Galar-Flampivian (Standardmodus)"
     },
     "formId": "DARMANITAN_GALARIAN_STANDARD",
-    "formName": "Galarian",
+    "formName": "Galarian (Standard Mode)",
     "category": "form",
     "generation": 5,
     "type1": "Ice",
@@ -34662,12 +34710,13 @@
   {
     "id": "poke_555_form_darmanitan_galarian_zen",
     "dexNr": 555,
-    "name": "Galarian Darmanitan",
+    "name": "Galarian Darmanitan (Zen Mode)",
     "names": {
-      "English": "Galarian Darmanitan"
+      "English": "Galarian Darmanitan (Zen Mode)",
+      "German": "Galar-Flampivian (Trance-Modus)"
     },
     "formId": "DARMANITAN_GALARIAN_ZEN",
-    "formName": "Galarian",
+    "formName": "Galarian (Zen Mode)",
     "category": "form",
     "generation": 5,
     "type1": "Ice",
@@ -34688,7 +34737,8 @@
     "dexNr": 562,
     "name": "Galarian Yamask",
     "names": {
-      "English": "Galarian Yamask"
+      "English": "Galarian Yamask",
+      "German": "Galar-Makabaja"
     },
     "formId": "YAMASK_GALARIAN",
     "formName": "Galarian",
@@ -34712,7 +34762,8 @@
     "dexNr": 570,
     "name": "Hisuian Zorua",
     "names": {
-      "English": "Hisuian Zorua"
+      "English": "Hisuian Zorua",
+      "German": "Hisui-Zorua"
     },
     "formId": "ZORUA_HISUIAN",
     "formName": "Hisuian",
@@ -34736,7 +34787,8 @@
     "dexNr": 571,
     "name": "Hisuian Zoroark",
     "names": {
-      "English": "Hisuian Zoroark"
+      "English": "Hisuian Zoroark",
+      "German": "Hisui-Zoroark"
     },
     "formId": "ZOROARK_HISUIAN",
     "formName": "Hisuian",
@@ -34910,7 +34962,8 @@
     "dexNr": 618,
     "name": "Galarian Stunfisk",
     "names": {
-      "English": "Galarian Stunfisk"
+      "English": "Galarian Stunfisk",
+      "German": "Galar-Flunschlik"
     },
     "formId": "STUNFISK_GALARIAN",
     "formName": "Galarian",
@@ -34934,7 +34987,8 @@
     "dexNr": 628,
     "name": "Hisuian Braviary",
     "names": {
-      "English": "Hisuian Braviary"
+      "English": "Hisuian Braviary",
+      "German": "Hisui-Washakwil"
     },
     "formId": "BRAVIARY_HISUIAN",
     "formName": "Hisuian",
@@ -35072,6 +35126,106 @@
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10023.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10023.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/646.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_649_special_burn",
+    "dexNr": 649,
+    "name": "Genesect (Burn Drive)",
+    "names": {
+      "English": "Genesect (Burn Drive)",
+      "German": "Genesect (Flammenmodul)"
+    },
+    "formId": "BURN",
+    "formName": "Burn Drive",
+    "category": "form",
+    "generation": 5,
+    "type1": "Bug",
+    "type2": "Steel",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_13.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_13_shiny.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/649.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/649.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_649_special_chill",
+    "dexNr": 649,
+    "name": "Genesect (Chill Drive)",
+    "names": {
+      "English": "Genesect (Chill Drive)",
+      "German": "Genesect (Gefriermodul)"
+    },
+    "formId": "CHILL",
+    "formName": "Chill Drive",
+    "category": "form",
+    "generation": 5,
+    "type1": "Bug",
+    "type2": "Steel",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_14.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_14_shiny.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/649.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/649.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_649_special_douse",
+    "dexNr": 649,
+    "name": "Genesect (Douse Drive)",
+    "names": {
+      "English": "Genesect (Douse Drive)",
+      "German": "Genesect (Aquamodul)"
+    },
+    "formId": "DOUSE",
+    "formName": "Douse Drive",
+    "category": "form",
+    "generation": 5,
+    "type1": "Bug",
+    "type2": "Steel",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_15.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_15_shiny.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/649.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/649.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_649_special_shock",
+    "dexNr": 649,
+    "name": "Genesect (Shock Drive)",
+    "names": {
+      "English": "Genesect (Shock Drive)",
+      "German": "Genesect (Blitzmodul)"
+    },
+    "formId": "SHOCK",
+    "formName": "Shock Drive",
+    "category": "form",
+    "generation": 5,
+    "type1": "Bug",
+    "type2": "Steel",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_12.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_12_shiny.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/649.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/649.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/649.png",
     "hasShiny": true,
     "isMega": false,
     "isForm": true,
@@ -36084,11 +36238,187 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_678_special_female",
+    "dexNr": 678,
+    "name": "Meowstic (Female)",
+    "names": {
+      "English": "Meowstic (Female)",
+      "German": "Psiaugon (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 6,
+    "type1": "Psychic",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10025.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10025.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10025.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10025.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/678.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_710_special_average",
+    "dexNr": 710,
+    "name": "Pumpkaboo (Average Size)",
+    "names": {
+      "English": "Pumpkaboo (Average Size)",
+      "German": "Irrbis (Normalgröße)"
+    },
+    "formId": "AVERAGE",
+    "formName": "Average Size",
+    "category": "form",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.fAVERAGE.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.fAVERAGE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/710.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/710.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_710_special_large",
+    "dexNr": 710,
+    "name": "Pumpkaboo (Large Size)",
+    "names": {
+      "English": "Pumpkaboo (Large Size)",
+      "German": "Irrbis (Große Größe)"
+    },
+    "formId": "LARGE",
+    "formName": "Large Size",
+    "category": "form",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.fLARGE.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.fLARGE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/710.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/710.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_710_special_super",
+    "dexNr": 710,
+    "name": "Pumpkaboo (Super Size)",
+    "names": {
+      "English": "Pumpkaboo (Super Size)",
+      "German": "Irrbis (XL-Größe)"
+    },
+    "formId": "SUPER",
+    "formName": "Super Size",
+    "category": "form",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.fSUPER.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.fSUPER.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/710.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/710.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_711_special_average",
+    "dexNr": 711,
+    "name": "Gourgeist (Average Size)",
+    "names": {
+      "English": "Gourgeist (Average Size)",
+      "German": "Pumpdjinn (Normalgröße)"
+    },
+    "formId": "AVERAGE",
+    "formName": "Average Size",
+    "category": "form",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fAVERAGE.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fAVERAGE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/711.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/711.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_711_special_large",
+    "dexNr": 711,
+    "name": "Gourgeist (Large Size)",
+    "names": {
+      "English": "Gourgeist (Large Size)",
+      "German": "Pumpdjinn (Große Größe)"
+    },
+    "formId": "LARGE",
+    "formName": "Large Size",
+    "category": "form",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fLARGE.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fLARGE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/711.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/711.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_711_special_super",
+    "dexNr": 711,
+    "name": "Gourgeist (Super Size)",
+    "names": {
+      "English": "Gourgeist (Super Size)",
+      "German": "Pumpdjinn (XL-Größe)"
+    },
+    "formId": "SUPER",
+    "formName": "Super Size",
+    "category": "form",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fSUPER.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fSUPER.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/711.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/711.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_713_form_avalugg_hisuian",
     "dexNr": 713,
     "name": "Hisuian Avalugg",
     "names": {
-      "English": "Hisuian Avalugg"
+      "English": "Hisuian Avalugg",
+      "German": "Hisui-Arktilas"
     },
     "formId": "AVALUGG_HISUIAN",
     "formName": "Hisuian",
@@ -36187,7 +36517,8 @@
     "dexNr": 724,
     "name": "Hisuian Decidueye",
     "names": {
-      "English": "Hisuian Decidueye"
+      "English": "Hisuian Decidueye",
+      "German": "Hisui-Silvarro"
     },
     "formId": "DECIDUEYE_HISUIAN",
     "formName": "Hisuian",
@@ -36387,7 +36718,7 @@
     "name": "Toxtricity (Low Key Form)",
     "names": {
       "English": "Toxtricity (Low Key Form)",
-      "German": "Toxtricity (Low Key Form)"
+      "German": "Riffex (Tieffrequenz-Form)"
     },
     "formId": "LOW_KEY",
     "formName": "Low Key Form",
@@ -36395,11 +36726,36 @@
     "generation": 8,
     "type1": "Electric",
     "type2": "Poison",
-    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10168.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10168.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10168.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10168.png",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10184.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10184.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10184.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10184.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/849.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_876_special_female",
+    "dexNr": 876,
+    "name": "Indeedee (Female)",
+    "names": {
+      "English": "Indeedee (Female)",
+      "German": "Servol (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 8,
+    "type1": "Psychic",
+    "type2": "Normal",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10186.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10186.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10186.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10186.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/876.png",
     "hasShiny": true,
     "isMega": false,
     "isForm": true,
@@ -36412,7 +36768,7 @@
     "name": "Urshifu (Rapid Strike Style)",
     "names": {
       "English": "Urshifu (Rapid Strike Style)",
-      "German": "Urshifu (Rapid Strike Style)"
+      "German": "Wulaosu (Fließender Stil)"
     },
     "formId": "RAPID_STRIKE",
     "formName": "Rapid Strike Style",
@@ -36420,10 +36776,10 @@
     "generation": 8,
     "type1": "Fighting",
     "type2": "Water",
-    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10178.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10178.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10178.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10178.png",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10191.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10191.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10191.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10191.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/892.png",
     "hasShiny": true,
     "isMega": false,
@@ -36450,6 +36806,81 @@
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10249.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10249.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/905.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_916_special_female",
+    "dexNr": 916,
+    "name": "Oinkologne (Female)",
+    "names": {
+      "English": "Oinkologne (Female)",
+      "German": "Fragrunz (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 9,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10254.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10254.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10254.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10254.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/916.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_978_special_droopy",
+    "dexNr": 978,
+    "name": "Tatsugiri (Droopy Form)",
+    "names": {
+      "English": "Tatsugiri (Droopy Form)",
+      "German": "Nigiragi (Hängende Form)"
+    },
+    "formId": "DROOPY",
+    "formName": "Droopy Form",
+    "category": "form",
+    "generation": 9,
+    "type1": "Dragon",
+    "type2": "Water",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10258.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10258.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10258.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10258.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/978.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_978_special_stretchy",
+    "dexNr": 978,
+    "name": "Tatsugiri (Stretchy Form)",
+    "names": {
+      "English": "Tatsugiri (Stretchy Form)",
+      "German": "Nigiragi (Gestreckte Form)"
+    },
+    "formId": "STRETCHY",
+    "formName": "Stretchy Form",
+    "category": "form",
+    "generation": 9,
+    "type1": "Dragon",
+    "type2": "Water",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10259.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10259.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10259.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10259.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/978.png",
     "hasShiny": true,
     "isMega": false,
     "isForm": true,

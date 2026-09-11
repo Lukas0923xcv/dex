@@ -96,11 +96,22 @@ async function main() {
     if (!processedIds.has(standardId)) {
       processedIds.add(standardId);
       
-      const pogoIcon = entry.assets?.image || `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm${dexNr}.icon.png`;
-      const pogoShiny = entry.assets?.shinyImage || `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm${dexNr}.s.icon.png`;
-      const homeArtwork = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${dexNr}.png`;
-      const homeShiny = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${dexNr}.png`;
-      const officialArtwork = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNr}.png`;
+      let pogoIcon = entry.assets?.image || `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm${dexNr}.icon.png`;
+      let pogoShiny = entry.assets?.shinyImage || `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm${dexNr}.s.icon.png`;
+      let homeArtwork = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${dexNr}.png`;
+      let homeShiny = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${dexNr}.png`;
+      let officialArtwork = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNr}.png`;
+
+      // Override Zygarde base to use 50% serpent artwork instead of 10% dog
+      if (dexNr === 718) {
+        pogoIcon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/718.png`;
+        pogoShiny = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/718.png`;
+      }
+      // Override Vivillon base to use iconic pink Meadow pattern
+      if (dexNr === 666) {
+        pogoIcon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/666.png`;
+        pogoShiny = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/666.png`;
+      }
 
       allItems.push({
         id: standardId,
@@ -184,13 +195,53 @@ async function main() {
           processedIds.add(formId);
 
           let regionLabel = 'Regional Form';
-          if (formKey.includes('ALOLA')) regionLabel = 'Alolan';
-          else if (formKey.includes('GALAR')) regionLabel = 'Galarian';
-          else if (formKey.includes('HISUI')) regionLabel = 'Hisuian';
-          else if (formKey.includes('PALDEA')) regionLabel = 'Paldean';
-          else regionLabel = cleanFormName(formKey);
+          let germanRegionLabel = 'Regionalform';
+          if (formKey.includes('ALOLA')) {
+            regionLabel = 'Alolan';
+            germanRegionLabel = 'Alola';
+          } else if (formKey.includes('GALAR')) {
+            if (formKey.includes('ZEN')) {
+              regionLabel = 'Galarian (Zen Mode)';
+              germanRegionLabel = 'Galar (Trance-Modus)';
+            } else if (formKey.includes('STANDARD')) {
+              regionLabel = 'Galarian (Standard Mode)';
+              germanRegionLabel = 'Galar (Standardmodus)';
+            } else {
+              regionLabel = 'Galarian';
+              germanRegionLabel = 'Galar';
+            }
+          } else if (formKey.includes('HISUI')) {
+            regionLabel = 'Hisuian';
+            germanRegionLabel = 'Hisui';
+          } else if (formKey.includes('PALDEA')) {
+            if (formKey.includes('AQUA')) {
+              regionLabel = 'Paldean (Aqua Breed)';
+              germanRegionLabel = 'Paldea (Flutenvariante)';
+            } else if (formKey.includes('BLAZE')) {
+              regionLabel = 'Paldean (Blaze Breed)';
+              germanRegionLabel = 'Paldea (Flammenvariante)';
+            } else if (formKey.includes('COMBAT')) {
+              regionLabel = 'Paldean (Combat Breed)';
+              germanRegionLabel = 'Paldea (Gefechtsvariante)';
+            } else {
+              regionLabel = 'Paldean';
+              germanRegionLabel = 'Paldea';
+            }
+          } else {
+            regionLabel = cleanFormName(formKey);
+            germanRegionLabel = regionLabel;
+          }
 
-          const formName = `${regionLabel} ${baseName}`;
+          let formName = `${regionLabel} ${baseName}`;
+          let formGermanName = `${germanRegionLabel}-${entry.names?.German || baseName}`;
+          if (regionLabel.includes('(')) {
+            const prefix = regionLabel.split(' ')[0];
+            const suffix = regionLabel.slice(prefix.length).trim();
+            formName = `${prefix} ${baseName} ${suffix}`;
+            const dePrefix = germanRegionLabel.split(' ')[0];
+            const deSuffix = germanRegionLabel.slice(dePrefix.length).trim();
+            formGermanName = `${dePrefix}-${entry.names?.German || baseName} ${deSuffix}`;
+          }
           const formType1 = formatTypeName(rf.primaryType) || type1;
           const formType2 = formatTypeName(rf.secondaryType) || null;
           const homeFallback = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${dexNr}.png`;
@@ -202,7 +253,7 @@ async function main() {
             id: formId,
             dexNr: dexNr,
             name: formName,
-            names: { English: formName },
+            names: { English: formName, German: formGermanName },
             formId: formKey,
             formName: regionLabel,
             category: 'form',
@@ -663,22 +714,165 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10247.png'
   });
 
-  // Toxtricity Low Key
+  // Toxtricity Low Key Form (Correct PokeAPI ID: 10184)
   specialForms.push({
     dexNr: 849, base: 'Toxtricity', formId: 'LOW_KEY', label: 'Low Key Form', type1: 'Electric', type2: 'Poison',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10168.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10168.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10168.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10168.png'
+    displayName: 'Toxtricity (Low Key Form)',
+    germanName: 'Riffex (Tieffrequenz-Form)',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10184.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10184.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10184.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10184.png'
   });
 
-  // Urshifu Rapid Strike
+  // Urshifu Rapid Strike Style (Correct PokeAPI ID: 10191)
   specialForms.push({
     dexNr: 892, base: 'Urshifu', formId: 'RAPID_STRIKE', label: 'Rapid Strike Style', type1: 'Fighting', type2: 'Water',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10178.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10178.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10178.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10178.png'
+    displayName: 'Urshifu (Rapid Strike Style)',
+    germanName: 'Wulaosu (Fließender Stil)',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10191.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10191.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10191.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10191.png'
+  });
+
+  // Genesect Drive Forms
+  const genesectDrives = [
+    { id: 'SHOCK', pogoId: 12, label: 'Shock Drive', de: 'Blitzmodul' },
+    { id: 'BURN', pogoId: 13, label: 'Burn Drive', de: 'Flammenmodul' },
+    { id: 'CHILL', pogoId: 14, label: 'Chill Drive', de: 'Gefriermodul' },
+    { id: 'DOUSE', pogoId: 15, label: 'Douse Drive', de: 'Aquamodul' }
+  ];
+  genesectDrives.forEach(d => {
+    specialForms.push({
+      dexNr: 649,
+      base: 'Genesect',
+      formId: d.id,
+      label: d.label,
+      displayName: `Genesect (${d.label})`,
+      germanName: `Genesect (${d.de})`,
+      type1: 'Bug',
+      type2: 'Steel',
+      spriteUrl: `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_${d.pogoId}.png`,
+      shinySpriteUrl: `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_649_${d.pogoId}_shiny.png`,
+      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/649.png`,
+      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/649.png`
+    });
+  });
+
+  // Meowstic Female Form
+  specialForms.push({
+    dexNr: 678,
+    base: 'Meowstic',
+    formId: 'FEMALE',
+    label: 'Female',
+    displayName: 'Meowstic (Female)',
+    germanName: 'Psiaugon (Weiblich)',
+    type1: 'Psychic',
+    type2: null,
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10025.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10025.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10025.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10025.png'
+  });
+
+  // Indeedee Female Form
+  specialForms.push({
+    dexNr: 876,
+    base: 'Indeedee',
+    formId: 'FEMALE',
+    label: 'Female',
+    displayName: 'Indeedee (Female)',
+    germanName: 'Servol (Weiblich)',
+    type1: 'Psychic',
+    type2: 'Normal',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10186.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10186.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10186.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10186.png'
+  });
+
+  // Oinkologne Female Form
+  specialForms.push({
+    dexNr: 916,
+    base: 'Oinkologne',
+    formId: 'FEMALE',
+    label: 'Female',
+    displayName: 'Oinkologne (Female)',
+    germanName: 'Fragrunz (Weiblich)',
+    type1: 'Normal',
+    type2: null,
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10254.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10254.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10254.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10254.png'
+  });
+
+  // Tatsugiri (Droopy & Stretchy Forms)
+  specialForms.push({
+    dexNr: 978,
+    base: 'Tatsugiri',
+    formId: 'DROOPY',
+    label: 'Droopy Form',
+    displayName: 'Tatsugiri (Droopy Form)',
+    germanName: 'Nigiragi (Hängende Form)',
+    type1: 'Dragon',
+    type2: 'Water',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10258.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10258.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10258.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10258.png'
+  });
+  specialForms.push({
+    dexNr: 978,
+    base: 'Tatsugiri',
+    formId: 'STRETCHY',
+    label: 'Stretchy Form',
+    displayName: 'Tatsugiri (Stretchy Form)',
+    germanName: 'Nigiragi (Gestreckte Form)',
+    type1: 'Dragon',
+    type2: 'Water',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10259.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10259.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10259.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10259.png'
+  });
+
+  // Pumpkaboo & Gourgeist Size Variants (Average, Large, Super)
+  const pumpkinSizes = [
+    { id: 'AVERAGE', label: 'Average Size', de: 'Normalgröße' },
+    { id: 'LARGE', label: 'Large Size', de: 'Große Größe' },
+    { id: 'SUPER', label: 'Super Size', de: 'XL-Größe' }
+  ];
+  pumpkinSizes.forEach(sz => {
+    specialForms.push({
+      dexNr: 710,
+      base: 'Pumpkaboo',
+      formId: sz.id,
+      label: sz.label,
+      displayName: `Pumpkaboo (${sz.label})`,
+      germanName: `Irrbis (${sz.de})`,
+      type1: 'Ghost',
+      type2: 'Grass',
+      spriteUrl: `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.f${sz.id}.icon.png`,
+      shinySpriteUrl: `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.f${sz.id}.s.icon.png`,
+      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/710.png`,
+      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/710.png`
+    });
+    specialForms.push({
+      dexNr: 711,
+      base: 'Gourgeist',
+      formId: sz.id,
+      label: sz.label,
+      displayName: `Gourgeist (${sz.label})`,
+      germanName: `Pumpdjinn (${sz.de})`,
+      type1: 'Ghost',
+      type2: 'Grass',
+      spriteUrl: `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.f${sz.id}.icon.png`,
+      shinySpriteUrl: `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.f${sz.id}.s.icon.png`,
+      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/711.png`,
+      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/711.png`
+    });
   });
 
   // Furfrou Trims with distinct PokeAPI Home 3D sprites
@@ -781,6 +975,13 @@ async function main() {
   const outputPath = path.join(dataDir, 'pokemon-data.json');
   fs.writeFileSync(outputPath, JSON.stringify(allItems, null, 2), 'utf8');
   console.log(`Successfully written to ${outputPath}`);
+
+  const clientDataDir = path.join(__dirname, '..', 'client', 'src', 'data');
+  if (fs.existsSync(clientDataDir)) {
+    const clientOutputPath = path.join(clientDataDir, 'pokemon-data.json');
+    fs.writeFileSync(clientOutputPath, JSON.stringify(allItems, null, 2), 'utf8');
+    console.log(`Successfully synced to ${clientOutputPath}`);
+  }
 }
 
 main().catch(err => {
