@@ -195,8 +195,15 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
       } else {
         list = list.filter(p => p.category === 'standard' || p.category === 'form');
       }
+    } else if (categoryType === 'shadow' || categoryType === 'purified') {
+      list = list.filter(p => p.hasShadow);
+      if (variantMode === 'single') {
+        list = list.filter(p => p.category === 'standard');
+      } else {
+        list = list.filter(p => p.category === 'standard' || p.category === 'form');
+      }
     } else {
-      // Normal, Lucky, Shadow, Purified
+      // Normal, Lucky
       if (variantMode === 'single') {
         list = list.filter(p => p.category === 'standard');
       } else {

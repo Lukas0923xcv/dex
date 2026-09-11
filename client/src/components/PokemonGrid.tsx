@@ -8,6 +8,7 @@ interface PokemonGridProps {
   mode: TrackingMode;
   collection?: CustomCollection | null;
   showGenderTracking?: boolean;
+  shinyOnly?: boolean;
   onToggleCaught: (id: string) => void;
   onToggleShiny: (id: string) => void;
   onToggleFeature?: (
@@ -23,6 +24,7 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
   mode,
   collection,
   showGenderTracking,
+  shinyOnly,
   onToggleCaught,
   onToggleShiny,
   onToggleFeature,
@@ -60,6 +62,7 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
           mode={mode}
           collection={collection}
           showGenderTracking={showGenderTracking}
+          shinyOnly={shinyOnly}
           onToggleCaught={onToggleCaught}
           onToggleShiny={onToggleShiny}
           onToggleFeature={onToggleFeature}

@@ -21,7 +21,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
 }) => {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<'all' | 'standard' | 'mega' | 'form' | 'costume'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | 'standard' | 'mega' | 'form' | 'costume' | 'shadow'>('all');
   const [genFilter, setGenFilter] = useState<number | 'all'>('all');
   const [isSaving, setIsSaving] = useState(false);
 
@@ -37,6 +37,13 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
           matching = matching.filter(p => p.category === 'mega' || p.isMega);
         } else if (collection.categoryType === 'event') {
           matching = matching.filter(p => p.category === 'costume' || p.isCostume);
+        } else if (collection.categoryType === 'shadow' || collection.categoryType === 'purified') {
+          matching = matching.filter(p => p.hasShadow);
+          if (collection.variantMode === 'single') {
+            matching = matching.filter(p => p.category === 'standard');
+          } else {
+            matching = matching.filter(p => p.category === 'standard' || p.category === 'form');
+          }
         } else if (collection.variantMode === 'single') {
           matching = matching.filter(p => p.category === 'standard');
         } else {
@@ -57,6 +64,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
 
       if (collection.categoryType === 'event') setCategoryFilter('costume');
       else if (collection.categoryType === 'mega') setCategoryFilter('mega');
+      else if (collection.categoryType === 'shadow' || collection.categoryType === 'purified') setCategoryFilter('shadow');
     }
   }, [collection?.id, isOpen]);
 
@@ -65,7 +73,9 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
     let result = [...allPokemon];
 
     if (categoryFilter !== 'all') {
-      if (categoryFilter === 'mega') {
+      if (categoryFilter === 'shadow') {
+        result = result.filter(p => Boolean(p.hasShadow));
+      } else if (categoryFilter === 'mega') {
         result = result.filter(p => p.category === 'mega' || p.isMega);
       } else if (categoryFilter === 'form') {
         result = result.filter(p => p.category === 'form' || p.isForm);
@@ -327,6 +337,14 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
             >
               👽 Deoxys-Formen (4)
             </button>
+            {/* Crypto Preset */}
+            <button
+              type="button"
+              onClick={() => applyPreset(p => Boolean(p.hasShadow))}
+              className="px-2.5 py-1 bg-purple-600/15 hover:bg-purple-600/25 border border-purple-600/40 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
+            >
+              💀 Alle Crypto (326)
+            </button>
           </div>
         </div>
 
@@ -355,6 +373,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               <option value="mega">Megas & Primals</option>
               <option value="form">Formen & Varianten</option>
               <option value="costume">Kostüm-Pokémon</option>
+              <option value="shadow">Crypto (Schatten)</option>
             </select>
 
             {/* Region / Generation Filter */}

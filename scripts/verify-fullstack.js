@@ -281,8 +281,55 @@ async function main() {
     }
     console.log('✓ Feature progress toggles passed');
 
+    // 10. Accurate Shiny & Crypto Data Verification
+    const allPokeRes = await request('http://localhost:3456/api/pokemon?limit=2500');
+    const allList = allPokeRes.data;
+    const shinyCount = allList.filter(p => p.hasShiny).length;
+    const shadowCount = allList.filter(p => p.hasShadow).length;
+    console.log(`[TEST 10] Shiny & Shadow counts: Total=${allList.length}, Shinies=${shinyCount}, Shadows=${shadowCount}`);
+
+    if (shinyCount !== 1500) {
+      throw new Error(`Expected exactly 1500 released shiny species/forms, got: ${shinyCount}`);
+    }
+    if (shadowCount !== 326) {
+      throw new Error(`Expected exactly 326 released shadow species/forms, got: ${shadowCount}`);
+    }
+
+    // Check shiny-locked species: Victini (#494), Marshadow (#802), Cosmog (#789)
+    const victini = allList.find(p => p.dexNr === 494);
+    if (!victini || victini.hasShiny !== false) {
+      throw new Error(`Victini (#494) must be shiny-locked (hasShiny === false), got: ${victini?.hasShiny}`);
+    }
+    const marshadow = allList.find(p => p.dexNr === 802);
+    if (!marshadow || marshadow.hasShiny !== false) {
+      throw new Error(`Marshadow (#802) must be shiny-locked (hasShiny === false), got: ${marshadow?.hasShiny}`);
+    }
+    const cosmog = allList.find(p => p.dexNr === 789);
+    if (!cosmog || cosmog.hasShiny !== false) {
+      throw new Error(`Cosmog (#789) must be shiny-locked (hasShiny === false), got: ${cosmog?.hasShiny}`);
+    }
+
+    // Check shadow species: Bulbasaur (#1) hasShadow === true, Pikachu (#25) hasShadow === false
+    const bulba = allList.find(p => p.dexNr === 1 && p.category === 'standard');
+    if (!bulba || bulba.hasShadow !== true) {
+      throw new Error(`Bulbasaur must have hasShadow === true, got: ${bulba?.hasShadow}`);
+    }
+    const pika = allList.find(p => p.dexNr === 25 && p.category === 'standard');
+    if (!pika || pika.hasShadow !== false) {
+      throw new Error(`Pikachu must have hasShadow === false (no shadow Pikachu in PoGO), got: ${pika?.hasShadow}`);
+    }
+    console.log('✓ Accurate shiny-lock & crypto species verified');
+
+    // 11. Shadow Category Query API Test
+    const shadowQueryRes = await request('http://localhost:3456/api/pokemon?category=shadow&limit=1000');
+    console.log(`[TEST 11] Shadow Query API: HTTP ${shadowQueryRes.status}, count: ${shadowQueryRes.data.length}`);
+    if (shadowQueryRes.data.length !== 326) {
+      throw new Error(`Expected 326 shadow pokemon from category=shadow query, got: ${shadowQueryRes.data.length}`);
+    }
+    console.log('✓ Shadow category API query passed');
+
     console.log('\n=========================================');
-    console.log('🎉 ALL 9 FULL-STACK TESTS PASSED 100%! 🎉');
+    console.log('🎉 ALL 11 FULL-STACK TESTS PASSED 100%! 🎉');
     console.log('=========================================\n');
   } finally {
     serverProc.kill();

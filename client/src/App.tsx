@@ -6,9 +6,11 @@ import { FilterBar } from './components/FilterBar';
 import { PokemonGrid } from './components/PokemonGrid';
 import { CustomCollectionsModal } from './components/CustomCollectionsModal';
 import { CollectionEditorModal } from './components/CollectionEditorModal';
+import { DashboardCustomizerModal } from './components/DashboardCustomizerModal';
 import { AddToCollectionModal } from './components/AddToCollectionModal';
 import { SettingsModal } from './components/SettingsModal';
-import { Pokemon, CustomCollection } from './types';
+import { Pokemon, CustomCollection, DashboardTabConfig } from './types';
+import { storage } from './services/storage';
 
 export const App: React.FC = () => {
   const {
@@ -41,8 +43,20 @@ export const App: React.FC = () => {
   // Modals state
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isCollectionsModalOpen, setIsCollectionsModalOpen] = useState(false);
+  const [isDashboardCustomizerOpen, setIsDashboardCustomizerOpen] = useState(false);
   const [targetCollectionForEdit, setTargetCollectionForEdit] = useState<CustomCollection | null>(null);
   const [targetPokemonForAdd, setTargetPokemonForAdd] = useState<Pokemon | null>(null);
+  const [dashboardTabs, setDashboardTabs] = useState<DashboardTabConfig[]>(() => storage.getDashboardTabs(collections));
+
+  // Sync dashboard tabs when collections update
+  React.useEffect(() => {
+    setDashboardTabs(storage.getDashboardTabs(collections));
+  }, [collections]);
+
+  const handleSaveDashboardTabs = (newTabs: DashboardTabConfig[]) => {
+    storage.saveDashboardTabs(newTabs);
+    setDashboardTabs(newTabs);
+  };
 
   const activeCollection = collections.find(c => c.id === filters.activeCollectionId);
 
@@ -132,10 +146,12 @@ export const App: React.FC = () => {
         onSelectCollection={(id) => setFilters(f => ({ ...f, activeCollectionId: id }))}
         onOpenCollectionsModal={() => setIsCollectionsModalOpen(true)}
         onOpenCollectionEditor={handleOpenDashboardCustomizer}
+        onOpenDashboardCustomizer={() => setIsDashboardCustomizerOpen(true)}
         onOpenSettingsModal={() => setIsSettingsOpen(true)}
         isBackendConnected={storageStatus.isBackendConnected}
         theme={theme}
         onToggleTheme={toggleTheme}
+        dashboardTabs={dashboardTabs}
       />
 
       {/* Main Content Area */}
@@ -159,7 +175,8 @@ export const App: React.FC = () => {
             search: '',
             generation: 'all',
             type: 'all',
-            status: 'all'
+            status: 'all',
+            shinyOnly: false
           }))}
           onMarkRegionCaught={markRegionCaught}
         />
@@ -170,6 +187,7 @@ export const App: React.FC = () => {
           mode={mode}
           collection={activeCollection}
           showGenderTracking={Boolean(filters.showGenderTracking)}
+          shinyOnly={Boolean(filters.shinyOnly)}
           onToggleCaught={toggleCaught}
           onToggleShiny={toggleShiny}
           onToggleFeature={toggleFeature}
@@ -179,7 +197,8 @@ export const App: React.FC = () => {
             search: '',
             generation: 'all',
             type: 'all',
-            status: 'all'
+            status: 'all',
+            shinyOnly: false
           }))}
         />
       </main>
@@ -231,6 +250,14 @@ export const App: React.FC = () => {
         onExport={exportBackup}
         onImport={importBackup}
         onReset={resetAllProgress}
+      />
+
+      <DashboardCustomizerModal
+        isOpen={isDashboardCustomizerOpen}
+        onClose={() => setIsDashboardCustomizerOpen(false)}
+        collections={collections}
+        currentTabs={dashboardTabs}
+        onSaveTabs={handleSaveDashboardTabs}
       />
     </div>
   );
