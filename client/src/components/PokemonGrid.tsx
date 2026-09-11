@@ -7,6 +7,7 @@ interface PokemonGridProps {
   pokemonList: Pokemon[];
   mode: TrackingMode;
   collection?: CustomCollection | null;
+  showGenderTracking?: boolean;
   onToggleCaught: (id: string) => void;
   onToggleShiny: (id: string) => void;
   onToggleFeature?: (
@@ -21,6 +22,7 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
   pokemonList,
   mode,
   collection,
+  showGenderTracking,
   onToggleCaught,
   onToggleShiny,
   onToggleFeature,
@@ -29,12 +31,12 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
 }) => {
   if (pokemonList.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-slate-900/40 border border-slate-800 rounded-3xl">
-        <div className="w-16 h-16 rounded-full bg-slate-800/80 flex items-center justify-center mb-4 text-slate-500">
+      <div className="flex flex-col items-center justify-center py-20 px-4 text-center bg-white/70 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-sm">
+        <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800/80 flex items-center justify-center mb-4 text-slate-400 dark:text-slate-500">
           <HelpCircle className="w-8 h-8" />
         </div>
-        <h3 className="text-lg font-bold text-white mb-1">Keine Pokémon gefunden</h3>
-        <p className="text-sm text-slate-400 max-w-sm mb-6">
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Keine Pokémon gefunden</h3>
+        <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mb-6">
           Keine Einträge für die aktuellen Filter oder Sammlungskriterien vorhanden.
         </p>
         {onResetFilters && (
@@ -57,6 +59,7 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
           pokemon={pokemon}
           mode={mode}
           collection={collection}
+          showGenderTracking={showGenderTracking}
           onToggleCaught={onToggleCaught}
           onToggleShiny={onToggleShiny}
           onToggleFeature={onToggleFeature}

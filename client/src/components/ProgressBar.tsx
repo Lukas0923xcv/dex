@@ -12,26 +12,26 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ caught, total, percent
   const isComplete = total > 0 && caught === total;
 
   return (
-    <div className="bg-slate-900/80 backdrop-blur border border-slate-800 rounded-xl p-4 shadow-lg mb-6">
+    <div className="bg-white dark:bg-slate-900/80 backdrop-blur border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm dark:shadow-lg mb-6 transition-colors">
       <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
         <div className="flex items-center gap-2">
           {isComplete ? (
-            <Trophy className="w-5 h-5 text-amber-400 animate-bounce-short" />
+            <Trophy className="w-5 h-5 text-amber-500 dark:text-amber-400 animate-bounce-short" />
           ) : (
-            <Sparkles className="w-5 h-5 text-blue-400" />
+            <Sparkles className="w-5 h-5 text-blue-500 dark:text-blue-400" />
           )}
-          <span className="text-sm font-semibold text-slate-200 tracking-wide">
+          <span className="text-sm font-semibold text-slate-800 dark:text-slate-200 tracking-wide">
             {label || 'Collection Progress'}
           </span>
         </div>
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-black text-white tabular-nums tracking-tight">
-            {caught} <span className="text-sm font-normal text-slate-400">/ {total}</span>
+          <span className="text-2xl font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+            {caught} <span className="text-sm font-normal text-slate-500 dark:text-slate-400">/ {total}</span>
           </span>
           <span className={`text-sm font-bold px-2 py-0.5 rounded-full ${
             isComplete
-              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-              : 'bg-blue-500/20 text-blue-300 border border-blue-500/30'
+              ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/40'
+              : 'bg-blue-500/15 text-blue-700 dark:text-blue-300 border border-blue-500/30'
           }`}>
             {percentage}%
           </span>
@@ -39,7 +39,7 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({ caught, total, percent
       </div>
 
       {/* Progress Bar Track */}
-      <div className="w-full bg-slate-800 rounded-full h-3 overflow-hidden p-0.5 border border-slate-700/60">
+      <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3 overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700/60">
         <div
           className={`h-full rounded-full transition-all duration-500 ease-out shadow-sm ${
             isComplete

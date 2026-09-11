@@ -104,6 +104,14 @@ async function main() {
 
     // 3e. Costume Accuracy & Starter Visor Verification
     const allCostumesRes = await request('http://localhost:3456/api/pokemon?category=costume&limit=500');
+    if (allCostumesRes.data.length !== 295) {
+      throw new Error(`Expected exactly 295 costumes, got ${allCostumesRes.data.length}`);
+    }
+    const crownedInCostumes = allCostumesRes.data.filter(p => p.dexNr === 888 || p.dexNr === 889);
+    if (crownedInCostumes.length > 0) {
+      throw new Error(`Zacian/Zamazenta Crowned should be forms, not costumes: ${crownedInCostumes.length}`);
+    }
+
     const pikavisorIvy = allCostumesRes.data.find(p => p.id === 'poke_2_costume_spring_2020');
     if (!pikavisorIvy || !pikavisorIvy.spriteUrl.includes('GO0002Visor.png')) {
       throw new Error(`Pikavisor Ivysaur missing or invalid sprite: ${pikavisorIvy?.spriteUrl}`);
@@ -129,7 +137,7 @@ async function main() {
       throw new Error(`Local costume image failed to load: HTTP ${localImgRes.status}, Content-Type: ${localImgRes.headers['content-type']}`);
     }
 
-    console.log(`[TEST 3e] Costume accuracy passed (Pikavisor Ivysaur: verified, Venusaur Copy deduplication: 1, Local costume sprite 200 OK, Deerling fake: 0)`);
+    console.log(`[TEST 3e] Costume accuracy passed (Count: 295, Crowned not costume, Pikavisor Ivysaur: verified, Venusaur Copy deduplication: 1, Local costume sprite 200 OK, Deerling fake: 0)`);
 
     // 4. Progress Toggle Test
     const wasCaught = pokeRes.data.find(p => p.id === 'poke_1_base')?.caught ?? false;

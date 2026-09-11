@@ -7,6 +7,7 @@ interface PokemonCardProps {
   pokemon: Pokemon;
   mode: TrackingMode;
   collection?: CustomCollection | null;
+  showGenderTracking?: boolean;
   onToggleCaught: (id: string) => void;
   onToggleShiny: (id: string) => void;
   onToggleFeature?: (
@@ -20,6 +21,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
   pokemon,
   mode,
   collection,
+  showGenderTracking,
   onToggleCaught,
   onToggleShiny,
   onToggleFeature,
@@ -63,23 +65,23 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
   // Card theme styling
   const getCardStyle = () => {
     if (!isCaught) {
-      return 'bg-slate-900/60 hover:bg-slate-800/80 border-slate-800 hover:border-slate-700 opacity-80 hover:opacity-100';
+      return 'bg-white dark:bg-slate-900/60 hover:bg-slate-50 dark:hover:bg-slate-800/80 border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 shadow-sm dark:shadow-none opacity-85 hover:opacity-100';
     }
 
     if (categoryType === 'shadow') {
-      return 'bg-gradient-to-b from-purple-950/40 via-slate-900 to-slate-900 border-purple-500/60 shadow-lg shadow-purple-500/10 ring-1 ring-purple-500/30';
+      return 'bg-gradient-to-b from-purple-100/60 via-white to-white dark:from-purple-950/40 dark:via-slate-900 dark:to-slate-900 border-purple-500/60 shadow-md shadow-purple-500/10 ring-1 ring-purple-500/30';
     }
     if (categoryType === 'purified') {
-      return 'bg-gradient-to-b from-cyan-950/40 via-slate-900 to-slate-900 border-cyan-500/60 shadow-lg shadow-cyan-500/10 ring-1 ring-cyan-500/30';
+      return 'bg-gradient-to-b from-cyan-100/60 via-white to-white dark:from-cyan-950/40 dark:via-slate-900 dark:to-slate-900 border-cyan-500/60 shadow-md shadow-cyan-500/10 ring-1 ring-cyan-500/30';
     }
     if (categoryType === 'lucky') {
-      return 'bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-900 border-amber-500/60 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/30';
+      return 'bg-gradient-to-b from-amber-100/60 via-white to-white dark:from-amber-950/40 dark:via-slate-900 dark:to-slate-900 border-amber-500/60 shadow-md shadow-amber-500/10 ring-1 ring-amber-500/30';
     }
     if (isShinyMode) {
-      return 'bg-gradient-to-b from-amber-950/40 via-slate-900 to-slate-900 border-amber-500/60 shadow-lg shadow-amber-500/10 ring-1 ring-amber-500/30';
+      return 'bg-gradient-to-b from-amber-100/60 via-white to-white dark:from-amber-950/40 dark:via-slate-900 dark:to-slate-900 border-amber-500/60 shadow-md shadow-amber-500/10 ring-1 ring-amber-500/30';
     }
 
-    return 'bg-gradient-to-b from-emerald-950/30 via-slate-900 to-slate-900 border-emerald-500/50 shadow-lg shadow-emerald-500/10 ring-1 ring-emerald-500/30';
+    return 'bg-gradient-to-b from-emerald-100/60 via-white to-white dark:from-emerald-950/30 dark:via-slate-900 dark:to-slate-900 border-emerald-500/50 shadow-md shadow-emerald-500/10 ring-1 ring-emerald-500/30';
   };
 
   const getGlowColor = () => {
@@ -96,6 +98,11 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
     return 'bg-emerald-500 text-slate-950';
   };
 
+  const showGender = Boolean(showGenderTracking || (isCustomMode && collection?.trackGender));
+  const showFeatureStrip = Boolean(
+    showGender || (isCustomMode && (collection?.trackHundo || collection?.trackSize))
+  );
+
   return (
     <div
       onClick={() => onToggleCaught(pokemon.id)}
@@ -104,11 +111,11 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
       {/* Top Bar: Dex #, Badges & Action Icons */}
       <div className="flex items-center justify-between gap-1 mb-1 z-10">
         <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-xs font-mono font-semibold text-slate-400">
+          <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">
             {formatDexNumber(pokemon.dexNr)}
           </span>
           {pokemon.formName && pokemon.formName !== 'Standard' && (
-            <span className="text-[10px] font-medium tracking-tight bg-slate-800/90 text-slate-300 border border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[80px]">
+            <span className="text-[10px] font-medium tracking-tight bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[80px]">
               {pokemon.formName}
             </span>
           )}
@@ -126,8 +133,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
             }}
             className={`p-1 rounded-md transition-colors ${
               pokemon.inCollection
-                ? 'text-amber-400 bg-amber-400/10 hover:bg-amber-400/20'
-                : 'text-slate-500 hover:text-slate-200 hover:bg-slate-700/50'
+                ? 'text-amber-500 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20'
+                : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/50'
             }`}
           >
             {pokemon.inCollection ? <Bookmark className="w-3.5 h-3.5 fill-current" /> : <Plus className="w-3.5 h-3.5" />}
@@ -144,8 +151,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
               }}
               className={`p-1 rounded-md transition-colors ${
                 pokemon.shinyCaught
-                  ? 'text-amber-400 bg-amber-400/10 hover:bg-amber-400/20'
-                  : 'text-slate-500 hover:text-amber-300 hover:bg-slate-700/50'
+                  ? 'text-amber-500 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20'
+                  : 'text-slate-400 dark:text-slate-500 hover:text-amber-500 dark:hover:text-amber-300 hover:bg-slate-100 dark:hover:bg-slate-700/50'
               }`}
             >
               <Sparkles className={`w-3.5 h-3.5 ${pokemon.shinyCaught ? 'fill-current' : ''}`} />
@@ -161,19 +168,19 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
         </div>
       </div>
 
-      {/* Feature Toggles Strip (Hundo, Gender, Size) if tracked by collection */}
-      {isCustomMode && (collection?.trackHundo || collection?.trackGender || collection?.trackSize) && (
+      {/* Feature Toggles Strip (Hundo, Gender, Size) */}
+      {showFeatureStrip && (
         <div className="flex items-center gap-1 mb-1 z-10 flex-wrap" onClick={(e) => e.stopPropagation()}>
           {/* Hundo Badge */}
-          {collection.trackHundo && (
+          {isCustomMode && collection?.trackHundo && (
             <button
               type="button"
               title={pokemon.hundoCaught ? '100% IV gefangen!' : '100% IV markieren'}
               onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'hundo')}
               className={`px-1.5 py-0.5 rounded text-[9px] font-black tracking-tight border transition-colors ${
                 pokemon.hundoCaught
-                  ? 'bg-rose-500/25 text-rose-300 border-rose-500/70 shadow-sm'
-                  : 'bg-slate-800/80 text-slate-500 border-slate-700/60 hover:text-rose-300'
+                  ? 'bg-rose-500/25 text-rose-600 dark:text-rose-300 border-rose-500/70 shadow-sm'
+                  : 'bg-slate-100 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/60 hover:text-rose-600 dark:hover:text-rose-300'
               }`}
             >
               100%
@@ -181,7 +188,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
           )}
 
           {/* Gender Badges */}
-          {collection.trackGender && (
+          {showGender && (
             <div className="flex items-center gap-0.5">
               <button
                 type="button"
@@ -189,8 +196,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'gender_m')}
                 className={`w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold border transition-colors ${
                   pokemon.genderMCaught
-                    ? 'bg-blue-500/30 text-blue-300 border-blue-400'
-                    : 'bg-slate-800/80 text-slate-500 border-slate-700/60 hover:text-blue-300'
+                    ? 'bg-blue-100 text-blue-700 border-blue-400 dark:bg-blue-500/30 dark:text-blue-300 dark:border-blue-400 shadow-sm font-black'
+                    : 'bg-slate-100 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/60 hover:text-blue-600 dark:hover:text-blue-300'
                 }`}
               >
                 ♂
@@ -201,8 +208,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'gender_f')}
                 className={`w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold border transition-colors ${
                   pokemon.genderFCaught
-                    ? 'bg-pink-500/30 text-pink-300 border-pink-400'
-                    : 'bg-slate-800/80 text-slate-500 border-slate-700/60 hover:text-pink-300'
+                    ? 'bg-pink-100 text-pink-700 border-pink-400 dark:bg-pink-500/30 dark:text-pink-300 dark:border-pink-400 shadow-sm font-black'
+                    : 'bg-slate-100 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/60 hover:text-pink-600 dark:hover:text-pink-300'
                 }`}
               >
                 ♀
@@ -211,7 +218,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
           )}
 
           {/* Size Badges */}
-          {collection.trackSize && (
+          {isCustomMode && collection?.trackSize && (
             <div className="flex items-center gap-0.5">
               <button
                 type="button"
@@ -219,8 +226,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'xxs')}
                 className={`px-1 py-0.2 rounded text-[8px] font-bold border transition-colors ${
                   pokemon.xxsCaught
-                    ? 'bg-amber-500/30 text-amber-300 border-amber-400'
-                    : 'bg-slate-800/80 text-slate-500 border-slate-700/60 hover:text-amber-300'
+                    ? 'bg-amber-100 text-amber-700 border-amber-400 dark:bg-amber-500/30 dark:text-amber-300 dark:border-amber-400 shadow-sm'
+                    : 'bg-slate-100 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/60 hover:text-amber-600 dark:hover:text-amber-300'
                 }`}
               >
                 XXS
@@ -231,8 +238,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'xxl')}
                 className={`px-1 py-0.2 rounded text-[8px] font-bold border transition-colors ${
                   pokemon.xxlCaught
-                    ? 'bg-amber-500/30 text-amber-300 border-amber-400'
-                    : 'bg-slate-800/80 text-slate-500 border-slate-700/60 hover:text-amber-300'
+                    ? 'bg-amber-100 text-amber-700 border-amber-400 dark:bg-amber-500/30 dark:text-amber-300 dark:border-amber-400 shadow-sm'
+                    : 'bg-slate-100 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/60 hover:text-amber-600 dark:hover:text-amber-300'
                 }`}
               >
                 XXL
@@ -267,10 +274,12 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
       </div>
 
       {/* Bottom Info: Name and Type Pills */}
-      <div className="mt-1 pt-1 border-t border-slate-800/80">
+      <div className="mt-1 pt-1 border-t border-slate-100 dark:border-slate-800/80">
         <h3
           className={`text-sm font-semibold truncate leading-snug mb-1.5 transition-colors ${
-            isCaught ? 'text-white' : 'text-slate-300 group-hover:text-white'
+            isCaught
+              ? 'text-slate-900 dark:text-white font-bold'
+              : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white'
           }`}
         >
           {pokemon.name}

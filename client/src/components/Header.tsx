@@ -1,6 +1,6 @@
 import React from 'react';
-import { TrackingMode, CustomCollection } from '../types';
-import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2 } from 'lucide-react';
+import { TrackingMode, CustomCollection, Theme } from '../types';
+import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon } from 'lucide-react';
 
 interface HeaderProps {
   mode: TrackingMode;
@@ -12,6 +12,8 @@ interface HeaderProps {
   onOpenCollectionEditor?: () => void;
   onOpenSettingsModal: () => void;
   isBackendConnected: boolean;
+  theme: Theme;
+  onToggleTheme: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -23,46 +25,48 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenCollectionsModal,
   onOpenCollectionEditor,
   onOpenSettingsModal,
-  isBackendConnected
+  isBackendConnected,
+  theme,
+  onToggleTheme
 }) => {
   const modes = [
     { id: 'standard' as TrackingMode, label: 'Standard Dex', icon: CheckCircle2 },
-    { id: 'shiny' as TrackingMode, label: 'Shiny Dex', icon: Sparkles, color: 'text-amber-400' },
-    { id: 'mega' as TrackingMode, label: 'Mega Dex', icon: Zap, color: 'text-rose-400' },
-    { id: 'form' as TrackingMode, label: 'Alle Formen', icon: Layers, color: 'text-indigo-400' },
-    { id: 'costume' as TrackingMode, label: 'Kostüme', icon: Sparkles, color: 'text-pink-400' },
-    { id: 'custom' as TrackingMode, label: 'Eigene Listen', icon: Bookmark, color: 'text-blue-400' },
+    { id: 'shiny' as TrackingMode, label: 'Shiny Dex', icon: Sparkles, color: 'text-amber-500 dark:text-amber-400' },
+    { id: 'mega' as TrackingMode, label: 'Mega Dex', icon: Zap, color: 'text-rose-500 dark:text-rose-400' },
+    { id: 'form' as TrackingMode, label: 'Alle Formen', icon: Layers, color: 'text-indigo-500 dark:text-indigo-400' },
+    { id: 'costume' as TrackingMode, label: 'Kostüme', icon: Sparkles, color: 'text-pink-500 dark:text-pink-400' },
+    { id: 'custom' as TrackingMode, label: 'Eigene Listen', icon: Bookmark, color: 'text-blue-500 dark:text-blue-400' },
   ];
 
   return (
-    <header className="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-slate-800/80 mb-6">
+    <header className="sticky top-0 z-40 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 mb-6 transition-colors shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         {/* Top bar: Brand & Actions */}
         <div className="flex items-center justify-between gap-4 mb-3">
           <div className="flex items-center gap-3">
             {/* Pokéball Logo */}
-            <div className="relative w-9 h-9 rounded-full bg-gradient-to-b from-rose-500 to-rose-600 p-0.5 shadow-md shadow-rose-500/20 ring-2 ring-slate-800 flex items-center justify-center shrink-0">
+            <div className="relative w-9 h-9 rounded-full bg-gradient-to-b from-rose-500 to-rose-600 p-0.5 shadow-md shadow-rose-500/20 ring-2 ring-slate-200 dark:ring-slate-800 flex items-center justify-center shrink-0">
               <div className="w-full h-1/2 bg-rose-500 rounded-t-full" />
-              <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 bg-slate-950 flex items-center justify-center">
-                <div className="w-3.5 h-3.5 rounded-full bg-white border-2 border-slate-950 shadow" />
+              <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 bg-slate-900 dark:bg-slate-950 flex items-center justify-center">
+                <div className="w-3.5 h-3.5 rounded-full bg-white border-2 border-slate-900 dark:border-slate-950 shadow" />
               </div>
               <div className="w-full h-1/2 bg-white rounded-b-full" />
             </div>
 
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg sm:text-xl font-black tracking-tight text-white">
+                <h1 className="text-lg sm:text-xl font-black tracking-tight text-slate-900 dark:text-white">
                   GO Dex Tracker
                 </h1>
                 <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full border ${
                   isBackendConnected
-                    ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
-                    : 'bg-blue-500/10 text-blue-400 border-blue-500/30'
+                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/30'
+                    : 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/30'
                 }`}>
                   {isBackendConnected ? '● SQLite Online' : '○ Offline Cache'}
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 hidden sm:block">
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 hidden sm:block">
                 Fortschrittstracker für Pokémon GO · Sammlungen & Checklisten
               </p>
             </div>
@@ -70,9 +74,24 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
+            {/* Light / Dark Mode Toggle */}
             <button
+              type="button"
+              onClick={onToggleTheme}
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 dark:bg-slate-900/80 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-300 transition-colors shadow-xs cursor-pointer"
+              title={theme === 'dark' ? 'Zu Standard Light Mode wechseln' : 'Zu Dark Mode wechseln'}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-400" />
+              ) : (
+                <Moon className="w-4 h-4 text-slate-700" />
+              )}
+            </button>
+
+            <button
+              type="button"
               onClick={onOpenSettingsModal}
-              className="p-2 rounded-xl bg-slate-900/80 hover:bg-slate-800 border border-slate-800 text-slate-400 hover:text-slate-200 transition-colors"
+              className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 dark:bg-slate-900/80 dark:hover:bg-slate-800 dark:border-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors shadow-xs cursor-pointer"
               title="Datenbank & Backup Einstellungen"
             >
               <Settings className="w-4 h-4" />
@@ -89,10 +108,10 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 key={m.id}
                 onClick={() => onSelectMode(m.id)}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${
+                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all cursor-pointer ${
                   isActive
                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 ring-1 ring-blue-400/50'
-                    : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800/80'
+                    : 'bg-white dark:bg-slate-900/80 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800/80 shadow-xs'
                 }`}
               >
                 <Icon className={`w-4 h-4 ${isActive ? 'text-white' : m.color || 'text-slate-400'}`} />
@@ -104,16 +123,16 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Subheader when in Custom Collections mode */}
         {mode === 'custom' && (
-          <div className="mt-3 pt-3 border-t border-slate-800/60 flex items-center justify-between gap-3 overflow-x-auto">
+          <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800/60 flex items-center justify-between gap-3 overflow-x-auto">
             <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-thin">
               {collections.map((coll) => (
                 <button
                   key={coll.id}
                   onClick={() => onSelectCollection(coll.id)}
-                  className={`flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
+                  className={`flex items-center gap-2 px-3 py-1 rounded-lg text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
                     activeCollectionId === coll.id
-                      ? 'bg-slate-800 text-white border border-blue-500/60 shadow-sm'
-                      : 'bg-slate-900/60 text-slate-400 hover:text-slate-200 border border-slate-800'
+                      ? 'bg-blue-50 dark:bg-slate-800 text-blue-900 dark:text-white border border-blue-400 dark:border-blue-500/60 shadow-xs font-bold'
+                      : 'bg-white dark:bg-slate-900/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 border border-slate-200 dark:border-slate-800'
                   }`}
                 >
                   <span
@@ -121,7 +140,7 @@ export const Header: React.FC<HeaderProps> = ({
                     style={{ backgroundColor: coll.color || '#3b82f6' }}
                   />
                   <span>{coll.name}</span>
-                  <span className="text-[10px] font-mono text-slate-400 bg-slate-950/60 px-1.5 py-0.2 rounded">
+                  <span className="text-[10px] font-mono text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-950/60 px-1.5 py-0.2 rounded">
                     {coll.caughtItems}/{coll.totalItems}
                   </span>
                 </button>
@@ -131,8 +150,9 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center gap-2 shrink-0">
               {onOpenCollectionEditor && activeCollectionId && (
                 <button
+                  type="button"
                   onClick={onOpenCollectionEditor}
-                  className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-sm"
+                  className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-sm cursor-pointer"
                   title="Wähle genau aus, welche Pokémon in dieser Liste enthalten sein sollen"
                 >
                   <Bookmark className="w-3.5 h-3.5" />
@@ -140,8 +160,9 @@ export const Header: React.FC<HeaderProps> = ({
                 </button>
               )}
               <button
+                type="button"
                 onClick={onOpenCollectionsModal}
-                className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-semibold rounded-lg transition-colors"
+                className="px-3 py-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
               >
                 + Listen verwalten
               </button>
