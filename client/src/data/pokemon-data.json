@@ -307,7 +307,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_11_base",
@@ -338,7 +338,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_12_base",
@@ -369,7 +369,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_13_base",
@@ -493,7 +493,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_17_base",
@@ -524,7 +524,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_18_base",
@@ -555,7 +555,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_19_base",
@@ -1733,7 +1733,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_57_base",
@@ -1764,7 +1764,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_58_base",
@@ -2229,7 +2229,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_73_base",
@@ -2260,7 +2260,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_74_base",
@@ -2384,7 +2384,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_78_base",
@@ -2415,7 +2415,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_79_base",
@@ -2663,7 +2663,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_87_base",
@@ -2694,7 +2694,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_88_base",
@@ -2849,7 +2849,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_93_base",
@@ -2880,7 +2880,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_94_base",
@@ -2911,7 +2911,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_95_base",
@@ -2942,7 +2942,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_96_base",
@@ -3035,7 +3035,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_99_base",
@@ -3066,7 +3066,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_100_base",
@@ -3438,7 +3438,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_112_base",
@@ -3469,7 +3469,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_113_base",
@@ -3717,7 +3717,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_121_base",
@@ -3748,7 +3748,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_122_base",
@@ -4337,7 +4337,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_141_base",
@@ -4368,7 +4368,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_142_base",
@@ -5050,7 +5050,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_164_base",
@@ -5081,7 +5081,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_165_base",
@@ -5112,7 +5112,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_166_base",
@@ -5143,7 +5143,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_167_base",
@@ -5484,7 +5484,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_178_base",
@@ -5515,7 +5515,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_179_base",
@@ -6445,7 +6445,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_209_base",
@@ -6538,7 +6538,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_212_base",
@@ -7158,7 +7158,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_232_base",
@@ -7189,7 +7189,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_233_base",
@@ -7344,7 +7344,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_238_base",
@@ -7809,7 +7809,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_253_base",
@@ -7840,7 +7840,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_254_base",
@@ -7871,7 +7871,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_255_base",
@@ -7902,7 +7902,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_256_base",
@@ -7933,7 +7933,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_257_base",
@@ -7964,7 +7964,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_258_base",
@@ -8150,7 +8150,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_264_base",
@@ -8181,7 +8181,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_265_base",
@@ -8553,7 +8553,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_277_base",
@@ -8584,7 +8584,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_278_base",
@@ -8894,7 +8894,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_288_base",
@@ -8925,7 +8925,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_289_base",
@@ -8956,7 +8956,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_290_base",
@@ -9917,7 +9917,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_321_base",
@@ -9948,7 +9948,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_322_base",
@@ -10072,7 +10072,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_326_base",
@@ -10103,7 +10103,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_327_base",
@@ -10320,7 +10320,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_334_base",
@@ -10351,7 +10351,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_335_base",
@@ -10506,7 +10506,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_340_base",
@@ -10537,7 +10537,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_341_base",
@@ -10568,7 +10568,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_342_base",
@@ -10599,7 +10599,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_343_base",
@@ -10630,7 +10630,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_344_base",
@@ -10661,7 +10661,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_345_base",
@@ -10816,7 +10816,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_350_base",
@@ -10847,7 +10847,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_351_base",
@@ -11188,7 +11188,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_362_base",
@@ -11219,7 +11219,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_363_base",
@@ -11684,7 +11684,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_378_base",
@@ -11715,7 +11715,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_379_base",
@@ -11746,7 +11746,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_380_base",
@@ -11777,7 +11777,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_381_base",
@@ -11839,7 +11839,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_383_base",
@@ -11870,7 +11870,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_384_base",
@@ -12087,7 +12087,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_391_base",
@@ -12118,7 +12118,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_392_base",
@@ -12149,7 +12149,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_393_base",
@@ -12180,7 +12180,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_394_base",
@@ -12211,7 +12211,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_395_base",
@@ -12242,7 +12242,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_396_base",
@@ -12645,7 +12645,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_409_base",
@@ -12676,7 +12676,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_410_base",
@@ -12707,7 +12707,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_411_base",
@@ -12738,7 +12738,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_412_base",
@@ -13172,7 +13172,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_426_base",
@@ -13203,7 +13203,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_427_base",
@@ -13358,7 +13358,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_432_base",
@@ -13389,7 +13389,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_433_base",
@@ -13730,7 +13730,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_444_base",
@@ -13761,7 +13761,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_445_base",
@@ -13792,7 +13792,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_446_base",
@@ -14040,7 +14040,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_454_base",
@@ -14071,7 +14071,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_455_base",
@@ -14381,7 +14381,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_465_base",
@@ -14815,7 +14815,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_479_base",
@@ -14970,7 +14970,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_484_base",
@@ -15001,7 +15001,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_485_base",
@@ -15032,7 +15032,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_486_base",
@@ -15063,7 +15063,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_487_base",
@@ -15094,7 +15094,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_488_base",
@@ -15125,7 +15125,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_489_base",
@@ -15218,7 +15218,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_492_base",
@@ -15342,7 +15342,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_496_base",
@@ -15373,7 +15373,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_497_base",
@@ -15404,7 +15404,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_498_base",
@@ -15435,7 +15435,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_499_base",
@@ -15466,7 +15466,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_500_base",
@@ -15497,7 +15497,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_501_base",
@@ -15528,7 +15528,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_502_base",
@@ -15559,7 +15559,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_503_base",
@@ -15590,7 +15590,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_504_base",
@@ -16086,7 +16086,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_520_base",
@@ -16117,7 +16117,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_521_base",
@@ -16148,7 +16148,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_522_base",
@@ -16179,7 +16179,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_523_base",
@@ -16210,7 +16210,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_524_base",
@@ -16241,7 +16241,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_525_base",
@@ -16272,7 +16272,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_526_base",
@@ -16303,7 +16303,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_527_base",
@@ -16396,7 +16396,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_530_base",
@@ -16427,7 +16427,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_531_base",
@@ -16489,7 +16489,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_533_base",
@@ -16520,7 +16520,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_534_base",
@@ -16551,7 +16551,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_535_base",
@@ -16675,7 +16675,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_539_base",
@@ -16706,7 +16706,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_540_base",
@@ -16830,7 +16830,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_544_base",
@@ -16861,7 +16861,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_545_base",
@@ -16892,7 +16892,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_546_base",
@@ -17171,7 +17171,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_555_base",
@@ -17202,7 +17202,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_556_base",
@@ -17264,7 +17264,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_558_base",
@@ -17295,7 +17295,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_559_base",
@@ -17419,7 +17419,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_563_base",
@@ -17450,7 +17450,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_564_base",
@@ -17481,7 +17481,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_565_base",
@@ -17512,7 +17512,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_566_base",
@@ -17543,7 +17543,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_567_base",
@@ -17574,7 +17574,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_568_base",
@@ -17605,7 +17605,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_569_base",
@@ -17636,7 +17636,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_570_base",
@@ -17791,7 +17791,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_575_base",
@@ -17822,7 +17822,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_576_base",
@@ -17853,7 +17853,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_577_base",
@@ -17884,7 +17884,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_578_base",
@@ -17915,7 +17915,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_579_base",
@@ -17946,7 +17946,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_580_base",
@@ -18225,7 +18225,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_589_base",
@@ -18256,7 +18256,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_590_base",
@@ -18442,7 +18442,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_596_base",
@@ -18473,7 +18473,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_597_base",
@@ -18504,7 +18504,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_598_base",
@@ -18535,7 +18535,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_599_base",
@@ -18814,7 +18814,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_608_base",
@@ -18845,7 +18845,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_609_base",
@@ -18876,7 +18876,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_610_base",
@@ -18907,7 +18907,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_611_base",
@@ -18938,7 +18938,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_612_base",
@@ -18969,7 +18969,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_613_base",
@@ -19093,7 +19093,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_617_base",
@@ -19124,7 +19124,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_618_base",
@@ -19279,7 +19279,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_623_base",
@@ -19310,7 +19310,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_624_base",
@@ -19620,7 +19620,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_634_base",
@@ -19651,7 +19651,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_635_base",
@@ -19682,7 +19682,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_636_base",
@@ -19868,7 +19868,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_642_base",
@@ -19899,7 +19899,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_643_base",
@@ -19930,7 +19930,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_644_base",
@@ -19992,7 +19992,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_646_base",
@@ -20147,7 +20147,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_651_base",
@@ -20178,7 +20178,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_652_base",
@@ -20209,7 +20209,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_653_base",
@@ -20240,7 +20240,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_654_base",
@@ -20271,7 +20271,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_655_base",
@@ -20302,7 +20302,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_656_base",
@@ -20333,7 +20333,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_657_base",
@@ -20364,7 +20364,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_658_base",
@@ -20395,7 +20395,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_659_base",
@@ -20426,7 +20426,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_660_base",
@@ -20457,7 +20457,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_661_base",
@@ -20488,7 +20488,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_662_base",
@@ -20519,7 +20519,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_663_base",
@@ -20550,7 +20550,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_664_base",
@@ -21263,7 +21263,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_687_base",
@@ -21294,7 +21294,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_688_base",
@@ -21511,7 +21511,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_695_base",
@@ -21542,7 +21542,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_696_base",
@@ -21573,7 +21573,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_697_base",
@@ -21604,7 +21604,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_698_base",
@@ -21635,7 +21635,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_699_base",
@@ -21666,7 +21666,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_700_base",
@@ -21945,7 +21945,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_709_base",
@@ -21976,7 +21976,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_710_base",
@@ -22131,7 +22131,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_715_base",
@@ -22162,7 +22162,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_716_base",
@@ -22658,7 +22658,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_732_base",
@@ -22689,7 +22689,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_733_base",
@@ -22720,7 +22720,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_734_base",
@@ -22813,7 +22813,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_737_base",
@@ -22844,7 +22844,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_738_base",
@@ -22875,7 +22875,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_739_base",
@@ -23278,7 +23278,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_752_base",
@@ -23309,7 +23309,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_753_base",
@@ -23402,7 +23402,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_756_base",
@@ -23433,7 +23433,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_757_base",
@@ -23526,7 +23526,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_760_base",
@@ -23557,7 +23557,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_761_base",
@@ -25448,7 +25448,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_822_base",
@@ -25479,7 +25479,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_823_base",
@@ -25510,7 +25510,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_824_base",
@@ -26719,7 +26719,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_863_base",
@@ -27928,7 +27928,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_903_base",
@@ -27959,7 +27959,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_904_base",
@@ -30315,7 +30315,7 @@
     "isForm": false,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": false
+    "hasShadow": true
   },
   {
     "id": "poke_980_base",
@@ -33318,7 +33318,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_12_form_female",
@@ -33371,7 +33371,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_19_form_female",
@@ -33398,7 +33398,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_20_form_raticate_alola",
@@ -33424,7 +33424,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_20_form_female",
@@ -33451,7 +33451,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_25_form_female",
@@ -33557,7 +33557,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_28_form_sandslash_alola",
@@ -33583,7 +33583,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_37_form_vulpix_alola",
@@ -33609,7 +33609,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_38_form_ninetales_alola",
@@ -33635,7 +33635,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_41_form_female",
@@ -33662,7 +33662,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_42_form_female",
@@ -33689,7 +33689,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_44_form_female",
@@ -33716,7 +33716,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_45_form_female",
@@ -33743,7 +33743,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_50_form_diglett_alola",
@@ -33769,7 +33769,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_51_form_dugtrio_alola",
@@ -33795,7 +33795,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_52_form_meowth_alola",
@@ -33821,7 +33821,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_52_form_meowth_galarian",
@@ -33847,7 +33847,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_53_form_persian_alola",
@@ -33873,7 +33873,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_58_form_growlithe_hisuian",
@@ -33899,7 +33899,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_59_form_arcanine_hisuian",
@@ -33925,7 +33925,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_64_form_female",
@@ -33952,7 +33952,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_65_form_female",
@@ -33979,7 +33979,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_74_form_geodude_alola",
@@ -34005,7 +34005,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_75_form_graveler_alola",
@@ -34031,7 +34031,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_76_form_golem_alola",
@@ -34057,7 +34057,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_77_form_ponyta_galarian",
@@ -34135,7 +34135,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_80_form_slowbro_galarian",
@@ -34161,7 +34161,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_83_form_farfetchd_galarian",
@@ -34267,7 +34267,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_89_form_muk_alola",
@@ -34293,7 +34293,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_97_form_female",
@@ -34320,7 +34320,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_100_form_voltorb_hisuian",
@@ -34346,7 +34346,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_101_form_electrode_hisuian",
@@ -34372,7 +34372,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_103_form_exeggutor_alola",
@@ -34398,7 +34398,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_105_form_marowak_alola",
@@ -34424,7 +34424,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_110_form_weezing_galarian",
@@ -34450,7 +34450,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_111_form_female",
@@ -34611,7 +34611,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_128_form_tauros_paldea_aqua",
@@ -34716,7 +34716,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_130_form_female",
@@ -34743,7 +34743,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_133_form_female",
@@ -34796,7 +34796,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_145_form_zapdos_galarian",
@@ -34822,7 +34822,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_146_form_moltres_galarian",
@@ -34848,7 +34848,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_154_form_female",
@@ -34875,7 +34875,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_157_form_typhlosion_hisuian",
@@ -34901,7 +34901,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_165_form_female",
@@ -35009,7 +35009,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_186_form_female",
@@ -35036,7 +35036,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_190_form_female",
@@ -35063,7 +35063,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_194_form_wooper_paldea",
@@ -35089,7 +35089,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_194_form_female",
@@ -35116,7 +35116,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_195_form_female",
@@ -35143,7 +35143,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_198_form_female",
@@ -35170,7 +35170,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_199_form_slowking_galarian",
@@ -35196,7 +35196,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_201_special_exclamation_point",
@@ -35979,7 +35979,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_203_form_female",
@@ -36006,7 +36006,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_207_form_female",
@@ -36033,7 +36033,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_208_form_female",
@@ -36113,7 +36113,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_214_form_female",
@@ -36166,7 +36166,7 @@
     "isForm": true,
     "isCostume": false,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_215_form_female",
@@ -36193,7 +36193,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_217_form_female",
@@ -36220,7 +36220,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_221_form_female",
@@ -36247,7 +36247,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_222_form_corsola_galarian",
@@ -36327,7 +36327,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_232_form_female",
@@ -36595,7 +36595,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_275_form_female",
@@ -36622,7 +36622,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_307_form_female",
@@ -36784,7 +36784,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_323_form_female",
@@ -36811,7 +36811,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_332_form_female",
@@ -36838,7 +36838,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_350_form_female",
@@ -37081,7 +37081,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_397_form_female",
@@ -37108,7 +37108,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_398_form_female",
@@ -37135,7 +37135,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_399_form_female",
@@ -37162,7 +37162,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_400_form_female",
@@ -37189,7 +37189,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_401_form_female",
@@ -37270,7 +37270,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_404_form_female",
@@ -37297,7 +37297,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_405_form_female",
@@ -37324,7 +37324,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_407_form_female",
@@ -37675,7 +37675,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_443_form_female",
@@ -37783,7 +37783,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_450_form_female",
@@ -37810,7 +37810,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_453_form_female",
@@ -37945,7 +37945,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_460_form_female",
@@ -37972,7 +37972,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_461_form_female",
@@ -37999,7 +37999,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_464_form_female",
@@ -38053,7 +38053,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_473_form_female",
@@ -38080,7 +38080,7 @@
     "isCostume": false,
     "isGenderDifference": true,
     "releasedInGo": true,
-    "hasShadow": true
+    "hasShadow": false
   },
   {
     "id": "poke_479_special_fan",

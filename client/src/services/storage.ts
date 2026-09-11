@@ -247,16 +247,36 @@ class StorageAdapter {
     const baseList = localPokemonData as Pokemon[];
 
     return collections.map(c => {
+      const isShadowColl = c.categoryType === 'shadow' || c.categoryType === 'purified' || c.name.toLowerCase().includes('crypto') || c.name.toLowerCase().includes('shadow') || c.name.toLowerCase().includes('schatten');
+      if (isShadowColl && c.categoryType !== 'shadow') {
+        c.categoryType = 'shadow';
+      }
+
       const cItems = items.filter(i => i.collection_id === c.id);
       let totalCount = cItems.length;
       let caughtCount = 0;
 
-      if (totalCount > 0) {
+      if (isShadowColl && cItems.length === 0) {
+        const shadowIds = baseList.filter(p => Boolean(p.hasShadow)).map(p => p.id);
+        const newItems = shadowIds.map(pid => ({
+          collection_id: c.id,
+          pokemon_id: pid,
+          added_at: new Date().toISOString()
+        }));
+        const existingOtherItems = items.filter(i => i.collection_id !== c.id);
+        const allNewItems = [...existingOtherItems, ...newItems];
+        try {
+          localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(allNewItems));
+        } catch (e) {}
+        this.collectionItemsCache.set(c.id, new Set(shadowIds));
+        totalCount = shadowIds.length;
+        caughtCount = shadowIds.filter(pid => Boolean(progress[pid]?.shadowCaught)).length;
+      } else if (totalCount > 0) {
         caughtCount = cItems.filter(i => {
           const prog = progress[i.pokemon_id];
           if (!prog) return false;
           if (c.categoryType === 'lucky') return Boolean(prog.luckyCaught);
-          if (c.categoryType === 'shadow') return Boolean(prog.shadowCaught);
+          if (c.categoryType === 'shadow' || isShadowColl) return Boolean(prog.shadowCaught);
           if (c.categoryType === 'purified') return Boolean(prog.purifiedCaught);
           if (c.trackShiny) return Boolean(prog.shinyCaught);
           return Boolean(prog.caught);
@@ -268,7 +288,7 @@ class StorageAdapter {
           matching = matching.filter(p => p.category === 'mega' || p.isMega);
         } else if (c.categoryType === 'event') {
           matching = matching.filter(p => p.category === 'costume' || p.isCostume);
-        } else if (c.categoryType === 'shadow' || c.categoryType === 'purified') {
+        } else if (c.categoryType === 'shadow' || c.categoryType === 'purified' || isShadowColl) {
           matching = matching.filter(p => Boolean(p.hasShadow));
         } else if (c.variantMode === 'single') {
           matching = matching.filter(p => p.category === 'standard');
@@ -500,13 +520,26 @@ class StorageAdapter {
 
   public getCollectionItemIds(collectionId: string): Set<string> {
     if (this.collectionItemsCache.has(collectionId)) {
-      return this.collectionItemsCache.get(collectionId)!;
+      const cached = this.collectionItemsCache.get(collectionId)!;
+      if (cached.size > 0) return cached;
     }
     const items = this.getLocalCollectionItems();
     const ids = new Set(items.filter(i => i.collection_id === collectionId).map(i => i.pokemon_id));
     if (ids.size > 0) {
       this.collectionItemsCache.set(collectionId, ids);
+      return ids;
     }
+
+    // Auto-populate / repair if this is a shadow collection
+    const collections = this.getLocalCollections();
+    const coll = collections.find(c => c.id === collectionId);
+    if (coll && (coll.categoryType === 'shadow' || coll.categoryType === 'purified' || coll.name.toLowerCase().includes('crypto') || coll.name.toLowerCase().includes('shadow') || coll.name.toLowerCase().includes('schatten'))) {
+      const baseList = localPokemonData as Pokemon[];
+      const shadowIds = new Set(baseList.filter(p => Boolean(p.hasShadow)).map(p => p.id));
+      this.collectionItemsCache.set(collectionId, shadowIds);
+      return shadowIds;
+    }
+
     return ids;
   }
 

@@ -291,8 +291,8 @@ async function main() {
     if (shinyCount !== 1500) {
       throw new Error(`Expected exactly 1500 released shiny species/forms, got: ${shinyCount}`);
     }
-    if (shadowCount !== 326) {
-      throw new Error(`Expected exactly 326 released shadow species/forms, got: ${shadowCount}`);
+    if (shadowCount !== 458) {
+      throw new Error(`Expected exactly 458 released shadow species/forms, got: ${shadowCount}`);
     }
 
     // Check shiny-locked species: Victini (#494), Marshadow (#802), Cosmog (#789)
@@ -323,8 +323,8 @@ async function main() {
     // 11. Shadow Category Query API Test
     const shadowQueryRes = await request('http://localhost:3456/api/pokemon?category=shadow&limit=1000');
     console.log(`[TEST 11] Shadow Query API: HTTP ${shadowQueryRes.status}, count: ${shadowQueryRes.data.length}`);
-    if (shadowQueryRes.data.length !== 326) {
-      throw new Error(`Expected 326 shadow pokemon from category=shadow query, got: ${shadowQueryRes.data.length}`);
+    if (shadowQueryRes.data.length !== 458) {
+      throw new Error(`Expected 458 shadow pokemon from category=shadow query, got: ${shadowQueryRes.data.length}`);
     }
     console.log('✓ Shadow category API query passed');
 
@@ -336,8 +336,8 @@ async function main() {
     const searchCompound = await request('http://localhost:3456/api/pokemon?search=crypto%20mewtu');
 
     console.log(`[TEST 12] Crypto Search: crypto=${searchCrypto.data.length}, shadow=${searchShadow.data.length}, schatten=${searchSchatten.data.length}, shadowOnly=${filterShadowOnly.data.length}, compound=${searchCompound.data.length}`);
-    if (searchCrypto.data.length !== 326 || searchShadow.data.length !== 326 || searchSchatten.data.length !== 326 || filterShadowOnly.data.length !== 326) {
-      throw new Error(`Smart crypto search failed to return all 326 shadow pokemon`);
+    if (searchCrypto.data.length !== 458 || searchShadow.data.length !== 458 || searchSchatten.data.length !== 458 || filterShadowOnly.data.length !== 458) {
+      throw new Error(`Smart crypto search failed to return all 458 shadow pokemon`);
     }
     if (searchCompound.data.length === 0 || !(searchCompound.data[0].name.toLowerCase().includes('mewt') || searchCompound.data[0].names?.German === 'Mewtu')) {
       throw new Error(`Compound search "crypto mewtu" failed`);

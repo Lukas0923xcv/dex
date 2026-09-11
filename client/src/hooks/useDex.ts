@@ -108,7 +108,7 @@ export function useDex() {
       targetType = 'shiny';
     } else if (mode === 'shadow') {
       targetType = 'shadow';
-    } else if (mode === 'custom' && activeColl?.categoryType === 'shadow') {
+    } else if (mode === 'custom' && (activeColl?.categoryType === 'shadow' || activeColl?.name.toLowerCase().includes('crypto') || activeColl?.name.toLowerCase().includes('shadow'))) {
       targetType = 'shadow';
     } else if (mode === 'custom' && activeColl?.categoryType === 'purified') {
       targetType = 'purified';
@@ -264,7 +264,7 @@ export function useDex() {
           result = result.filter(p => p.category === 'mega' || p.isMega);
         } else if (activeColl.categoryType === 'event') {
           result = result.filter(p => p.category === 'costume' || p.isCostume);
-        } else if (activeColl.categoryType === 'shadow' || activeColl.categoryType === 'purified') {
+        } else if (activeColl.categoryType === 'shadow' || activeColl.categoryType === 'purified' || activeColl.name.toLowerCase().includes('crypto') || activeColl.name.toLowerCase().includes('shadow') || activeColl.name.toLowerCase().includes('schatten')) {
           result = result.filter(p => Boolean(p.hasShadow));
           if (activeColl.variantMode === 'single') {
             result = result.filter(p => p.category === 'standard');
@@ -323,7 +323,7 @@ export function useDex() {
     const getPokemonCaughtStatus = (p: Pokemon) => {
       if (mode === 'shiny') return Boolean(p.shinyCaught);
       if (mode === 'shadow') return Boolean(p.shadowCaught);
-      if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
+      if (mode === 'custom' && (activeColl?.categoryType === 'shadow' || activeColl?.name.toLowerCase().includes('crypto') || activeColl?.name.toLowerCase().includes('shadow'))) return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
       if (mode === 'custom' && activeColl?.trackShiny) return Boolean(p.shinyCaught);
@@ -471,7 +471,7 @@ export function useDex() {
           pool = pool.filter(p => p.category === 'mega' || p.isMega);
         } else if (activeColl.categoryType === 'event') {
           pool = pool.filter(p => p.category === 'costume' || p.isCostume);
-        } else if (activeColl.categoryType === 'shadow' || activeColl.categoryType === 'purified') {
+        } else if (activeColl.categoryType === 'shadow' || activeColl.categoryType === 'purified' || activeColl.name.toLowerCase().includes('crypto') || activeColl.name.toLowerCase().includes('shadow') || activeColl.name.toLowerCase().includes('schatten')) {
           pool = pool.filter(p => Boolean(p.hasShadow));
           if (activeColl.variantMode === 'single') {
             pool = pool.filter(p => p.category === 'standard');
@@ -518,7 +518,7 @@ export function useDex() {
     const caught = pool.filter(p => {
       if (mode === 'shiny') return Boolean(p.shinyCaught);
       if (mode === 'shadow') return Boolean(p.shadowCaught);
-      if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
+      if (mode === 'custom' && (activeColl?.categoryType === 'shadow' || activeColl?.name.toLowerCase().includes('crypto') || activeColl?.name.toLowerCase().includes('shadow'))) return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
       if (mode === 'custom' && activeColl?.trackShiny) return Boolean(p.shinyCaught);
