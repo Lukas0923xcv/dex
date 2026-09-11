@@ -19,6 +19,7 @@ const GENERATIONS = [
   { id: 7, label: 'Gen 7 · Alola' },
   { id: 8, label: 'Gen 8 · Galar' },
   { id: 9, label: 'Gen 9 · Paldea' },
+  { id: 0, label: 'Unbekannt · Meltan' },
 ];
 
 const TYPES = [

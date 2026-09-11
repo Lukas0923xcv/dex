@@ -8,6 +8,9 @@ export default {
   theme: {
     extend: {
       colors: {
+        slate: {
+          850: '#172033',
+        },
         poke: {
           bg: '#0f172a',
           card: '#1e293b',

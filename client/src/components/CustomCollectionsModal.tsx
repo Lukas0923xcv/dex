@@ -307,27 +307,27 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/80 backdrop-blur-sm">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-lg max-h-[92vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg max-h-[92vh] flex flex-col shadow-2xl shadow-black/90 overflow-hidden">
         {/* Header with Navigation Tabs */}
-        <div className="px-5 py-3.5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/60 shrink-0">
+        <div className="px-5 py-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-950/70 shrink-0">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setActiveTab('create')}
-              className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'create'
-                  ? 'bg-emerald-500/15 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm ring-1 ring-emerald-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               + Sammlung erstellen
             </button>
             <button
               onClick={() => setActiveTab('list')}
-              className={`px-3 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
                 activeTab === 'list'
-                  ? 'bg-blue-500/15 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                  ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm ring-1 ring-blue-500/20'
+                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
               }`}
             >
               Meine Sammlungen ({collections.length})
@@ -336,14 +336,14 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-1 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-5 text-slate-900 dark:text-slate-100">
+        <div className="flex-1 overflow-y-auto p-5 space-y-5 text-slate-100 scrollbar-thin">
           {activeTab === 'create' ? (
             <form onSubmit={handleCreate} className="space-y-5">
               {/* Section 1: 8 Collection Type Cards (Grid matching screenshot) */}
@@ -358,14 +358,14 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         key={cat.id}
                         type="button"
                         onClick={() => setCategoryType(cat.id)}
-                        className={`flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl border transition-all duration-200 ${
+                        className={`flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
                           isSelected
-                            ? 'bg-[#dcfce7] dark:bg-emerald-950/40 border-emerald-500 ring-2 ring-emerald-500/30 text-emerald-950 dark:text-emerald-200 shadow-sm'
-                            : 'bg-slate-50/60 dark:bg-slate-850 hover:bg-slate-100 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'
+                            ? 'bg-emerald-950/50 border-2 border-emerald-500 ring-2 ring-emerald-500/30 text-emerald-200 shadow-lg shadow-emerald-950/50 scale-[1.02]'
+                            : 'bg-slate-950/70 hover:bg-slate-800/80 border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white'
                         }`}
                       >
                         <Icon className="w-8 h-8 sm:w-9 sm:h-9 mb-1.5" />
-                        <span className="text-xs sm:text-sm font-semibold tracking-tight">
+                        <span className={`text-xs sm:text-sm tracking-tight ${isSelected ? 'font-bold text-emerald-200' : 'font-semibold'}`}>
                           {cat.label}
                         </span>
                       </button>
@@ -376,7 +376,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
               {/* Section 2: Pokédex-Modus */}
               <div className="space-y-2.5">
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                <h3 className="text-sm font-bold text-white tracking-wide">
                   Pokédex-Modus
                 </h3>
 
@@ -385,10 +385,10 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setVariantMode('multi')}
-                    className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all duration-200 ${
+                    className={`flex flex-col items-center justify-center p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
                       variantMode === 'multi'
-                        ? 'bg-slate-100 dark:bg-slate-800 border-slate-900 dark:border-slate-300 text-slate-900 dark:text-white font-bold ring-1 ring-slate-900/10 dark:ring-white/20'
-                        : 'bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
+                        ? 'bg-slate-800/90 border-2 border-emerald-500 text-white font-bold ring-2 ring-emerald-500/20 shadow-md'
+                        : 'bg-slate-950/70 hover:bg-slate-800/60 border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200'
                     }`}
                   >
                     <UnownMultiIcon className="w-9 h-7 mb-1 text-current" />
@@ -399,10 +399,10 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   <button
                     type="button"
                     onClick={() => setVariantMode('single')}
-                    className={`flex flex-col items-center justify-center p-3 rounded-2xl border transition-all duration-200 ${
+                    className={`flex flex-col items-center justify-center p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
                       variantMode === 'single'
-                        ? 'bg-slate-100 dark:bg-slate-800 border-slate-900 dark:border-slate-300 text-slate-900 dark:text-white font-bold ring-1 ring-slate-900/10 dark:ring-white/20'
-                        : 'bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400'
+                        ? 'bg-slate-800/90 border-2 border-emerald-500 text-white font-bold ring-2 ring-emerald-500/20 shadow-md'
+                        : 'bg-slate-950/70 hover:bg-slate-800/60 border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200'
                     }`}
                   >
                     <UnownSingleIcon className="w-7 h-7 mb-1 text-current" />
@@ -411,7 +411,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </div>
 
                 {/* Explanatory callout box matching screenshot */}
-                <div className="bg-slate-100/90 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-700/60 rounded-xl p-3 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <div className="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-3 text-xs text-slate-300 leading-relaxed">
                   {variantMode === 'multi'
                     ? 'Pokémon mit verschiedenen Formen wie Icognito, Formeo usw. erscheinen in all ihren Varianten. Die Sammlungszähler stimmen nicht mit dem Zähler im Spiel überein.'
                     : 'Nur die Basis-Variante jedes Pokémon wird angezeigt. Stimmt genau mit dem Pokédex-Zähler im Spiel überein.'}
@@ -420,21 +420,21 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
               {/* Section 3: Weitere Merkmale (5 Toggle Rows) */}
               <div className="space-y-2.5">
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                <h3 className="text-sm font-bold text-white tracking-wide">
                   Weitere Merkmale
                 </h3>
 
                 <div className="space-y-2">
                   {/* Row 1: Schillernd */}
-                  <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl">
-                    <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
+                    <span className="text-sm font-semibold text-slate-100">
                       Schillernd
                     </span>
                     <button
                       type="button"
                       onClick={() => setTrackShiny(!trackShiny)}
                       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackShiny ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700'
+                        trackShiny ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
                       }`}
                     >
                       <span
@@ -446,15 +446,15 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   </div>
 
                   {/* Row 2: Hundo (100%) */}
-                  <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl">
-                    <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
+                    <span className="text-sm font-semibold text-slate-100">
                       Hundo (100%)
                     </span>
                     <button
                       type="button"
                       onClick={() => setTrackHundo(!trackHundo)}
                       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackHundo ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700'
+                        trackHundo ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
                       }`}
                     >
                       <span
@@ -466,15 +466,15 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   </div>
 
                   {/* Row 3: Geschlecht */}
-                  <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl">
-                    <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
+                    <span className="text-sm font-semibold text-slate-100">
                       Geschlecht
                     </span>
                     <button
                       type="button"
                       onClick={() => setTrackGender(!trackGender)}
                       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackGender ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700'
+                        trackGender ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
                       }`}
                     >
                       <span
@@ -486,12 +486,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   </div>
 
                   {/* Row 4: Hintergrund (PRO) */}
-                  <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl">
+                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                      <span className="text-sm font-semibold text-slate-100">
                         Hintergrund
                       </span>
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 tracking-wider uppercase">
                         ★ PRO
                       </span>
                     </div>
@@ -499,7 +499,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       type="button"
                       onClick={() => setTrackBackground(!trackBackground)}
                       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackBackground ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700'
+                        trackBackground ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
                       }`}
                     >
                       <span
@@ -511,12 +511,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   </div>
 
                   {/* Row 5: Größe (PRO) */}
-                  <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-850 border border-slate-200 dark:border-slate-800 rounded-xl">
+                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+                      <span className="text-sm font-semibold text-slate-100">
                         Größe
                       </span>
-                      <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400 border border-amber-500/30">
+                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 tracking-wider uppercase">
                         ★ PRO
                       </span>
                     </div>
@@ -524,7 +524,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       type="button"
                       onClick={() => setTrackSize(!trackSize)}
                       className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackSize ? 'bg-emerald-500' : 'bg-slate-300 dark:bg-slate-700'
+                        trackSize ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
                       }`}
                     >
                       <span
@@ -539,7 +539,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
               {/* Section 4: Sammlungsname */}
               <div className="space-y-2">
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+                <h3 className="text-sm font-bold text-white tracking-wide">
                   Sammlungsname
                 </h3>
                 <input
@@ -551,7 +551,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   }}
                   required
                   placeholder="z.B. Meine Schillernde Glücks-Sammlung"
-                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-850 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500"
+                  className="w-full px-4 py-3.5 bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-2xl text-sm font-medium text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/25 transition-all"
                 />
               </div>
 
@@ -559,7 +559,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
               <button
                 type="submit"
                 disabled={!name.trim() || isSubmitting}
-                className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-sm rounded-xl shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-teal-500 disabled:opacity-50 text-white font-bold text-sm rounded-2xl shadow-lg shadow-emerald-600/30 hover:shadow-emerald-500/40 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Plus className="w-4 h-4 stroke-[3]" />
                 <span>{isSubmitting ? 'Wird erstellt...' : 'Sammlung erstellen'}</span>
@@ -573,7 +573,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
               </h3>
 
               {collections.length === 0 ? (
-                <p className="text-sm text-slate-500 italic py-6 text-center">
+                <p className="text-sm text-slate-400 italic py-6 text-center">
                   Noch keine benutzerdefinierten Sammlungen angelegt.
                 </p>
               ) : (
@@ -584,10 +584,10 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     return (
                       <div
                         key={c.id}
-                        className={`flex items-center justify-between p-3.5 rounded-2xl border transition-all ${
+                        className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
                           isActive
-                            ? 'bg-slate-100 dark:bg-slate-800 border-emerald-500/80 shadow-md ring-1 ring-emerald-500/30'
-                            : 'bg-white dark:bg-slate-850 hover:bg-slate-50 dark:hover:bg-slate-800 border-slate-200 dark:border-slate-800'
+                            ? 'bg-slate-800/90 border-2 border-emerald-500/80 shadow-md ring-1 ring-emerald-500/30'
+                            : 'bg-slate-950/70 hover:bg-slate-800/70 border-slate-800'
                         }`}
                       >
                         <div
@@ -602,13 +602,13 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                             style={{ backgroundColor: c.color || '#10b981' }}
                           />
                           <div className="min-w-0">
-                            <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                            <h4 className="text-sm font-bold text-white truncate">
                               {c.name}
                             </h4>
-                            <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                            <p className="text-xs text-slate-400 truncate">
                               {c.categoryType?.toUpperCase()} · {c.variantMode === 'single' ? 'Single Variant' : 'Multivariante'}
                             </p>
-                            <p className="text-[11px] font-mono text-emerald-600 dark:text-emerald-400 font-semibold mt-0.5">
+                            <p className="text-xs font-mono text-emerald-400 font-semibold mt-0.5">
                               {c.caughtItems} / {c.totalItems} gefangen
                             </p>
                           </div>
@@ -621,7 +621,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                               onOpenEditor(c);
                               onClose();
                             }}
-                            className="px-2.5 py-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5"
+                            className="px-3 py-1.5 bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
                             title="Pokémon manuell auswählen"
                           >
                             <Bookmark className="w-3.5 h-3.5" />
@@ -634,7 +634,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                                 onDeleteCollection(c.id);
                               }
                             }}
-                            className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-colors"
+                            className="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
                             title="Löschen"
                           >
                             <Trash2 className="w-4 h-4" />

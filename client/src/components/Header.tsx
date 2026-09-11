@@ -92,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold whitespace-nowrap transition-all ${
                   isActive
                     ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/25 ring-1 ring-blue-400/50'
-                    : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 hover:bg-slate-850 border border-slate-800/80'
+                    : 'bg-slate-900/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800/80'
                 }`}
               >
                 <Icon className={`w-4 h-4 ${isActive ? 'text-white' : m.color || 'text-slate-400'}`} />

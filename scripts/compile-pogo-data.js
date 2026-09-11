@@ -85,7 +85,8 @@ async function main() {
   for (const entry of pogoData) {
     const dexNr = entry.dexNr;
     const baseName = entry.names?.English || entry.id;
-    const gen = entry.generation || (dexNr <= 151 ? 1 : dexNr <= 251 ? 2 : dexNr <= 386 ? 3 : dexNr <= 493 ? 4 : dexNr <= 649 ? 5 : dexNr <= 721 ? 6 : dexNr <= 809 ? 7 : dexNr <= 905 ? 8 : 9);
+    // Meltan (808) and Melmetal (809) are in the "Unbekannt" / Unknown category in Pokémon GO
+    const gen = (dexNr === 808 || dexNr === 809) ? 0 : (entry.generation || (dexNr <= 151 ? 1 : dexNr <= 251 ? 2 : dexNr <= 386 ? 3 : dexNr <= 493 ? 4 : dexNr <= 649 ? 5 : dexNr <= 721 ? 6 : dexNr <= 807 ? 7 : dexNr <= 905 ? 8 : 9));
     const type1 = formatTypeName(entry.primaryType);
     const type2 = formatTypeName(entry.secondaryType);
     const isReleased = !UNRELEASED_DEX_NRS.has(dexNr);
@@ -175,6 +176,9 @@ async function main() {
       const forms = Array.isArray(entry.regionForms) ? entry.regionForms : Object.values(entry.regionForms);
       forms.forEach((rf) => {
         const formKey = rf.formId || rf.form || 'REGION';
+        const isRegional = formKey.includes('ALOLA') || formKey.includes('GALAR') || formKey.includes('HISUI') || formKey.includes('PALDEA');
+        if (!isRegional) return; // Skip non-regional forms (like Unown, Furfrou trims, etc.) to prevent duplicate/broken fallback sprites
+
         const formId = `poke_${dexNr}_form_${formKey.toLowerCase()}`;
         if (!processedIds.has(formId)) {
           processedIds.add(formId);
@@ -311,77 +315,406 @@ async function main() {
 
   // 6. Special Pokémon Alternate Forms (Castform, Deoxys, Furfrou, Rotom, Unown, etc.)
   const specialForms = [
-    // Castform
-    { dexNr: 351, base: 'Castform', formId: 'SUNNY', label: 'Sunny Form', type1: 'Fire', type2: null, icon: 'pm351.fSUNNY.icon.png' },
-    { dexNr: 351, base: 'Castform', formId: 'RAINY', label: 'Rainy Form', type1: 'Water', type2: null, icon: 'pm351.fRAINY.icon.png' },
-    { dexNr: 351, base: 'Castform', formId: 'SNOWY', label: 'Snowy Form', type1: 'Ice', type2: null, icon: 'pm351.fSNOWY.icon.png' },
-    // Deoxys
-    { dexNr: 386, base: 'Deoxys', formId: 'ATTACK', label: 'Attack Forme', type1: 'Psychic', type2: null, icon: 'pm386.fATTACK.icon.png' },
-    { dexNr: 386, base: 'Deoxys', formId: 'DEFENSE', label: 'Defense Forme', type1: 'Psychic', type2: null, icon: 'pm386.fDEFENSE.icon.png' },
-    { dexNr: 386, base: 'Deoxys', formId: 'SPEED', label: 'Speed Forme', type1: 'Psychic', type2: null, icon: 'pm386.fSPEED.icon.png' },
-    // Giratina
-    { dexNr: 487, base: 'Giratina', formId: 'ORIGIN', label: 'Origin Forme', type1: 'Ghost', type2: 'Dragon', icon: 'pm487.fORIGIN.icon.png' },
-    // Shaymin
-    { dexNr: 492, base: 'Shaymin', formId: 'SKY', label: 'Sky Forme', type1: 'Grass', type2: 'Flying', icon: 'pm492.fSKY.icon.png' },
-    // Rotom
-    { dexNr: 479, base: 'Rotom', formId: 'HEAT', label: 'Heat Rotom', type1: 'Electric', type2: 'Fire', icon: 'pm479.fHEAT.icon.png' },
-    { dexNr: 479, base: 'Rotom', formId: 'WASH', label: 'Wash Rotom', type1: 'Electric', type2: 'Water', icon: 'pm479.fWASH.icon.png' },
-    { dexNr: 479, base: 'Rotom', formId: 'FROST', label: 'Frost Rotom', type1: 'Electric', type2: 'Ice', icon: 'pm479.fFROST.icon.png' },
-    { dexNr: 479, base: 'Rotom', formId: 'FAN', label: 'Fan Rotom', type1: 'Electric', type2: 'Flying', icon: 'pm479.fFAN.icon.png' },
-    { dexNr: 479, base: 'Rotom', formId: 'MOW', label: 'Mow Rotom', type1: 'Electric', type2: 'Grass', icon: 'pm479.fMOW.icon.png' },
+    // Castform (351)
+    {
+      dexNr: 351, base: 'Castform', formId: 'SUNNY', label: 'Sunny Form', type1: 'Fire', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_351_12.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_351_12_shiny.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10013.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10013.png'
+    },
+    {
+      dexNr: 351, base: 'Castform', formId: 'RAINY', label: 'Rainy Form', type1: 'Water', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_351_13.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_351_13_shiny.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10014.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10014.png'
+    },
+    {
+      dexNr: 351, base: 'Castform', formId: 'SNOWY', label: 'Snowy Form', type1: 'Ice', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_351_14.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_351_14_shiny.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10015.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10015.png'
+    },
+    // Deoxys (386)
+    {
+      dexNr: 386, base: 'Deoxys', formId: 'ATTACK', label: 'Attack Forme', type1: 'Psychic', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_386_12.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_386_12_shiny.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10001.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10001.png'
+    },
+    {
+      dexNr: 386, base: 'Deoxys', formId: 'DEFENSE', label: 'Defense Forme', type1: 'Psychic', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_386_13.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_386_13_shiny.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10002.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10002.png'
+    },
+    {
+      dexNr: 386, base: 'Deoxys', formId: 'SPEED', label: 'Speed Forme', type1: 'Psychic', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_386_14.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_386_14_shiny.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10003.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10003.png'
+    },
+    // Giratina Origin (487)
+    {
+      dexNr: 487, base: 'Giratina', formId: 'ORIGIN', label: 'Origin Forme', type1: 'Ghost', type2: 'Dragon',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_487_12.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_487_12_shiny.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10007.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10007.png'
+    },
+    // Shaymin Sky (492)
+    {
+      dexNr: 492, base: 'Shaymin', formId: 'SKY', label: 'Sky Forme', type1: 'Grass', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_492_12.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_492_12_shiny.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10006.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10006.png'
+    },
+    // Rotom (479)
+    {
+      dexNr: 479, base: 'Rotom', formId: 'HEAT', label: 'Heat Rotom', type1: 'Electric', type2: 'Fire',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10008.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10008.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10008.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10008.png'
+    },
+    {
+      dexNr: 479, base: 'Rotom', formId: 'WASH', label: 'Wash Rotom', type1: 'Electric', type2: 'Water',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10009.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10009.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10009.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10009.png'
+    },
+    {
+      dexNr: 479, base: 'Rotom', formId: 'FROST', label: 'Frost Rotom', type1: 'Electric', type2: 'Ice',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10010.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10010.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10010.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10010.png'
+    },
+    {
+      dexNr: 479, base: 'Rotom', formId: 'FAN', label: 'Fan Rotom', type1: 'Electric', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10011.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10011.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10011.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10011.png'
+    },
+    {
+      dexNr: 479, base: 'Rotom', formId: 'MOW', label: 'Mow Rotom', type1: 'Electric', type2: 'Grass',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10012.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10012.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10012.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10012.png'
+    },
     // Therian Formes
-    { dexNr: 641, base: 'Tornadus', formId: 'THERIAN', label: 'Therian Forme', type1: 'Flying', type2: null, icon: 'pm641.fTHERIAN.icon.png' },
-    { dexNr: 642, base: 'Thundurus', formId: 'THERIAN', label: 'Therian Forme', type1: 'Electric', type2: 'Flying', icon: 'pm642.fTHERIAN.icon.png' },
-    { dexNr: 645, base: 'Landorus', formId: 'THERIAN', label: 'Therian Forme', type1: 'Ground', type2: 'Flying', icon: 'pm645.fTHERIAN.icon.png' },
-    { dexNr: 905, base: 'Enamorus', formId: 'THERIAN', label: 'Therian Forme', type1: 'Fairy', type2: 'Flying', icon: 'pm905.fTHERIAN.icon.png' },
+    {
+      dexNr: 641, base: 'Tornadus', formId: 'THERIAN', label: 'Therian Forme', type1: 'Flying', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10019.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10019.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10019.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10019.png'
+    },
+    {
+      dexNr: 642, base: 'Thundurus', formId: 'THERIAN', label: 'Therian Forme', type1: 'Electric', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10020.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10020.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10020.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10020.png'
+    },
+    {
+      dexNr: 645, base: 'Landorus', formId: 'THERIAN', label: 'Therian Forme', type1: 'Ground', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10021.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10021.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10021.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10021.png'
+    },
+    {
+      dexNr: 905, base: 'Enamorus', formId: 'THERIAN', label: 'Therian Forme', type1: 'Fairy', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10249.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10249.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10249.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10249.png'
+    },
     // Kyurem
-    { dexNr: 646, base: 'Kyurem', formId: 'BLACK', label: 'Black Kyurem', type1: 'Dragon', type2: 'Ice', icon: 'pm646.fBLACK.icon.png' },
-    { dexNr: 646, base: 'Kyurem', formId: 'WHITE', label: 'White Kyurem', type1: 'Dragon', type2: 'Ice', icon: 'pm646.fWHITE.icon.png' },
+    {
+      dexNr: 646, base: 'Kyurem', formId: 'BLACK', label: 'Black Kyurem', type1: 'Dragon', type2: 'Ice',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10022.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10022.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10022.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10022.png'
+    },
+    {
+      dexNr: 646, base: 'Kyurem', formId: 'WHITE', label: 'White Kyurem', type1: 'Dragon', type2: 'Ice',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10023.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10023.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10023.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10023.png'
+    },
     // Necrozma
-    { dexNr: 800, base: 'Necrozma', formId: 'DUSK_MANE', label: 'Dusk Mane', type1: 'Psychic', type2: 'Steel', icon: 'pm800.fDUSK_MANE.icon.png' },
-    { dexNr: 800, base: 'Necrozma', formId: 'DAWN_WINGS', label: 'Dawn Wings', type1: 'Psychic', type2: 'Ghost', icon: 'pm800.fDAWN_WINGS.icon.png' },
-    { dexNr: 800, base: 'Necrozma', formId: 'ULTRA', label: 'Ultra Necrozma', type1: 'Psychic', type2: 'Dragon', icon: 'pm800.fULTRA.icon.png' },
+    {
+      dexNr: 800, base: 'Necrozma', formId: 'DUSK_MANE', label: 'Dusk Mane', type1: 'Psychic', type2: 'Steel',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10155.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10155.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10155.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10155.png'
+    },
+    {
+      dexNr: 800, base: 'Necrozma', formId: 'DAWN_WINGS', label: 'Dawn Wings', type1: 'Psychic', type2: 'Ghost',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10156.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10156.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10156.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10156.png'
+    },
     // Zygarde
-    { dexNr: 718, base: 'Zygarde', formId: '10_PERCENT', label: '10% Forme', type1: 'Dragon', type2: 'Ground', icon: 'pm718.fTEN_PERCENT.icon.png' },
-    { dexNr: 718, base: 'Zygarde', formId: 'COMPLETE', label: 'Complete Forme', type1: 'Dragon', type2: 'Ground', icon: 'pm718.fCOMPLETE.icon.png' },
+    {
+      dexNr: 718, base: 'Zygarde', formId: '10_PERCENT', label: '10% Forme', type1: 'Dragon', type2: 'Ground',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10181.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10181.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10181.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10181.png'
+    },
+    {
+      dexNr: 718, base: 'Zygarde', formId: 'COMPLETE', label: 'Complete Forme', type1: 'Dragon', type2: 'Ground',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10120.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10120.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10120.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10120.png'
+    },
     // Hoopa
-    { dexNr: 720, base: 'Hoopa', formId: 'UNBOUND', label: 'Unbound', type1: 'Psychic', type2: 'Dark', icon: 'pm720.fUNBOUND.icon.png' },
+    {
+      dexNr: 720, base: 'Hoopa', formId: 'UNBOUND', label: 'Unbound', type1: 'Psychic', type2: 'Dark',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10086.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10086.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10086.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10086.png'
+    },
     // Oricorio
-    { dexNr: 741, base: 'Oricorio', formId: 'POM_POM', label: 'Pom-Pom Style', type1: 'Electric', type2: 'Flying', icon: 'pm741.fPOM_POM.icon.png' },
-    { dexNr: 741, base: 'Oricorio', formId: 'PA_U', label: 'Pa\'u Style', type1: 'Psychic', type2: 'Flying', icon: 'pm741.fPAU.icon.png' },
-    { dexNr: 741, base: 'Oricorio', formId: 'SENSU', label: 'Sensu Style', type1: 'Ghost', type2: 'Flying', icon: 'pm741.fSENSU.icon.png' },
+    {
+      dexNr: 741, base: 'Oricorio', formId: 'POM_POM', label: 'Pom-Pom Style', type1: 'Electric', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10123.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10123.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10123.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10123.png'
+    },
+    {
+      dexNr: 741, base: 'Oricorio', formId: 'PA_U', label: 'Pa\'u Style', type1: 'Psychic', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10124.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10124.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10124.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10124.png'
+    },
+    {
+      dexNr: 741, base: 'Oricorio', formId: 'SENSU', label: 'Sensu Style', type1: 'Ghost', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10125.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10125.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10125.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10125.png'
+    },
     // Lycanroc
-    { dexNr: 745, base: 'Lycanroc', formId: 'MIDNIGHT', label: 'Midnight Form', type1: 'Rock', type2: null, icon: 'pm745.fMIDNIGHT.icon.png' },
-    { dexNr: 745, base: 'Lycanroc', formId: 'DUSK', label: 'Dusk Form', type1: 'Rock', type2: null, icon: 'pm745.fDUSK.icon.png' }
+    {
+      dexNr: 745, base: 'Lycanroc', formId: 'MIDNIGHT', label: 'Midnight Form', type1: 'Rock', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10126.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10126.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10126.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10126.png'
+    },
+    {
+      dexNr: 745, base: 'Lycanroc', formId: 'DUSK', label: 'Dusk Form', type1: 'Rock', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10152.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10152.png',
+      fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10152.png',
+      fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10152.png'
+    }
   ];
 
-  // Add Furfrou trims (Natural, Heart, Star, Diamond, Debutante, Matron, Dandy, La Reine, Kabuki, Pharaoh)
+  // Shellos & Gastrodon East Sea
+  specialForms.push({
+    dexNr: 422, base: 'Shellos', formId: 'EAST_SEA', label: 'East Sea', type1: 'Water', type2: null,
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10017.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10017.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10017.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10017.png'
+  });
+  specialForms.push({
+    dexNr: 423, base: 'Gastrodon', formId: 'EAST_SEA', label: 'East Sea', type1: 'Water', type2: 'Ground',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10018.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10018.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10018.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10018.png'
+  });
+
+  // Deerling & Sawsbuck Seasonal Forms
+  const seasons = [
+    { id: 'SUMMER', label: 'Summer Form', homeId: 10027, sawHomeId: 10031 },
+    { id: 'AUTUMN', label: 'Autumn Form', homeId: 10028, sawHomeId: 10032 },
+    { id: 'WINTER', label: 'Winter Form', homeId: 10029, sawHomeId: 10033 }
+  ];
+  seasons.forEach(s => {
+    specialForms.push({
+      dexNr: 585, base: 'Deerling', formId: s.id, label: s.label, type1: 'Normal', type2: 'Grass',
+      spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${s.homeId}.png`,
+      shinySpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${s.homeId}.png`,
+      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${s.homeId}.png`,
+      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${s.homeId}.png`
+    });
+    specialForms.push({
+      dexNr: 586, base: 'Sawsbuck', formId: s.id, label: s.label, type1: 'Normal', type2: 'Grass',
+      spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${s.sawHomeId}.png`,
+      shinySpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${s.sawHomeId}.png`,
+      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${s.sawHomeId}.png`,
+      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${s.sawHomeId}.png`
+    });
+  });
+
+  // Cherrim Sunshine Form
+  specialForms.push({
+    dexNr: 421, base: 'Cherrim', formId: 'SUNSHINE', label: 'Sunshine Form', type1: 'Grass', type2: null,
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10016.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10016.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10016.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10016.png'
+  });
+
+  // Burmy & Wormadam Cloaks
+  specialForms.push({
+    dexNr: 412, base: 'Burmy', formId: 'SANDY', label: 'Sandy Cloak', type1: 'Bug', type2: null,
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10004.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10004.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10004.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10004.png'
+  });
+  specialForms.push({
+    dexNr: 412, base: 'Burmy', formId: 'TRASH', label: 'Trash Cloak', type1: 'Bug', type2: null,
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10005.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10005.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10005.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10005.png'
+  });
+  specialForms.push({
+    dexNr: 413, base: 'Wormadam', formId: 'SANDY', label: 'Sandy Cloak', type1: 'Bug', type2: 'Ground',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10006.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10006.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10006.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10006.png'
+  });
+
+  // Flabebe, Floette, Florges Color Variants
+  const flowerColors = ['BLUE', 'ORANGE', 'WHITE', 'YELLOW'];
+  flowerColors.forEach(col => {
+    const colSlug = col.toLowerCase();
+    const colName = cleanFormName(col) + ' Flower';
+    [
+      { nr: 669, base: 'Flabébé', de: 'Flabébé' },
+      { nr: 670, base: 'Floette', de: 'Floette' },
+      { nr: 671, base: 'Florges', de: 'Florges' }
+    ].forEach(spec => {
+      specialForms.push({
+        dexNr: spec.nr, base: spec.base, formId: col, label: colName, type1: 'Fairy', type2: null,
+        germanBase: spec.de,
+        spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${spec.nr}-${colSlug}.png`,
+        shinySpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${spec.nr}-${colSlug}.png`,
+        fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${spec.nr}-${colSlug}.png`,
+        fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${spec.nr}-${colSlug}.png`
+      });
+    });
+  });
+
+  // Dialga & Palkia Origin Formes
+  specialForms.push({
+    dexNr: 483, base: 'Dialga', formId: 'ORIGIN', label: 'Origin Forme', type1: 'Steel', type2: 'Dragon',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10245.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10245.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10245.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10245.png'
+  });
+  specialForms.push({
+    dexNr: 484, base: 'Palkia', formId: 'ORIGIN', label: 'Origin Forme', type1: 'Water', type2: 'Dragon',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10246.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10246.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10246.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10246.png'
+  });
+
+  // Basculin (Blue-Striped & White-Striped)
+  specialForms.push({
+    dexNr: 550, base: 'Basculin', formId: 'BLUE_STRIPED', label: 'Blue-Striped', type1: 'Water', type2: null,
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10016.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10016.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10016.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10016.png'
+  });
+  specialForms.push({
+    dexNr: 550, base: 'Basculin', formId: 'WHITE_STRIPED', label: 'White-Striped', type1: 'Water', type2: null,
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10247.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10247.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10247.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10247.png'
+  });
+
+  // Toxtricity Low Key
+  specialForms.push({
+    dexNr: 849, base: 'Toxtricity', formId: 'LOW_KEY', label: 'Low Key Form', type1: 'Electric', type2: 'Poison',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10168.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10168.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10168.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10168.png'
+  });
+
+  // Urshifu Rapid Strike
+  specialForms.push({
+    dexNr: 892, base: 'Urshifu', formId: 'RAPID_STRIKE', label: 'Rapid Strike Style', type1: 'Fighting', type2: 'Water',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10178.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10178.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10178.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10178.png'
+  });
+
+  // Furfrou Trims with distinct PokeAPI Home 3D sprites
   const furfrouTrims = ['HEART', 'STAR', 'DIAMOND', 'DEBUTANTE', 'MATRON', 'DANDY', 'LA_REINE', 'KABUKI', 'PHARAOH'];
   furfrouTrims.forEach(trim => {
+    const slug = trim.toLowerCase().replace('_', '-');
+    const trimName = cleanFormName(trim) + ' Trim';
     specialForms.push({
       dexNr: 676,
       base: 'Furfrou',
       formId: trim,
-      label: cleanFormName(trim) + ' Trim',
+      label: trimName,
+      displayName: `Furfrou (${trimName})`,
+      germanName: `Coiffwaff (${trimName})`,
       type1: 'Normal',
       type2: null,
-      icon: `pm676.f${trim}.icon.png`
+      spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/676-${slug}.png`,
+      shinySpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/676-${slug}.png`,
+      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/676-${slug}.png`,
+      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/676-${slug}.png`
     });
   });
 
-  // Add Unown forms (A-Z, !, ?)
+  // Unown Forms (A-Z, !, ?) with 100% working PokeMiners icons + PokeAPI Home 3D fallbacks
   const unownLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').concat(['EXCLAMATION_POINT', 'QUESTION_MARK']);
-  unownLetters.forEach(letter => {
-    const label = letter === 'EXCLAMATION_POINT' ? '!' : letter === 'QUESTION_MARK' ? '?' : letter;
-    const fileSuffix = letter === 'EXCLAMATION_POINT' ? 'EXCLAMATION' : letter === 'QUESTION_MARK' ? 'QUESTION' : letter;
+  unownLetters.forEach((letter, idx) => {
+    const charLabel = letter === 'EXCLAMATION_POINT' ? '!' : letter === 'QUESTION_MARK' ? '?' : letter;
+    const pogoNum = 11 + idx; // 11 is A, 36 is Z, 37 is !, 38 is ?
+    const homeSlug = letter === 'EXCLAMATION_POINT' ? 'exclamation' : letter === 'QUESTION_MARK' ? 'question' : letter.toLowerCase();
     specialForms.push({
       dexNr: 201,
       base: 'Unown',
       formId: letter,
-      label: `Unown ${label}`,
+      label: charLabel,
+      displayName: `Unown (${charLabel})`,
+      germanName: `Icognito (${charLabel})`,
       type1: 'Psychic',
       type2: null,
-      icon: `pm201.f${fileSuffix}.icon.png`
+      spriteUrl: `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_201_${pogoNum}.png`,
+      shinySpriteUrl: `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_201_${pogoNum}_shiny.png`,
+      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/201-${homeSlug}.png`,
+      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/201-${homeSlug}.png`,
+      officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/201-${homeSlug}.png`
     });
   });
 
@@ -389,24 +722,24 @@ async function main() {
     const specialId = `poke_${sf.dexNr}_special_${sf.formId.toLowerCase()}`;
     if (!processedIds.has(specialId)) {
       processedIds.add(specialId);
-      const name = `${sf.base} (${sf.label})`;
-      const gen = sf.dexNr <= 151 ? 1 : sf.dexNr <= 251 ? 2 : sf.dexNr <= 386 ? 3 : sf.dexNr <= 493 ? 4 : sf.dexNr <= 649 ? 5 : sf.dexNr <= 721 ? 6 : sf.dexNr <= 809 ? 7 : sf.dexNr <= 905 ? 8 : 9;
+      const name = sf.displayName || `${sf.base} (${sf.label})`;
+      const gen = (sf.dexNr === 808 || sf.dexNr === 809) ? 0 : (sf.dexNr <= 151 ? 1 : sf.dexNr <= 251 ? 2 : sf.dexNr <= 386 ? 3 : sf.dexNr <= 493 ? 4 : sf.dexNr <= 649 ? 5 : sf.dexNr <= 721 ? 6 : sf.dexNr <= 807 ? 7 : sf.dexNr <= 905 ? 8 : 9);
       allItems.push({
         id: specialId,
         dexNr: sf.dexNr,
         name: name,
-        names: { English: name },
+        names: { English: name, German: sf.germanName || name },
         formId: sf.formId,
         formName: sf.label,
         category: 'form',
         generation: gen,
         type1: sf.type1,
         type2: sf.type2,
-        spriteUrl: `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/${sf.icon}`,
-        shinySpriteUrl: `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/${sf.icon.replace('.icon.png', '.s.icon.png')}`,
-        fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${sf.dexNr}.png`,
-        fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${sf.dexNr}.png`,
-        officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${sf.dexNr}.png`,
+        spriteUrl: sf.spriteUrl,
+        shinySpriteUrl: sf.shinySpriteUrl || sf.spriteUrl,
+        fallbackSpriteUrl: sf.fallbackSpriteUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${sf.dexNr}.png`,
+        fallbackShinyUrl: sf.fallbackShinyUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${sf.dexNr}.png`,
+        officialArtworkUrl: sf.officialArtworkUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${sf.dexNr}.png`,
         hasShiny: true,
         isMega: false,
         isForm: true,

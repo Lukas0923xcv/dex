@@ -148,7 +148,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
         </div>
 
         {/* Preset Templates Toolbar */}
-        <div className="px-6 py-3 bg-slate-850/60 border-b border-slate-800/80 shrink-0 overflow-x-auto scrollbar-thin">
+        <div className="px-6 py-3 bg-slate-900/90 border-b border-slate-800/80 shrink-0 overflow-x-auto scrollbar-thin">
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400 shrink-0 flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
