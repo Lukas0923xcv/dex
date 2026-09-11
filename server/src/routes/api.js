@@ -29,6 +29,8 @@ router.get('/pokemon', (req, res) => {
       status, // 'all', 'caught', 'uncaught'
       collectionId,
       releasedOnly,
+      shadowOnly,
+      shinyOnly,
       limit = 2500,
       offset = 0
     } = req.query;
@@ -38,6 +40,7 @@ router.get('/pokemon', (req, res) => {
         p.id,
         p.dex_nr as dexNr,
         p.name,
+        p.names_json as namesJson,
         p.form_id as formId,
         p.form_name as formName,
         p.category,
@@ -95,6 +98,14 @@ router.get('/pokemon', (req, res) => {
       }
     }
 
+    if (shadowOnly === 'true' || shadowOnly === '1') {
+      sql += ` AND p.has_shadow = 1`;
+    }
+
+    if (shinyOnly === 'true' || shinyOnly === '1') {
+      sql += ` AND p.has_shiny = 1`;
+    }
+
     if (generation && generation !== 'all') {
       sql += ` AND p.generation = ?`;
       params.push(parseInt(generation, 10));
@@ -106,14 +117,56 @@ router.get('/pokemon', (req, res) => {
     }
 
     if (search && search.trim()) {
-      const term = `%${search.trim().toLowerCase()}%`;
-      const num = parseInt(search.trim(), 10);
-      if (!isNaN(num)) {
-        sql += ` AND (p.dex_nr = ? OR LOWER(p.name) LIKE ?)`;
-        params.push(num, term);
-      } else {
-        sql += ` AND (LOWER(p.name) LIKE ? OR LOWER(COALESCE(p.form_name, '')) LIKE ?)`;
-        params.push(term, term);
+      const rawQuery = search.trim().toLowerCase();
+      let q = rawQuery;
+      let requireShadow = false;
+      let requireShiny = false;
+      let requireMega = false;
+
+      if (q === 'crypto' || q === 'shadow' || q === 'schatten') {
+        requireShadow = true;
+        q = '';
+      } else if (q.startsWith('crypto ') || q.startsWith('shadow ') || q.startsWith('schatten ')) {
+        requireShadow = true;
+        q = q.replace(/^(crypto|shadow|schatten)\s+/, '');
+      }
+
+      if (q === 'shiny' || q === 'schillernd' || q === 'schillernde') {
+        requireShiny = true;
+        q = '';
+      } else if (q.startsWith('shiny ') || q.startsWith('schillernd ')) {
+        requireShiny = true;
+        q = q.replace(/^(shiny|schillernd)\s+/, '');
+      }
+
+      if (q === 'mega') {
+        requireMega = true;
+        q = '';
+      } else if (q.startsWith('mega ')) {
+        requireMega = true;
+        q = q.replace(/^mega\s+/, '');
+      }
+
+      if (requireShadow) {
+        sql += ` AND p.has_shadow = 1`;
+      }
+      if (requireShiny) {
+        sql += ` AND p.has_shiny = 1`;
+      }
+      if (requireMega) {
+        sql += ` AND (p.category = 'mega' OR p.is_mega = 1)`;
+      }
+
+      if (q) {
+        const num = parseInt(q, 10);
+        const term = `%${q}%`;
+        if (!isNaN(num)) {
+          sql += ` AND (p.dex_nr = ? OR LOWER(p.name) LIKE ?)`;
+          params.push(num, term);
+        } else {
+          sql += ` AND (LOWER(p.name) LIKE ? OR LOWER(COALESCE(p.form_name, '')) LIKE ? OR LOWER(COALESCE(p.names_json, '')) LIKE ?)`;
+          params.push(term, term, term);
+        }
       }
     }
 
@@ -148,6 +201,7 @@ router.get('/pokemon', (req, res) => {
     // Convert integer booleans
     const result = rows.map(r => ({
       ...r,
+      names: r.namesJson ? JSON.parse(r.namesJson) : undefined,
       hasShiny: Boolean(r.hasShiny),
       hasShadow: Boolean(r.hasShadow),
       isMega: Boolean(r.isMega),
@@ -231,18 +285,19 @@ router.post('/progress/toggle', (req, res) => {
 // POST /api/progress/batch
 router.post('/progress/batch', (req, res) => {
   try {
-    const { pokemonIds, caught, shinyCaught } = req.body;
+    const { pokemonIds, caught, shinyCaught, shadowCaught } = req.body;
     if (!Array.isArray(pokemonIds) || pokemonIds.length === 0) {
       return res.status(400).json({ error: 'pokemonIds array required' });
     }
 
     const now = new Date().toISOString();
     const upsertStmt = db.prepare(`
-      INSERT INTO user_progress (pokemon_id, caught, shiny_caught, updated_at)
-      VALUES (?, ?, ?, ?)
+      INSERT INTO user_progress (pokemon_id, caught, shiny_caught, shadow_caught, updated_at)
+      VALUES (?, ?, ?, ?, ?)
       ON CONFLICT(pokemon_id) DO UPDATE SET
         caught = COALESCE(?, caught),
         shiny_caught = COALESCE(?, shiny_caught),
+        shadow_caught = COALESCE(?, shadow_caught),
         updated_at = ?
     `);
 
@@ -250,7 +305,8 @@ router.post('/progress/batch', (req, res) => {
     for (const id of pokemonIds) {
       const cVal = caught !== undefined ? (caught ? 1 : 0) : null;
       const sVal = shinyCaught !== undefined ? (shinyCaught ? 1 : 0) : null;
-      upsertStmt.run(id, cVal || 0, sVal || 0, now, cVal, sVal, now);
+      const shVal = shadowCaught !== undefined ? (shadowCaught ? 1 : 0) : null;
+      upsertStmt.run(id, cVal || 0, sVal || 0, shVal || 0, now, cVal, sVal, shVal, now);
     }
     db.exec('COMMIT;');
 

@@ -62,6 +62,11 @@ try {
 } catch (e) {
   // Column already exists
 }
+try {
+  db.exec('ALTER TABLE pokemon ADD COLUMN names_json TEXT;');
+} catch (e) {
+  // Column already exists
+}
 
 db.exec(`
 

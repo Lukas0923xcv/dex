@@ -1,6 +1,6 @@
 import React from 'react';
 import { TrackingMode, CustomCollection, Theme, DashboardTabConfig } from '../types';
-import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal } from 'lucide-react';
+import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame } from 'lucide-react';
 
 interface HeaderProps {
   mode: TrackingMode;
@@ -36,6 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
   const modes = [
     { id: 'standard' as TrackingMode, label: 'Standard Dex', icon: CheckCircle2 },
     { id: 'shiny' as TrackingMode, label: 'Shiny Dex', icon: Sparkles, color: 'text-amber-500 dark:text-amber-400' },
+    { id: 'shadow' as TrackingMode, label: 'Crypto Dex', icon: Flame, color: 'text-purple-500 dark:text-purple-400' },
     { id: 'mega' as TrackingMode, label: 'Mega Dex', icon: Zap, color: 'text-rose-500 dark:text-rose-400' },
     { id: 'form' as TrackingMode, label: 'Alle Formen', icon: Layers, color: 'text-indigo-500 dark:text-indigo-400' },
     { id: 'costume' as TrackingMode, label: 'Kostüme', icon: Sparkles, color: 'text-pink-500 dark:text-pink-400' },

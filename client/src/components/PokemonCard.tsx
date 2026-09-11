@@ -30,14 +30,14 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
   onOpenAddModal
 }) => {
   const isCustomMode = mode === 'custom';
-  const categoryType = isCustomMode ? (collection?.categoryType || 'normal') : 'normal';
+  const categoryType = isCustomMode ? (collection?.categoryType || 'normal') : (mode === 'shadow' ? 'shadow' : 'normal');
   const isShinyMode = mode === 'shiny' || Boolean(isCustomMode && collection?.trackShiny) || Boolean(shinyOnly);
 
   // Determine caught state based on active context
   let isCaught = false;
   if (isShinyMode) {
     isCaught = Boolean(pokemon.shinyCaught);
-  } else if (isCustomMode && categoryType === 'shadow') {
+  } else if (mode === 'shadow' || (isCustomMode && categoryType === 'shadow')) {
     isCaught = Boolean(pokemon.shadowCaught);
   } else if (isCustomMode && categoryType === 'purified') {
     isCaught = Boolean(pokemon.purifiedCaught);
@@ -162,6 +162,27 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
               }`}
             >
               <Sparkles className={`w-3.5 h-3.5 ${pokemon.shinyCaught ? 'fill-current' : ''}`} />
+            </button>
+          )}
+
+          {/* Shadow toggle button (if not in shadow mode, but pokemon has shadow) */}
+          {mode !== 'shadow' && categoryType !== 'shadow' && pokemon.hasShadow && (
+            <button
+              type="button"
+              title={pokemon.shadowCaught ? 'Crypto gefangen!' : 'Crypto markieren'}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onToggleFeature) {
+                  onToggleFeature(pokemon.id, 'shadow');
+                }
+              }}
+              className={`p-1 rounded-md transition-colors ${
+                pokemon.shadowCaught
+                  ? 'text-purple-500 dark:text-purple-400 bg-purple-500/10 hover:bg-purple-500/20'
+                  : 'text-slate-400 dark:text-slate-500 hover:text-purple-500 dark:hover:text-purple-300 hover:bg-slate-100 dark:hover:bg-slate-700/50'
+              }`}
+            >
+              <Flame className={`w-3.5 h-3.5 ${pokemon.shadowCaught ? 'fill-current' : ''}`} />
             </button>
           )}
 

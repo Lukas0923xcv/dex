@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CustomCollection, DashboardTabConfig } from '../types';
-import { X, CheckCircle2, Sparkles, Zap, Layers, Bookmark, ArrowUp, ArrowDown, RotateCcw, Pin, Eye, EyeOff } from 'lucide-react';
+import { X, CheckCircle2, Sparkles, Zap, Layers, Bookmark, ArrowUp, ArrowDown, RotateCcw, Pin, Eye, EyeOff, Flame } from 'lucide-react';
 
 interface DashboardCustomizerModalProps {
   isOpen: boolean;
@@ -96,6 +96,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
     const defaults: DashboardTabConfig[] = [
       { id: 'standard', label: 'Standard Dex', type: 'preset', visible: true },
       { id: 'shiny', label: 'Shiny Dex', type: 'preset', visible: true, color: '#f59e0b' },
+      { id: 'shadow', label: 'Crypto Dex', type: 'preset', visible: true, color: '#a855f7' },
       { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
       { id: 'form', label: 'Alle Formen', type: 'preset', visible: true, color: '#6366f1' },
       { id: 'costume', label: 'Kostüme', type: 'preset', visible: true, color: '#ec4899' },
@@ -203,6 +204,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                         <div className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
                           {tab.id === 'standard' && <CheckCircle2 className="w-4 h-4 text-blue-500" />}
                           {tab.id === 'shiny' && <Sparkles className="w-4 h-4 text-amber-500" />}
+                          {tab.id === 'shadow' && <Flame className="w-4 h-4 text-purple-500" />}
                           {tab.id === 'mega' && <Zap className="w-4 h-4 text-rose-500" />}
                           {tab.id === 'form' && <Layers className="w-4 h-4 text-indigo-500" />}
                           {tab.id === 'costume' && <Sparkles className="w-4 h-4 text-pink-500" />}
@@ -215,6 +217,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                           <div className="text-[11px] text-slate-400">
                             {tab.id === 'standard' && 'Offizielle 1.025 Basis-Spezies'}
                             {tab.id === 'shiny' && 'Nur freigeschaltete Schillernde Varianten'}
+                            {tab.id === 'shadow' && '326 offiziell erschienene Crypto-Pokémon'}
                             {tab.id === 'mega' && 'Mega- & Protomorphose-Entwicklungen'}
                             {tab.id === 'form' && 'Regionale & alternative Formen'}
                             {tab.id === 'costume' && 'Event- & Kostüm-Pokémon'}

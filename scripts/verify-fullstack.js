@@ -328,8 +328,40 @@ async function main() {
     }
     console.log('✓ Shadow category API query passed');
 
+    // 12. Smart Crypto Keyword Search & shadowOnly Filter Test
+    const searchCrypto = await request('http://localhost:3456/api/pokemon?search=crypto&limit=1000');
+    const searchShadow = await request('http://localhost:3456/api/pokemon?search=shadow&limit=1000');
+    const searchSchatten = await request('http://localhost:3456/api/pokemon?search=schatten&limit=1000');
+    const filterShadowOnly = await request('http://localhost:3456/api/pokemon?shadowOnly=true&limit=1000');
+    const searchCompound = await request('http://localhost:3456/api/pokemon?search=crypto%20mewtu');
+
+    console.log(`[TEST 12] Crypto Search: crypto=${searchCrypto.data.length}, shadow=${searchShadow.data.length}, schatten=${searchSchatten.data.length}, shadowOnly=${filterShadowOnly.data.length}, compound=${searchCompound.data.length}`);
+    if (searchCrypto.data.length !== 326 || searchShadow.data.length !== 326 || searchSchatten.data.length !== 326 || filterShadowOnly.data.length !== 326) {
+      throw new Error(`Smart crypto search failed to return all 326 shadow pokemon`);
+    }
+    if (searchCompound.data.length === 0 || !(searchCompound.data[0].name.toLowerCase().includes('mewt') || searchCompound.data[0].names?.German === 'Mewtu')) {
+      throw new Error(`Compound search "crypto mewtu" failed`);
+    }
+    console.log('✓ Smart crypto search & shadowOnly filter passed');
+
+    // 13. Shadow Batch Progress Update Test
+    const batchShadowRes = await request('http://localhost:3456/api/progress/batch', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { pokemonIds: ['poke_1_base', 'poke_4_base'], shadowCaught: true }
+    });
+    console.log(`[TEST 13] Batch Shadow Progress: HTTP ${batchShadowRes.status}, success: ${batchShadowRes.data.success}`);
+    if (!batchShadowRes.data.success) {
+      throw new Error('Batch shadow progress update failed');
+    }
+    const checkBulba = await request('http://localhost:3456/api/pokemon?category=standard&limit=1');
+    if (!checkBulba.data[0].shadowCaught) {
+      throw new Error('Bulbasaur shadowCaught was not persisted');
+    }
+    console.log('✓ Shadow batch progress update passed');
+
     console.log('\n=========================================');
-    console.log('🎉 ALL 11 FULL-STACK TESTS PASSED 100%! 🎉');
+    console.log('🎉 ALL 13 FULL-STACK TESTS PASSED 100%! 🎉');
     console.log('=========================================\n');
   } finally {
     serverProc.kill();

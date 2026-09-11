@@ -1,6 +1,6 @@
 import React from 'react';
 import { FilterState, StatusFilter, TrackingMode, CustomCollection } from '../types';
-import { Search, X, Filter, ArrowUpDown, Check, RotateCcw, Sparkles } from 'lucide-react';
+import { Search, X, Filter, ArrowUpDown, Check, RotateCcw, Sparkles, Flame } from 'lucide-react';
 
 interface FilterBarProps {
   filters: FilterState;
@@ -54,6 +54,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     filters.type !== 'all' ||
     filters.status !== 'all' ||
     Boolean(filters.shinyOnly) ||
+    Boolean(filters.shadowOnly) ||
     (showFormsControls && Boolean(filters.showGenderTracking)) ||
     (showFormsControls && Boolean(filters.includeBaseInForms));
 
@@ -110,6 +111,23 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           >
             <Sparkles className={`w-3.5 h-3.5 ${filters.shinyOnly ? 'text-amber-500' : 'text-slate-400'}`} />
             <span>Nur Schillernde</span>
+          </button>
+        )}
+
+        {/* Shadow / Crypto Only Toggle */}
+        {mode !== 'shadow' && (
+          <button
+            type="button"
+            onClick={() => onFilterChange({ shadowOnly: !filters.shadowOnly })}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 select-none cursor-pointer ${
+              filters.shadowOnly
+                ? 'bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-400/60 shadow-sm font-bold'
+                : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
+            }`}
+            title="Nur Pokémon anzeigen, die eine Crypto-Version (Schatten) in Pokémon GO besitzen (326 Spezies)"
+          >
+            <Flame className={`w-3.5 h-3.5 ${filters.shadowOnly ? 'text-purple-500' : 'text-slate-400'}`} />
+            <span>Nur Crypto</span>
           </button>
         )}
 

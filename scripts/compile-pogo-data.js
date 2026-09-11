@@ -1253,6 +1253,42 @@ async function main() {
     }
   }
 
+  // 245 base species with released Shadow forms in Pokemon GO (official Rocket battles data)
+  const shadowSpeciesNrs = new Set([
+    1,2,3,4,5,6,7,8,9,13,14,15,19,20,23,24,27,28,29,30,31,32,33,34,37,38,41,42,43,44,45,48,49,50,51,52,53,54,55,58,59,60,61,62,63,64,65,66,67,68,69,70,71,74,75,76,79,80,81,82,88,89,90,91,96,97,100,101,102,103,104,105,106,107,109,110,114,116,117,123,125,126,127,129,130,131,137,138,139,142,143,144,145,146,147,148,149,150,152,153,154,155,156,157,158,159,160,169,179,180,181,182,185,186,187,188,189,190,194,195,198,199,200,202,203,204,205,207,209,210,212,213,215,216,217,220,221,225,227,228,229,230,233,234,243,244,245,246,247,248,249,250,258,259,260,261,262,273,274,275,280,281,282,293,294,295,296,297,299,302,303,304,305,306,309,310,318,319,322,323,328,329,330,331,332,345,346,347,348,353,354,355,356,359,363,364,365,371,372,373,374,375,376,381,387,388,389,396,397,398,399,400,403,404,405,424,429,430,434,435,449,450,451,452,459,460,461,462,465,466,467,472,473,474,475,476,477,504,505,509,510,580,581,590,591
+  ]);
+
+  const recentReleasedShinies = [
+    808, 809, 704, 705, 706, 757, 758, 769, 770, 778, 782, 783, 784,
+    785, 786, 787, 788, 791, 792, 793, 794, 795, 796, 797, 798, 799,
+    800, 803, 804
+  ];
+
+  // Shiny locked species in Pokemon GO (never shiny):
+  const shinyLockedNrs = new Set([
+    489, 490, 493, 494, 647, 648, 718, 719, 720, 721, 772, 773, 774, 789, 790, 801, 802, 807, 890, 891, 892, 893, 894, 895, 896, 897, 898, 905, 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1014, 1015, 1016, 1017, 1018, 1019, 1020, 1021, 1022, 1023, 1024, 1025
+  ]);
+
+  let shinyDexNrs = new Set();
+  let shadowDexNrs = shadowSpeciesNrs;
+  try {
+    const [shinyData, shadowData] = await Promise.all([
+      fetchJson('https://pogoapi.net/api/v1/shiny_pokemon.json'),
+      fetchJson('https://pogoapi.net/api/v1/shadow_pokemon.json')
+    ]);
+    shinyDexNrs = new Set(Object.values(shinyData).map(s => Number(s.id)));
+    for (const nr of recentReleasedShinies) shinyDexNrs.add(nr);
+    for (const locked of shinyLockedNrs) shinyDexNrs.delete(locked);
+    shadowDexNrs = new Set(Object.values(shadowData).map(s => Number(s.id)));
+  } catch (e) {
+    console.warn('Could not fetch pogoapi.net data, using fallback lists:', e.message);
+  }
+
+  for (const p of allItems) {
+    p.hasShadow = shadowDexNrs.has(p.dexNr) && !p.isMega && !p.isCostume && Boolean(p.releasedInGo);
+    p.hasShiny = shinyDexNrs.has(p.dexNr) && Boolean(p.releasedInGo);
+  }
+
   // Sort: Category order (standard, mega, form, costume), then dexNr, then base form first, then name
   allItems.sort((a, b) => {
     if (a.category !== b.category) {
@@ -1277,6 +1313,8 @@ async function main() {
     megas: allItems.filter(p => p.category === 'mega').length,
     forms: allItems.filter(p => p.category === 'form').length,
     costumes: allItems.filter(p => p.category === 'costume').length,
+    shadow: allItems.filter(p => p.hasShadow).length,
+    shiny: allItems.filter(p => p.hasShiny).length,
     releasedInGo: allItems.filter(p => p.releasedInGo).length,
     unreleasedInGo: allItems.filter(p => !p.releasedInGo).length
   };

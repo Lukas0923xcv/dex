@@ -66,11 +66,12 @@ export const App: React.FC = () => {
       return;
     }
 
-    // On preset modes (standard, shiny, mega, form, costume):
+    // On preset modes (standard, shiny, shadow, mega, form, costume):
     // Find or create an editable custom dashboard based on the preset!
     const presetNameMap: Record<string, string> = {
       standard: 'Mein Standard Dex',
       shiny: 'Mein Shiny Dex',
+      shadow: 'Mein Crypto Dex',
       mega: 'Mein Mega Dex',
       form: 'Mein Formen Dex',
       costume: 'Mein Kostüme Dex'
@@ -86,9 +87,9 @@ export const App: React.FC = () => {
       const newColl = await createCollection(
         targetName,
         `Persönliches Dashboard basierend auf ${targetName}`,
-        mode === 'costume' ? '#ec4899' : mode === 'mega' ? '#ef4444' : mode === 'shiny' ? '#f59e0b' : '#3b82f6',
+        mode === 'shadow' ? '#a855f7' : mode === 'costume' ? '#ec4899' : mode === 'mega' ? '#ef4444' : mode === 'shiny' ? '#f59e0b' : '#3b82f6',
         {
-          categoryType: mode === 'costume' ? 'event' : mode === 'mega' ? 'mega' : 'normal',
+          categoryType: mode === 'shadow' ? 'shadow' : mode === 'costume' ? 'event' : mode === 'mega' ? 'mega' : 'normal',
           variantMode: 'multi',
           trackShiny: mode === 'shiny',
           pokemonIds: initialIds
@@ -113,6 +114,7 @@ export const App: React.FC = () => {
         ? (filters.generation === 0 ? 'Unbekannt · Meltan Shiny Checklist' : `Gen ${filters.generation} Shiny Checklist`)
         : 'Shiny Dex Completion';
     }
+    if (mode === 'shadow') return 'Crypto / Shadow Dex Completion';
     if (mode === 'mega') return 'Mega & Primal Dex';
     if (mode === 'form') return 'Regional & Alternate Forms Dex';
     if (mode === 'costume') return 'Event Costumes Dex';
@@ -176,7 +178,8 @@ export const App: React.FC = () => {
             generation: 'all',
             type: 'all',
             status: 'all',
-            shinyOnly: false
+            shinyOnly: false,
+            shadowOnly: false
           }))}
           onMarkRegionCaught={markRegionCaught}
         />
@@ -198,7 +201,8 @@ export const App: React.FC = () => {
             generation: 'all',
             type: 'all',
             status: 'all',
-            shinyOnly: false
+            shinyOnly: false,
+            shadowOnly: false
           }))}
         />
       </main>
