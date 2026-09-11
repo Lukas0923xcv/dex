@@ -180,6 +180,30 @@ export function useDex() {
     setPokemonList(prev => [...prev]);
   }, []);
 
+  // Bulk mark caught/uncaught (for regions, whole lists, etc.)
+  const markBatchCaught = useCallback(async (pokemonIds: string[], caught: boolean) => {
+    if (pokemonIds.length === 0) return;
+    const isShiny = mode === 'shiny';
+    await storage.batchUpdateProgress(pokemonIds, {
+      caught: isShiny ? undefined : caught,
+      shinyCaught: isShiny ? caught : undefined
+    });
+
+    setPokemonList(prev =>
+      prev.map(p => {
+        if (!pokemonIds.includes(p.id)) return p;
+        return {
+          ...p,
+          caught: isShiny ? p.caught : caught,
+          shinyCaught: isShiny ? caught : p.shinyCaught
+        };
+      })
+    );
+
+    const updatedColls = await storage.getCollections();
+    setCollections(updatedColls);
+  }, [mode]);
+
   // Filtered Pokémon list
   const filteredPokemon = useMemo(() => {
     let result = [...pokemonList];
@@ -198,21 +222,30 @@ export function useDex() {
     } else if (mode === 'mega') {
       result = result.filter(p => p.category === 'mega' || p.isMega);
     } else if (mode === 'form') {
+      const includeGender = Boolean(filters.showGenderTracking);
+      const isQualifyingForm = (p: Pokemon) => {
+        if (p.category !== 'form' && !p.isForm) return false;
+        if (p.isGenderDifference && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id)) {
+          return false;
+        }
+        return true;
+      };
+
       if (filters.includeBaseInForms) {
-        const formDexNrs = new Set(pokemonList.filter(p => p.category === 'form' || p.isForm).map(p => p.dexNr));
-        result = result.filter(p => (p.category === 'form' || p.isForm) || (p.category === 'standard' && formDexNrs.has(p.dexNr)));
+        const formDexNrs = new Set(pokemonList.filter(isQualifyingForm).map(p => p.dexNr));
+        result = result.filter(p => isQualifyingForm(p) || (p.category === 'standard' && formDexNrs.has(p.dexNr)));
       } else {
-        result = result.filter(p => p.category === 'form' || p.isForm);
+        result = result.filter(isQualifyingForm);
       }
     } else if (mode === 'costume') {
       result = result.filter(p => p.category === 'costume' || p.isCostume);
-    } else if (mode === 'custom' && filters.activeCollectionId) {
-      const activeColl = collections.find(c => c.id === filters.activeCollectionId);
-      const itemIds = storage.getCollectionItemIds(filters.activeCollectionId);
-      if (itemIds.size > 0) {
-        result = result.filter(p => itemIds.has(p.id));
-      } else if (activeColl) {
-        if (activeColl.categoryType === 'mega') {
+    } else if (mode === 'custom') {
+      const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
+      if (activeColl) {
+        const itemIds = storage.getCollectionItemIds(activeColl.id);
+        if (itemIds.size > 0) {
+          result = result.filter(p => itemIds.has(p.id));
+        } else if (activeColl.categoryType === 'mega') {
           result = result.filter(p => p.category === 'mega' || p.isMega);
         } else if (activeColl.categoryType === 'event') {
           result = result.filter(p => p.category === 'costume' || p.isCostume);
@@ -238,7 +271,7 @@ export function useDex() {
     }
 
     // 4. Filter by Caught Status
-    const activeColl = collections.find(c => c.id === filters.activeCollectionId);
+    const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
     const getPokemonCaughtStatus = (p: Pokemon) => {
       if (mode === 'shiny') return Boolean(p.shinyCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
@@ -268,17 +301,42 @@ export function useDex() {
       });
     }
 
-    // 6. Sort Order
-    if (filters.sortBy === 'dexDesc') {
-      result.sort((a, b) => b.dexNr - a.dexNr || b.name.localeCompare(a.name));
-    } else if (filters.sortBy === 'nameAsc') {
-      result.sort((a, b) => a.name.localeCompare(b.name));
-    } else {
-      result.sort((a, b) => a.dexNr - b.dexNr || a.name.localeCompare(b.name));
-    }
+    // 6. Sort Order: Guarantee Base Form ALWAYS precedes Alternate & Gender Forms!
+    const isBaseForm = (p: Pokemon) =>
+      p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
+
+    result.sort((a, b) => {
+      // Within the same species: Base form is always first, followed by forms, then gender differences
+      if (a.dexNr === b.dexNr) {
+        const aBase = isBaseForm(a);
+        const bBase = isBaseForm(b);
+        if (aBase !== bBase) {
+          return aBase ? -1 : 1;
+        }
+        if (Boolean(a.isGenderDifference) !== Boolean(b.isGenderDifference)) {
+          return a.isGenderDifference ? 1 : -1;
+        }
+        return (a.formName || a.name).localeCompare(b.formName || b.name);
+      }
+
+      if (filters.sortBy === 'dexDesc') {
+        return b.dexNr - a.dexNr;
+      } else if (filters.sortBy === 'nameAsc') {
+        return a.name.localeCompare(b.name);
+      } else {
+        return a.dexNr - b.dexNr;
+      }
+    });
 
     return result;
   }, [pokemonList, mode, filters, collections]);
+
+  const markRegionCaught = useCallback(async (generation: number | 'all', caught: boolean) => {
+    const targetIds = filteredPokemon
+      .filter(p => generation === 'all' || p.generation === generation)
+      .map(p => p.id);
+    await markBatchCaught(targetIds, caught);
+  }, [filteredPokemon, markBatchCaught]);
 
   // Stats calculation for current view
   const currentViewStats = useMemo(() => {
@@ -288,7 +346,7 @@ export function useDex() {
       pool = pool.filter(p => p.releasedInGo);
     }
 
-    const activeColl = collections.find(c => c.id === filters.activeCollectionId);
+    const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
 
     if (mode === 'standard') {
       pool = pool.filter(p => p.category === 'standard');
@@ -297,20 +355,29 @@ export function useDex() {
     } else if (mode === 'mega') {
       pool = pool.filter(p => p.category === 'mega' || p.isMega);
     } else if (mode === 'form') {
+      const includeGender = Boolean(filters.showGenderTracking);
+      const isQualifyingForm = (p: Pokemon) => {
+        if (p.category !== 'form' && !p.isForm) return false;
+        if (p.isGenderDifference && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id)) {
+          return false;
+        }
+        return true;
+      };
+
       if (filters.includeBaseInForms) {
-        const formDexNrs = new Set(pokemonList.filter(p => p.category === 'form' || p.isForm).map(p => p.dexNr));
-        pool = pool.filter(p => (p.category === 'form' || p.isForm) || (p.category === 'standard' && formDexNrs.has(p.dexNr)));
+        const formDexNrs = new Set(pokemonList.filter(isQualifyingForm).map(p => p.dexNr));
+        pool = pool.filter(p => isQualifyingForm(p) || (p.category === 'standard' && formDexNrs.has(p.dexNr)));
       } else {
-        pool = pool.filter(p => p.category === 'form' || p.isForm);
+        pool = pool.filter(isQualifyingForm);
       }
     } else if (mode === 'costume') {
       pool = pool.filter(p => p.category === 'costume' || p.isCostume);
-    } else if (mode === 'custom' && filters.activeCollectionId) {
-      const itemIds = storage.getCollectionItemIds(filters.activeCollectionId);
-      if (itemIds.size > 0) {
-        pool = pool.filter(p => itemIds.has(p.id));
-      } else if (activeColl) {
-        if (activeColl.categoryType === 'mega') {
+    } else if (mode === 'custom') {
+      if (activeColl) {
+        const itemIds = storage.getCollectionItemIds(activeColl.id);
+        if (itemIds.size > 0) {
+          pool = pool.filter(p => itemIds.has(p.id));
+        } else if (activeColl.categoryType === 'mega') {
           pool = pool.filter(p => p.category === 'mega' || p.isMega);
         } else if (activeColl.categoryType === 'event') {
           pool = pool.filter(p => p.category === 'costume' || p.isCostume);
@@ -339,7 +406,7 @@ export function useDex() {
     const percentage = total > 0 ? Math.round((caught / total) * 100) : 0;
 
     return { total, caught, percentage };
-  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, filters.includeBaseInForms, collections]);
+  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, filters.includeBaseInForms, filters.showGenderTracking, collections]);
 
   // Trigger celebration on 100%
   useEffect(() => {
@@ -384,6 +451,8 @@ export function useDex() {
     toggleCaught,
     toggleShiny,
     toggleFeature,
+    markBatchCaught,
+    markRegionCaught,
     createCollection,
     deleteCollection,
     toggleCollectionItem,

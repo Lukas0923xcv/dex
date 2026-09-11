@@ -139,7 +139,47 @@ async function main() {
 
     console.log(`[TEST 3e] Costume accuracy passed (Count: 295, Crowned not costume, Pikavisor Ivysaur: verified, Venusaur Copy deduplication: 1, Local costume sprite 200 OK, Deerling fake: 0)`);
 
-    // 4. Progress Toggle Test
+    // 3f. Gender Differences & Form Count Validation
+    const allFormsRes = await request('http://localhost:3456/api/pokemon?category=form&limit=500');
+    if (allFormsRes.data.length !== 288) {
+      throw new Error(`Expected exactly 288 forms (190 regional + 98 gender diffs), got: ${allFormsRes.data.length}`);
+    }
+    const genderDiffForms = allFormsRes.data.filter(p => p.isGenderDifference);
+    if (genderDiffForms.length !== 101) {
+      throw new Error(`Expected 101 total gender diff forms, got: ${genderDiffForms.length}`);
+    }
+    const femalePika = genderDiffForms.find(p => p.dexNr === 25);
+    if (!femalePika || !femalePika.spriteUrl.includes('other/home/female/25.png')) {
+      throw new Error(`Female Pikachu form invalid: ${femalePika?.spriteUrl}`);
+    }
+    const femaleWobbu = genderDiffForms.find(p => p.dexNr === 202);
+    if (!femaleWobbu || !femaleWobbu.spriteUrl.includes('other/home/female/202.png')) {
+      throw new Error(`Female Wobbuffet form invalid: ${femaleWobbu?.spriteUrl}`);
+    }
+    console.log(`[TEST 3f] Gender difference forms passed (Total: 101, Female Pikachu & Wobbuffet verified)`);
+
+    // 3g. Base Form First Sorting Order Verification
+    const fullDexRes = await request('http://localhost:3456/api/pokemon?limit=2500');
+    const isBase = p => p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
+    const sortedSample = [...fullDexRes.data].sort((a, b) => {
+      if (a.dexNr !== b.dexNr) return a.dexNr - b.dexNr;
+      const aBase = isBase(a);
+      const bBase = isBase(b);
+      if (aBase !== bBase) return aBase ? -1 : 1;
+      if (Boolean(a.isGenderDifference) !== Boolean(b.isGenderDifference)) return a.isGenderDifference ? 1 : -1;
+      return (a.formName || a.name).localeCompare(b.formName || b.name);
+    });
+
+    // Check species with forms: Rattata (#19), Pikachu (#25), Vulpix (#37)
+    const vulpixGroup = sortedSample.filter(p => p.dexNr === 37);
+    if (vulpixGroup[0].name !== 'Vulpix' || !isBase(vulpixGroup[0])) {
+      throw new Error(`Vulpix sorting failed: ${vulpixGroup[0].name} was first instead of Base Vulpix`);
+    }
+    const pikaGroup = sortedSample.filter(p => p.dexNr === 25);
+    if (pikaGroup[0].name !== 'Pikachu' || !isBase(pikaGroup[0])) {
+      throw new Error(`Pikachu sorting failed: ${pikaGroup[0].name} was first instead of Base Pikachu`);
+    }
+    console.log(`[TEST 3g] Base form first sorting order verified (Vulpix base before Alolan, Pikachu base before Female)`);
     const wasCaught = pokeRes.data.find(p => p.id === 'poke_1_base')?.caught ?? false;
     const toggleRes = await request('http://localhost:3456/api/progress/toggle', {
       method: 'POST',

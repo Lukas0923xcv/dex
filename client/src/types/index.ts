@@ -18,6 +18,7 @@ export interface Pokemon {
   isMega: boolean;
   isForm: boolean;
   isCostume?: boolean;
+  isGenderDifference?: boolean;
   releasedInGo: boolean;
   // User Progress fields
   caught?: boolean;

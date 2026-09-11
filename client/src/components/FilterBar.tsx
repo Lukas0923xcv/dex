@@ -1,12 +1,13 @@
 import React from 'react';
 import { FilterState, StatusFilter, TrackingMode } from '../types';
-import { Search, X, Filter, ArrowUpDown } from 'lucide-react';
+import { Search, X, Filter, ArrowUpDown, Check, RotateCcw } from 'lucide-react';
 
 interface FilterBarProps {
   filters: FilterState;
   mode?: TrackingMode;
   onFilterChange: (filters: Partial<FilterState>) => void;
   onClearFilters: () => void;
+  onMarkRegionCaught?: (generation: number | 'all', caught: boolean) => Promise<void>;
 }
 
 const GENERATIONS = [
@@ -34,7 +35,8 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   filters,
   mode,
   onFilterChange,
-  onClearFilters
+  onClearFilters,
+  onMarkRegionCaught
 }) => {
   const hasActiveFilters =
     filters.search !== '' ||
@@ -177,21 +179,65 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         )}
       </div>
 
-      {/* Generation Horizontal Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
-        {GENERATIONS.map((gen) => (
-          <button
-            key={gen.id}
-            onClick={() => onFilterChange({ generation: gen.id as any })}
-            className={`px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
-              filters.generation === gen.id
-                ? 'bg-blue-600 text-white font-semibold shadow-sm ring-1 ring-blue-400/50'
-                : 'bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/40'
-            }`}
-          >
-            {gen.label}
-          </button>
-        ))}
+      {/* Generation Horizontal Pills & Bulk Region Completion Actions */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800/60">
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin flex-1">
+          {GENERATIONS.map((gen) => (
+            <button
+              key={gen.id}
+              onClick={() => onFilterChange({ generation: gen.id as any })}
+              className={`px-3 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
+                filters.generation === gen.id
+                  ? 'bg-blue-600 text-white font-semibold shadow-sm ring-1 ring-blue-400/50'
+                  : 'bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-800 border border-slate-200/80 dark:border-slate-700/40'
+              }`}
+            >
+              {gen.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Quick Bulk Region Completion Action */}
+        {onMarkRegionCaught && (
+          <div className="flex items-center gap-1.5 shrink-0 pl-1">
+            <button
+              type="button"
+              onClick={() => {
+                const regionName = filters.generation === 'all'
+                  ? 'alle aktuell angezeigten Pokémon'
+                  : `${GENERATIONS.find(g => g.id === filters.generation)?.label || 'Region'}`;
+                if (window.confirm(`Möchtest du wirklich ${regionName} als GEFANGEN / ERLEDIGT markieren?`)) {
+                  onMarkRegionCaught(filters.generation, true);
+                }
+              }}
+              className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/80 text-xs font-bold rounded-lg transition-all shadow-xs cursor-pointer whitespace-nowrap"
+              title={`Alle Pokémon dieser Region/Auswahl als gefangen markieren`}
+            >
+              <Check className="w-3.5 h-3.5 stroke-[3]" />
+              <span>
+                {filters.generation === 'all'
+                  ? 'Alle als erledigt'
+                  : `${GENERATIONS.find(g => g.id === filters.generation)?.label?.split('·')[1]?.trim() || 'Region'} erledigt`}
+              </span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                const regionName = filters.generation === 'all'
+                  ? 'alle aktuell angezeigten Pokémon'
+                  : `${GENERATIONS.find(g => g.id === filters.generation)?.label || 'Region'}`;
+                if (window.confirm(`Möchtest du ${regionName} als UNGEFANGEN zurücksetzen?`)) {
+                  onMarkRegionCaught(filters.generation, false);
+                }
+              }}
+              className="p-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-700 text-xs rounded-lg transition-all cursor-pointer shadow-xs"
+              title="Region zurücksetzen / als ungefangen markieren"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

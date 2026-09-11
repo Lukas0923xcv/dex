@@ -74,6 +74,18 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
+            {onOpenCollectionEditor && (
+              <button
+                type="button"
+                onClick={onOpenCollectionEditor}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 dark:bg-blue-950/60 dark:hover:bg-blue-900/60 dark:border-blue-800 dark:text-blue-300 font-bold text-xs transition-all shadow-xs cursor-pointer"
+                title="Aktuelle Ansicht anpassen & genau auswählen, welche Pokémon auf dem Dashboard erscheinen sollen"
+              >
+                <Bookmark className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span className="hidden sm:inline">Dashboard anpassen</span>
+              </button>
+            )}
+
             {/* Light / Dark Mode Toggle */}
             <button
               type="button"

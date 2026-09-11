@@ -27,6 +27,8 @@ export const App: React.FC = () => {
     toggleCaught,
     toggleShiny,
     toggleFeature,
+    markBatchCaught,
+    markRegionCaught,
     createCollection,
     deleteCollection,
     toggleCollectionItem,
@@ -43,6 +45,48 @@ export const App: React.FC = () => {
   const [targetPokemonForAdd, setTargetPokemonForAdd] = useState<Pokemon | null>(null);
 
   const activeCollection = collections.find(c => c.id === filters.activeCollectionId);
+
+  const handleOpenDashboardCustomizer = async () => {
+    if (mode === 'custom' && activeCollection) {
+      setTargetCollectionForEdit(activeCollection);
+      return;
+    }
+
+    // On preset modes (standard, shiny, mega, form, costume):
+    // Find or create an editable custom dashboard based on the preset!
+    const presetNameMap: Record<string, string> = {
+      standard: 'Mein Standard Dex',
+      shiny: 'Mein Shiny Dex',
+      mega: 'Mein Mega Dex',
+      form: 'Mein Formen Dex',
+      costume: 'Mein Kostüme Dex'
+    };
+    const targetName = presetNameMap[mode] || 'Mein Custom Dashboard';
+    const existing = collections.find(c => c.name === targetName);
+    if (existing) {
+      setMode('custom');
+      setFilters(f => ({ ...f, activeCollectionId: existing.id }));
+      setTargetCollectionForEdit(existing);
+    } else {
+      const initialIds = filteredPokemon.map(p => p.id);
+      const newColl = await createCollection(
+        targetName,
+        `Persönliches Dashboard basierend auf ${targetName}`,
+        mode === 'costume' ? '#ec4899' : mode === 'mega' ? '#ef4444' : mode === 'shiny' ? '#f59e0b' : '#3b82f6',
+        {
+          categoryType: mode === 'costume' ? 'event' : mode === 'mega' ? 'mega' : 'normal',
+          variantMode: 'multi',
+          trackShiny: mode === 'shiny',
+          pokemonIds: initialIds
+        }
+      );
+      if (newColl) {
+        setMode('custom');
+        setFilters(f => ({ ...f, activeCollectionId: newColl.id }));
+        setTargetCollectionForEdit(newColl);
+      }
+    }
+  };
 
   const getProgressLabel = () => {
     if (mode === 'standard') {
@@ -87,7 +131,7 @@ export const App: React.FC = () => {
         activeCollectionId={filters.activeCollectionId}
         onSelectCollection={(id) => setFilters(f => ({ ...f, activeCollectionId: id }))}
         onOpenCollectionsModal={() => setIsCollectionsModalOpen(true)}
-        onOpenCollectionEditor={() => setTargetCollectionForEdit(activeCollection || collections[0] || null)}
+        onOpenCollectionEditor={handleOpenDashboardCustomizer}
         onOpenSettingsModal={() => setIsSettingsOpen(true)}
         isBackendConnected={storageStatus.isBackendConnected}
         theme={theme}
@@ -116,6 +160,7 @@ export const App: React.FC = () => {
             type: 'all',
             status: 'all'
           }))}
+          onMarkRegionCaught={markRegionCaught}
         />
 
         {/* Pokémon Grid */}

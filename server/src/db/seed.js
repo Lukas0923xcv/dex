@@ -25,8 +25,8 @@ function seedDatabase(force = false) {
     INSERT INTO pokemon (
       id, dex_nr, name, form_id, form_name, category, generation,
       type1, type2, sprite_url, shiny_sprite_url, fallback_sprite_url,
-      fallback_shiny_url, official_artwork_url, has_shiny, is_mega, is_form, is_costume, released_in_go
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      fallback_shiny_url, official_artwork_url, has_shiny, is_mega, is_form, is_costume, is_gender_difference, released_in_go
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   db.exec('BEGIN TRANSACTION;');
@@ -52,6 +52,7 @@ function seedDatabase(force = false) {
         p.isMega ? 1 : 0,
         p.isForm ? 1 : 0,
         p.isCostume ? 1 : 0,
+        p.isGenderDifference ? 1 : 0,
         p.releasedInGo ? 1 : 0
       );
     }

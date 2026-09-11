@@ -178,6 +178,41 @@ class StorageAdapter {
     return newVal;
   }
 
+  // --- Batch Update Progress (e.g., mark entire Region as caught/uncaught) ---
+  public async batchUpdateProgress(
+    pokemonIds: string[],
+    values: { caught?: boolean; shinyCaught?: boolean }
+  ): Promise<boolean> {
+    if (this.isConnectedToBackend) {
+      try {
+        await fetch(`${this.backendUrl}/api/progress/batch`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pokemonIds,
+            caught: values.caught,
+            shinyCaught: values.shinyCaught
+          })
+        });
+      } catch (err) {
+        console.warn('Backend batch progress update failed, persisting locally:', err);
+      }
+    }
+
+    // Local Mode & Mirror
+    const progress = this.getLocalProgress();
+    const now = new Date().toISOString();
+    for (const id of pokemonIds) {
+      const current = progress[id] || {};
+      if (values.caught !== undefined) current.caught = values.caught;
+      if (values.shinyCaught !== undefined) current.shinyCaught = values.shinyCaught;
+      current.updatedAt = now;
+      progress[id] = current;
+    }
+    localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progress));
+    return true;
+  }
+
   // --- Custom Collections ---
   public async getCollections(): Promise<CustomCollection[]> {
     if (this.isConnectedToBackend) {

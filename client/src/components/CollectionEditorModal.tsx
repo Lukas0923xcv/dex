@@ -28,8 +28,10 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
   // Initialize selected IDs from current collection items
   useEffect(() => {
     if (collection && isOpen) {
-      let ids = storage.getCollectionItemIds(collection.id);
-      if (ids.size === 0) {
+      const ids = storage.getCollectionItemIds(collection.id);
+      if (ids.size > 0) {
+        setSelectedIds(new Set(ids));
+      } else {
         let matching = [...allPokemon];
         if (collection.categoryType === 'mega') {
           matching = matching.filter(p => p.category === 'mega' || p.isMega);
@@ -43,14 +45,13 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
         if (collection.trackShiny && collection.categoryType === 'normal') {
           matching = matching.filter(p => p.hasShiny);
         }
-        ids = new Set(matching.map(p => p.id));
+        setSelectedIds(new Set(matching.map(p => p.id)));
       }
-      setSelectedIds(new Set(ids));
 
       if (collection.categoryType === 'event') setCategoryFilter('costume');
       else if (collection.categoryType === 'mega') setCategoryFilter('mega');
     }
-  }, [collection, isOpen, allPokemon]);
+  }, [collection?.id, isOpen]);
 
   // Filtered Pokémon inside the picker
   const filteredList = useMemo(() => {
@@ -174,6 +175,80 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               Schnell-Vorlagen:
             </span>
 
+            {/* Region Presets */}
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 1)}
+              className="px-2.5 py-1 bg-red-500/15 hover:bg-red-500/25 border border-red-500/40 text-red-800 dark:text-red-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              🏛️ Kanto (151)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 2)}
+              className="px-2.5 py-1 bg-amber-600/15 hover:bg-amber-600/25 border border-amber-600/40 text-amber-800 dark:text-amber-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              🌲 Johto (100)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 3)}
+              className="px-2.5 py-1 bg-emerald-600/15 hover:bg-emerald-600/25 border border-emerald-600/40 text-emerald-800 dark:text-emerald-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              🌋 Hoenn (135)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 4)}
+              className="px-2.5 py-1 bg-sky-600/15 hover:bg-sky-600/25 border border-sky-600/40 text-sky-800 dark:text-sky-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              ❄️ Sinnoh (107)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 5)}
+              className="px-2.5 py-1 bg-slate-600/15 hover:bg-slate-600/25 border border-slate-600/40 text-slate-800 dark:text-slate-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              🏙️ Einall (156)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 6)}
+              className="px-2.5 py-1 bg-violet-600/15 hover:bg-violet-600/25 border border-violet-600/40 text-violet-800 dark:text-violet-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              🥖 Kalos (72)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 7)}
+              className="px-2.5 py-1 bg-orange-500/15 hover:bg-orange-500/25 border border-orange-500/40 text-orange-800 dark:text-orange-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              🌺 Alola (88)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 8)}
+              className="px-2.5 py-1 bg-blue-600/15 hover:bg-blue-600/25 border border-blue-600/40 text-blue-800 dark:text-blue-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              ⚔️ Galar (89)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.generation === 9)}
+              className="px-2.5 py-1 bg-purple-600/15 hover:bg-purple-600/25 border border-purple-600/40 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              🍇 Paldea (120)
+            </button>
+
+            {/* Gender Difference Forms Preset */}
+            <button
+              type="button"
+              onClick={() => applyPreset(p => Boolean(p.isGenderDifference))}
+              className="px-2.5 py-1 bg-pink-500/15 hover:bg-pink-500/25 border border-pink-500/40 text-pink-800 dark:text-pink-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              ⚧ Geschlechts-Formen (101)
+            </button>
+
             {/* Costumes Preset */}
             <button
               type="button"
@@ -273,6 +348,25 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               <option value="mega">Megas & Primals</option>
               <option value="form">Formen & Varianten</option>
               <option value="costume">Kostüm-Pokémon</option>
+            </select>
+
+            {/* Region / Generation Filter */}
+            <select
+              value={genFilter}
+              onChange={(e) => setGenFilter(e.target.value === 'all' ? 'all' : parseInt(e.target.value, 10))}
+              className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs text-slate-800 dark:text-slate-200 py-1.5 px-3 rounded-xl focus:outline-none focus:border-blue-500 cursor-pointer"
+            >
+              <option value="all">Alle Regionen</option>
+              <option value={1}>Gen 1 · Kanto</option>
+              <option value={2}>Gen 2 · Johto</option>
+              <option value={3}>Gen 3 · Hoenn</option>
+              <option value={4}>Gen 4 · Sinnoh</option>
+              <option value={5}>Gen 5 · Einall</option>
+              <option value={6}>Gen 6 · Kalos</option>
+              <option value={7}>Gen 7 · Alola</option>
+              <option value={8}>Gen 8 · Galar</option>
+              <option value={9}>Gen 9 · Paldea</option>
+              <option value={0}>Meltan</option>
             </select>
           </div>
 
