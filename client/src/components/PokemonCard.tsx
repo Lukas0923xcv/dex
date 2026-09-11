@@ -30,14 +30,15 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
   onOpenAddModal
 }) => {
   const isCustomMode = mode === 'custom';
-  const categoryType = isCustomMode ? (collection?.categoryType || 'normal') : (mode === 'shadow' ? 'shadow' : 'normal');
+  const isShadowCollection = Boolean(collection?.categoryType === 'shadow' || collection?.name.toLowerCase().includes('crypto') || collection?.name.toLowerCase().includes('shadow'));
+  const categoryType = isCustomMode ? (isShadowCollection ? 'shadow' : (collection?.categoryType || 'normal')) : (mode === 'shadow' ? 'shadow' : 'normal');
   const isShinyMode = mode === 'shiny' || Boolean(isCustomMode && collection?.trackShiny) || Boolean(shinyOnly);
 
   // Determine caught state based on active context
   let isCaught = false;
   if (isShinyMode) {
     isCaught = Boolean(pokemon.shinyCaught);
-  } else if (mode === 'shadow' || (isCustomMode && categoryType === 'shadow')) {
+  } else if (mode === 'shadow' || categoryType === 'shadow' || (isCustomMode && isShadowCollection)) {
     isCaught = Boolean(pokemon.shadowCaught);
   } else if (isCustomMode && categoryType === 'purified') {
     isCaught = Boolean(pokemon.purifiedCaught);

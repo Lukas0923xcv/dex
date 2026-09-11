@@ -217,7 +217,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                           <div className="text-[11px] text-slate-400">
                             {tab.id === 'standard' && 'Offizielle 1.025 Basis-Spezies'}
                             {tab.id === 'shiny' && 'Nur freigeschaltete Schillernde Varianten'}
-                            {tab.id === 'shadow' && '326 offiziell erschienene Crypto-Pokémon'}
+                            {tab.id === 'shadow' && '458 offiziell erschienene Crypto-Pokémon'}
                             {tab.id === 'mega' && 'Mega- & Protomorphose-Entwicklungen'}
                             {tab.id === 'form' && 'Regionale & alternative Formen'}
                             {tab.id === 'costume' && 'Event- & Kostüm-Pokémon'}

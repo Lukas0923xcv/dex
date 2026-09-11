@@ -37,7 +37,13 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
           matching = matching.filter(p => p.category === 'mega' || p.isMega);
         } else if (collection.categoryType === 'event') {
           matching = matching.filter(p => p.category === 'costume' || p.isCostume);
-        } else if (collection.categoryType === 'shadow' || collection.categoryType === 'purified') {
+        } else if (
+          collection.categoryType === 'shadow' ||
+          collection.categoryType === 'purified' ||
+          collection.name.toLowerCase().includes('crypto') ||
+          collection.name.toLowerCase().includes('shadow') ||
+          collection.name.toLowerCase().includes('schatten')
+        ) {
           matching = matching.filter(p => p.hasShadow);
           if (collection.variantMode === 'single') {
             matching = matching.filter(p => p.category === 'standard');
@@ -343,7 +349,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               onClick={() => applyPreset(p => Boolean(p.hasShadow))}
               className="px-2.5 py-1 bg-purple-600/15 hover:bg-purple-600/25 border border-purple-600/40 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
             >
-              💀 Alle Crypto (326)
+              💀 Alle Crypto ({allPokemon.filter(p => p.hasShadow).length || 458})
             </button>
           </div>
         </div>
