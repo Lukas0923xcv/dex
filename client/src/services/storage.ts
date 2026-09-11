@@ -255,7 +255,7 @@ class StorageAdapter {
           if (c.categoryType === 'lucky') return Boolean(prog.luckyCaught);
           if (c.categoryType === 'shadow') return Boolean(prog.shadowCaught);
           if (c.categoryType === 'purified') return Boolean(prog.purifiedCaught);
-          if (c.trackShiny && c.categoryType === 'normal') return Boolean(prog.shinyCaught);
+          if (c.trackShiny) return Boolean(prog.shinyCaught);
           return Boolean(prog.caught);
         }).length;
       } else {
@@ -268,9 +268,16 @@ class StorageAdapter {
         } else if (c.variantMode === 'single') {
           matching = matching.filter(p => p.category === 'standard');
         } else {
-          matching = matching.filter(p => p.category === 'standard' || p.category === 'form');
+          matching = matching.filter(p => {
+            if (p.category === 'standard') return true;
+            if (p.category === 'form' || p.isForm) {
+              if (p.isGenderDifference && c.includeGenderForms === false) return false;
+              return true;
+            }
+            return false;
+          });
         }
-        if (c.trackShiny && c.categoryType === 'normal') {
+        if (c.trackShiny) {
           matching = matching.filter(p => p.hasShiny);
         }
         totalCount = matching.length;
@@ -280,7 +287,7 @@ class StorageAdapter {
           if (c.categoryType === 'lucky') return Boolean(prog.luckyCaught);
           if (c.categoryType === 'shadow') return Boolean(prog.shadowCaught);
           if (c.categoryType === 'purified') return Boolean(prog.purifiedCaught);
-          if (c.trackShiny && c.categoryType === 'normal') return Boolean(prog.shinyCaught);
+          if (c.trackShiny) return Boolean(prog.shinyCaught);
           return Boolean(prog.caught);
         }).length;
       }
@@ -307,6 +314,7 @@ class StorageAdapter {
       trackGender?: boolean;
       trackBackground?: boolean;
       trackSize?: boolean;
+      includeGenderForms?: boolean;
       pokemonIds?: string[];
     }
   ): Promise<CustomCollection> {
@@ -321,6 +329,7 @@ class StorageAdapter {
       trackGender: Boolean(options?.trackGender),
       trackBackground: Boolean(options?.trackBackground),
       trackSize: Boolean(options?.trackSize),
+      includeGenderForms: options?.includeGenderForms !== undefined ? Boolean(options.includeGenderForms) : true,
       pokemonIds: options?.pokemonIds || []
     };
 
@@ -357,6 +366,7 @@ class StorageAdapter {
       trackGender: payload.trackGender,
       trackBackground: payload.trackBackground,
       trackSize: payload.trackSize,
+      includeGenderForms: payload.includeGenderForms,
       createdAt: new Date().toISOString(),
       totalItems: payload.pokemonIds.length,
       caughtItems: 0

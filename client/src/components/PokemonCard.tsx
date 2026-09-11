@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Pokemon, TrackingMode, CustomCollection } from '../types';
 import { getTypeBadgeColor, formatDexNumber, getEffectiveSprite } from '../utils/typeColors';
 import { Check, Sparkles, Plus, Bookmark, Flame, Zap } from 'lucide-react';
@@ -29,7 +29,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
 }) => {
   const isCustomMode = mode === 'custom';
   const categoryType = isCustomMode ? (collection?.categoryType || 'normal') : 'normal';
-  const isShinyMode = mode === 'shiny' || (isCustomMode && collection?.categoryType === 'normal' && collection?.trackShiny);
+  const isShinyMode = mode === 'shiny' || Boolean(isCustomMode && collection?.trackShiny);
 
   // Determine caught state based on active context
   let isCaught = false;
@@ -46,6 +46,10 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
   }
 
   const [spriteErrorIndex, setSpriteErrorIndex] = useState(0);
+
+  useEffect(() => {
+    setSpriteErrorIndex(0);
+  }, [pokemon.id, isShinyMode]);
 
   // Cascade fallback: pogo icon -> home 3d -> official artwork
   const spriteCandidates = [

@@ -59,6 +59,7 @@ export interface CustomCollection {
   trackGender?: boolean;
   trackBackground?: boolean;
   trackSize?: boolean;
+  includeGenderForms?: boolean;
   createdAt: string;
   totalItems: number;
   caughtItems: number;

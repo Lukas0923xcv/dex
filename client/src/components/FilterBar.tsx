@@ -1,10 +1,11 @@
 import React from 'react';
-import { FilterState, StatusFilter, TrackingMode } from '../types';
+import { FilterState, StatusFilter, TrackingMode, CustomCollection } from '../types';
 import { Search, X, Filter, ArrowUpDown, Check, RotateCcw } from 'lucide-react';
 
 interface FilterBarProps {
   filters: FilterState;
   mode?: TrackingMode;
+  collection?: CustomCollection | null;
   onFilterChange: (filters: Partial<FilterState>) => void;
   onClearFilters: () => void;
   onMarkRegionCaught?: (generation: number | 'all', caught: boolean) => Promise<void>;
@@ -34,17 +35,26 @@ const TYPES = [
 export const FilterBar: React.FC<FilterBarProps> = ({
   filters,
   mode,
+  collection,
   onFilterChange,
   onClearFilters,
   onMarkRegionCaught
 }) => {
+  const showFormsControls =
+    mode === 'form' ||
+    (mode === 'custom' &&
+      Boolean(
+        collection?.variantMode === 'multi' ||
+        collection?.includeGenderForms
+      ));
+
   const hasActiveFilters =
     filters.search !== '' ||
     filters.generation !== 'all' ||
     filters.type !== 'all' ||
     filters.status !== 'all' ||
-    Boolean(filters.showGenderTracking) ||
-    Boolean(filters.includeBaseInForms);
+    (showFormsControls && Boolean(filters.showGenderTracking)) ||
+    (showFormsControls && Boolean(filters.includeBaseInForms));
 
   return (
     <div className="bg-white dark:bg-slate-900/90 backdrop-blur border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm dark:shadow-xl mb-6 space-y-4 transition-colors">
@@ -86,7 +96,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
         </button>
 
         {/* Forms Mode: Gender Difference Forms & Include Base Form Toggles */}
-        {mode === 'form' && (
+        {showFormsControls && (
           <>
             <button
               type="button"
