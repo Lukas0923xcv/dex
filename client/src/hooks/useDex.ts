@@ -110,7 +110,7 @@ export function useDex() {
       targetType = 'purified';
     } else if (mode === 'custom' && activeColl?.categoryType === 'lucky') {
       targetType = 'lucky';
-    } else if (mode === 'custom' && activeColl?.trackShiny && activeColl.categoryType === 'normal') {
+    } else if (mode === 'custom' && activeColl?.trackShiny) {
       targetType = 'shiny';
     }
 
@@ -139,6 +139,7 @@ export function useDex() {
       trackGender?: boolean;
       trackBackground?: boolean;
       trackSize?: boolean;
+      includeGenderForms?: boolean;
       pokemonIds?: string[];
     }
   ) => {
@@ -183,7 +184,8 @@ export function useDex() {
   // Bulk mark caught/uncaught (for regions, whole lists, etc.)
   const markBatchCaught = useCallback(async (pokemonIds: string[], caught: boolean) => {
     if (pokemonIds.length === 0) return;
-    const isShiny = mode === 'shiny';
+    const activeColl = collections.find(c => c.id === filters.activeCollectionId);
+    const isShiny = mode === 'shiny' || Boolean(mode === 'custom' && activeColl?.trackShiny);
     await storage.batchUpdateProgress(pokemonIds, {
       caught: isShiny ? undefined : caught,
       shinyCaught: isShiny ? caught : undefined
@@ -202,7 +204,7 @@ export function useDex() {
 
     const updatedColls = await storage.getCollections();
     setCollections(updatedColls);
-  }, [mode]);
+  }, [mode, collections, filters.activeCollectionId]);
 
   // Filtered Pokémon list
   const filteredPokemon = useMemo(() => {
@@ -243,8 +245,12 @@ export function useDex() {
       const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
       if (activeColl) {
         const itemIds = storage.getCollectionItemIds(activeColl.id);
+        const includeGender = Boolean(filters.showGenderTracking);
+        const isExcludedGenderForm = (p: Pokemon) =>
+          Boolean(p.isGenderDifference) && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id);
+
         if (itemIds.size > 0) {
-          result = result.filter(p => itemIds.has(p.id));
+          result = result.filter(p => itemIds.has(p.id) && !isExcludedGenderForm(p));
         } else if (activeColl.categoryType === 'mega') {
           result = result.filter(p => p.category === 'mega' || p.isMega);
         } else if (activeColl.categoryType === 'event') {
@@ -252,7 +258,13 @@ export function useDex() {
         } else if (activeColl.variantMode === 'single') {
           result = result.filter(p => p.category === 'standard');
         } else {
-          result = result.filter(p => p.category === 'standard' || p.category === 'form');
+          result = result.filter(p => {
+            if (p.category === 'standard') return true;
+            if (p.category === 'form' || p.isForm) {
+              return !isExcludedGenderForm(p);
+            }
+            return false;
+          });
         }
       }
     }
@@ -277,7 +289,7 @@ export function useDex() {
       if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
-      if (mode === 'custom' && activeColl?.trackShiny && activeColl.categoryType === 'normal') return Boolean(p.shinyCaught);
+      if (mode === 'custom' && activeColl?.trackShiny) return Boolean(p.shinyCaught);
       return Boolean(p.caught);
     };
 
@@ -375,8 +387,12 @@ export function useDex() {
     } else if (mode === 'custom') {
       if (activeColl) {
         const itemIds = storage.getCollectionItemIds(activeColl.id);
+        const includeGender = Boolean(filters.showGenderTracking);
+        const isExcludedGenderForm = (p: Pokemon) =>
+          Boolean(p.isGenderDifference) && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id);
+
         if (itemIds.size > 0) {
-          pool = pool.filter(p => itemIds.has(p.id));
+          pool = pool.filter(p => itemIds.has(p.id) && !isExcludedGenderForm(p));
         } else if (activeColl.categoryType === 'mega') {
           pool = pool.filter(p => p.category === 'mega' || p.isMega);
         } else if (activeColl.categoryType === 'event') {
@@ -384,7 +400,13 @@ export function useDex() {
         } else if (activeColl.variantMode === 'single') {
           pool = pool.filter(p => p.category === 'standard');
         } else {
-          pool = pool.filter(p => p.category === 'standard' || p.category === 'form');
+          pool = pool.filter(p => {
+            if (p.category === 'standard') return true;
+            if (p.category === 'form' || p.isForm) {
+              return !isExcludedGenderForm(p);
+            }
+            return false;
+          });
         }
       }
     }
@@ -399,7 +421,7 @@ export function useDex() {
       if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
-      if (mode === 'custom' && activeColl?.trackShiny && activeColl.categoryType === 'normal') return Boolean(p.shinyCaught);
+      if (mode === 'custom' && activeColl?.trackShiny) return Boolean(p.shinyCaught);
       return Boolean(p.caught);
     }).length;
 

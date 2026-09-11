@@ -152,6 +152,7 @@ export const App: React.FC = () => {
         <FilterBar
           filters={filters}
           mode={mode}
+          collection={activeCollection}
           onFilterChange={(partial) => setFilters(f => ({ ...f, ...partial }))}
           onClearFilters={() => setFilters(f => ({
             ...f,

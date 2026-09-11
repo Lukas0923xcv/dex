@@ -276,7 +276,7 @@ router.get('/collections', (req, res) => {
           WHEN c.category_type = 'lucky' THEN (CASE WHEN up.lucky_caught = 1 THEN 1 ELSE 0 END)
           WHEN c.category_type = 'shadow' THEN (CASE WHEN up.shadow_caught = 1 THEN 1 ELSE 0 END)
           WHEN c.category_type = 'purified' THEN (CASE WHEN up.purified_caught = 1 THEN 1 ELSE 0 END)
-          WHEN c.track_shiny = 1 AND c.category_type = 'normal' THEN (CASE WHEN up.shiny_caught = 1 THEN 1 ELSE 0 END)
+          WHEN c.track_shiny = 1 THEN (CASE WHEN up.shiny_caught = 1 THEN 1 ELSE 0 END)
           ELSE (CASE WHEN up.caught = 1 THEN 1 ELSE 0 END)
         END) as caughtItems
       FROM custom_collections c
@@ -303,7 +303,7 @@ router.get('/collections', (req, res) => {
           condition = "(p.category = 'standard' OR p.category = 'form')";
         }
 
-        if (c.trackShiny && c.categoryType === 'normal') {
+        if (c.trackShiny) {
           condition += ' AND p.has_shiny = 1';
         }
 
@@ -311,7 +311,7 @@ router.get('/collections', (req, res) => {
         if (c.categoryType === 'lucky') caughtCol = 'up.lucky_caught';
         else if (c.categoryType === 'shadow') caughtCol = 'up.shadow_caught';
         else if (c.categoryType === 'purified') caughtCol = 'up.purified_caught';
-        else if (c.trackShiny && c.categoryType === 'normal') caughtCol = 'up.shiny_caught';
+        else if (c.trackShiny) caughtCol = 'up.shiny_caught';
 
         const fallbackRow = db.prepare(`
           SELECT 

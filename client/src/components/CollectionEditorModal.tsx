@@ -40,9 +40,16 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
         } else if (collection.variantMode === 'single') {
           matching = matching.filter(p => p.category === 'standard');
         } else {
-          matching = matching.filter(p => p.category === 'standard' || p.category === 'form');
+          matching = matching.filter(p => {
+            if (p.category === 'standard') return true;
+            if (p.category === 'form' || p.isForm) {
+              if (p.isGenderDifference && collection.includeGenderForms === false) return false;
+              return true;
+            }
+            return false;
+          });
         }
-        if (collection.trackShiny && collection.categoryType === 'normal') {
+        if (collection.trackShiny) {
           matching = matching.filter(p => p.hasShiny);
         }
         setSelectedIds(new Set(matching.map(p => p.id)));
@@ -414,7 +421,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
                   }`}
                 >
                   <img
-                    src={pokemon.spriteUrl}
+                    src={collection.trackShiny ? (pokemon.shinySpriteUrl || pokemon.fallbackShinyUrl || pokemon.spriteUrl) : (pokemon.spriteUrl || pokemon.fallbackSpriteUrl || '')}
                     alt={pokemon.name}
                     loading="lazy"
                     referrerPolicy="no-referrer"

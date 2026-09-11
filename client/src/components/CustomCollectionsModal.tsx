@@ -42,6 +42,7 @@ interface CustomCollectionsModalProps {
       trackGender?: boolean;
       trackBackground?: boolean;
       trackSize?: boolean;
+      includeGenderForms?: boolean;
       pokemonIds?: string[];
     }
   ) => Promise<any>;
@@ -77,6 +78,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   // Form states
   const [categoryType, setCategoryType] = useState<CollectionCategoryType>('normal');
   const [variantMode, setVariantMode] = useState<CollectionVariantMode>('multi');
+  const [includeGenderForms, setIncludeGenderForms] = useState<boolean>(true);
   const [trackShiny, setTrackShiny] = useState<boolean>(false);
   const [trackHundo, setTrackHundo] = useState<boolean>(false);
   const [trackGender, setTrackGender] = useState<boolean>(false);
@@ -202,12 +204,16 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
       }
     }
 
-    if (trackShiny && categoryType === 'normal') {
+    if (variantMode === 'multi' && !includeGenderForms) {
+      list = list.filter(p => !p.isGenderDifference);
+    }
+
+    if (trackShiny) {
       list = list.filter(p => p.hasShiny);
     }
 
     return list.map(p => p.id);
-  }, [allPokemon, categoryType, variantMode, trackShiny]);
+  }, [allPokemon, categoryType, variantMode, includeGenderForms, trackShiny]);
 
   if (!isOpen) return null;
 
@@ -230,6 +236,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
           trackHundo,
           trackGender,
           trackSize,
+          includeGenderForms: variantMode === 'multi' ? includeGenderForms : false,
           pokemonIds: initialPokemonIds
         }
       );
@@ -465,6 +472,35 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     </div>
                   </button>
                 </div>
+
+                {/* Gender Difference Forms Toggle for Multi Variant Mode */}
+                {variantMode === 'multi' && (
+                  <div
+                    onClick={() => setIncludeGenderForms(!includeGenderForms)}
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                      includeGenderForms
+                        ? 'bg-pink-500/10 border-pink-500/40 text-white'
+                        : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-400'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl text-base ${includeGenderForms ? 'bg-pink-500/20 text-pink-300' : 'bg-slate-900 text-slate-500'}`}>
+                        ⚧
+                      </div>
+                      <div>
+                        <div className="text-xs sm:text-sm font-semibold text-white">
+                          Geschlechts-Formen einbeziehen (♀ Unterschiede)
+                        </div>
+                        <div className="text-[11px] text-slate-400">
+                          98 optische Geschlechtsunterschiede (Pikachu ♀, Woingenau ♀, Smettbo ♀ usw.) als eigene Sammler-Einträge
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${includeGenderForms ? 'bg-pink-500' : 'bg-slate-800'}`}>
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${includeGenderForms ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Section 3: Zusätzliche Tracking-Dimensionen */}
