@@ -18,7 +18,6 @@ import {
   Check,
   ShieldCheck,
   Dna,
-  Image,
   Ruler,
   Palette,
   FolderKanban
@@ -81,7 +80,6 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   const [trackShiny, setTrackShiny] = useState<boolean>(false);
   const [trackHundo, setTrackHundo] = useState<boolean>(false);
   const [trackGender, setTrackGender] = useState<boolean>(false);
-  const [trackBackground, setTrackBackground] = useState<boolean>(false);
   const [trackSize, setTrackSize] = useState<boolean>(false);
   const [selectedColor, setSelectedColor] = useState<string>(COLOR_THEMES[0].hex);
 
@@ -229,7 +227,6 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
           trackShiny,
           trackHundo,
           trackGender,
-          trackBackground,
           trackSize,
           pokemonIds: matchingPokemonIds
         }
@@ -550,32 +547,10 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   </div>
 
                   {/* Spezielle Hintergründe */}
-                  <div
-                    onClick={() => setTrackBackground(!trackBackground)}
-                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
-                      trackBackground
-                        ? 'bg-purple-500/10 border-purple-500/50 text-white'
-                        : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl ${trackBackground ? 'bg-purple-500/20 text-purple-300' : 'bg-slate-900 text-slate-400'}`}>
-                        <Image className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-semibold text-white">Spezial-Hintergrund</div>
-                        <div className="text-[11px] text-slate-400">Ortskarten, Raid- & Event-BG</div>
-                      </div>
-                    </div>
-                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackBackground ? 'bg-purple-500' : 'bg-slate-800'}`}>
-                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${trackBackground ? 'translate-x-5' : 'translate-x-0'}`} />
-                    </div>
-                  </div>
-
                   {/* Größenrekorde */}
                   <div
                     onClick={() => setTrackSize(!trackSize)}
-                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all sm:col-span-2 ${
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
                       trackSize
                         ? 'bg-rose-500/10 border-rose-500/50 text-white'
                         : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-300'
