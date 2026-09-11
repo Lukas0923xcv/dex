@@ -32,6 +32,7 @@ export const AddToCollectionModal: React.FC<AddToCollectionModalProps> = ({
             <img
               src={pokemon.spriteUrl}
               alt={pokemon.name}
+              referrerPolicy="no-referrer"
               className="w-8 h-8 object-contain"
             />
             <div>

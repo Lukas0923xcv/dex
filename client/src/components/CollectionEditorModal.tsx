@@ -304,6 +304,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
                     src={pokemon.spriteUrl}
                     alt={pokemon.name}
                     loading="lazy"
+                    referrerPolicy="no-referrer"
                     className="w-10 h-10 object-contain shrink-0"
                   />
                   <div className="min-w-0 flex-1">

@@ -637,4 +637,33 @@ router.post('/import', (req, res) => {
   }
 });
 
+// GET /api/proxy-image?url=...
+const https = require('https');
+const http = require('http');
+
+router.get('/proxy-image', (req, res) => {
+  const imageUrl = req.query.url;
+  if (!imageUrl || (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://'))) {
+    return res.status(400).send('Invalid image URL');
+  }
+  const client = imageUrl.startsWith('https') ? https : http;
+  const proxyReq = client.get(imageUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, remoteRes => {
+    if (remoteRes.statusCode >= 300 && remoteRes.statusCode < 400 && remoteRes.headers.location) {
+      const redirectClient = remoteRes.headers.location.startsWith('https') ? https : http;
+      return redirectClient.get(remoteRes.headers.location, { headers: { 'User-Agent': 'Mozilla/5.0' } }, redirectRes => {
+        res.set('Content-Type', redirectRes.headers['content-type'] || 'image/png');
+        res.set('Cache-Control', 'public, max-age=86400');
+        redirectRes.pipe(res);
+      });
+    }
+    res.set('Content-Type', remoteRes.headers['content-type'] || 'image/png');
+    res.set('Cache-Control', 'public, max-age=86400');
+    remoteRes.pipe(res);
+  });
+  proxyReq.on('error', err => {
+    res.status(502).send(err.message);
+  });
+});
+
 module.exports = router;
+

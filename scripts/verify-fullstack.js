@@ -116,7 +116,20 @@ async function main() {
     if (fakeCostumes.length > 0) {
       throw new Error(`Deerling/Sawsbuck seasonal forms incorrectly present in costumes: ${fakeCostumes.length}`);
     }
-    console.log(`[TEST 3e] Costume accuracy passed (Pikavisor Ivysaur: verified, Party Ivysaur: verified, Deerling/Sawsbuck fake costumes: 0)`);
+    
+    // Check Venusaur deduplication: exactly 1 Copy 2019 card
+    const venusaurCopies = allCostumesRes.data.filter(p => p.dexNr === 3 && p.formId === 'COPY_2019');
+    if (venusaurCopies.length !== 1) {
+      throw new Error(`Expected exactly 1 Venusaur Copy 2019, found: ${venusaurCopies.length}`);
+    }
+
+    // Verify local static costume image serves with 200 OK
+    const localImgRes = await request('http://localhost:3456/images/costumes/GO0002Visor.png');
+    if (localImgRes.status !== 200 || !localImgRes.headers['content-type']?.includes('image/png')) {
+      throw new Error(`Local costume image failed to load: HTTP ${localImgRes.status}, Content-Type: ${localImgRes.headers['content-type']}`);
+    }
+
+    console.log(`[TEST 3e] Costume accuracy passed (Pikavisor Ivysaur: verified, Venusaur Copy deduplication: 1, Local costume sprite 200 OK, Deerling fake: 0)`);
 
     // 4. Progress Toggle Test
     const wasCaught = pokeRes.data.find(p => p.id === 'poke_1_base')?.caught ?? false;

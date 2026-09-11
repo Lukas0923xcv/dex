@@ -24,6 +24,18 @@ try {
 // API Routes
 app.use('/api', apiRouter);
 
+// Serve static public assets (images, icons, etc.)
+const staticAssetPaths = [
+  path.join(__dirname, '..', 'public'),
+  path.join(__dirname, '..', '..', 'client', 'public'),
+  path.join(__dirname, '..', '..', 'client', 'dist')
+];
+for (const assetPath of staticAssetPaths) {
+  if (fs.existsSync(assetPath)) {
+    app.use(express.static(assetPath));
+  }
+}
+
 // Serve static frontend build if present
 const clientDistPaths = [
   path.join(__dirname, '..', 'public'),
@@ -35,7 +47,6 @@ let staticServed = false;
 for (const distPath of clientDistPaths) {
   if (fs.existsSync(distPath) && fs.existsSync(path.join(distPath, 'index.html'))) {
     console.log(`Serving static client from: ${distPath}`);
-    app.use(express.static(distPath));
     app.get('*', (req, res, next) => {
       if (req.path.startsWith('/api')) return next();
       res.sendFile(path.join(distPath, 'index.html'));
