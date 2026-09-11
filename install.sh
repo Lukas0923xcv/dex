@@ -39,22 +39,40 @@ $SUDO apt-get install -y -qq git curl ca-certificates gnupg >/dev/null
 # 3. Check / Install Docker and Docker Compose
 echo -e "${COLOR_BLUE}[2/5] Checking Docker & Docker Compose...${COLOR_RESET}"
 if ! command -v docker &> /dev/null; then
-  echo -e "${COLOR_YELLOW}[i] Docker is not installed. Installing official Docker Engine...${COLOR_RESET}"
-  $SUDO install -m 0755 -d /etc/apt/keyrings
-  $SUDO curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
-  $SUDO chmod a+r /etc/apt/keyrings/docker.asc
+  echo -e "${COLOR_YELLOW}[i] Docker is not installed. Installing Docker Engine...${COLOR_RESET}"
+  
+  # Try Ubuntu's native repository first (fastest and most compatible for Ubuntu 24/26)
+  if $SUDO apt-get install -y docker.io docker-compose-v2 >/dev/null 2>&1 || \
+     $SUDO apt-get install -y docker.io docker-compose >/dev/null 2>&1; then
+    echo -e "${COLOR_GREEN}[✓] Docker installed from native repository!${COLOR_RESET}"
+  else
+    # Fallback to official docker.com repository
+    $SUDO install -m 0755 -d /etc/apt/keyrings
+    $SUDO curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    $SUDO chmod a+r /etc/apt/keyrings/docker.asc
 
-  echo \
-    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
-    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-    $SUDO tee /etc/apt/sources.list.d/docker.list > /dev/null
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+      $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+      $SUDO tee /etc/apt/sources.list.d/docker.list > /dev/null
 
-  $SUDO apt-get update -qq
-  $SUDO apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin >/dev/null
+    $SUDO apt-get update -qq
+    $SUDO apt-get install -y -qq docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin >/dev/null
+    echo -e "${COLOR_GREEN}[✓] Docker installed successfully!${COLOR_RESET}"
+  fi
   $SUDO systemctl enable --now docker
-  echo -e "${COLOR_GREEN}[✓] Docker installed successfully!${COLOR_RESET}"
 else
   echo -e "${COLOR_GREEN}[✓] Docker is already installed: $(docker --version)${COLOR_RESET}"
+fi
+
+# Determine compose command
+if docker compose version &>/dev/null; then
+  COMPOSE_CMD="docker compose"
+elif command -v docker-compose &>/dev/null; then
+  COMPOSE_CMD="docker-compose"
+else
+  $SUDO apt-get install -y docker-compose-v2 >/dev/null 2>&1 || true
+  COMPOSE_CMD="docker compose"
 fi
 
 # 4. Clone or update repository
@@ -86,7 +104,7 @@ $SUDO chmod -R 777 "$APP_DIR/data"
 # 6. Build and launch Docker Compose stack
 echo -e "${COLOR_BLUE}[5/5] Building and launching Pokémon GO Dex Tracker container...${COLOR_RESET}"
 cd "$APP_DIR"
-$SUDO docker compose up -d --build
+$SUDO $COMPOSE_CMD up -d --build
 
 # 7. Success Banner
 HOST_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "localhost")
