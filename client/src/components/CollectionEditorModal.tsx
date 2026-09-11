@@ -28,10 +28,29 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
   // Initialize selected IDs from current collection items
   useEffect(() => {
     if (collection && isOpen) {
-      const ids = storage.getCollectionItemIds(collection.id);
+      let ids = storage.getCollectionItemIds(collection.id);
+      if (ids.size === 0) {
+        let matching = [...allPokemon];
+        if (collection.categoryType === 'mega') {
+          matching = matching.filter(p => p.category === 'mega' || p.isMega);
+        } else if (collection.categoryType === 'event') {
+          matching = matching.filter(p => p.category === 'costume' || p.isCostume);
+        } else if (collection.variantMode === 'single') {
+          matching = matching.filter(p => p.category === 'standard');
+        } else {
+          matching = matching.filter(p => p.category === 'standard' || p.category === 'form');
+        }
+        if (collection.trackShiny && collection.categoryType === 'normal') {
+          matching = matching.filter(p => p.hasShiny);
+        }
+        ids = new Set(matching.map(p => p.id));
+      }
       setSelectedIds(new Set(ids));
+
+      if (collection.categoryType === 'event') setCategoryFilter('costume');
+      else if (collection.categoryType === 'mega') setCategoryFilter('mega');
     }
-  }, [collection, isOpen]);
+  }, [collection, isOpen, allPokemon]);
 
   // Filtered Pokémon inside the picker
   const filteredList = useMemo(() => {
@@ -132,10 +151,10 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
             />
             <div>
               <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                Edit Checklist: <span className="text-blue-400">{collection.name}</span>
+                Checkliste anpassen: <span className="text-blue-400">{collection.name}</span>
               </h2>
               <p className="text-xs text-slate-400">
-                Choose which Pokémon and forms to include in this custom list
+                Wähle genau aus, welche Pokémon und Kostümformen in dieser Liste vorhanden sein sollen
               </p>
             </div>
           </div>
@@ -152,43 +171,16 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
           <div className="flex items-center gap-2">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400 shrink-0 flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              Quick Presets:
+              Schnell-Vorlagen:
             </span>
 
-            {/* Vivillon Patterns Preset */}
+            {/* Costumes Preset */}
             <button
               type="button"
-              onClick={() => applyPreset(p => p.dexNr === 666)}
-              className="px-2.5 py-1 bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/40 hover:border-purple-400 text-purple-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
+              onClick={() => applyPreset(p => p.category === 'costume' || Boolean(p.isCostume))}
+              className="px-2.5 py-1 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 hover:border-amber-400 text-amber-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
             >
-              🦋 All Vivillon Patterns (20)
-            </button>
-
-            {/* Unown Forms Preset */}
-            <button
-              type="button"
-              onClick={() => applyPreset(p => p.dexNr === 201)}
-              className="px-2.5 py-1 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/40 hover:border-indigo-400 text-indigo-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
-            >
-              🔤 All Unown Letters (28)
-            </button>
-
-            {/* Furfrou Trims Preset */}
-            <button
-              type="button"
-              onClick={() => applyPreset(p => p.dexNr === 676)}
-              className="px-2.5 py-1 bg-pink-950/40 hover:bg-pink-900/60 border border-pink-500/40 hover:border-pink-400 text-pink-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
-            >
-              🐩 All Furfrou Trims (10)
-            </button>
-
-            {/* Regional Forms Preset */}
-            <button
-              type="button"
-              onClick={() => applyPreset(p => p.category === 'form' && (p.formName?.includes('Alolan') || p.formName?.includes('Galarian') || p.formName?.includes('Hisuian') || p.formName?.includes('Paldean')))}
-              className="px-2.5 py-1 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
-            >
-              🌴 Regional Variants
+              🎭 Alle Kostüme (297)
             </button>
 
             {/* Megas & Primals Preset */}
@@ -197,16 +189,43 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               onClick={() => applyPreset(p => p.category === 'mega' || p.isMega)}
               className="px-2.5 py-1 bg-rose-950/40 hover:bg-rose-900/60 border border-rose-500/40 hover:border-rose-400 text-rose-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
             >
-              💥 All Megas & Primals
+              💥 Alle Megas (62)
             </button>
 
-            {/* Costumes Preset */}
+            {/* Vivillon Patterns Preset */}
             <button
               type="button"
-              onClick={() => applyPreset(p => p.category === 'costume' || Boolean(p.isCostume))}
-              className="px-2.5 py-1 bg-amber-950/40 hover:bg-amber-900/60 border border-amber-500/40 hover:border-amber-400 text-amber-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
+              onClick={() => applyPreset(p => p.dexNr === 666)}
+              className="px-2.5 py-1 bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/40 hover:border-purple-400 text-purple-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
             >
-              🎭 All Costumed
+              🦋 Vivillon-Muster (20)
+            </button>
+
+            {/* Unown Forms Preset */}
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.dexNr === 201)}
+              className="px-2.5 py-1 bg-indigo-950/40 hover:bg-indigo-900/60 border border-indigo-500/40 hover:border-indigo-400 text-indigo-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
+            >
+              🔤 Icognito-Formen (28)
+            </button>
+
+            {/* Furfrou Trims Preset */}
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.dexNr === 676)}
+              className="px-2.5 py-1 bg-pink-950/40 hover:bg-pink-900/60 border border-pink-500/40 hover:border-pink-400 text-pink-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
+            >
+              🐩 Coiffwaff-Schnitte (10)
+            </button>
+
+            {/* Regional Forms Preset */}
+            <button
+              type="button"
+              onClick={() => applyPreset(p => p.category === 'form' && (p.formName?.includes('Alolan') || p.formName?.includes('Galarian') || p.formName?.includes('Hisuian') || p.formName?.includes('Paldean')))}
+              className="px-2.5 py-1 bg-emerald-950/40 hover:bg-emerald-900/60 border border-emerald-500/40 hover:border-emerald-400 text-emerald-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1.5"
+            >
+              🌴 Regionalformen
             </button>
 
             {/* Castform Preset */}
@@ -215,7 +234,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               onClick={() => applyPreset(p => p.dexNr === 351)}
               className="px-2.5 py-1 bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-500/40 hover:border-cyan-400 text-cyan-300 text-xs font-semibold rounded-lg shrink-0 transition-all"
             >
-              ☁️ All Castforms (4)
+              ☁️ Formeo-Formen (4)
             </button>
 
             {/* Deoxys Preset */}
@@ -224,7 +243,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               onClick={() => applyPreset(p => p.dexNr === 386)}
               className="px-2.5 py-1 bg-teal-950/40 hover:bg-teal-900/60 border border-teal-500/40 hover:border-teal-400 text-teal-300 text-xs font-semibold rounded-lg shrink-0 transition-all"
             >
-              👽 All Deoxys (4)
+              👽 Deoxys-Formen (4)
             </button>
           </div>
         </div>
@@ -236,7 +255,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
-                placeholder="Filter by name, #dex, or form..."
+                placeholder="Nach Name, #Dex oder Form filtern..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full pl-9 pr-3 py-1.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
@@ -249,11 +268,11 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               onChange={(e) => setCategoryFilter(e.target.value as any)}
               className="bg-slate-800 border border-slate-700 text-xs text-slate-200 py-1.5 px-3 rounded-xl focus:outline-none focus:border-blue-500 cursor-pointer"
             >
-              <option value="all">All Categories</option>
+              <option value="all">Alle Kategorien</option>
               <option value="standard">Standard Dex</option>
               <option value="mega">Megas & Primals</option>
-              <option value="form">Alternate Forms</option>
-              <option value="costume">Costumed Forms</option>
+              <option value="form">Formen & Varianten</option>
+              <option value="costume">Kostüm-Pokémon</option>
             </select>
           </div>
 
@@ -264,14 +283,14 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               onClick={selectAllFiltered}
               className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition-colors"
             >
-              Select Filtered ({filteredList.length})
+              Gefilterte auswählen ({filteredList.length})
             </button>
             <button
               type="button"
               onClick={deselectAllFiltered}
               className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200 text-xs font-semibold rounded-lg border border-slate-700 transition-colors"
             >
-              Deselect Filtered
+              Gefilterte abwählen
             </button>
             {selectedIds.size > 0 && (
               <button
@@ -279,7 +298,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
                 onClick={clearAll}
                 className="px-2.5 py-1 text-rose-400 hover:text-rose-300 text-xs font-semibold transition-colors"
               >
-                Clear All
+                Auswahl leeren
               </button>
             )}
           </div>
@@ -340,7 +359,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
           <div className="flex items-center gap-2">
             <Bookmark className="w-4 h-4 text-blue-400" />
             <span className="text-sm font-bold text-white tabular-nums">
-              {selectedIds.size} <span className="text-slate-400 font-normal text-xs">Pokémon selected</span>
+              {selectedIds.size} <span className="text-slate-400 font-normal text-xs">Pokémon ausgewählt</span>
             </span>
           </div>
 
@@ -350,7 +369,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               onClick={onClose}
               className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm font-semibold rounded-xl transition-colors"
             >
-              Cancel
+              Abbrechen
             </button>
             <button
               type="button"
@@ -359,7 +378,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               className="px-6 py-2 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-500/20 transition-all flex items-center gap-1.5"
             >
               <Check className="w-4 h-4" />
-              {isSaving ? 'Saving...' : 'Save Checklist'}
+              {isSaving ? 'Wird gespeichert...' : 'Auswahl speichern'}
             </button>
           </div>
         </div>

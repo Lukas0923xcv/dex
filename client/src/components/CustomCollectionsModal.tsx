@@ -86,6 +86,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   const [name, setName] = useState<string>('');
   const [isNameManuallyEdited, setIsNameManuallyEdited] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [populateMode, setPopulateMode] = useState<'all' | 'custom'>('all');
 
   // 8 Category definitions with modern Lucide icons and soft gradient accents
   const categoryCards: Array<{
@@ -217,6 +218,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     try {
       setIsSubmitting(true);
       const subLabel = variantMode === 'multi' ? 'Multivarianten' : 'Basis-Spezies';
+      const initialPokemonIds = populateMode === 'all' ? matchingPokemonIds : [];
       const newColl = await onCreateCollection(
         name.trim(),
         `${categoryType.toUpperCase()} · ${subLabel}`,
@@ -228,12 +230,15 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
           trackHundo,
           trackGender,
           trackSize,
-          pokemonIds: matchingPokemonIds
+          pokemonIds: initialPokemonIds
         }
       );
 
       if (newColl && newColl.id) {
         onSelectCollection(newColl.id);
+        if (populateMode === 'custom') {
+          onOpenEditor(newColl);
+        }
       }
       onClose();
     } finally {
@@ -572,15 +577,102 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </div>
               </div>
 
-              {/* Section 4: Sammlungs-Design & Benennung */}
+              {/* Section 4: Pokémon-Auswahl */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
+                      4
+                    </span>
+                    Pokémon-Auswahl
+                  </label>
+                  <span className="text-xs text-slate-400">
+                    Welche Pokémon sollen anfangs enthalten sein?
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setPopulateMode('all')}
+                    className={`flex items-start gap-3 p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                      populateMode === 'all'
+                        ? 'bg-slate-800/90 border-2 border-emerald-500 shadow-md ring-1 ring-emerald-500/20'
+                        : 'bg-slate-950/60 hover:bg-slate-800/50 border-slate-800 text-slate-400'
+                    }`}
+                  >
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
+                        populateMode === 'all'
+                          ? 'bg-emerald-500/20 text-emerald-400'
+                          : 'bg-slate-900 text-slate-400'
+                      }`}
+                    >
+                      <Sparkles className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm font-bold ${populateMode === 'all' ? 'text-white' : 'text-slate-300'}`}>
+                          Alle passenden Pokémon
+                        </span>
+                        {populateMode === 'all' && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                            Aktiv
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                        Fügt direkt alle {matchingPokemonIds.length} Pokémon dieser Kategorie zur Liste hinzu.
+                      </p>
+                    </div>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPopulateMode('custom')}
+                    className={`flex items-start gap-3 p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
+                      populateMode === 'custom'
+                        ? 'bg-slate-800/90 border-2 border-blue-500 shadow-md ring-1 ring-blue-500/20'
+                        : 'bg-slate-950/60 hover:bg-slate-800/50 border-slate-800 text-slate-400'
+                    }`}
+                  >
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
+                        populateMode === 'custom'
+                          ? 'bg-blue-500/20 text-blue-400'
+                          : 'bg-slate-900 text-slate-400'
+                      }`}
+                    >
+                      <Bookmark className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm font-bold ${populateMode === 'custom' ? 'text-white' : 'text-slate-300'}`}>
+                          Selbst auswählen
+                        </span>
+                        {populateMode === 'custom' && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300">
+                            Aktiv
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                        Startet mit Checkliste: Du entscheidest per Klick genau, welche Pokémon drin sind.
+                      </p>
+                    </div>
+                  </button>
+                </div>
+              </div>
+
+              {/* Section 5: Sammlungs-Design & Benennung */}
               <div className="space-y-3.5 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <Palette className="w-4 h-4 text-slate-400" />
-                    Design & Sammlungsname
+                    5 · Design & Sammlungsname
                   </label>
                   <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
-                    {matchingPokemonIds.length} Pokémon zugeordnet
+                    {populateMode === 'all' ? `${matchingPokemonIds.length} Pokémon zugeordnet` : 'Manuelle Auswahl'}
                   </span>
                 </div>
 
@@ -755,7 +847,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                               title="Einzelne Pokémon anpassen"
                             >
                               <Bookmark className="w-3.5 h-3.5" />
-                              <span className="hidden sm:inline">Bearbeiten</span>
+                              <span className="hidden sm:inline">Pokémon wählen</span>
                             </button>
                             <button
                               type="button"
