@@ -36890,12 +36890,12 @@
   {
     "id": "poke_1_costume_fall_2019",
     "dexNr": 1,
-    "name": "Bulbasaur (Fall 2019)",
+    "name": "Bulbasaur (Halloween Costume)",
     "names": {
-      "English": "Bulbasaur (Fall 2019)"
+      "English": "Bulbasaur (Halloween Costume)"
     },
     "formId": "FALL_2019",
-    "formName": "Fall 2019",
+    "formName": "Halloween Costume",
     "category": "costume",
     "generation": 1,
     "type1": "Grass",
@@ -36914,12 +36914,12 @@
   {
     "id": "poke_1_costume_jan_2020_noevolve",
     "dexNr": 1,
-    "name": "Bulbasaur (Jan 2020)",
+    "name": "Bulbasaur (Party Hat)",
     "names": {
-      "English": "Bulbasaur (Jan 2020)"
+      "English": "Bulbasaur (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Grass",
@@ -36938,12 +36938,12 @@
   {
     "id": "poke_1_costume_spring_2020_noevolve",
     "dexNr": 1,
-    "name": "Bulbasaur (Spring 2020)",
+    "name": "Bulbasaur (Pikachu Visor)",
     "names": {
-      "English": "Bulbasaur (Spring 2020)"
+      "English": "Bulbasaur (Pikachu Visor)"
     },
     "formId": "SPRING_2020_NOEVOLVE",
-    "formName": "Spring 2020",
+    "formName": "Pikachu Visor",
     "category": "costume",
     "generation": 1,
     "type1": "Grass",
@@ -36962,18 +36962,42 @@
   {
     "id": "poke_2_costume_jan_2020_noevolve",
     "dexNr": 2,
-    "name": "Ivysaur (Jan 2020)",
+    "name": "Ivysaur (Party Hat)",
     "names": {
-      "English": "Ivysaur (Jan 2020)"
+      "English": "Ivysaur (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Grass",
     "type2": "Poison",
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm2.cJAN_2020_NOEVOLVE.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm2.cJAN_2020_NOEVOLVE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/2.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_2_costume_spring_2020",
+    "dexNr": 2,
+    "name": "Ivysaur (Pikachu Visor)",
+    "names": {
+      "English": "Ivysaur (Pikachu Visor)"
+    },
+    "formId": "SPRING_2020",
+    "formName": "Pikachu Visor",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Grass",
+    "type2": "Poison",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/5/51/GO0002Visor.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/5/51/GO0002Visor.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/2.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/2.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
@@ -37034,12 +37058,12 @@
   {
     "id": "poke_3_costume_jan_2020_noevolve_f",
     "dexNr": 3,
-    "name": "Venusaur (Jan 2020 ♀)",
+    "name": "Venusaur (Party Hat ♀)",
     "names": {
-      "English": "Venusaur (Jan 2020 ♀)"
+      "English": "Venusaur (Party Hat ♀)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Grass",
@@ -37058,12 +37082,12 @@
   {
     "id": "poke_3_costume_jan_2020_noevolve",
     "dexNr": 3,
-    "name": "Venusaur (Jan 2020)",
+    "name": "Venusaur (Party Hat)",
     "names": {
-      "English": "Venusaur (Jan 2020)"
+      "English": "Venusaur (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Grass",
@@ -37080,14 +37104,62 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_3_costume_spring_2020",
+    "dexNr": 3,
+    "name": "Venusaur (Pikachu Visor)",
+    "names": {
+      "English": "Venusaur (Pikachu Visor)"
+    },
+    "formId": "SPRING_2020",
+    "formName": "Pikachu Visor",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Grass",
+    "type2": "Poison",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/7/75/GO0003Visor.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/7/75/GO0003Visor.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/3.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/3.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_4_costume_friede",
+    "dexNr": 4,
+    "name": "Charmander (Friede's Goggles)",
+    "names": {
+      "English": "Charmander (Friede's Goggles)"
+    },
+    "formId": "FRIEDE",
+    "formName": "Friede's Goggles",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Fire",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/1/13/GO0004Friede.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/1/13/GO0004Friede.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/4.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/4.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_4_costume_fall_2019",
     "dexNr": 4,
-    "name": "Charmander (Fall 2019)",
+    "name": "Charmander (Halloween Costume)",
     "names": {
-      "English": "Charmander (Fall 2019)"
+      "English": "Charmander (Halloween Costume)"
     },
     "formId": "FALL_2019",
-    "formName": "Fall 2019",
+    "formName": "Halloween Costume",
     "category": "costume",
     "generation": 1,
     "type1": "Fire",
@@ -37106,12 +37178,12 @@
   {
     "id": "poke_4_costume_jan_2020_noevolve",
     "dexNr": 4,
-    "name": "Charmander (Jan 2020)",
+    "name": "Charmander (Party Hat)",
     "names": {
-      "English": "Charmander (Jan 2020)"
+      "English": "Charmander (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Fire",
@@ -37130,12 +37202,12 @@
   {
     "id": "poke_4_costume_spring_2020_noevolve",
     "dexNr": 4,
-    "name": "Charmander (Spring 2020)",
+    "name": "Charmander (Pikachu Visor)",
     "names": {
-      "English": "Charmander (Spring 2020)"
+      "English": "Charmander (Pikachu Visor)"
     },
     "formId": "SPRING_2020_NOEVOLVE",
-    "formName": "Spring 2020",
+    "formName": "Pikachu Visor",
     "category": "costume",
     "generation": 1,
     "type1": "Fire",
@@ -37152,20 +37224,68 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_5_costume_friede",
+    "dexNr": 5,
+    "name": "Charmeleon (Friede's Goggles)",
+    "names": {
+      "English": "Charmeleon (Friede's Goggles)"
+    },
+    "formId": "FRIEDE",
+    "formName": "Friede's Goggles",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Fire",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/2/21/GO0005Friede.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/2/21/GO0005Friede.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/5.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/5.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_5_costume_jan_2020_noevolve",
     "dexNr": 5,
-    "name": "Charmeleon (Jan 2020)",
+    "name": "Charmeleon (Party Hat)",
     "names": {
-      "English": "Charmeleon (Jan 2020)"
+      "English": "Charmeleon (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Fire",
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm5.cJAN_2020_NOEVOLVE.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm5.cJAN_2020_NOEVOLVE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/5.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/5.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_5_costume_spring_2020",
+    "dexNr": 5,
+    "name": "Charmeleon (Pikachu Visor)",
+    "names": {
+      "English": "Charmeleon (Pikachu Visor)"
+    },
+    "formId": "SPRING_2020",
+    "formName": "Pikachu Visor",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Fire",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/7/73/GO0005Visor.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/7/73/GO0005Visor.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/5.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/5.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
@@ -37200,14 +37320,38 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_6_costume_friede",
+    "dexNr": 6,
+    "name": "Charizard (Friede's Goggles)",
+    "names": {
+      "English": "Charizard (Friede's Goggles)"
+    },
+    "formId": "FRIEDE",
+    "formName": "Friede's Goggles",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Fire",
+    "type2": "Flying",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/d/da/GO0006Friede.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/d/da/GO0006Friede.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/6.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/6.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_6_costume_jan_2020_noevolve",
     "dexNr": 6,
-    "name": "Charizard (Jan 2020)",
+    "name": "Charizard (Party Hat)",
     "names": {
-      "English": "Charizard (Jan 2020)"
+      "English": "Charizard (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Fire",
@@ -37224,14 +37368,38 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_6_costume_spring_2020",
+    "dexNr": 6,
+    "name": "Charizard (Pikachu Visor)",
+    "names": {
+      "English": "Charizard (Pikachu Visor)"
+    },
+    "formId": "SPRING_2020",
+    "formName": "Pikachu Visor",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Fire",
+    "type2": "Flying",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/5/55/GO0006Visor.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/5/55/GO0006Visor.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/6.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/6.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_7_costume_fall_2019",
     "dexNr": 7,
-    "name": "Squirtle (Fall 2019)",
+    "name": "Squirtle (Halloween Costume)",
     "names": {
-      "English": "Squirtle (Fall 2019)"
+      "English": "Squirtle (Halloween Costume)"
     },
     "formId": "FALL_2019",
-    "formName": "Fall 2019",
+    "formName": "Halloween Costume",
     "category": "costume",
     "generation": 1,
     "type1": "Water",
@@ -37250,12 +37418,12 @@
   {
     "id": "poke_7_costume_jan_2020_noevolve",
     "dexNr": 7,
-    "name": "Squirtle (Jan 2020)",
+    "name": "Squirtle (Party Hat)",
     "names": {
-      "English": "Squirtle (Jan 2020)"
+      "English": "Squirtle (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Water",
@@ -37274,12 +37442,12 @@
   {
     "id": "poke_7_costume_spring_2020_noevolve",
     "dexNr": 7,
-    "name": "Squirtle (Spring 2020)",
+    "name": "Squirtle (Pikachu Visor)",
     "names": {
-      "English": "Squirtle (Spring 2020)"
+      "English": "Squirtle (Pikachu Visor)"
     },
     "formId": "SPRING_2020_NOEVOLVE",
-    "formName": "Spring 2020",
+    "formName": "Pikachu Visor",
     "category": "costume",
     "generation": 1,
     "type1": "Water",
@@ -37298,12 +37466,12 @@
   {
     "id": "poke_7_costume_summer_2018",
     "dexNr": 7,
-    "name": "Squirtle (Summer 2018)",
+    "name": "Squirtle (Sunglasses)",
     "names": {
-      "English": "Squirtle (Summer 2018)"
+      "English": "Squirtle (Sunglasses)"
     },
     "formId": "SUMMER_2018",
-    "formName": "Summer 2018",
+    "formName": "Sunglasses",
     "category": "costume",
     "generation": 1,
     "type1": "Water",
@@ -37322,12 +37490,12 @@
   {
     "id": "poke_8_costume_jan_2020_noevolve",
     "dexNr": 8,
-    "name": "Wartortle (Jan 2020)",
+    "name": "Wartortle (Party Hat)",
     "names": {
-      "English": "Wartortle (Jan 2020)"
+      "English": "Wartortle (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Water",
@@ -37344,14 +37512,38 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_8_costume_spring_2020",
+    "dexNr": 8,
+    "name": "Wartortle (Pikachu Visor)",
+    "names": {
+      "English": "Wartortle (Pikachu Visor)"
+    },
+    "formId": "SPRING_2020",
+    "formName": "Pikachu Visor",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/0/0e/GO0008Visor.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/0/0e/GO0008Visor.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/8.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/8.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_8_costume_summer_2018",
     "dexNr": 8,
-    "name": "Wartortle (Summer 2018)",
+    "name": "Wartortle (Sunglasses)",
     "names": {
-      "English": "Wartortle (Summer 2018)"
+      "English": "Wartortle (Sunglasses)"
     },
     "formId": "SUMMER_2018",
-    "formName": "Summer 2018",
+    "formName": "Sunglasses",
     "category": "costume",
     "generation": 1,
     "type1": "Water",
@@ -37394,12 +37586,12 @@
   {
     "id": "poke_9_costume_jan_2020_noevolve",
     "dexNr": 9,
-    "name": "Blastoise (Jan 2020)",
+    "name": "Blastoise (Party Hat)",
     "names": {
-      "English": "Blastoise (Jan 2020)"
+      "English": "Blastoise (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Water",
@@ -37416,14 +37608,38 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_9_costume_spring_2020",
+    "dexNr": 9,
+    "name": "Blastoise (Pikachu Visor)",
+    "names": {
+      "English": "Blastoise (Pikachu Visor)"
+    },
+    "formId": "SPRING_2020",
+    "formName": "Pikachu Visor",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/2/2e/GO0009Visor.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/2/2e/GO0009Visor.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/9.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/9.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_9_costume_summer_2018",
     "dexNr": 9,
-    "name": "Blastoise (Summer 2018)",
+    "name": "Blastoise (Sunglasses)",
     "names": {
-      "English": "Blastoise (Summer 2018)"
+      "English": "Blastoise (Sunglasses)"
     },
     "formId": "SUMMER_2018",
-    "formName": "Summer 2018",
+    "formName": "Sunglasses",
     "category": "costume",
     "generation": 1,
     "type1": "Water",
@@ -37433,6 +37649,30 @@
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/9.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/9.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_10_costume_gofest_2026",
+    "dexNr": 10,
+    "name": "Caterpie (Poké Ball Hat)",
+    "names": {
+      "English": "Caterpie (Poké Ball Hat)"
+    },
+    "formId": "GOFEST_2026",
+    "formName": "Poké Ball Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Bug",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/b/be/GO0010GOFest2026.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/b/be/GO0010GOFest2026.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png",
     "hasShiny": true,
     "isMega": false,
     "isForm": false,
@@ -37490,12 +37730,12 @@
   {
     "id": "poke_20_costume_jan_2020_noevolve_f",
     "dexNr": 20,
-    "name": "Raticate (Jan 2020 ♀)",
+    "name": "Raticate (Party Hat ♀)",
     "names": {
-      "English": "Raticate (Jan 2020 ♀)"
+      "English": "Raticate (Party Hat ♀)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Normal",
@@ -37514,12 +37754,12 @@
   {
     "id": "poke_20_costume_jan_2020_noevolve",
     "dexNr": 20,
-    "name": "Raticate (Jan 2020)",
+    "name": "Raticate (Party Hat)",
     "names": {
-      "English": "Raticate (Jan 2020)"
+      "English": "Raticate (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Normal",
@@ -37728,6 +37968,54 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_25_costume_baseball_shirt",
+    "dexNr": 25,
+    "name": "Pikachu (Baseball Shirt)",
+    "names": {
+      "English": "Pikachu (Baseball Shirt)"
+    },
+    "formId": "BASEBALL_SHIRT",
+    "formName": "Baseball Shirt",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/c/c0/GO0025BaseballJersey.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/c/c0/GO0025BaseballJersey.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_captain",
+    "dexNr": 25,
+    "name": "Pikachu (Captain Pikachu)",
+    "names": {
+      "English": "Pikachu (Captain Pikachu)"
+    },
+    "formId": "CAPTAIN",
+    "formName": "Captain Pikachu",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/1/14/GO0025Captain.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/1/14/GO0025Captain.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_25_costume_copy_2019_f",
     "dexNr": 25,
     "name": "Pikachu (Copy 2019 ♀)",
@@ -37766,6 +38054,30 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fCOPY_2019.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fCOPY_2019.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_cosmog_spacesuit",
+    "dexNr": 25,
+    "name": "Pikachu (Cosmog Spacesuit)",
+    "names": {
+      "English": "Pikachu (Cosmog Spacesuit)"
+    },
+    "formId": "COSMOG_SPACESUIT",
+    "formName": "Cosmog Spacesuit",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/0/06/GO0025Cosmog.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/0/06/GO0025Cosmog.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -37944,6 +38256,30 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_25_costume_excavator",
+    "dexNr": 25,
+    "name": "Pikachu (Excavator Pikachu)",
+    "names": {
+      "English": "Pikachu (Excavator Pikachu)"
+    },
+    "formId": "EXCAVATOR",
+    "formName": "Excavator Pikachu",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/6/62/GO0025Fossil.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/6/62/GO0025Fossil.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_25_costume_fall_2018_f",
     "dexNr": 25,
     "name": "Pikachu (Fall 2018 ♀)",
@@ -37982,54 +38318,6 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cFALL_2018.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cFALL_2018.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_25_costume_fall_2019_f",
-    "dexNr": 25,
-    "name": "Pikachu (Fall 2019 ♀)",
-    "names": {
-      "English": "Pikachu (Fall 2019 ♀)"
-    },
-    "formId": "FALL_2019",
-    "formName": "Fall 2019",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Electric",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fFALL_2019.g2.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fFALL_2019.g2.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_25_costume_fall_2019",
-    "dexNr": 25,
-    "name": "Pikachu (Fall 2019)",
-    "names": {
-      "English": "Pikachu (Fall 2019)"
-    },
-    "formId": "FALL_2019",
-    "formName": "Fall 2019",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Electric",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fFALL_2019.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fFALL_2019.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -39240,6 +39528,54 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_25_costume_fall_2019_f",
+    "dexNr": 25,
+    "name": "Pikachu (Halloween Costume ♀)",
+    "names": {
+      "English": "Pikachu (Halloween Costume ♀)"
+    },
+    "formId": "FALL_2019",
+    "formName": "Halloween Costume",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fFALL_2019.g2.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fFALL_2019.g2.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_fall_2019",
+    "dexNr": 25,
+    "name": "Pikachu (Halloween Costume)",
+    "names": {
+      "English": "Pikachu (Halloween Costume)"
+    },
+    "formId": "FALL_2019",
+    "formName": "Halloween Costume",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fFALL_2019.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fFALL_2019.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_25_costume_hoenn_2020_noevolve_f",
     "dexNr": 25,
     "name": "Pikachu (Hoenn 2020 ♀)",
@@ -39432,54 +39768,6 @@
     "releasedInGo": true
   },
   {
-    "id": "poke_25_costume_jan_2020_noevolve_f",
-    "dexNr": 25,
-    "name": "Pikachu (Jan 2020 ♀)",
-    "names": {
-      "English": "Pikachu (Jan 2020 ♀)"
-    },
-    "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Electric",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cJAN_2020_NOEVOLVE.g2.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cJAN_2020_NOEVOLVE.g2.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_25_costume_jan_2020_noevolve",
-    "dexNr": 25,
-    "name": "Pikachu (Jan 2020)",
-    "names": {
-      "English": "Pikachu (Jan 2020)"
-    },
-    "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Electric",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cJAN_2020_NOEVOLVE.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cJAN_2020_NOEVOLVE.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
     "id": "poke_25_costume_jan_2023_noevolve_f",
     "dexNr": 25,
     "name": "Pikachu (Jan 2023 ♀)",
@@ -39614,6 +39902,30 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cKANTO_2020_NOEVOLVE.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cKANTO_2020_NOEVOLVE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_marathon_visor",
+    "dexNr": 25,
+    "name": "Pikachu (Marathon Visor)",
+    "names": {
+      "English": "Pikachu (Marathon Visor)"
+    },
+    "formId": "MARATHON_VISOR",
+    "formName": "Marathon Visor",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/f/f8/GO0025MarathonVisor.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/f/f8/GO0025MarathonVisor.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -39768,6 +40080,54 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_25_costume_jan_2020_noevolve_f",
+    "dexNr": 25,
+    "name": "Pikachu (Party Hat ♀)",
+    "names": {
+      "English": "Pikachu (Party Hat ♀)"
+    },
+    "formId": "JAN_2020_NOEVOLVE",
+    "formName": "Party Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cJAN_2020_NOEVOLVE.g2.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cJAN_2020_NOEVOLVE.g2.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_jan_2020_noevolve",
+    "dexNr": 25,
+    "name": "Pikachu (Party Hat)",
+    "names": {
+      "English": "Pikachu (Party Hat)"
+    },
+    "formId": "JAN_2020_NOEVOLVE",
+    "formName": "Party Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cJAN_2020_NOEVOLVE.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cJAN_2020_NOEVOLVE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_25_costume_pi_f",
     "dexNr": 25,
     "name": "Pikachu (Pi ♀)",
@@ -39806,6 +40166,30 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cPI.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cPI.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_willow_assistant",
+    "dexNr": 25,
+    "name": "Pikachu (Professor Willow's Assistant)",
+    "names": {
+      "English": "Pikachu (Professor Willow's Assistant)"
+    },
+    "formId": "WILLOW_ASSISTANT",
+    "formName": "Professor Willow's Assistant",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/8/8c/GO0025Willow.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/8/8c/GO0025Willow.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -39950,54 +40334,6 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSPRING_2023.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSPRING_2023.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_25_costume_summer_2018_f",
-    "dexNr": 25,
-    "name": "Pikachu (Summer 2018 ♀)",
-    "names": {
-      "English": "Pikachu (Summer 2018 ♀)"
-    },
-    "formId": "SUMMER_2018",
-    "formName": "Summer 2018",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Electric",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSUMMER_2018.g2.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSUMMER_2018.g2.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_25_costume_summer_2018",
-    "dexNr": 25,
-    "name": "Pikachu (Summer 2018)",
-    "names": {
-      "English": "Pikachu (Summer 2018)"
-    },
-    "formId": "SUMMER_2018",
-    "formName": "Summer 2018",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Electric",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSUMMER_2018.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSUMMER_2018.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -40248,6 +40584,54 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_25_costume_summer_2018_f",
+    "dexNr": 25,
+    "name": "Pikachu (Sunglasses ♀)",
+    "names": {
+      "English": "Pikachu (Sunglasses ♀)"
+    },
+    "formId": "SUMMER_2018",
+    "formName": "Sunglasses",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSUMMER_2018.g2.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSUMMER_2018.g2.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_summer_2018",
+    "dexNr": 25,
+    "name": "Pikachu (Sunglasses)",
+    "names": {
+      "English": "Pikachu (Sunglasses)"
+    },
+    "formId": "SUMMER_2018",
+    "formName": "Sunglasses",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSUMMER_2018.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cSUMMER_2018.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_25_costume_tcg_2022_noevolve_f",
     "dexNr": 25,
     "name": "Pikachu (Tcg 2022 ♀)",
@@ -40286,6 +40670,78 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cTCG_2022_NOEVOLVE.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cTCG_2022_NOEVOLVE.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_instinct_hat",
+    "dexNr": 25,
+    "name": "Pikachu (Team Instinct Hat)",
+    "names": {
+      "English": "Pikachu (Team Instinct Hat)"
+    },
+    "formId": "INSTINCT_HAT",
+    "formName": "Team Instinct Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/8/84/GO0025InstinctHat.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/8/84/GO0025InstinctHat.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_mystic_hat",
+    "dexNr": 25,
+    "name": "Pikachu (Team Mystic Hat)",
+    "names": {
+      "English": "Pikachu (Team Mystic Hat)"
+    },
+    "formId": "MYSTIC_HAT",
+    "formName": "Team Mystic Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/e/ea/GO0025MysticHat.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/e/ea/GO0025MysticHat.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_valor_hat",
+    "dexNr": 25,
+    "name": "Pikachu (Team Valor Hat)",
+    "names": {
+      "English": "Pikachu (Team Valor Hat)"
+    },
+    "formId": "VALOR_HAT",
+    "formName": "Team Valor Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/0/06/GO0025ValorHat.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/0/06/GO0025ValorHat.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -41186,12 +41642,12 @@
   {
     "id": "poke_26_costume_summer_2018_f",
     "dexNr": 26,
-    "name": "Raichu (Summer 2018 ♀)",
+    "name": "Raichu (Sunglasses ♀)",
     "names": {
-      "English": "Raichu (Summer 2018 ♀)"
+      "English": "Raichu (Sunglasses ♀)"
     },
     "formId": "SUMMER_2018",
-    "formName": "Summer 2018",
+    "formName": "Sunglasses",
     "category": "costume",
     "generation": 1,
     "type1": "Electric",
@@ -41210,12 +41666,12 @@
   {
     "id": "poke_26_costume_summer_2018",
     "dexNr": 26,
-    "name": "Raichu (Summer 2018)",
+    "name": "Raichu (Sunglasses)",
     "names": {
-      "English": "Raichu (Summer 2018)"
+      "English": "Raichu (Sunglasses)"
     },
     "formId": "SUMMER_2018",
-    "formName": "Summer 2018",
+    "formName": "Sunglasses",
     "category": "costume",
     "generation": 1,
     "type1": "Electric",
@@ -41306,12 +41762,12 @@
   {
     "id": "poke_33_costume_jan_2020_noevolve",
     "dexNr": 33,
-    "name": "Nidorino (Jan 2020)",
+    "name": "Nidorino (Party Hat)",
     "names": {
-      "English": "Nidorino (Jan 2020)"
+      "English": "Nidorino (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Poison",
@@ -41561,6 +42017,30 @@
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/55.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/55.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/55.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_68_costume_modern_jacket",
+    "dexNr": 68,
+    "name": "Machamp (Modern Jacket)",
+    "names": {
+      "English": "Machamp (Modern Jacket)"
+    },
+    "formId": "MODERN_JACKET",
+    "formName": "Modern Jacket",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Fighting",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/c/c4/GO0068.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/c/c4/GO0068.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/68.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/68.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/68.png",
     "hasShiny": true,
     "isMega": false,
     "isForm": false,
@@ -41834,12 +42314,12 @@
   {
     "id": "poke_94_costume_jan_2020_noevolve",
     "dexNr": 94,
-    "name": "Gengar (Jan 2020)",
+    "name": "Gengar (Party Hat)",
     "names": {
-      "English": "Gengar (Jan 2020)"
+      "English": "Gengar (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 1,
     "type1": "Ghost",
@@ -42000,6 +42480,54 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_132_costume_pokopia_cap",
+    "dexNr": 132,
+    "name": "Ditto (Pokopia Cap)",
+    "names": {
+      "English": "Ditto (Pokopia Cap)"
+    },
+    "formId": "POKOPIA_CAP",
+    "formName": "Pokopia Cap",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/5/59/GO0132PokopiaCap.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/5/59/GO0132PokopiaCap.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/132.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/132.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_132_costume_pokopia_hat",
+    "dexNr": 132,
+    "name": "Ditto (Pokopia Hat)",
+    "names": {
+      "English": "Ditto (Pokopia Hat)"
+    },
+    "formId": "POKOPIA_HAT",
+    "formName": "Pokopia Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/a/ac/GO0132PokopiaHat.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/a/ac/GO0132PokopiaHat.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/132.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/132.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_133_costume_gofest_2024_mtiara_f",
     "dexNr": 133,
     "name": "Eevee (Gofest 2024 Mtiara ♀)",
@@ -42144,54 +42672,6 @@
     "releasedInGo": true
   },
   {
-    "id": "poke_133_costume_jan_2020_noevolve_f",
-    "dexNr": 133,
-    "name": "Eevee (Jan 2020 ♀)",
-    "names": {
-      "English": "Eevee (Jan 2020 ♀)"
-    },
-    "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Normal",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cJAN_2020_NOEVOLVE.g2.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cJAN_2020_NOEVOLVE.g2.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/133.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/133.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_133_costume_jan_2020_noevolve",
-    "dexNr": 133,
-    "name": "Eevee (Jan 2020)",
-    "names": {
-      "English": "Eevee (Jan 2020)"
-    },
-    "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Normal",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cJAN_2020_NOEVOLVE.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cJAN_2020_NOEVOLVE.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/133.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/133.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
     "id": "poke_133_costume_may_2023_f",
     "dexNr": 133,
     "name": "Eevee (May 2023 ♀)",
@@ -42278,6 +42758,54 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cNOVEMBER_2018.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cNOVEMBER_2018.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/133.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/133.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_133_costume_jan_2020_noevolve_f",
+    "dexNr": 133,
+    "name": "Eevee (Party Hat ♀)",
+    "names": {
+      "English": "Eevee (Party Hat ♀)"
+    },
+    "formId": "JAN_2020_NOEVOLVE",
+    "formName": "Party Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cJAN_2020_NOEVOLVE.g2.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cJAN_2020_NOEVOLVE.g2.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/133.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/133.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_133_costume_jan_2020_noevolve",
+    "dexNr": 133,
+    "name": "Eevee (Party Hat)",
+    "names": {
+      "English": "Eevee (Party Hat)"
+    },
+    "formId": "JAN_2020_NOEVOLVE",
+    "formName": "Party Hat",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cJAN_2020_NOEVOLVE.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm133.cJAN_2020_NOEVOLVE.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/133.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/133.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
@@ -43010,12 +43538,12 @@
   {
     "id": "poke_172_costume_summer_2018",
     "dexNr": 172,
-    "name": "Pichu (Summer 2018)",
+    "name": "Pichu (Sunglasses)",
     "names": {
-      "English": "Pichu (Summer 2018)"
+      "English": "Pichu (Sunglasses)"
     },
     "formId": "SUMMER_2018",
-    "formName": "Summer 2018",
+    "formName": "Sunglasses",
     "category": "costume",
     "generation": 2,
     "type1": "Electric",
@@ -43514,12 +44042,12 @@
   {
     "id": "poke_202_costume_jan_2020_noevolve_f",
     "dexNr": 202,
-    "name": "Wobbuffet (Jan 2020 ♀)",
+    "name": "Wobbuffet (Party Hat ♀)",
     "names": {
-      "English": "Wobbuffet (Jan 2020 ♀)"
+      "English": "Wobbuffet (Party Hat ♀)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 2,
     "type1": "Psychic",
@@ -43538,12 +44066,12 @@
   {
     "id": "poke_202_costume_jan_2020_noevolve",
     "dexNr": 202,
-    "name": "Wobbuffet (Jan 2020)",
+    "name": "Wobbuffet (Party Hat)",
     "names": {
-      "English": "Wobbuffet (Jan 2020)"
+      "English": "Wobbuffet (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 2,
     "type1": "Psychic",
@@ -43673,6 +44201,30 @@
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/217.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/217.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/217.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_222_costume_sunglasses",
+    "dexNr": 222,
+    "name": "Corsola (Pink Sunglasses)",
+    "names": {
+      "English": "Corsola (Pink Sunglasses)"
+    },
+    "formId": "SUNGLASSES",
+    "formName": "Pink Sunglasses",
+    "category": "costume",
+    "generation": 2,
+    "type1": "Water",
+    "type2": "Rock",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/c/c7/GO0222GSunglasses.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/c/c7/GO0222GSunglasses.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/222.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/222.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/222.png",
     "hasShiny": true,
     "isMega": false,
     "isForm": false,
@@ -43850,12 +44402,12 @@
   {
     "id": "poke_265_costume_jan_2020_noevolve",
     "dexNr": 265,
-    "name": "Wurmple (Jan 2020)",
+    "name": "Wurmple (Party Hat)",
     "names": {
-      "English": "Wurmple (Jan 2020)"
+      "English": "Wurmple (Party Hat)"
     },
     "formId": "JAN_2020_NOEVOLVE",
-    "formName": "Jan 2020",
+    "formName": "Party Hat",
     "category": "costume",
     "generation": 3,
     "type1": "Bug",
@@ -44952,150 +45504,6 @@
     "releasedInGo": true
   },
   {
-    "id": "poke_585_costume_spring",
-    "dexNr": 585,
-    "name": "Deerling (Spring)",
-    "names": {
-      "English": "Deerling (Spring)"
-    },
-    "formId": "SPRING",
-    "formName": "Spring",
-    "category": "costume",
-    "generation": 5,
-    "type1": "Normal",
-    "type2": "Grass",
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm585.fSPRING.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm585.fSPRING.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/585.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/585.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/585.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_585_costume_summer",
-    "dexNr": 585,
-    "name": "Deerling (Summer)",
-    "names": {
-      "English": "Deerling (Summer)"
-    },
-    "formId": "SUMMER",
-    "formName": "Summer",
-    "category": "costume",
-    "generation": 5,
-    "type1": "Normal",
-    "type2": "Grass",
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm585.fSUMMER.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm585.fSUMMER.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/585.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/585.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/585.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_585_costume_winter",
-    "dexNr": 585,
-    "name": "Deerling (Winter)",
-    "names": {
-      "English": "Deerling (Winter)"
-    },
-    "formId": "WINTER",
-    "formName": "Winter",
-    "category": "costume",
-    "generation": 5,
-    "type1": "Normal",
-    "type2": "Grass",
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm585.fWINTER.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm585.fWINTER.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/585.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/585.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/585.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_586_costume_spring",
-    "dexNr": 586,
-    "name": "Sawsbuck (Spring)",
-    "names": {
-      "English": "Sawsbuck (Spring)"
-    },
-    "formId": "SPRING",
-    "formName": "Spring",
-    "category": "costume",
-    "generation": 5,
-    "type1": "Normal",
-    "type2": "Grass",
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm586.fSPRING.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm586.fSPRING.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/586.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/586.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/586.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_586_costume_summer",
-    "dexNr": 586,
-    "name": "Sawsbuck (Summer)",
-    "names": {
-      "English": "Sawsbuck (Summer)"
-    },
-    "formId": "SUMMER",
-    "formName": "Summer",
-    "category": "costume",
-    "generation": 5,
-    "type1": "Normal",
-    "type2": "Grass",
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm586.fSUMMER.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm586.fSUMMER.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/586.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/586.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/586.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
-    "id": "poke_586_costume_winter",
-    "dexNr": 586,
-    "name": "Sawsbuck (Winter)",
-    "names": {
-      "English": "Sawsbuck (Winter)"
-    },
-    "formId": "WINTER",
-    "formName": "Winter",
-    "category": "costume",
-    "generation": 5,
-    "type1": "Normal",
-    "type2": "Grass",
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm586.fWINTER.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm586.fWINTER.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/586.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/586.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/586.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
     "id": "poke_613_costume_winter_2020",
     "dexNr": 613,
     "name": "Cubchoo (Winter 2020)",
@@ -45360,6 +45768,78 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_710_costume_spooky_large",
+    "dexNr": 710,
+    "name": "Pumpkaboo (Spooky Festival - Large Size)",
+    "names": {
+      "English": "Pumpkaboo (Spooky Festival - Large Size)"
+    },
+    "formId": "SPOOKY_LARGE",
+    "formName": "Spooky Festival (Large)",
+    "category": "costume",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/c/c8/GO0710LaHalloween2022.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/c/c8/GO0710LaHalloween2022.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/710.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/710.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_710_costume_spooky_small",
+    "dexNr": 710,
+    "name": "Pumpkaboo (Spooky Festival - Small Size)",
+    "names": {
+      "English": "Pumpkaboo (Spooky Festival - Small Size)"
+    },
+    "formId": "SPOOKY_SMALL",
+    "formName": "Spooky Festival (Small)",
+    "category": "costume",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/8/8e/GO0710SmHalloween2022.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/8/8e/GO0710SmHalloween2022.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/710.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/710.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_710_costume_spooky_super",
+    "dexNr": 710,
+    "name": "Pumpkaboo (Spooky Festival - Super Size)",
+    "names": {
+      "English": "Pumpkaboo (Spooky Festival - Super Size)"
+    },
+    "formId": "SPOOKY_SUPER",
+    "formName": "Spooky Festival (Super)",
+    "category": "costume",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/c/c9/GO0710SuHalloween2022.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/c/c9/GO0710SuHalloween2022.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/710.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/710.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/710.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_711_costume_fall_2022",
     "dexNr": 711,
     "name": "Gourgeist (Fall 2022)",
@@ -45374,6 +45854,78 @@
     "type2": "Grass",
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fAVERAGE.cFALL_2022.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fAVERAGE.cFALL_2022.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/711.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/711.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_711_costume_spooky_large",
+    "dexNr": 711,
+    "name": "Gourgeist (Spooky Festival - Large Size)",
+    "names": {
+      "English": "Gourgeist (Spooky Festival - Large Size)"
+    },
+    "formId": "SPOOKY_LARGE",
+    "formName": "Spooky Festival (Large)",
+    "category": "costume",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/7/7e/GO0711LaHalloween2022.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/7/7e/GO0711LaHalloween2022.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/711.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/711.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_711_costume_spooky_small",
+    "dexNr": 711,
+    "name": "Gourgeist (Spooky Festival - Small Size)",
+    "names": {
+      "English": "Gourgeist (Spooky Festival - Small Size)"
+    },
+    "formId": "SPOOKY_SMALL",
+    "formName": "Spooky Festival (Small)",
+    "category": "costume",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/b/b3/GO0711SmHalloween2022.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/b/b3/GO0711SmHalloween2022.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/711.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/711.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_711_costume_spooky_super",
+    "dexNr": 711,
+    "name": "Gourgeist (Spooky Festival - Super Size)",
+    "names": {
+      "English": "Gourgeist (Spooky Festival - Super Size)"
+    },
+    "formId": "SPOOKY_SUPER",
+    "formName": "Spooky Festival (Super)",
+    "category": "costume",
+    "generation": 6,
+    "type1": "Ghost",
+    "type2": "Grass",
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/4/44/GO0711SuHalloween2022.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/4/44/GO0711SuHalloween2022.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/711.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/711.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/711.png",
@@ -45737,6 +46289,54 @@
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/907.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/907.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/907.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_999_costume_anniversary_10",
+    "dexNr": 999,
+    "name": "Gimmighoul (10th Anniversary Coin)",
+    "names": {
+      "English": "Gimmighoul (10th Anniversary Coin)"
+    },
+    "formId": "ANNIVERSARY_10",
+    "formName": "10th Anniversary Coin",
+    "category": "costume",
+    "generation": 9,
+    "type1": "Ghost",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/8/8c/GO0999Anniversary10.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/8/8c/GO0999Anniversary10.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/999.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/999.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/999.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_999_costume_anniversary_9",
+    "dexNr": 999,
+    "name": "Gimmighoul (9th Anniversary Coin)",
+    "names": {
+      "English": "Gimmighoul (9th Anniversary Coin)"
+    },
+    "formId": "ANNIVERSARY_9",
+    "formName": "9th Anniversary Coin",
+    "category": "costume",
+    "generation": 9,
+    "type1": "Ghost",
+    "type2": null,
+    "spriteUrl": "https://archives.bulbagarden.net/media/upload/0/01/GO0999Anniversary9.png",
+    "shinySpriteUrl": "https://archives.bulbagarden.net/media/upload/0/01/GO0999Anniversary9.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/999.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/999.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/999.png",
     "hasShiny": true,
     "isMega": false,
     "isForm": false,

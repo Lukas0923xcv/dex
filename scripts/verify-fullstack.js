@@ -102,6 +102,22 @@ async function main() {
     }
     console.log(`[TEST 3d] Form accuracy passed (Toxtricity: 10184, Urshifu: 10191, Tauros breeds: ${taurosNames.size})`);
 
+    // 3e. Costume Accuracy & Starter Visor Verification
+    const allCostumesRes = await request('http://localhost:3456/api/pokemon?category=costume&limit=500');
+    const pikavisorIvy = allCostumesRes.data.find(p => p.id === 'poke_2_costume_spring_2020');
+    if (!pikavisorIvy || !pikavisorIvy.spriteUrl.includes('GO0002Visor.png')) {
+      throw new Error(`Pikavisor Ivysaur missing or invalid sprite: ${pikavisorIvy?.spriteUrl}`);
+    }
+    const partyIvy = allCostumesRes.data.find(p => p.id === 'poke_2_costume_jan_2020_noevolve');
+    if (!partyIvy || partyIvy.formName !== 'Party Hat') {
+      throw new Error(`Party Ivysaur missing or not labeled Party Hat: ${partyIvy?.formName}`);
+    }
+    const fakeCostumes = allCostumesRes.data.filter(p => p.dexNr === 585 || p.dexNr === 586);
+    if (fakeCostumes.length > 0) {
+      throw new Error(`Deerling/Sawsbuck seasonal forms incorrectly present in costumes: ${fakeCostumes.length}`);
+    }
+    console.log(`[TEST 3e] Costume accuracy passed (Pikavisor Ivysaur: verified, Party Ivysaur: verified, Deerling/Sawsbuck fake costumes: 0)`);
+
     // 4. Progress Toggle Test
     const wasCaught = pokeRes.data.find(p => p.id === 'poke_1_base')?.caught ?? false;
     const toggleRes = await request('http://localhost:3456/api/progress/toggle', {

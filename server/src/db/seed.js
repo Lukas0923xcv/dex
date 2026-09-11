@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const db = require('./index');
 
-function seedDatabase() {
+function seedDatabase(force = false) {
   console.log('Checking if Pokémon database needs seeding...');
   
   const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
@@ -13,7 +13,7 @@ function seedDatabase() {
 
   const pokemonList = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   const countRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
-  if (countRow && countRow.count === pokemonList.length) {
+  if (!force && countRow && countRow.count === pokemonList.length) {
     console.log(`Database already up-to-date with ${countRow.count} Pokémon.`);
     return;
   }
