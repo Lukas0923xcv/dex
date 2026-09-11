@@ -85,36 +85,37 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           <span>{filters.releasedOnly ? 'Released in GO' : 'All 1,025 Dex'}</span>
         </button>
 
-        {/* Global ♂ / ♀ Gender Tracking Toggle */}
-        <button
-          type="button"
-          onClick={() => onFilterChange({ showGenderTracking: !filters.showGenderTracking })}
-          className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 select-none ${
-            filters.showGenderTracking
-              ? 'bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-400/60 shadow-sm font-bold'
-              : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
-          }`}
-          title="Männlich (♂) und Weiblich (♀) Tracking auf allen Karten anzeigen"
-        >
-          <span className="font-bold text-sm leading-none">⚧</span>
-          <span>♂/♀ Versionen</span>
-        </button>
-
-        {/* Forms Mode: Include Base Form Toggle */}
+        {/* Forms Mode: Gender Difference Forms & Include Base Form Toggles */}
         {mode === 'form' && (
-          <button
-            type="button"
-            onClick={() => onFilterChange({ includeBaseInForms: !filters.includeBaseInForms })}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 select-none ${
-              filters.includeBaseInForms
-                ? 'bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border-indigo-400/60 shadow-sm font-bold'
-                : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
-            }`}
-            title="Basis-Formen neben den regionalen/alternativen Formen anzeigen"
-          >
-            <span>👁️</span>
-            <span>Basis-Formen</span>
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={() => onFilterChange({ showGenderTracking: !filters.showGenderTracking })}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 select-none cursor-pointer ${
+                filters.showGenderTracking
+                  ? 'bg-pink-500/20 text-pink-700 dark:text-pink-300 border-pink-400/60 shadow-sm font-bold'
+                  : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
+              }`}
+              title="Weibliche Formen (♀) für Pokémon mit Geschlechtsunterschieden anzeigen"
+            >
+              <span className="font-bold text-sm leading-none">⚧</span>
+              <span>Geschlechts-Formen</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => onFilterChange({ includeBaseInForms: !filters.includeBaseInForms })}
+              className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 select-none cursor-pointer ${
+                filters.includeBaseInForms
+                  ? 'bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border-indigo-400/60 shadow-sm font-bold'
+                  : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
+              }`}
+              title="Basis-Formen neben den regionalen/alternativen Formen anzeigen"
+            >
+              <span>👁️</span>
+              <span>Basis-Formen</span>
+            </button>
+          </>
         )}
 
         {/* Status Quick Filter Chips */}
