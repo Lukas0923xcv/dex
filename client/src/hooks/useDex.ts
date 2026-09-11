@@ -13,7 +13,8 @@ const INITIAL_FILTERS: FilterState = {
   sortBy: 'dexAsc',
   showGenderTracking: false,
   includeBaseInForms: false,
-  shinyOnly: false
+  shinyOnly: false,
+  shadowOnly: false
 };
 
 export function useDex() {
@@ -105,6 +106,8 @@ export function useDex() {
 
     if (mode === 'shiny') {
       targetType = 'shiny';
+    } else if (mode === 'shadow') {
+      targetType = 'shadow';
     } else if (mode === 'custom' && activeColl?.categoryType === 'shadow') {
       targetType = 'shadow';
     } else if (mode === 'custom' && activeColl?.categoryType === 'purified') {
@@ -187,9 +190,11 @@ export function useDex() {
     if (pokemonIds.length === 0) return;
     const activeColl = collections.find(c => c.id === filters.activeCollectionId);
     const isShiny = mode === 'shiny' || Boolean(mode === 'custom' && activeColl?.trackShiny);
+    const isShadow = mode === 'shadow' || Boolean(mode === 'custom' && activeColl?.categoryType === 'shadow');
     await storage.batchUpdateProgress(pokemonIds, {
-      caught: isShiny ? undefined : caught,
-      shinyCaught: isShiny ? caught : undefined
+      caught: (isShiny || isShadow) ? undefined : caught,
+      shinyCaught: isShiny ? caught : undefined,
+      shadowCaught: isShadow ? caught : undefined
     });
 
     setPokemonList(prev =>
@@ -197,8 +202,9 @@ export function useDex() {
         if (!pokemonIds.includes(p.id)) return p;
         return {
           ...p,
-          caught: isShiny ? p.caught : caught,
-          shinyCaught: isShiny ? caught : p.shinyCaught
+          caught: (isShiny || isShadow) ? p.caught : caught,
+          shinyCaught: isShiny ? caught : p.shinyCaught,
+          shadowCaught: isShadow ? caught : p.shadowCaught
         };
       })
     );
@@ -222,6 +228,8 @@ export function useDex() {
     } else if (mode === 'shiny') {
       // In Shiny mode, show all standard, megas, forms, and costumes that have shiny variations
       result = result.filter(p => p.hasShiny);
+    } else if (mode === 'shadow') {
+      result = result.filter(p => Boolean(p.hasShadow));
     } else if (mode === 'mega') {
       result = result.filter(p => p.category === 'mega' || p.isMega);
     } else if (mode === 'form') {
@@ -292,6 +300,11 @@ export function useDex() {
       result = result.filter(p => p.hasShiny);
     }
 
+    // 1c. Filter by Shadow Only (toggle is on)
+    if (filters.shadowOnly) {
+      result = result.filter(p => Boolean(p.hasShadow));
+    }
+
     // 2. Filter by Generation
     if (filters.generation !== 'all') {
       result = result.filter(p => p.generation === filters.generation);
@@ -309,6 +322,7 @@ export function useDex() {
     const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
     const getPokemonCaughtStatus = (p: Pokemon) => {
       if (mode === 'shiny') return Boolean(p.shinyCaught);
+      if (mode === 'shadow') return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
@@ -322,14 +336,49 @@ export function useDex() {
       result = result.filter(p => !getPokemonCaughtStatus(p));
     }
 
-    // 5. Search Filter (Name, Dex Number, Form Name)
+    // 5. Search Filter (Name, Dex Number, Form Name, Smart Keywords: crypto/shadow, shiny, mega)
     if (filters.search.trim()) {
-      const q = filters.search.trim().toLowerCase();
+      const rawQuery = filters.search.trim().toLowerCase();
+      let q = rawQuery;
+      let requireShadow = false;
+      let requireShiny = false;
+      let requireMega = false;
+
+      if (q === 'crypto' || q === 'shadow' || q === 'schatten') {
+        requireShadow = true;
+        q = '';
+      } else if (q.startsWith('crypto ') || q.startsWith('shadow ') || q.startsWith('schatten ')) {
+        requireShadow = true;
+        q = q.replace(/^(crypto|shadow|schatten)\s+/, '');
+      }
+
+      if (q === 'shiny' || q === 'schillernd' || q === 'schillernde') {
+        requireShiny = true;
+        q = '';
+      } else if (q.startsWith('shiny ') || q.startsWith('schillernd ')) {
+        requireShiny = true;
+        q = q.replace(/^(shiny|schillernd)\s+/, '');
+      }
+
+      if (q === 'mega') {
+        requireMega = true;
+        q = '';
+      } else if (q.startsWith('mega ')) {
+        requireMega = true;
+        q = q.replace(/^mega\s+/, '');
+      }
+
       const nr = parseInt(q, 10);
       result = result.filter(p => {
+        if (requireShadow && !p.hasShadow) return false;
+        if (requireShiny && !p.hasShiny) return false;
+        if (requireMega && !(p.category === 'mega' || p.isMega)) return false;
+
+        if (!q) return true;
         if (!isNaN(nr) && p.dexNr === nr) return true;
         if (p.name.toLowerCase().includes(q)) return true;
         if (p.formName && p.formName.toLowerCase().includes(q)) return true;
+        if (p.names && Object.values(p.names).some(n => n.toLowerCase().includes(q))) return true;
         if (p.type1.toLowerCase().includes(q)) return true;
         if (p.type2 && p.type2.toLowerCase().includes(q)) return true;
         return false;
@@ -387,6 +436,8 @@ export function useDex() {
       pool = pool.filter(p => p.category === 'standard');
     } else if (mode === 'shiny') {
       pool = pool.filter(p => p.hasShiny);
+    } else if (mode === 'shadow') {
+      pool = pool.filter(p => Boolean(p.hasShadow));
     } else if (mode === 'mega') {
       pool = pool.filter(p => p.category === 'mega' || p.isMega);
     } else if (mode === 'form') {
@@ -455,6 +506,10 @@ export function useDex() {
       pool = pool.filter(p => p.hasShiny);
     }
 
+    if (filters.shadowOnly) {
+      pool = pool.filter(p => Boolean(p.hasShadow));
+    }
+
     if (filters.generation !== 'all') {
       pool = pool.filter(p => p.generation === filters.generation);
     }
@@ -462,6 +517,7 @@ export function useDex() {
     const total = pool.length;
     const caught = pool.filter(p => {
       if (mode === 'shiny') return Boolean(p.shinyCaught);
+      if (mode === 'shadow') return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
@@ -472,7 +528,7 @@ export function useDex() {
     const percentage = total > 0 ? Math.round((caught / total) * 100) : 0;
 
     return { total, caught, percentage };
-  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, filters.includeBaseInForms, filters.showGenderTracking, filters.shinyOnly, collections]);
+  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, filters.includeBaseInForms, filters.showGenderTracking, filters.shinyOnly, filters.shadowOnly, collections]);
 
   // Trigger celebration on 100%
   useEffect(() => {

@@ -66,7 +66,7 @@ export interface CustomCollection {
   caughtItems: number;
 }
 
-export type TrackingMode = 'standard' | 'shiny' | 'mega' | 'form' | 'costume' | 'custom';
+export type TrackingMode = 'standard' | 'shiny' | 'shadow' | 'mega' | 'form' | 'costume' | 'custom';
 
 export type StatusFilter = 'all' | 'caught' | 'uncaught';
 
@@ -83,6 +83,7 @@ export interface FilterState {
   showGenderTracking?: boolean;
   includeBaseInForms?: boolean;
   shinyOnly?: boolean;
+  shadowOnly?: boolean;
 }
 
 export interface DashboardTabConfig {

@@ -182,7 +182,7 @@ class StorageAdapter {
   // --- Batch Update Progress (e.g., mark entire Region as caught/uncaught) ---
   public async batchUpdateProgress(
     pokemonIds: string[],
-    values: { caught?: boolean; shinyCaught?: boolean }
+    values: { caught?: boolean; shinyCaught?: boolean; shadowCaught?: boolean }
   ): Promise<boolean> {
     if (this.isConnectedToBackend) {
       try {
@@ -192,7 +192,8 @@ class StorageAdapter {
           body: JSON.stringify({
             pokemonIds,
             caught: values.caught,
-            shinyCaught: values.shinyCaught
+            shinyCaught: values.shinyCaught,
+            shadowCaught: values.shadowCaught
           })
         });
       } catch (err) {
@@ -207,6 +208,7 @@ class StorageAdapter {
       const current = progress[id] || {};
       if (values.caught !== undefined) current.caught = values.caught;
       if (values.shinyCaught !== undefined) current.shinyCaught = values.shinyCaught;
+      if (values.shadowCaught !== undefined) current.shadowCaught = values.shadowCaught;
       current.updatedAt = now;
       progress[id] = current;
     }
@@ -662,6 +664,7 @@ class StorageAdapter {
     const defaultTabs: DashboardTabConfig[] = [
       { id: 'standard', label: 'Standard Dex', type: 'preset', visible: true },
       { id: 'shiny', label: 'Shiny Dex', type: 'preset', visible: true, color: '#f59e0b' },
+      { id: 'shadow', label: 'Crypto Dex', type: 'preset', visible: true, color: '#a855f7' },
       { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
       { id: 'form', label: 'Alle Formen', type: 'preset', visible: true, color: '#6366f1' },
       { id: 'costume', label: 'Kostüme', type: 'preset', visible: true, color: '#ec4899' },
