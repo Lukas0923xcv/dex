@@ -38,6 +38,26 @@ function fetchJson(url) {
   });
 }
 
+function downloadFile(url, destPath) {
+  return new Promise((resolve, reject) => {
+    https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, res => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return resolve(downloadFile(res.headers.location, destPath));
+      }
+      if (res.statusCode === 200) {
+        const file = fs.createWriteStream(destPath);
+        res.pipe(file);
+        file.on('finish', () => {
+          file.close();
+          resolve();
+        });
+      } else {
+        reject(new Error(`HTTP ${res.statusCode}`));
+      }
+    }).on('error', reject);
+  });
+}
+
 function formatTypeName(rawType) {
   if (!rawType) return null;
   if (typeof rawType === 'object') {
@@ -59,6 +79,8 @@ function cleanFormName(formId) {
 
 function formatCostumeName(costume) {
   if (!costume) return 'Costume';
+  if (costume === 'GOFEST_2022_NOEVOLVE') return 'Gracidea Flower';
+  if (costume === 'GOFEST_2022') return 'Shaymin Scarf';
   if (costume.includes('JAN_2020')) return 'Party Hat';
   if (costume.includes('SPRING_2020') || costume.includes('VISOR')) return 'Pikachu Visor';
   if (costume === 'FALL_2019') return 'Halloween Costume';
@@ -333,13 +355,22 @@ async function main() {
       };
 
       const eventAssets = entry.assetForms.filter(isEventForm);
+      // Deduplicate female asset forms: costume should only have 1 card per costume variation in the dex grid!
+      const costumeMap = new Map();
       eventAssets.forEach(af => {
-        const costumeKey = af.costume || af.form;
-        const costumeId = `poke_${dexNr}_costume_${costumeKey.toLowerCase()}${af.isFemale ? '_f' : ''}`;
+        const costumeKey = (af.costume || af.form).toUpperCase();
+        // Prefer male / gender-neutral asset if both exist
+        if (!costumeMap.has(costumeKey) || (costumeMap.get(costumeKey).isFemale && !af.isFemale)) {
+          costumeMap.set(costumeKey, af);
+        }
+      });
+
+      costumeMap.forEach((af, costumeKey) => {
+        const costumeId = `poke_${dexNr}_costume_${costumeKey.toLowerCase()}`;
         if (!processedIds.has(costumeId)) {
           processedIds.add(costumeId);
           const costumeLabel = formatCostumeName(costumeKey);
-          const fullName = `${baseName} (${costumeLabel}${af.isFemale ? ' ♀' : ''})`;
+          const fullName = `${baseName} (${costumeLabel})`;
 
           allItems.push({
             id: costumeId,
@@ -1091,10 +1122,35 @@ async function main() {
     }
   ];
 
-  bulbapediaCostumes.forEach(bc => {
+  const costumesDir = path.join(__dirname, '..', 'client', 'public', 'images', 'costumes');
+  const serverCostumesDir = path.join(__dirname, '..', 'server', 'public', 'images', 'costumes');
+  if (!fs.existsSync(costumesDir)) fs.mkdirSync(costumesDir, { recursive: true });
+  if (!fs.existsSync(serverCostumesDir)) fs.mkdirSync(serverCostumesDir, { recursive: true });
+
+  for (const bc of bulbapediaCostumes) {
     const costumeId = `poke_${bc.dexNr}_costume_${bc.formId.toLowerCase()}`;
     if (!processedIds.has(costumeId)) {
       processedIds.add(costumeId);
+      let localSpriteUrl = bc.spriteUrl;
+      if (bc.spriteUrl && bc.spriteUrl.startsWith('http')) {
+        const filename = path.basename(bc.spriteUrl);
+        const clientFilePath = path.join(costumesDir, filename);
+        const serverFilePath = path.join(serverCostumesDir, filename);
+        if (!fs.existsSync(clientFilePath)) {
+          try {
+            await downloadFile(bc.spriteUrl, clientFilePath);
+          } catch (e) {
+            console.warn(`Could not download costume sprite for ${bc.name}:`, e.message);
+          }
+        }
+        if (fs.existsSync(clientFilePath)) {
+          if (!fs.existsSync(serverFilePath)) {
+            try { fs.copyFileSync(clientFilePath, serverFilePath); } catch {}
+          }
+          localSpriteUrl = `/images/costumes/${filename}`;
+        }
+      }
+
       const homeFallback = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${bc.dexNr}.png`;
       const homeShinyFallback = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${bc.dexNr}.png`;
       allItems.push({
@@ -1108,8 +1164,8 @@ async function main() {
         generation: bc.gen,
         type1: bc.type1,
         type2: bc.type2 || null,
-        spriteUrl: bc.spriteUrl,
-        shinySpriteUrl: bc.spriteUrl,
+        spriteUrl: localSpriteUrl,
+        shinySpriteUrl: localSpriteUrl,
         fallbackSpriteUrl: homeFallback,
         fallbackShinyUrl: homeShinyFallback,
         officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${bc.dexNr}.png`,
@@ -1120,7 +1176,7 @@ async function main() {
         releasedInGo: true
       });
     }
-  });
+  }
 
   // Sort: Standard first by dexNr, then Megas, then Forms, then Costumes
   allItems.sort((a, b) => {

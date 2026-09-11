@@ -256,6 +256,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
           alt={pokemon.name}
           loading="lazy"
           decoding="async"
+          referrerPolicy="no-referrer"
           onError={handleImageError}
           className={`pokemon-sprite object-contain h-24 w-24 max-h-full max-w-full z-10 transition-all duration-300 ${
             !isCaught
