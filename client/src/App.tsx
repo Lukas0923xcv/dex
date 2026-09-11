@@ -20,6 +20,8 @@ export const App: React.FC = () => {
     loading,
     storageStatus,
     currentViewStats,
+    theme,
+    toggleTheme,
     setMode,
     setFilters,
     toggleCaught,
@@ -62,18 +64,18 @@ export const App: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center text-slate-300">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center text-slate-700 dark:text-slate-300">
         <div className="relative w-16 h-16 rounded-full bg-gradient-to-b from-rose-500 to-rose-600 p-0.5 animate-spin shadow-xl">
           <div className="w-full h-1/2 bg-rose-500 rounded-t-full" />
           <div className="w-full h-1/2 bg-white rounded-b-full" />
         </div>
-        <p className="mt-4 text-sm font-semibold tracking-wide text-slate-400">Loading Pokémon GO Dex...</p>
+        <p className="mt-4 text-sm font-semibold tracking-wide text-slate-500 dark:text-slate-400">Loading Pokémon GO Dex...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-150">
       {/* Top Header */}
       <Header
         mode={mode}
@@ -88,6 +90,8 @@ export const App: React.FC = () => {
         onOpenCollectionEditor={() => setTargetCollectionForEdit(activeCollection || collections[0] || null)}
         onOpenSettingsModal={() => setIsSettingsOpen(true)}
         isBackendConnected={storageStatus.isBackendConnected}
+        theme={theme}
+        onToggleTheme={toggleTheme}
       />
 
       {/* Main Content Area */}
@@ -103,6 +107,7 @@ export const App: React.FC = () => {
         {/* Filter and Search Bar */}
         <FilterBar
           filters={filters}
+          mode={mode}
           onFilterChange={(partial) => setFilters(f => ({ ...f, ...partial }))}
           onClearFilters={() => setFilters(f => ({
             ...f,
@@ -118,6 +123,7 @@ export const App: React.FC = () => {
           pokemonList={filteredPokemon}
           mode={mode}
           collection={activeCollection}
+          showGenderTracking={Boolean(filters.showGenderTracking)}
           onToggleCaught={toggleCaught}
           onToggleShiny={toggleShiny}
           onToggleFeature={toggleFeature}
@@ -133,7 +139,7 @@ export const App: React.FC = () => {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-slate-800/80 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200 dark:border-slate-800/80 py-6 text-center text-xs text-slate-500 dark:text-slate-500">
         <p>
           Pokémon GO Dex Tracker · Data sourced from Pokémon GO Game Master & PokéAPI · Not affiliated with Nintendo or Niantic.
         </p>

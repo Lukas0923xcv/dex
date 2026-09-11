@@ -67,6 +67,8 @@ export type TrackingMode = 'standard' | 'shiny' | 'mega' | 'form' | 'costume' | 
 
 export type StatusFilter = 'all' | 'caught' | 'uncaught';
 
+export type Theme = 'dark' | 'light';
+
 export interface FilterState {
   search: string;
   generation: number | 'all';
@@ -75,6 +77,8 @@ export interface FilterState {
   releasedOnly: boolean;
   activeCollectionId: string | null;
   sortBy: 'dexAsc' | 'dexDesc' | 'nameAsc';
+  showGenderTracking?: boolean;
+  includeBaseInForms?: boolean;
 }
 
 export interface BackupData {

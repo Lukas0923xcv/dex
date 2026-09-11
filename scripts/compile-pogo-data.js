@@ -343,7 +343,7 @@ async function main() {
         if (af.costume) return true;
         if (!af.form) return false;
         const f = af.form.toUpperCase();
-        if (f.includes('ALOLA') || f.includes('GALAR') || f.includes('HISUI') || f.includes('PALDEA') || f.includes('MEGA') || f === 'NORMAL' || dexNr === 666 || dexNr === 585 || dexNr === 586) {
+        if (f.includes('ALOLA') || f.includes('GALAR') || f.includes('HISUI') || f.includes('PALDEA') || f.includes('MEGA') || f === 'NORMAL' || f.startsWith('CROWNED') || dexNr === 666 || dexNr === 585 || dexNr === 586) {
           return false;
         }
         return f.includes('201') || f.includes('202') || f.includes('FALL') ||
@@ -769,6 +769,28 @@ async function main() {
     shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10191.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10191.png',
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10191.png'
+  });
+
+  // Zacian Crowned Sword (Correct PokeAPI ID: 10188)
+  specialForms.push({
+    dexNr: 888, base: 'Zacian', formId: 'CROWNED_SWORD', label: 'Crowned Sword', type1: 'Fairy', type2: 'Steel',
+    displayName: 'Zacian (Crowned Sword)',
+    germanName: 'Zacian (Königliches Schwert)',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10188.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10188.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10188.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10188.png'
+  });
+
+  // Zamazenta Crowned Shield (Correct PokeAPI ID: 10189)
+  specialForms.push({
+    dexNr: 889, base: 'Zamazenta', formId: 'CROWNED_SHIELD', label: 'Crowned Shield', type1: 'Fighting', type2: 'Steel',
+    displayName: 'Zamazenta (Crowned Shield)',
+    germanName: 'Zamazenta (Königlicher Schild)',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10189.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10189.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10189.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10189.png'
   });
 
   // Genesect Drive Forms

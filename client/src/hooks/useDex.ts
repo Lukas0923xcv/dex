@@ -10,7 +10,9 @@ const INITIAL_FILTERS: FilterState = {
   status: 'all',
   releasedOnly: true, // Default to showing only Pokémon currently available in Pokémon GO
   activeCollectionId: null,
-  sortBy: 'dexAsc'
+  sortBy: 'dexAsc',
+  showGenderTracking: false,
+  includeBaseInForms: false
 };
 
 export function useDex() {
@@ -19,6 +21,23 @@ export function useDex() {
   const [mode, setMode] = useState<TrackingMode>('standard');
   const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('pogo_dex_theme');
+    return (saved === 'dark' || saved === 'light') ? saved : 'light';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('pogo_dex_theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
+  }, []);
   const [storageStatus, setStorageStatus] = useState<StorageStatus>({
     isBackendConnected: false,
     backendUrl: '',
@@ -179,7 +198,12 @@ export function useDex() {
     } else if (mode === 'mega') {
       result = result.filter(p => p.category === 'mega' || p.isMega);
     } else if (mode === 'form') {
-      result = result.filter(p => p.category === 'form' || p.isForm);
+      if (filters.includeBaseInForms) {
+        const formDexNrs = new Set(pokemonList.filter(p => p.category === 'form' || p.isForm).map(p => p.dexNr));
+        result = result.filter(p => (p.category === 'form' || p.isForm) || (p.category === 'standard' && formDexNrs.has(p.dexNr)));
+      } else {
+        result = result.filter(p => p.category === 'form' || p.isForm);
+      }
     } else if (mode === 'costume') {
       result = result.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom' && filters.activeCollectionId) {
@@ -273,7 +297,12 @@ export function useDex() {
     } else if (mode === 'mega') {
       pool = pool.filter(p => p.category === 'mega' || p.isMega);
     } else if (mode === 'form') {
-      pool = pool.filter(p => p.category === 'form' || p.isForm);
+      if (filters.includeBaseInForms) {
+        const formDexNrs = new Set(pokemonList.filter(p => p.category === 'form' || p.isForm).map(p => p.dexNr));
+        pool = pool.filter(p => (p.category === 'form' || p.isForm) || (p.category === 'standard' && formDexNrs.has(p.dexNr)));
+      } else {
+        pool = pool.filter(p => p.category === 'form' || p.isForm);
+      }
     } else if (mode === 'costume') {
       pool = pool.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom' && filters.activeCollectionId) {
@@ -310,7 +339,7 @@ export function useDex() {
     const percentage = total > 0 ? Math.round((caught / total) * 100) : 0;
 
     return { total, caught, percentage };
-  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, collections]);
+  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, filters.includeBaseInForms, collections]);
 
   // Trigger celebration on 100%
   useEffect(() => {
@@ -347,6 +376,9 @@ export function useDex() {
     loading,
     storageStatus,
     currentViewStats,
+    theme,
+    setTheme,
+    toggleTheme,
     setMode,
     setFilters,
     toggleCaught,
