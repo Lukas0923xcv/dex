@@ -63,7 +63,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
   // Card theme styling
   const getCardStyle = () => {
     if (!isCaught) {
-      return 'bg-slate-900/60 hover:bg-slate-850 border-slate-800 hover:border-slate-700 opacity-80 hover:opacity-100';
+      return 'bg-slate-900/60 hover:bg-slate-800/80 border-slate-800 hover:border-slate-700 opacity-80 hover:opacity-100';
     }
 
     if (categoryType === 'shadow') {

@@ -44,10 +44,14 @@ export const App: React.FC = () => {
 
   const getProgressLabel = () => {
     if (mode === 'standard') {
-      return filters.generation !== 'all' ? `Gen ${filters.generation} Completion` : 'Standard Dex Completion';
+      return filters.generation !== 'all'
+        ? (filters.generation === 0 ? 'Unbekannt · Meltan Completion' : `Gen ${filters.generation} Completion`)
+        : 'Standard Dex Completion';
     }
     if (mode === 'shiny') {
-      return filters.generation !== 'all' ? `Gen ${filters.generation} Shiny Checklist` : 'Shiny Dex Completion';
+      return filters.generation !== 'all'
+        ? (filters.generation === 0 ? 'Unbekannt · Meltan Shiny Checklist' : `Gen ${filters.generation} Shiny Checklist`)
+        : 'Shiny Dex Completion';
     }
     if (mode === 'mega') return 'Mega & Primal Dex';
     if (mode === 'form') return 'Regional & Alternate Forms Dex';
