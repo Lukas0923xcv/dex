@@ -53,51 +53,77 @@ export function useDex() {
     refreshData();
   }, [refreshData]);
 
-  // One-click caught toggle
-  const toggleCaught = useCallback(async (pokemonId: string) => {
-    // Optimistic UI update
+  // Dynamic feature toggle (caught, shiny, lucky, hundo, shadow, purified, gender, size)
+  const toggleFeature = useCallback(async (
+    pokemonId: string,
+    type: 'caught' | 'shiny' | 'lucky' | 'hundo' | 'shadow' | 'purified' | 'gender_m' | 'gender_f' | 'xxl' | 'xxs'
+  ) => {
+    const keyMap: Record<string, keyof Pokemon> = {
+      caught: 'caught',
+      shiny: 'shinyCaught',
+      lucky: 'luckyCaught',
+      hundo: 'hundoCaught',
+      shadow: 'shadowCaught',
+      purified: 'purifiedCaught',
+      gender_m: 'genderMCaught',
+      gender_f: 'genderFCaught',
+      xxl: 'xxlCaught',
+      xxs: 'xxsCaught'
+    };
+    const key = keyMap[type] || 'caught';
+
     setPokemonList(prev =>
-      prev.map(p => {
-        if (p.id === pokemonId) {
-          const isShinyMode = mode === 'shiny';
-          const field = isShinyMode ? 'shinyCaught' : 'caught';
-          const nextVal = !p[field];
-          return { ...p, [field]: nextVal };
-        }
-        return p;
-      })
+      prev.map(p => (p.id === pokemonId ? { ...p, [key]: !p[key] } : p))
     );
-
-    // Call storage adapter
-    const type = mode === 'shiny' ? 'shiny' : 'caught';
     await storage.toggleProgress(pokemonId, type);
+  }, []);
 
-    // Re-sync collection item count
-    setCollections(prev =>
-      prev.map(c => {
-        const itemIds = storage.getCollectionItemIds(c.id);
-        if (itemIds.has(pokemonId)) {
-          return {
-            ...c,
-            caughtItems: pokemonList.filter(p => itemIds.has(p.id) && (p.id === pokemonId ? !p.caught : p.caught)).length
-          };
-        }
-        return c;
-      })
-    );
-  }, [mode, pokemonList]);
+  // One-click caught toggle adapts to current mode or active collection type
+  const toggleCaught = useCallback(async (pokemonId: string) => {
+    const activeColl = collections.find(c => c.id === filters.activeCollectionId);
+    let targetType: 'caught' | 'shiny' | 'lucky' | 'shadow' | 'purified' = 'caught';
+
+    if (mode === 'shiny') {
+      targetType = 'shiny';
+    } else if (mode === 'custom' && activeColl?.categoryType === 'shadow') {
+      targetType = 'shadow';
+    } else if (mode === 'custom' && activeColl?.categoryType === 'purified') {
+      targetType = 'purified';
+    } else if (mode === 'custom' && activeColl?.categoryType === 'lucky') {
+      targetType = 'lucky';
+    } else if (mode === 'custom' && activeColl?.trackShiny && activeColl.categoryType === 'normal') {
+      targetType = 'shiny';
+    }
+
+    await toggleFeature(pokemonId, targetType);
+
+    // Refresh collection counts
+    const colls = await storage.getCollections();
+    setCollections(colls);
+  }, [mode, collections, filters.activeCollectionId, toggleFeature]);
 
   // Toggle shiny status specifically
   const toggleShiny = useCallback(async (pokemonId: string) => {
-    setPokemonList(prev =>
-      prev.map(p => (p.id === pokemonId ? { ...p, shinyCaught: !p.shinyCaught } : p))
-    );
-    await storage.toggleProgress(pokemonId, 'shiny');
-  }, []);
+    await toggleFeature(pokemonId, 'shiny');
+  }, [toggleFeature]);
 
   // Custom Collections Management
-  const createCollection = useCallback(async (name: string, description = '', color = '#3b82f6') => {
-    const newColl = await storage.createCollection(name, description, color);
+  const createCollection = useCallback(async (
+    name: string,
+    description = '',
+    color = '#3b82f6',
+    options?: {
+      categoryType?: any;
+      variantMode?: any;
+      trackShiny?: boolean;
+      trackHundo?: boolean;
+      trackGender?: boolean;
+      trackBackground?: boolean;
+      trackSize?: boolean;
+      pokemonIds?: string[];
+    }
+  ) => {
+    const newColl = await storage.createCollection(name, description, color, options);
     setCollections(prev => [...prev, newColl]);
     setFilters(f => ({ ...f, activeCollectionId: newColl.id }));
     return newColl;
@@ -157,8 +183,21 @@ export function useDex() {
     } else if (mode === 'costume') {
       result = result.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom' && filters.activeCollectionId) {
+      const activeColl = collections.find(c => c.id === filters.activeCollectionId);
       const itemIds = storage.getCollectionItemIds(filters.activeCollectionId);
-      result = result.filter(p => itemIds.has(p.id));
+      if (itemIds.size > 0) {
+        result = result.filter(p => itemIds.has(p.id));
+      } else if (activeColl) {
+        if (activeColl.categoryType === 'mega') {
+          result = result.filter(p => p.category === 'mega' || p.isMega);
+        } else if (activeColl.categoryType === 'event') {
+          result = result.filter(p => p.category === 'costume' || p.isCostume);
+        } else if (activeColl.variantMode === 'single') {
+          result = result.filter(p => p.category === 'standard');
+        } else {
+          result = result.filter(p => p.category === 'standard' || p.category === 'form');
+        }
+      }
     }
 
     // 2. Filter by Generation
@@ -175,18 +214,20 @@ export function useDex() {
     }
 
     // 4. Filter by Caught Status
+    const activeColl = collections.find(c => c.id === filters.activeCollectionId);
+    const getPokemonCaughtStatus = (p: Pokemon) => {
+      if (mode === 'shiny') return Boolean(p.shinyCaught);
+      if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
+      if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
+      if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
+      if (mode === 'custom' && activeColl?.trackShiny && activeColl.categoryType === 'normal') return Boolean(p.shinyCaught);
+      return Boolean(p.caught);
+    };
+
     if (filters.status === 'caught') {
-      if (mode === 'shiny') {
-        result = result.filter(p => p.shinyCaught);
-      } else {
-        result = result.filter(p => p.caught);
-      }
+      result = result.filter(p => getPokemonCaughtStatus(p));
     } else if (filters.status === 'uncaught') {
-      if (mode === 'shiny') {
-        result = result.filter(p => !p.shinyCaught);
-      } else {
-        result = result.filter(p => !p.caught);
-      }
+      result = result.filter(p => !getPokemonCaughtStatus(p));
     }
 
     // 5. Search Filter (Name, Dex Number, Form Name)
@@ -213,7 +254,7 @@ export function useDex() {
     }
 
     return result;
-  }, [pokemonList, mode, filters]);
+  }, [pokemonList, mode, filters, collections]);
 
   // Stats calculation for current view
   const currentViewStats = useMemo(() => {
@@ -222,6 +263,8 @@ export function useDex() {
     if (filters.releasedOnly) {
       pool = pool.filter(p => p.releasedInGo);
     }
+
+    const activeColl = collections.find(c => c.id === filters.activeCollectionId);
 
     if (mode === 'standard') {
       pool = pool.filter(p => p.category === 'standard');
@@ -235,7 +278,19 @@ export function useDex() {
       pool = pool.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom' && filters.activeCollectionId) {
       const itemIds = storage.getCollectionItemIds(filters.activeCollectionId);
-      pool = pool.filter(p => itemIds.has(p.id));
+      if (itemIds.size > 0) {
+        pool = pool.filter(p => itemIds.has(p.id));
+      } else if (activeColl) {
+        if (activeColl.categoryType === 'mega') {
+          pool = pool.filter(p => p.category === 'mega' || p.isMega);
+        } else if (activeColl.categoryType === 'event') {
+          pool = pool.filter(p => p.category === 'costume' || p.isCostume);
+        } else if (activeColl.variantMode === 'single') {
+          pool = pool.filter(p => p.category === 'standard');
+        } else {
+          pool = pool.filter(p => p.category === 'standard' || p.category === 'form');
+        }
+      }
     }
 
     if (filters.generation !== 'all') {
@@ -243,11 +298,19 @@ export function useDex() {
     }
 
     const total = pool.length;
-    const caught = pool.filter(p => (mode === 'shiny' ? p.shinyCaught : p.caught)).length;
+    const caught = pool.filter(p => {
+      if (mode === 'shiny') return Boolean(p.shinyCaught);
+      if (mode === 'custom' && activeColl?.categoryType === 'shadow') return Boolean(p.shadowCaught);
+      if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
+      if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
+      if (mode === 'custom' && activeColl?.trackShiny && activeColl.categoryType === 'normal') return Boolean(p.shinyCaught);
+      return Boolean(p.caught);
+    }).length;
+
     const percentage = total > 0 ? Math.round((caught / total) * 100) : 0;
 
     return { total, caught, percentage };
-  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly]);
+  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, collections]);
 
   // Trigger celebration on 100%
   useEffect(() => {
@@ -288,6 +351,7 @@ export function useDex() {
     setFilters,
     toggleCaught,
     toggleShiny,
+    toggleFeature,
     createCollection,
     deleteCollection,
     toggleCollectionItem,

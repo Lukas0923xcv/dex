@@ -256,11 +256,26 @@ async function main() {
       });
     }
 
-    // 5. Costumed Pokémon from assetForms
+    // 5. Costumed & Event Pokémon from assetForms (covering all Bulbapedia Event Pokémon)
     if (entry.assetForms && Array.isArray(entry.assetForms)) {
-      const costumes = entry.assetForms.filter(af => af.costume);
-      costumes.forEach(af => {
-        const costumeKey = af.costume;
+      const isEventForm = (af) => {
+        if (af.costume) return true;
+        if (!af.form) return false;
+        const f = af.form.toUpperCase();
+        if (f.includes('ALOLA') || f.includes('GALAR') || f.includes('HISUI') || f.includes('PALDEA') || f.includes('MEGA') || f === 'NORMAL' || dexNr === 666) {
+          return false;
+        }
+        return f.includes('201') || f.includes('202') || f.includes('FALL') ||
+               f.includes('SPRING') || f.includes('SUMMER') || f.includes('WINTER') ||
+               f.includes('HOLIDAY') || f.includes('HALLOWEEN') || f.includes('PARTY') ||
+               f.includes('CROWN') || f.includes('HAT') || f.includes('COSTUME') ||
+               f.includes('BOW') || f.includes('FEST') || f.includes('ANNIVERSARY') ||
+               f.includes('VALENTINE') || f.includes('NEW_YEAR') || f.includes('KARYUSHI');
+      };
+
+      const eventAssets = entry.assetForms.filter(isEventForm);
+      eventAssets.forEach(af => {
+        const costumeKey = af.costume || af.form;
         const costumeId = `poke_${dexNr}_costume_${costumeKey.toLowerCase()}${af.isFemale ? '_f' : ''}`;
         if (!processedIds.has(costumeId)) {
           processedIds.add(costumeId);

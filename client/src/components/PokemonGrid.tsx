@@ -1,13 +1,18 @@
 import React from 'react';
-import { Pokemon, TrackingMode } from '../types';
+import { Pokemon, TrackingMode, CustomCollection } from '../types';
 import { PokemonCard } from './PokemonCard';
 import { HelpCircle } from 'lucide-react';
 
 interface PokemonGridProps {
   pokemonList: Pokemon[];
   mode: TrackingMode;
+  collection?: CustomCollection | null;
   onToggleCaught: (id: string) => void;
   onToggleShiny: (id: string) => void;
+  onToggleFeature?: (
+    id: string,
+    type: 'caught' | 'shiny' | 'lucky' | 'hundo' | 'shadow' | 'purified' | 'gender_m' | 'gender_f' | 'xxl' | 'xxs'
+  ) => void;
   onOpenAddModal: (pokemon: Pokemon) => void;
   onResetFilters?: () => void;
 }
@@ -15,8 +20,10 @@ interface PokemonGridProps {
 export const PokemonGrid: React.FC<PokemonGridProps> = ({
   pokemonList,
   mode,
+  collection,
   onToggleCaught,
   onToggleShiny,
+  onToggleFeature,
   onOpenAddModal,
   onResetFilters
 }) => {
@@ -26,16 +33,16 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
         <div className="w-16 h-16 rounded-full bg-slate-800/80 flex items-center justify-center mb-4 text-slate-500">
           <HelpCircle className="w-8 h-8" />
         </div>
-        <h3 className="text-lg font-bold text-white mb-1">No Pokémon Found</h3>
+        <h3 className="text-lg font-bold text-white mb-1">Keine Pokémon gefunden</h3>
         <p className="text-sm text-slate-400 max-w-sm mb-6">
-          No entries matched your current search filters or collection criteria.
+          Keine Einträge für die aktuellen Filter oder Sammlungskriterien vorhanden.
         </p>
         {onResetFilters && (
           <button
             onClick={onResetFilters}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl shadow-md transition-colors"
           >
-            Clear Filters
+            Filter zurücksetzen
           </button>
         )}
       </div>
@@ -49,8 +56,10 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
           key={pokemon.id}
           pokemon={pokemon}
           mode={mode}
+          collection={collection}
           onToggleCaught={onToggleCaught}
           onToggleShiny={onToggleShiny}
+          onToggleFeature={onToggleFeature}
           onOpenAddModal={onOpenAddModal}
         />
       ))}
