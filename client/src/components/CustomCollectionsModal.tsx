@@ -1,6 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { CustomCollection, CollectionCategoryType, CollectionVariantMode, Pokemon } from '../types';
-import { X, Plus, Trash2, Bookmark } from 'lucide-react';
+import {
+  X,
+  Plus,
+  Trash2,
+  Bookmark,
+  Layers,
+  Gift,
+  Sparkles,
+  Zap,
+  Flame,
+  Sun,
+  Maximize2,
+  CloudLightning,
+  Boxes,
+  Compass,
+  Check,
+  ShieldCheck,
+  Dna,
+  Image,
+  Ruler,
+  Palette,
+  FolderKanban
+} from 'lucide-react';
 
 interface CustomCollectionsModalProps {
   isOpen: boolean;
@@ -28,151 +50,17 @@ interface CustomCollectionsModalProps {
   onOpenEditor: (collection: CustomCollection) => void;
 }
 
-// Custom SVG Icons accurately styled after Pokémon GO
-const NormalBallIcon: React.FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
-  <svg viewBox="0 0 36 36" className={className} fill="none">
-    <circle cx="18" cy="18" r="16" fill="#f8fafc" stroke="#1e293b" strokeWidth="2.5" />
-    <path d="M2 18 A16 16 0 0 1 34 18 Z" fill="#ef4444" />
-    <line x1="2" y1="18" x2="34" y2="18" stroke="#1e293b" strokeWidth="2.5" />
-    <circle cx="18" cy="18" r="5" fill="#f8fafc" stroke="#1e293b" strokeWidth="2.5" />
-    <circle cx="18" cy="18" r="2.5" fill="#ffffff" />
-  </svg>
-);
-
-const EventHatIcon: React.FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
-  <svg viewBox="0 0 36 36" className={className} fill="none">
-    {/* Pokéball */}
-    <circle cx="18" cy="20" r="13" fill="#f8fafc" stroke="#1e293b" strokeWidth="2.2" />
-    <path d="M5 20 A13 13 0 0 1 31 20 Z" fill="#ef4444" />
-    <line x1="5" y1="20" x2="31" y2="20" stroke="#1e293b" strokeWidth="2.2" />
-    <circle cx="18" cy="20" r="4" fill="#f8fafc" stroke="#1e293b" strokeWidth="2.2" />
-    <circle cx="18" cy="20" r="1.8" fill="#ffffff" />
-    {/* Festive Party Hat */}
-    <path d="M12 11 L18 1 L24 11 Z" fill="#10b981" stroke="#065f46" strokeWidth="1.2" />
-    <path d="M14 8 L22 8" stroke="#f59e0b" strokeWidth="1.4" strokeLinecap="round" />
-    <path d="M16 5 L20 5" stroke="#f43f5e" strokeWidth="1.4" strokeLinecap="round" />
-    <circle cx="18" cy="1" r="2" fill="#fbbf24" />
-  </svg>
-);
-
-const LuckyStarIcon: React.FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
-  <svg viewBox="0 0 36 36" className={className} fill="none">
-    {/* Sparkling starburst ring */}
-    <circle cx="18" cy="18" r="16" fill="#fef9c3" fillOpacity="0.35" />
-    <circle cx="18" cy="18" r="14" stroke="#eab308" strokeWidth="1.5" strokeDasharray="3 2" />
-    {/* Golden Pokéball */}
-    <circle cx="18" cy="18" r="11" fill="#fef08a" stroke="#ca8a04" strokeWidth="2" />
-    <path d="M7 18 A11 11 0 0 1 29 18 Z" fill="#eab308" />
-    <line x1="7" y1="18" x2="29" y2="18" stroke="#ca8a04" strokeWidth="2" />
-    <circle cx="18" cy="18" r="3.5" fill="#fef9c3" stroke="#ca8a04" strokeWidth="2" />
-    {/* Sparkles */}
-    <path d="M6 8 L8 6 L10 8 L8 10 Z" fill="#f59e0b" />
-    <path d="M26 8 L28 6 L30 8 L28 10 Z" fill="#f59e0b" />
-    <path d="M27 26 L29 24 L31 26 L29 28 Z" fill="#f59e0b" />
-    <path d="M5 26 L7 24 L9 26 L7 28 Z" fill="#f59e0b" />
-  </svg>
-);
-
-const MegaSwirlIcon: React.FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
-  <svg viewBox="0 0 36 36" className={className} fill="none">
-    <circle cx="18" cy="18" r="15" fill="#fdf2f8" stroke="#db2777" strokeWidth="2" />
-    <path d="M3 18 A15 15 0 0 1 33 18 Z" fill="#f43f5e" />
-    <line x1="3" y1="18" x2="33" y2="18" stroke="#db2777" strokeWidth="2" />
-    <circle cx="18" cy="18" r="4.5" fill="#ffffff" stroke="#db2777" strokeWidth="2" />
-    {/* DNA swirl in center */}
-    <path d="M14 13 C16 11, 20 11, 22 13 C23 15, 21 17, 18 18 C15 19, 13 21, 14 23 C16 25, 20 25, 22 23" stroke="#ec4899" strokeWidth="1.8" strokeLinecap="round" />
-  </svg>
-);
-
-const CryptoFlameIcon: React.FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
-  <svg viewBox="0 0 36 36" className={className} fill="none">
-    {/* Purple Shadow Flame */}
-    <path d="M18 1 C19 5, 25 9, 23 14 C27 12, 28 16, 26 19 C23 23, 13 23, 10 19 C8 16, 9 12, 13 14 C11 9, 17 5, 18 1 Z" fill="#a855f7" fillOpacity="0.8" />
-    <path d="M18 5 C19 8, 22 10, 21 13 C20 15, 16 15, 15 13 C14 11, 17 8, 18 5 Z" fill="#e9d5ff" />
-    {/* Dark Shadow Ball */}
-    <circle cx="18" cy="22" r="11" fill="#3b0764" stroke="#7e22ce" strokeWidth="2" />
-    <path d="M7 22 A11 11 0 0 1 29 22 Z" fill="#6b21a8" />
-    <line x1="7" y1="22" x2="29" y2="22" stroke="#4c1d95" strokeWidth="2" />
-    <circle cx="18" cy="22" r="3.5" fill="#c084fc" stroke="#581c87" strokeWidth="1.5" />
-    <circle cx="18" cy="22" r="1.5" fill="#ffffff" />
-  </svg>
-);
-
-const PurifiedSunIcon: React.FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
-  <svg viewBox="0 0 36 36" className={className} fill="none">
-    {/* Radiant sunburst rays */}
-    <circle cx="18" cy="18" r="16" fill="#ecfeff" fillOpacity="0.4" />
-    <g stroke="#06b6d4" strokeWidth="1.8" strokeLinecap="round">
-      <line x1="18" y1="2" x2="18" y2="5" />
-      <line x1="18" y1="31" x2="18" y2="34" />
-      <line x1="2" y1="18" x2="5" y2="18" />
-      <line x1="31" y1="18" x2="34" y2="18" />
-      <line x1="6.7" y1="6.7" x2="8.8" y2="8.8" />
-      <line x1="27.2" y1="27.2" x2="29.3" y2="29.3" />
-      <line x1="6.7" y1="29.3" x2="8.8" y2="27.2" />
-      <line x1="27.2" y1="8.8" x2="29.3" y2="6.7" />
-    </g>
-    {/* Purified Pokéball */}
-    <circle cx="18" cy="18" r="11" fill="#f0fdfa" stroke="#0891b2" strokeWidth="2" />
-    <path d="M7 18 A11 11 0 0 1 29 18 Z" fill="#22d3ee" />
-    <line x1="7" y1="18" x2="29" y2="18" stroke="#0891b2" strokeWidth="2" />
-    <circle cx="18" cy="18" r="3.5" fill="#f0fdfa" stroke="#0891b2" strokeWidth="1.8" />
-  </svg>
-);
-
-const DynamaxBallIcon: React.FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
-  <svg viewBox="0 0 36 36" className={className} fill="none">
-    <circle cx="18" cy="18" r="15" fill="#fdf2f8" stroke="#be185d" strokeWidth="2" />
-    <path d="M3 18 A15 15 0 0 1 33 18 Z" fill="#db2777" />
-    {/* Dynamax grid lines */}
-    <path d="M7 11 Q18 16 29 11" stroke="#fbcfe8" strokeWidth="1.3" />
-    <path d="M7 25 Q18 20 29 25" stroke="#fbcfe8" strokeWidth="1.3" />
-    <line x1="3" y1="18" x2="33" y2="18" stroke="#be185d" strokeWidth="2" />
-    <circle cx="18" cy="18" r="4.5" fill="#ffffff" stroke="#be185d" strokeWidth="2" />
-    <circle cx="18" cy="18" r="2" fill="#db2777" />
-  </svg>
-);
-
-const GigadynamaxBallIcon: React.FC<{ className?: string }> = ({ className = 'w-9 h-9' }) => (
-  <svg viewBox="0 0 36 36" className={className} fill="none">
-    {/* Red energetic dynamax clouds */}
-    <path d="M12 7 C10 7, 8 9, 9 11 C7 11, 5 13, 6 15 C8 15, 28 15, 30 15 C31 13, 29 11, 27 11 C28 9, 26 7, 24 7 C22 5, 14 5, 12 7 Z" fill="#e11d48" fillOpacity="0.4" />
-    <circle cx="18" cy="20" r="13" fill="#fdf2f8" stroke="#9f1239" strokeWidth="2" />
-    <path d="M5 20 A13 13 0 0 1 31 20 Z" fill="#e11d48" />
-    <line x1="5" y1="20" x2="31" y2="20" stroke="#9f1239" strokeWidth="2" />
-    <circle cx="18" cy="20" r="4" fill="#ffffff" stroke="#9f1239" strokeWidth="2" />
-    {/* Gigantamax X pattern */}
-    <path d="M16 18 L20 22 M20 18 L16 22" stroke="#e11d48" strokeWidth="1.5" strokeLinecap="round" />
-  </svg>
-);
-
-// Unown Glyph Icons for Multivariante vs Nicht-Variante
-const UnownMultiIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
-  <svg viewBox="0 0 48 24" className={className} fill="currentColor">
-    {/* Unown 1 */}
-    <circle cx="8" cy="12" r="5" stroke="currentColor" strokeWidth="2" fill="none" />
-    <circle cx="8" cy="12" r="2" />
-    <line x1="8" y1="2" x2="8" y2="7" stroke="currentColor" strokeWidth="2" />
-    <line x1="8" y1="17" x2="8" y2="22" stroke="currentColor" strokeWidth="2" />
-    {/* Unown 2 (B) */}
-    <circle cx="24" cy="9" r="4" stroke="currentColor" strokeWidth="2" fill="none" />
-    <circle cx="24" cy="9" r="1.5" />
-    <circle cx="24" cy="16" r="4" stroke="currentColor" strokeWidth="2" fill="none" />
-    <circle cx="24" cy="16" r="1.5" />
-    {/* Unown 3 (C) */}
-    <circle cx="40" cy="12" r="5" stroke="currentColor" strokeWidth="2" strokeDasharray="26 6" fill="none" />
-    <circle cx="40" cy="12" r="2" />
-  </svg>
-);
-
-const UnownSingleIcon: React.FC<{ className?: string }> = ({ className = 'w-7 h-7' }) => (
-  <svg viewBox="0 0 24 24" className={className} fill="currentColor">
-    <circle cx="12" cy="12" r="5" stroke="currentColor" strokeWidth="2.2" fill="none" />
-    <circle cx="12" cy="12" r="2.2" />
-    <line x1="12" y1="2" x2="12" y2="7" stroke="currentColor" strokeWidth="2.2" />
-    <line x1="12" y1="17" x2="12" y2="22" stroke="currentColor" strokeWidth="2.2" />
-  </svg>
-);
+// Preset Accent Themes
+const COLOR_THEMES = [
+  { id: 'emerald', hex: '#10b981', label: 'Smaragd' },
+  { id: 'sky', hex: '#0284c7', label: 'Himmelblau' },
+  { id: 'amber', hex: '#f59e0b', label: 'Bernstein' },
+  { id: 'purple', hex: '#9333ea', label: 'Amethyst' },
+  { id: 'rose', hex: '#f43f5e', label: 'Rubinrot' },
+  { id: 'teal', hex: '#0d9488', label: 'Türkis' },
+  { id: 'indigo', hex: '#6366f1', label: 'Indigo' },
+  { id: 'crimson', hex: '#dc2626', label: 'Karmin' },
+];
 
 export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   isOpen,
@@ -187,7 +75,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'create' | 'list'>('create');
 
-  // Form states matching screenshot
+  // Form states
   const [categoryType, setCategoryType] = useState<CollectionCategoryType>('normal');
   const [variantMode, setVariantMode] = useState<CollectionVariantMode>('multi');
   const [trackShiny, setTrackShiny] = useState<boolean>(false);
@@ -195,26 +83,76 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   const [trackGender, setTrackGender] = useState<boolean>(false);
   const [trackBackground, setTrackBackground] = useState<boolean>(false);
   const [trackSize, setTrackSize] = useState<boolean>(false);
+  const [selectedColor, setSelectedColor] = useState<string>(COLOR_THEMES[0].hex);
 
   const [name, setName] = useState<string>('');
   const [isNameManuallyEdited, setIsNameManuallyEdited] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  // 8 Category Card Definitions
+  // 8 Category definitions with modern Lucide icons and soft gradient accents
   const categoryCards: Array<{
     id: CollectionCategoryType;
     label: string;
+    subtitle: string;
     icon: React.FC<{ className?: string }>;
-    color: string;
+    accentHex: string;
   }> = [
-    { id: 'normal', label: 'Normal', icon: NormalBallIcon, color: '#10b981' },
-    { id: 'event', label: 'Event', icon: EventHatIcon, color: '#ec4899' },
-    { id: 'lucky', label: 'Glücks', icon: LuckyStarIcon, color: '#eab308' },
-    { id: 'mega', label: 'Mega', icon: MegaSwirlIcon, color: '#f43f5e' },
-    { id: 'shadow', label: 'Crypto', icon: CryptoFlameIcon, color: '#a855f7' },
-    { id: 'purified', label: 'Erlöst', icon: PurifiedSunIcon, color: '#06b6d4' },
-    { id: 'dynamax', label: 'Dynamax', icon: DynamaxBallIcon, color: '#db2777' },
-    { id: 'gigantamax', label: 'Gigadynamax', icon: GigadynamaxBallIcon, color: '#e11d48' }
+    {
+      id: 'normal',
+      label: 'Standard Dex',
+      subtitle: 'Reguläre Spezies',
+      icon: Layers,
+      accentHex: '#10b981'
+    },
+    {
+      id: 'event',
+      label: 'Event-Kostüme',
+      subtitle: 'Hüte & Specials',
+      icon: Gift,
+      accentHex: '#ec4899'
+    },
+    {
+      id: 'lucky',
+      label: 'Glücks-Ziele',
+      subtitle: 'Lucky Pokémon',
+      icon: Sparkles,
+      accentHex: '#eab308'
+    },
+    {
+      id: 'mega',
+      label: 'Mega & Primal',
+      subtitle: 'Mega-Entwicklungen',
+      icon: Zap,
+      accentHex: '#f97316'
+    },
+    {
+      id: 'shadow',
+      label: 'Crypto',
+      subtitle: 'Schatten-Pokémon',
+      icon: Flame,
+      accentHex: '#a855f7'
+    },
+    {
+      id: 'purified',
+      label: 'Erlöst',
+      subtitle: 'Geläuterte Aura',
+      icon: Sun,
+      accentHex: '#06b6d4'
+    },
+    {
+      id: 'dynamax',
+      label: 'Dynamax',
+      subtitle: 'Kraftquellen-Fänge',
+      icon: Maximize2,
+      accentHex: '#d946ef'
+    },
+    {
+      id: 'gigantamax',
+      label: 'Gigadynamax',
+      subtitle: 'Giga-Spezialformen',
+      icon: CloudLightning,
+      accentHex: '#ef4444'
+    }
   ];
 
   // Auto-generate name based on choices if user hasn't typed custom name
@@ -226,7 +164,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
     const catLabels: Record<CollectionCategoryType, string> = {
       normal: variantMode === 'multi' ? 'Multivarianten' : 'Standard',
-      event: 'Event',
+      event: 'Event-Kostüme',
       lucky: 'Glücks',
       mega: 'Mega & Primal',
       shadow: 'Crypto',
@@ -236,16 +174,14 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     };
     parts.push(catLabels[categoryType]);
 
-    if (trackHundo) parts.push('100%');
+    if (trackHundo) parts.push('100% IV');
     parts.push('Sammlung');
 
     setName(parts.join(' '));
   }, [categoryType, variantMode, trackShiny, trackHundo, isNameManuallyEdited]);
 
-  if (!isOpen) return null;
-
   // Gather matching Pokémon IDs based on category and variant mode
-  const getMatchingPokemonIds = (): string[] => {
+  const matchingPokemonIds = useMemo(() => {
     let list = [...allPokemon];
 
     if (categoryType === 'mega') {
@@ -272,7 +208,9 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     }
 
     return list.map(p => p.id);
-  };
+  }, [allPokemon, categoryType, variantMode, trackShiny]);
+
+  if (!isOpen) return null;
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -280,13 +218,11 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
     try {
       setIsSubmitting(true);
-      const matchingIds = getMatchingPokemonIds();
-      const currentCard = categoryCards.find(c => c.id === categoryType);
-
+      const subLabel = variantMode === 'multi' ? 'Multivarianten' : 'Basis-Spezies';
       const newColl = await onCreateCollection(
         name.trim(),
-        `${categoryType.toUpperCase()} - ${variantMode === 'multi' ? 'Multivariante' : 'Nicht-Variante'}`,
-        currentCard?.color || '#3b82f6',
+        `${categoryType.toUpperCase()} · ${subLabel}`,
+        selectedColor,
         {
           categoryType,
           variantMode,
@@ -295,11 +231,13 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
           trackGender,
           trackBackground,
           trackSize,
-          pokemonIds: matchingIds
+          pokemonIds: matchingPokemonIds
         }
       );
 
-      onSelectCollection(newColl.id);
+      if (newColl && newColl.id) {
+        onSelectCollection(newColl.id);
+      }
       onClose();
     } finally {
       setIsSubmitting(false);
@@ -307,48 +245,88 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg max-h-[92vh] flex flex-col shadow-2xl shadow-black/90 overflow-hidden">
-        {/* Header with Navigation Tabs */}
-        <div className="px-5 py-3.5 border-b border-slate-800 flex items-center justify-between bg-slate-950/70 shrink-0">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActiveTab('create')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeTab === 'create'
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm ring-1 ring-emerald-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-              }`}
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="bg-slate-900/95 border border-slate-800/90 rounded-3xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-2xl shadow-black/95 overflow-hidden ring-1 ring-white/10">
+        {/* Header */}
+        <div className="px-5 sm:px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/70 shrink-0">
+          <div className="flex items-center gap-3">
+            <div
+              className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg transition-colors"
+              style={{ backgroundColor: `${selectedColor}25`, color: selectedColor }}
             >
-              + Sammlung erstellen
-            </button>
-            <button
-              onClick={() => setActiveTab('list')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
-                activeTab === 'list'
-                  ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40 shadow-sm ring-1 ring-blue-500/20'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
-              }`}
-            >
-              Meine Sammlungen ({collections.length})
-            </button>
+              <FolderKanban className="w-5 h-5" />
+            </div>
+            <div>
+              <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                Sammlungs-Studio
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
+                  Custom Dex
+                </span>
+              </h2>
+              <p className="text-xs text-slate-400">
+                Erstelle maßgeschneiderte Pokédex-Tracker oder verwalte eigene Listen
+              </p>
+            </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-2 rounded-2xl text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
+            title="Schließen"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
+        {/* Tab Navigation */}
+        <div className="px-5 sm:px-6 pt-3 pb-1 border-b border-slate-800/60 bg-slate-950/40 shrink-0">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setActiveTab('create')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                activeTab === 'create'
+                  ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+              }`}
+            >
+              <Plus className="w-4 h-4" />
+              <span>Sammlung konfigurieren</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('list')}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
+                activeTab === 'list'
+                  ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
+              }`}
+            >
+              <span>Gespeicherte Sammlungen</span>
+              <span className="px-1.5 py-0.5 rounded-full text-[11px] bg-slate-700 text-slate-200 font-mono">
+                {collections.length}
+              </span>
+            </button>
+          </div>
+        </div>
+
         {/* Modal Scrollable Body */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-5 text-slate-100 scrollbar-thin">
+        <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6 text-slate-100 scrollbar-thin">
           {activeTab === 'create' ? (
-            <form onSubmit={handleCreate} className="space-y-5">
-              {/* Section 1: 8 Collection Type Cards (Grid matching screenshot) */}
-              <div>
-                <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+            <form onSubmit={handleCreate} className="space-y-6">
+              {/* Section 1: Kategorie-Fokus */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
+                      1
+                    </span>
+                    Kategorie-Fokus wählen
+                  </label>
+                  <span className="text-xs text-slate-400">
+                    Welche Art von Pokémon möchtest du erfassen?
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
                   {categoryCards.map((cat) => {
                     const Icon = cat.icon;
                     const isSelected = categoryType === cat.id;
@@ -357,16 +335,45 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       <button
                         key={cat.id}
                         type="button"
-                        onClick={() => setCategoryType(cat.id)}
-                        className={`flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                        onClick={() => {
+                          setCategoryType(cat.id);
+                          setSelectedColor(cat.accentHex);
+                        }}
+                        className={`group relative flex flex-col items-start p-3 sm:p-3.5 rounded-2xl border text-left transition-all duration-200 cursor-pointer ${
                           isSelected
-                            ? 'bg-emerald-950/50 border-2 border-emerald-500 ring-2 ring-emerald-500/30 text-emerald-200 shadow-lg shadow-emerald-950/50 scale-[1.02]'
-                            : 'bg-slate-950/70 hover:bg-slate-800/80 border-slate-800 hover:border-slate-700 text-slate-300 hover:text-white'
+                            ? 'bg-slate-800/90 border-2 shadow-lg scale-[1.01]'
+                            : 'bg-slate-950/60 hover:bg-slate-800/50 border-slate-800 hover:border-slate-700'
                         }`}
+                        style={{
+                          borderColor: isSelected ? cat.accentHex : undefined,
+                          boxShadow: isSelected ? `0 0 20px ${cat.accentHex}25` : undefined
+                        }}
                       >
-                        <Icon className="w-8 h-8 sm:w-9 sm:h-9 mb-1.5" />
-                        <span className={`text-xs sm:text-sm tracking-tight ${isSelected ? 'font-bold text-emerald-200' : 'font-semibold'}`}>
+                        <div className="flex items-center justify-between w-full mb-2">
+                          <div
+                            className="w-8 h-8 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+                            style={{
+                              backgroundColor: `${cat.accentHex}20`,
+                              color: cat.accentHex
+                            }}
+                          >
+                            <Icon className="w-4 h-4" />
+                          </div>
+                          {isSelected && (
+                            <div
+                              className="w-5 h-5 rounded-full flex items-center justify-center text-slate-950"
+                              style={{ backgroundColor: cat.accentHex }}
+                            >
+                              <Check className="w-3 h-3 stroke-[3]" />
+                            </div>
+                          )}
+                        </div>
+
+                        <span className={`text-xs sm:text-sm font-bold block ${isSelected ? 'text-white' : 'text-slate-200'}`}>
                           {cat.label}
+                        </span>
+                        <span className="text-[11px] text-slate-400 block mt-0.5 truncate w-full">
+                          {cat.subtitle}
                         </span>
                       </button>
                     );
@@ -374,271 +381,420 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </div>
               </div>
 
-              {/* Section 2: Pokédex-Modus */}
-              <div className="space-y-2.5">
-                <h3 className="text-sm font-bold text-white tracking-wide">
-                  Pokédex-Modus
-                </h3>
+              {/* Section 2: Pokédex-Granularität */}
+              <div className="space-y-3">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
+                    2
+                  </span>
+                  Form-Granularität
+                </label>
 
-                <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Multivariante */}
                   <button
                     type="button"
                     onClick={() => setVariantMode('multi')}
-                    className={`flex flex-col items-center justify-center p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                    className={`flex items-start gap-3 p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                       variantMode === 'multi'
-                        ? 'bg-slate-800/90 border-2 border-emerald-500 text-white font-bold ring-2 ring-emerald-500/20 shadow-md'
-                        : 'bg-slate-950/70 hover:bg-slate-800/60 border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200'
+                        ? 'bg-slate-800/90 border-2 border-emerald-500 shadow-md ring-1 ring-emerald-500/20'
+                        : 'bg-slate-950/60 hover:bg-slate-800/50 border-slate-800 text-slate-400'
                     }`}
                   >
-                    <UnownMultiIcon className="w-9 h-7 mb-1 text-current" />
-                    <span className="text-xs sm:text-sm font-semibold">Multivariante</span>
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
+                        variantMode === 'multi'
+                          ? 'bg-emerald-500/20 text-emerald-400'
+                          : 'bg-slate-900 text-slate-400'
+                      }`}
+                    >
+                      <Boxes className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm font-bold ${variantMode === 'multi' ? 'text-white' : 'text-slate-300'}`}>
+                          Alle Formen & Varianten
+                        </span>
+                        {variantMode === 'multi' && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                            Aktiv
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                        Erfasst Alola, Galar, Hisui, Paldea, Vivillon, Icognito etc. als individuelle Sammler-Einträge.
+                      </p>
+                    </div>
                   </button>
 
-                  {/* Nicht-Variante */}
+                  {/* Single Variant */}
                   <button
                     type="button"
                     onClick={() => setVariantMode('single')}
-                    className={`flex flex-col items-center justify-center p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                    className={`flex items-start gap-3 p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                       variantMode === 'single'
-                        ? 'bg-slate-800/90 border-2 border-emerald-500 text-white font-bold ring-2 ring-emerald-500/20 shadow-md'
-                        : 'bg-slate-950/70 hover:bg-slate-800/60 border-slate-800 hover:border-slate-700 text-slate-400 hover:text-slate-200'
+                        ? 'bg-slate-800/90 border-2 border-emerald-500 shadow-md ring-1 ring-emerald-500/20'
+                        : 'bg-slate-950/60 hover:bg-slate-800/50 border-slate-800 text-slate-400'
                     }`}
                   >
-                    <UnownSingleIcon className="w-7 h-7 mb-1 text-current" />
-                    <span className="text-xs sm:text-sm font-semibold">Nicht-Variante</span>
+                    <div
+                      className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5 ${
+                        variantMode === 'single'
+                          ? 'bg-emerald-500/20 text-emerald-400'
+                          : 'bg-slate-900 text-slate-400'
+                      }`}
+                    >
+                      <Compass className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm font-bold ${variantMode === 'single' ? 'text-white' : 'text-slate-300'}`}>
+                          Nur Basis-Spezies
+                        </span>
+                        {variantMode === 'single' && (
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                            Aktiv
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                        Exakt 1 Eintrag pro Pokédex-Nummer. Stimmt exakt mit dem Zähler im offiziellen Spiel überein.
+                      </p>
+                    </div>
                   </button>
                 </div>
+              </div>
 
-                {/* Explanatory callout box matching screenshot */}
-                <div className="bg-slate-950/70 border border-slate-800/80 rounded-2xl p-3 text-xs text-slate-300 leading-relaxed">
-                  {variantMode === 'multi'
-                    ? 'Pokémon mit verschiedenen Formen wie Icognito, Formeo usw. erscheinen in all ihren Varianten. Die Sammlungszähler stimmen nicht mit dem Zähler im Spiel überein.'
-                    : 'Nur die Basis-Variante jedes Pokémon wird angezeigt. Stimmt genau mit dem Pokédex-Zähler im Spiel überein.'}
+              {/* Section 3: Zusätzliche Tracking-Dimensionen */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
+                      3
+                    </span>
+                    Tracking-Dimensionen
+                  </label>
+                  <span className="text-xs text-slate-400">
+                    Aktivierte Kriterien können für jedes Pokémon separat angehakt werden
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                  {/* Schillernd (Shiny) */}
+                  <div
+                    onClick={() => setTrackShiny(!trackShiny)}
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                      trackShiny
+                        ? 'bg-amber-500/10 border-amber-500/50 text-white'
+                        : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl ${trackShiny ? 'bg-amber-500/20 text-amber-300' : 'bg-slate-900 text-slate-400'}`}>
+                        <Sparkles className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-white">Schillernd (Shiny)</div>
+                        <div className="text-[11px] text-slate-400">Glitzernde Shinies separat erfassen</div>
+                      </div>
+                    </div>
+                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackShiny ? 'bg-amber-500' : 'bg-slate-800'}`}>
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${trackShiny ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
+
+                  {/* 100% IV (Hundo) */}
+                  <div
+                    onClick={() => setTrackHundo(!trackHundo)}
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                      trackHundo
+                        ? 'bg-emerald-500/10 border-emerald-500/50 text-white'
+                        : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl ${trackHundo ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-900 text-slate-400'}`}>
+                        <ShieldCheck className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-white">100% IV (Hundo)</div>
+                        <div className="text-[11px] text-slate-400">Perfekte 15/15/15 Bewertung</div>
+                      </div>
+                    </div>
+                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackHundo ? 'bg-emerald-500' : 'bg-slate-800'}`}>
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${trackHundo ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
+
+                  {/* Geschlechter */}
+                  <div
+                    onClick={() => setTrackGender(!trackGender)}
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                      trackGender
+                        ? 'bg-blue-500/10 border-blue-500/50 text-white'
+                        : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl ${trackGender ? 'bg-blue-500/20 text-blue-300' : 'bg-slate-900 text-slate-400'}`}>
+                        <Dna className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-white">Geschlecht (♂ / ♀)</div>
+                        <div className="text-[11px] text-slate-400">Männlich und Weiblich getrennt</div>
+                      </div>
+                    </div>
+                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackGender ? 'bg-blue-500' : 'bg-slate-800'}`}>
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${trackGender ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
+
+                  {/* Spezielle Hintergründe */}
+                  <div
+                    onClick={() => setTrackBackground(!trackBackground)}
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                      trackBackground
+                        ? 'bg-purple-500/10 border-purple-500/50 text-white'
+                        : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl ${trackBackground ? 'bg-purple-500/20 text-purple-300' : 'bg-slate-900 text-slate-400'}`}>
+                        <Image className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-white">Spezial-Hintergrund</div>
+                        <div className="text-[11px] text-slate-400">Ortskarten, Raid- & Event-BG</div>
+                      </div>
+                    </div>
+                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackBackground ? 'bg-purple-500' : 'bg-slate-800'}`}>
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${trackBackground ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
+
+                  {/* Größenrekorde */}
+                  <div
+                    onClick={() => setTrackSize(!trackSize)}
+                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all sm:col-span-2 ${
+                      trackSize
+                        ? 'bg-rose-500/10 border-rose-500/50 text-white'
+                        : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl ${trackSize ? 'bg-rose-500/20 text-rose-300' : 'bg-slate-900 text-slate-400'}`}>
+                        <Ruler className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-white">Größen-Rekorde (XXS & XXL)</div>
+                        <div className="text-[11px] text-slate-400">Pummelige Riesen und winzige Zwerg-Rekorde im Pokédex führen</div>
+                      </div>
+                    </div>
+                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackSize ? 'bg-rose-500' : 'bg-slate-800'}`}>
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${trackSize ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Section 3: Weitere Merkmale (5 Toggle Rows) */}
-              <div className="space-y-2.5">
-                <h3 className="text-sm font-bold text-white tracking-wide">
-                  Weitere Merkmale
-                </h3>
-
-                <div className="space-y-2">
-                  {/* Row 1: Schillernd */}
-                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
-                    <span className="text-sm font-semibold text-slate-100">
-                      Schillernd
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setTrackShiny(!trackShiny)}
-                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackShiny ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
-                      }`}
-                    >
-                      <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                          trackShiny ? 'translate-x-5' : 'translate-x-0'
-                        }`}
-                      />
-                    </button>
-                  </div>
-
-                  {/* Row 2: Hundo (100%) */}
-                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
-                    <span className="text-sm font-semibold text-slate-100">
-                      Hundo (100%)
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setTrackHundo(!trackHundo)}
-                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackHundo ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
-                      }`}
-                    >
-                      <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                          trackHundo ? 'translate-x-5' : 'translate-x-0'
-                        }`}
-                      />
-                    </button>
-                  </div>
-
-                  {/* Row 3: Geschlecht */}
-                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
-                    <span className="text-sm font-semibold text-slate-100">
-                      Geschlecht
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => setTrackGender(!trackGender)}
-                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackGender ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
-                      }`}
-                    >
-                      <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                          trackGender ? 'translate-x-5' : 'translate-x-0'
-                        }`}
-                      />
-                    </button>
-                  </div>
-
-                  {/* Row 4: Hintergrund (PRO) */}
-                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-slate-100">
-                        Hintergrund
-                      </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 tracking-wider uppercase">
-                        ★ PRO
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setTrackBackground(!trackBackground)}
-                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackBackground ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
-                      }`}
-                    >
-                      <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                          trackBackground ? 'translate-x-5' : 'translate-x-0'
-                        }`}
-                      />
-                    </button>
-                  </div>
-
-                  {/* Row 5: Größe (PRO) */}
-                  <div className="flex items-center justify-between px-4 py-3.5 bg-slate-950/70 border border-slate-800/90 hover:border-slate-700 rounded-2xl transition-all">
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-slate-100">
-                        Größe
-                      </span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 tracking-wider uppercase">
-                        ★ PRO
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setTrackSize(!trackSize)}
-                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                        trackSize ? 'bg-emerald-500 shadow-md shadow-emerald-500/30' : 'bg-slate-800 border border-slate-700'
-                      }`}
-                    >
-                      <span
-                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md ring-0 transition duration-200 ease-in-out ${
-                          trackSize ? 'translate-x-5' : 'translate-x-0'
-                        }`}
-                      />
-                    </button>
-                  </div>
+              {/* Section 4: Sammlungs-Design & Benennung */}
+              <div className="space-y-3.5 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                    <Palette className="w-4 h-4 text-slate-400" />
+                    Design & Sammlungsname
+                  </label>
+                  <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
+                    {matchingPokemonIds.length} Pokémon zugeordnet
+                  </span>
                 </div>
-              </div>
 
-              {/* Section 4: Sammlungsname */}
-              <div className="space-y-2">
-                <h3 className="text-sm font-bold text-white tracking-wide">
-                  Sammlungsname
-                </h3>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => {
-                    setName(e.target.value);
-                    setIsNameManuallyEdited(true);
-                  }}
-                  required
-                  placeholder="z.B. Meine Schillernde Glücks-Sammlung"
-                  className="w-full px-4 py-3.5 bg-slate-950 border border-slate-800 focus:border-emerald-500 rounded-2xl text-sm font-medium text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/25 transition-all"
-                />
+                {/* Color Theme Selector */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs text-slate-400 mr-1">Farbe:</span>
+                  {COLOR_THEMES.map((c) => {
+                    const isSelected = selectedColor === c.hex;
+                    return (
+                      <button
+                        key={c.id}
+                        type="button"
+                        onClick={() => setSelectedColor(c.hex)}
+                        className={`w-7 h-7 rounded-full transition-transform cursor-pointer flex items-center justify-center ${
+                          isSelected ? 'scale-125 ring-2 ring-white ring-offset-2 ring-offset-slate-950' : 'hover:scale-110 opacity-80 hover:opacity-100'
+                        }`}
+                        style={{ backgroundColor: c.hex }}
+                        title={c.label}
+                      >
+                        {isSelected && <Check className="w-3.5 h-3.5 text-white stroke-[3]" />}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Name Input */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      setIsNameManuallyEdited(true);
+                    }}
+                    required
+                    placeholder="z.B. Meine Schillernde Glücks-Sammlung"
+                    className="w-full px-4 py-3 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-xl text-sm font-medium text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
+                  />
+                  {isNameManuallyEdited && (
+                    <button
+                      type="button"
+                      onClick={() => setIsNameManuallyEdited(false)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-emerald-400 font-semibold transition-colors"
+                      title="Automatischen Namen wiederherstellen"
+                    >
+                      Auto
+                    </button>
+                  )}
+                </div>
               </div>
 
               {/* Submit Button */}
               <button
                 type="submit"
                 disabled={!name.trim() || isSubmitting}
-                className="w-full py-4 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 hover:from-emerald-500 hover:via-emerald-400 hover:to-teal-500 disabled:opacity-50 text-white font-bold text-sm rounded-2xl shadow-lg shadow-emerald-600/30 hover:shadow-emerald-500/40 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full py-3.5 font-bold text-sm text-white rounded-2xl shadow-lg disabled:opacity-50 active:scale-[0.99] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                style={{
+                  backgroundColor: selectedColor,
+                  boxShadow: `0 8px 25px ${selectedColor}40`
+                }}
               >
                 <Plus className="w-4 h-4 stroke-[3]" />
-                <span>{isSubmitting ? 'Wird erstellt...' : 'Sammlung erstellen'}</span>
+                <span>
+                  {isSubmitting ? 'Wird gespeichert...' : `Sammlung "${name || 'Neu'}" anlegen`}
+                </span>
               </button>
             </form>
           ) : (
             /* Tab 2: Existing Collections Management */
-            <div className="space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
-                Gespeicherte Sammlungen ({collections.length})
-              </h3>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
+                  Deine gespeicherten Listen ({collections.length})
+                </h3>
+                <button
+                  type="button"
+                  onClick={() => setActiveTab('create')}
+                  className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1 cursor-pointer"
+                >
+                  <Plus className="w-3.5 h-3.5" />
+                  <span>Neue hinzufügen</span>
+                </button>
+              </div>
 
               {collections.length === 0 ? (
-                <p className="text-sm text-slate-400 italic py-6 text-center">
-                  Noch keine benutzerdefinierten Sammlungen angelegt.
-                </p>
+                <div className="py-12 px-4 text-center rounded-2xl border border-dashed border-slate-800 bg-slate-950/40">
+                  <FolderKanban className="w-10 h-10 text-slate-600 mx-auto mb-2.5 opacity-60" />
+                  <p className="text-sm font-semibold text-slate-300">
+                    Noch keine benutzerdefinierten Listen vorhanden
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+                    Klicke auf "Sammlung konfigurieren", um deine erste maßgeschneiderte Pokédex-Liste anzulegen!
+                  </p>
+                </div>
               ) : (
-                <div className="space-y-2.5">
+                <div className="space-y-3">
                   {collections.map((c) => {
                     const isActive = activeCollectionId === c.id;
+                    const percent = c.totalItems > 0 ? Math.round((c.caughtItems / c.totalItems) * 100) : 0;
 
                     return (
                       <div
                         key={c.id}
-                        className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                        className={`p-4 rounded-2xl border transition-all ${
                           isActive
-                            ? 'bg-slate-800/90 border-2 border-emerald-500/80 shadow-md ring-1 ring-emerald-500/30'
-                            : 'bg-slate-950/70 hover:bg-slate-800/70 border-slate-800'
+                            ? 'bg-slate-800/90 border-2 shadow-lg ring-1 ring-white/10'
+                            : 'bg-slate-950/60 hover:bg-slate-800/60 border-slate-800'
                         }`}
+                        style={{
+                          borderColor: isActive ? c.color || '#10b981' : undefined
+                        }}
                       >
-                        <div
-                          onClick={() => {
-                            onSelectCollection(c.id);
-                            onClose();
-                          }}
-                          className="flex items-center gap-3 cursor-pointer flex-1 min-w-0"
-                        >
+                        <div className="flex items-start justify-between gap-3">
                           <div
-                            className="w-4 h-4 rounded-full shrink-0 shadow-sm"
-                            style={{ backgroundColor: c.color || '#10b981' }}
-                          />
-                          <div className="min-w-0">
-                            <h4 className="text-sm font-bold text-white truncate">
-                              {c.name}
-                            </h4>
-                            <p className="text-xs text-slate-400 truncate">
-                              {c.categoryType?.toUpperCase()} · {c.variantMode === 'single' ? 'Single Variant' : 'Multivariante'}
-                            </p>
-                            <p className="text-xs font-mono text-emerald-400 font-semibold mt-0.5">
-                              {c.caughtItems} / {c.totalItems} gefangen
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-2 ml-3">
-                          <button
-                            type="button"
                             onClick={() => {
-                              onOpenEditor(c);
+                              onSelectCollection(c.id);
                               onClose();
                             }}
-                            className="px-3 py-1.5 bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
-                            title="Pokémon manuell auswählen"
+                            className="flex items-start gap-3 cursor-pointer flex-1 min-w-0"
                           >
-                            <Bookmark className="w-3.5 h-3.5" />
-                            <span>Auswählen</span>
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              if (confirm(`Sammlung "${c.name}" löschen?`)) {
-                                onDeleteCollection(c.id);
-                              }
-                            }}
-                            className="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
-                            title="Löschen"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
+                            <div
+                              className="w-3.5 h-3.5 rounded-full shrink-0 mt-1 shadow-sm"
+                              style={{ backgroundColor: c.color || '#10b981' }}
+                            />
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                <h4 className="text-sm font-bold text-white truncate">
+                                  {c.name}
+                                </h4>
+                                {isActive && (
+                                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                                    Aktiver Filter
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-slate-400 mt-0.5">
+                                {c.description || (c.categoryType ? `${c.categoryType.toUpperCase()} · ${c.variantMode === 'single' ? 'Basis-Spezies' : 'Multivarianten'}` : 'Custom Collection')}
+                              </p>
+
+                              {/* Progress bar */}
+                              <div className="mt-2.5">
+                                <div className="flex items-center justify-between text-xs mb-1">
+                                  <span className="font-mono text-slate-300 font-medium">
+                                    {c.caughtItems} / {c.totalItems} gefangen
+                                  </span>
+                                  <span className="font-mono font-bold" style={{ color: c.color || '#10b981' }}>
+                                    {percent}%
+                                  </span>
+                                </div>
+                                <div className="w-full h-2 rounded-full bg-slate-900 border border-slate-800 overflow-hidden">
+                                  <div
+                                    className="h-full rounded-full transition-all duration-500"
+                                    style={{
+                                      width: `${percent}%`,
+                                      backgroundColor: c.color || '#10b981'
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Action Buttons */}
+                          <div className="flex items-center gap-2 ml-2 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                onOpenEditor(c);
+                                onClose();
+                              }}
+                              className="px-3 py-1.5 bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                              title="Einzelne Pokémon anpassen"
+                            >
+                              <Bookmark className="w-3.5 h-3.5" />
+                              <span className="hidden sm:inline">Bearbeiten</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (confirm(`Sammlung "${c.name}" wirklich löschen?`)) {
+                                  onDeleteCollection(c.id);
+                                }
+                              }}
+                              className="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800/80 rounded-xl transition-colors cursor-pointer"
+                              title="Löschen"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </div>
                       </div>
                     );
