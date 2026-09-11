@@ -50,6 +50,7 @@ router.get('/pokemon', (req, res) => {
         p.fallback_shiny_url as fallbackShinyUrl,
         p.official_artwork_url as officialArtworkUrl,
         p.has_shiny as hasShiny,
+        p.has_shadow as hasShadow,
         p.is_mega as isMega,
         p.is_form as isForm,
         p.is_costume as isCostume,
@@ -86,6 +87,8 @@ router.get('/pokemon', (req, res) => {
     if (category && category !== 'all') {
       if (category === 'shiny') {
         sql += ` AND p.has_shiny = 1`;
+      } else if (category === 'shadow' || category === 'crypto') {
+        sql += ` AND p.has_shadow = 1`;
       } else {
         sql += ` AND p.category = ?`;
         params.push(category);
@@ -98,7 +101,7 @@ router.get('/pokemon', (req, res) => {
     }
 
     if (type && type !== 'all') {
-      sql += ` AND (p.type1 = ? OR p.type2 = ?)`;
+      sql += ` AND (LOWER(p.type1) = LOWER(?) OR LOWER(p.type2) = LOWER(?))`;
       params.push(type, type);
     }
 
@@ -117,12 +120,16 @@ router.get('/pokemon', (req, res) => {
     if (status === 'caught') {
       if (category === 'shiny') {
         sql += ` AND up.shiny_caught = 1`;
+      } else if (category === 'shadow' || category === 'crypto') {
+        sql += ` AND up.shadow_caught = 1`;
       } else {
         sql += ` AND up.caught = 1`;
       }
     } else if (status === 'uncaught') {
       if (category === 'shiny') {
         sql += ` AND (up.shiny_caught IS NULL OR up.shiny_caught = 0)`;
+      } else if (category === 'shadow' || category === 'crypto') {
+        sql += ` AND (up.shadow_caught IS NULL OR up.shadow_caught = 0)`;
       } else {
         sql += ` AND (up.caught IS NULL OR up.caught = 0)`;
       }
@@ -142,6 +149,7 @@ router.get('/pokemon', (req, res) => {
     const result = rows.map(r => ({
       ...r,
       hasShiny: Boolean(r.hasShiny),
+      hasShadow: Boolean(r.hasShadow),
       isMega: Boolean(r.isMega),
       isForm: Boolean(r.isForm),
       isCostume: Boolean(r.isCostume),
@@ -297,6 +305,8 @@ router.get('/collections', (req, res) => {
           condition = "(p.category = 'mega' OR p.is_mega = 1)";
         } else if (c.categoryType === 'event') {
           condition = "(p.category = 'costume' OR p.is_costume = 1)";
+        } else if (c.categoryType === 'shadow' || c.categoryType === 'purified') {
+          condition = "p.has_shadow = 1";
         } else if (c.variantMode === 'single') {
           condition = "p.category = 'standard'";
         } else {

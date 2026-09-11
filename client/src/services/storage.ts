@@ -1,4 +1,4 @@
-import { Pokemon, CustomCollection, BackupData } from '../types';
+import { Pokemon, CustomCollection, BackupData, DashboardTabConfig } from '../types';
 import localPokemonData from '../data/pokemon-data.json';
 
 const STORAGE_KEYS = {
@@ -6,7 +6,8 @@ const STORAGE_KEYS = {
   COLLECTIONS: 'pogo_dex_collections_v1',
   COLLECTION_ITEMS: 'pogo_dex_collection_items_v1',
   REMOTE_API_URL: 'pogo_dex_remote_api_url_v1',
-  FORCE_LOCAL: 'pogo_dex_force_local_v1'
+  FORCE_LOCAL: 'pogo_dex_force_local_v1',
+  DASHBOARD_TABS: 'pogo_dashboard_tabs_v1'
 };
 
 export interface StorageStatus {
@@ -265,6 +266,8 @@ class StorageAdapter {
           matching = matching.filter(p => p.category === 'mega' || p.isMega);
         } else if (c.categoryType === 'event') {
           matching = matching.filter(p => p.category === 'costume' || p.isCostume);
+        } else if (c.categoryType === 'shadow' || c.categoryType === 'purified') {
+          matching = matching.filter(p => Boolean(p.hasShadow));
         } else if (c.variantMode === 'single') {
           matching = matching.filter(p => p.category === 'standard');
         } else {
@@ -651,6 +654,41 @@ class StorageAdapter {
         }
       ];
       localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(defaults));
+    }
+  }
+
+  // --- Dashboard Customization Tabs ---
+  public getDashboardTabs(collections: CustomCollection[] = []): DashboardTabConfig[] {
+    const defaultTabs: DashboardTabConfig[] = [
+      { id: 'standard', label: 'Standard Dex', type: 'preset', visible: true },
+      { id: 'shiny', label: 'Shiny Dex', type: 'preset', visible: true, color: '#f59e0b' },
+      { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
+      { id: 'form', label: 'Alle Formen', type: 'preset', visible: true, color: '#6366f1' },
+      { id: 'costume', label: 'Kostüme', type: 'preset', visible: true, color: '#ec4899' },
+      { id: 'custom', label: 'Eigene Listen', type: 'preset', visible: true, color: '#3b82f6' },
+    ];
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.DASHBOARD_TABS);
+      if (stored) {
+        const parsed: DashboardTabConfig[] = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const existingCollIds = new Set(collections.map(c => c.id));
+          return parsed.filter(t => t.type === 'preset' || (t.collectionId && existingCollIds.has(t.collectionId)));
+        }
+      }
+    } catch (e) {
+      console.warn('Failed to parse dashboard tabs:', e);
+    }
+
+    return defaultTabs;
+  }
+
+  public saveDashboardTabs(tabs: DashboardTabConfig[]): void {
+    try {
+      localStorage.setItem(STORAGE_KEYS.DASHBOARD_TABS, JSON.stringify(tabs));
+    } catch (e) {
+      console.warn('Failed to save dashboard tabs:', e);
     }
   }
 }

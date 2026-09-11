@@ -37,6 +37,7 @@ db.exec(`
     fallback_shiny_url TEXT,
     official_artwork_url TEXT,
     has_shiny INTEGER DEFAULT 1,
+    has_shadow INTEGER DEFAULT 0,
     is_mega INTEGER DEFAULT 0,
     is_form INTEGER DEFAULT 0,
     is_costume INTEGER DEFAULT 0,
@@ -120,7 +121,8 @@ const migrations = [
   'ALTER TABLE custom_collections ADD COLUMN track_hundo INTEGER DEFAULT 0;',
   'ALTER TABLE custom_collections ADD COLUMN track_gender INTEGER DEFAULT 0;',
   'ALTER TABLE custom_collections ADD COLUMN track_background INTEGER DEFAULT 0;',
-  'ALTER TABLE custom_collections ADD COLUMN track_size INTEGER DEFAULT 0;'
+  'ALTER TABLE custom_collections ADD COLUMN track_size INTEGER DEFAULT 0;',
+  'ALTER TABLE pokemon ADD COLUMN has_shadow INTEGER DEFAULT 0;'
 ];
 
 for (const sql of migrations) {

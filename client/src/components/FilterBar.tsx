@@ -1,6 +1,6 @@
 import React from 'react';
 import { FilterState, StatusFilter, TrackingMode, CustomCollection } from '../types';
-import { Search, X, Filter, ArrowUpDown, Check, RotateCcw } from 'lucide-react';
+import { Search, X, Filter, ArrowUpDown, Check, RotateCcw, Sparkles } from 'lucide-react';
 
 interface FilterBarProps {
   filters: FilterState;
@@ -53,6 +53,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     filters.generation !== 'all' ||
     filters.type !== 'all' ||
     filters.status !== 'all' ||
+    Boolean(filters.shinyOnly) ||
     (showFormsControls && Boolean(filters.showGenderTracking)) ||
     (showFormsControls && Boolean(filters.includeBaseInForms));
 
@@ -94,6 +95,23 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           <span className={`w-2 h-2 rounded-full ${filters.releasedOnly ? 'bg-emerald-500 dark:bg-emerald-400 shadow-sm' : 'bg-slate-400 dark:bg-slate-500'}`} />
           <span>{filters.releasedOnly ? 'Released in GO' : 'All 1,025 Dex'}</span>
         </button>
+
+        {/* Shiny Only Toggle (in shiny mode it's already full shiny) */}
+        {mode !== 'shiny' && (
+          <button
+            type="button"
+            onClick={() => onFilterChange({ shinyOnly: !filters.shinyOnly })}
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 select-none cursor-pointer ${
+              filters.shinyOnly
+                ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-400/60 shadow-sm font-bold'
+                : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
+            }`}
+            title="Nur Pokémon anzeigen, deren schillernde Version (Shiny) in Pokémon GO freigeschaltet ist"
+          >
+            <Sparkles className={`w-3.5 h-3.5 ${filters.shinyOnly ? 'text-amber-500' : 'text-slate-400'}`} />
+            <span>Nur Schillernde</span>
+          </button>
+        )}
 
         {/* Forms Mode: Gender Difference Forms & Include Base Form Toggles */}
         {showFormsControls && (

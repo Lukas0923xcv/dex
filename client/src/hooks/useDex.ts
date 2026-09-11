@@ -12,7 +12,8 @@ const INITIAL_FILTERS: FilterState = {
   activeCollectionId: null,
   sortBy: 'dexAsc',
   showGenderTracking: false,
-  includeBaseInForms: false
+  includeBaseInForms: false,
+  shinyOnly: false
 };
 
 export function useDex() {
@@ -255,6 +256,19 @@ export function useDex() {
           result = result.filter(p => p.category === 'mega' || p.isMega);
         } else if (activeColl.categoryType === 'event') {
           result = result.filter(p => p.category === 'costume' || p.isCostume);
+        } else if (activeColl.categoryType === 'shadow' || activeColl.categoryType === 'purified') {
+          result = result.filter(p => Boolean(p.hasShadow));
+          if (activeColl.variantMode === 'single') {
+            result = result.filter(p => p.category === 'standard');
+          } else {
+            result = result.filter(p => {
+              if (p.category === 'standard') return true;
+              if (p.category === 'form' || p.isForm) {
+                return !isExcludedGenderForm(p);
+              }
+              return false;
+            });
+          }
         } else if (activeColl.variantMode === 'single') {
           result = result.filter(p => p.category === 'standard');
         } else {
@@ -266,7 +280,16 @@ export function useDex() {
             return false;
           });
         }
+
+        if (activeColl.trackShiny) {
+          result = result.filter(p => p.hasShiny);
+        }
       }
+    }
+
+    // 1b. Filter by Shiny Only (either toggle is on, or in custom mode with trackShiny)
+    if (filters.shinyOnly) {
+      result = result.filter(p => p.hasShiny);
     }
 
     // 2. Filter by Generation
@@ -397,6 +420,19 @@ export function useDex() {
           pool = pool.filter(p => p.category === 'mega' || p.isMega);
         } else if (activeColl.categoryType === 'event') {
           pool = pool.filter(p => p.category === 'costume' || p.isCostume);
+        } else if (activeColl.categoryType === 'shadow' || activeColl.categoryType === 'purified') {
+          pool = pool.filter(p => Boolean(p.hasShadow));
+          if (activeColl.variantMode === 'single') {
+            pool = pool.filter(p => p.category === 'standard');
+          } else {
+            pool = pool.filter(p => {
+              if (p.category === 'standard') return true;
+              if (p.category === 'form' || p.isForm) {
+                return !isExcludedGenderForm(p);
+              }
+              return false;
+            });
+          }
         } else if (activeColl.variantMode === 'single') {
           pool = pool.filter(p => p.category === 'standard');
         } else {
@@ -408,7 +444,15 @@ export function useDex() {
             return false;
           });
         }
+
+        if (activeColl.trackShiny) {
+          pool = pool.filter(p => p.hasShiny);
+        }
       }
+    }
+
+    if (filters.shinyOnly) {
+      pool = pool.filter(p => p.hasShiny);
     }
 
     if (filters.generation !== 'all') {
@@ -428,7 +472,7 @@ export function useDex() {
     const percentage = total > 0 ? Math.round((caught / total) * 100) : 0;
 
     return { total, caught, percentage };
-  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, filters.includeBaseInForms, filters.showGenderTracking, collections]);
+  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, filters.includeBaseInForms, filters.showGenderTracking, filters.shinyOnly, collections]);
 
   // Trigger celebration on 100%
   useEffect(() => {

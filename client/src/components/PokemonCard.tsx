@@ -8,6 +8,7 @@ interface PokemonCardProps {
   mode: TrackingMode;
   collection?: CustomCollection | null;
   showGenderTracking?: boolean;
+  shinyOnly?: boolean;
   onToggleCaught: (id: string) => void;
   onToggleShiny: (id: string) => void;
   onToggleFeature?: (
@@ -22,6 +23,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
   mode,
   collection,
   showGenderTracking,
+  shinyOnly,
   onToggleCaught,
   onToggleShiny,
   onToggleFeature,
@@ -29,7 +31,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
 }) => {
   const isCustomMode = mode === 'custom';
   const categoryType = isCustomMode ? (collection?.categoryType || 'normal') : 'normal';
-  const isShinyMode = mode === 'shiny' || Boolean(isCustomMode && collection?.trackShiny);
+  const isShinyMode = mode === 'shiny' || Boolean(isCustomMode && collection?.trackShiny) || Boolean(shinyOnly);
 
   // Determine caught state based on active context
   let isCaught = false;

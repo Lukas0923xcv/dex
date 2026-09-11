@@ -15,6 +15,7 @@ export interface Pokemon {
   fallbackShinyUrl?: string;
   officialArtworkUrl?: string;
   hasShiny: boolean;
+  hasShadow?: boolean;
   isMega: boolean;
   isForm: boolean;
   isCostume?: boolean;
@@ -81,6 +82,16 @@ export interface FilterState {
   sortBy: 'dexAsc' | 'dexDesc' | 'nameAsc';
   showGenderTracking?: boolean;
   includeBaseInForms?: boolean;
+  shinyOnly?: boolean;
+}
+
+export interface DashboardTabConfig {
+  id: string; // 'standard' | 'shiny' | 'mega' | 'form' | 'costume' | `custom:${string}`
+  label: string;
+  type: 'preset' | 'custom';
+  collectionId?: string;
+  visible: boolean;
+  color?: string;
 }
 
 export interface BackupData {
