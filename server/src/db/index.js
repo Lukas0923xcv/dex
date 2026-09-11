@@ -39,6 +39,7 @@ db.exec(`
     has_shiny INTEGER DEFAULT 1,
     is_mega INTEGER DEFAULT 0,
     is_form INTEGER DEFAULT 0,
+    is_costume INTEGER DEFAULT 0,
     released_in_go INTEGER DEFAULT 1
   );
 
@@ -46,6 +47,16 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_pokemon_category ON pokemon(category);
   CREATE INDEX IF NOT EXISTS idx_pokemon_gen ON pokemon(generation);
   CREATE INDEX IF NOT EXISTS idx_pokemon_type ON pokemon(type1, type2);
+  CREATE INDEX IF NOT EXISTS idx_pokemon_released ON pokemon(released_in_go);
+`);
+
+try {
+  db.exec('ALTER TABLE pokemon ADD COLUMN is_costume INTEGER DEFAULT 0;');
+} catch (e) {
+  // Column already exists
+}
+
+db.exec(`
 
   CREATE TABLE IF NOT EXISTS user_progress (
     pokemon_id TEXT PRIMARY KEY,

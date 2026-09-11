@@ -277,6 +277,33 @@ class StorageAdapter {
     return true;
   }
 
+  public async setCollectionItems(collectionId: string, pokemonIds: string[]): Promise<boolean> {
+    if (this.isConnectedToBackend) {
+      try {
+        await fetch(`${this.backendUrl}/api/collections/${collectionId}/items/batch`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ pokemonIds, mode: 'replace' })
+        });
+      } catch (err) {
+        console.warn('Backend batch setCollectionItems failed, using local storage:', err);
+      }
+    }
+
+    // Local Storage update
+    const items = this.getLocalCollectionItems().filter(i => i.collection_id !== collectionId);
+    const now = new Date().toISOString();
+    for (const pid of pokemonIds) {
+      items.push({
+        collection_id: collectionId,
+        pokemon_id: pid,
+        added_at: now
+      });
+    }
+    localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+    return true;
+  }
+
   public getCollectionItemIds(collectionId: string): Set<string> {
     const items = this.getLocalCollectionItems();
     return new Set(items.filter(i => i.collection_id === collectionId).map(i => i.pokemon_id));

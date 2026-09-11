@@ -8,6 +8,7 @@ const INITIAL_FILTERS: FilterState = {
   generation: 'all',
   type: 'all',
   status: 'all',
+  releasedOnly: true, // Default to showing only Pokémon currently available in Pokémon GO
   activeCollectionId: null,
   sortBy: 'dexAsc'
 };
@@ -124,8 +125,13 @@ export function useDex() {
     // Refresh collection counts
     const updatedColls = await storage.getCollections();
     setCollections(updatedColls);
+    setPokemonList(prev => [...prev]);
+  }, []);
 
-    // Update inCollection flag on pokemon
+  const setCollectionItems = useCallback(async (collectionId: string, pokemonIds: string[]) => {
+    await storage.setCollectionItems(collectionId, pokemonIds);
+    const updatedColls = await storage.getCollections();
+    setCollections(updatedColls);
     setPokemonList(prev => [...prev]);
   }, []);
 
@@ -133,16 +139,23 @@ export function useDex() {
   const filteredPokemon = useMemo(() => {
     let result = [...pokemonList];
 
+    // 0. Filter by Released in GO (if enabled)
+    if (filters.releasedOnly) {
+      result = result.filter(p => p.releasedInGo);
+    }
+
     // 1. Filter by Mode
     if (mode === 'standard') {
       result = result.filter(p => p.category === 'standard');
     } else if (mode === 'shiny') {
-      // In Shiny mode, show all standard, megas, and forms that have shiny variations
+      // In Shiny mode, show all standard, megas, forms, and costumes that have shiny variations
       result = result.filter(p => p.hasShiny);
     } else if (mode === 'mega') {
       result = result.filter(p => p.category === 'mega' || p.isMega);
     } else if (mode === 'form') {
       result = result.filter(p => p.category === 'form' || p.isForm);
+    } else if (mode === 'costume') {
+      result = result.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom' && filters.activeCollectionId) {
       const itemIds = storage.getCollectionItemIds(filters.activeCollectionId);
       result = result.filter(p => itemIds.has(p.id));
@@ -204,8 +217,12 @@ export function useDex() {
 
   // Stats calculation for current view
   const currentViewStats = useMemo(() => {
-    // Mode-specific population
     let pool = [...pokemonList];
+
+    if (filters.releasedOnly) {
+      pool = pool.filter(p => p.releasedInGo);
+    }
+
     if (mode === 'standard') {
       pool = pool.filter(p => p.category === 'standard');
     } else if (mode === 'shiny') {
@@ -214,12 +231,13 @@ export function useDex() {
       pool = pool.filter(p => p.category === 'mega' || p.isMega);
     } else if (mode === 'form') {
       pool = pool.filter(p => p.category === 'form' || p.isForm);
+    } else if (mode === 'costume') {
+      pool = pool.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom' && filters.activeCollectionId) {
       const itemIds = storage.getCollectionItemIds(filters.activeCollectionId);
       pool = pool.filter(p => itemIds.has(p.id));
     }
 
-    // If generation filter is active, calculate stats for that generation
     if (filters.generation !== 'all') {
       pool = pool.filter(p => p.generation === filters.generation);
     }
@@ -229,7 +247,7 @@ export function useDex() {
     const percentage = total > 0 ? Math.round((caught / total) * 100) : 0;
 
     return { total, caught, percentage };
-  }, [pokemonList, mode, filters.generation, filters.activeCollectionId]);
+  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly]);
 
   // Trigger celebration on 100%
   useEffect(() => {
@@ -273,6 +291,7 @@ export function useDex() {
     createCollection,
     deleteCollection,
     toggleCollectionItem,
+    setCollectionItems,
     exportBackup,
     importBackup,
     resetAllProgress,

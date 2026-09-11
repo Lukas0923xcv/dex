@@ -9,6 +9,7 @@ interface HeaderProps {
   activeCollectionId: string | null;
   onSelectCollection: (id: string) => void;
   onOpenCollectionsModal: () => void;
+  onOpenCollectionEditor?: () => void;
   onOpenSettingsModal: () => void;
   isBackendConnected: boolean;
 }
@@ -20,6 +21,7 @@ export const Header: React.FC<HeaderProps> = ({
   activeCollectionId,
   onSelectCollection,
   onOpenCollectionsModal,
+  onOpenCollectionEditor,
   onOpenSettingsModal,
   isBackendConnected
 }) => {
@@ -28,6 +30,7 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'shiny' as TrackingMode, label: 'Shiny Dex', icon: Sparkles, color: 'text-amber-400' },
     { id: 'mega' as TrackingMode, label: 'Mega Dex', icon: Zap, color: 'text-rose-400' },
     { id: 'form' as TrackingMode, label: 'All Forms', icon: Layers, color: 'text-indigo-400' },
+    { id: 'costume' as TrackingMode, label: 'Costumes', icon: Sparkles, color: 'text-pink-400' },
     { id: 'custom' as TrackingMode, label: 'Custom Lists', icon: Bookmark, color: 'text-blue-400' },
   ];
 
@@ -125,12 +128,23 @@ export const Header: React.FC<HeaderProps> = ({
               ))}
             </div>
 
-            <button
-              onClick={onOpenCollectionsModal}
-              className="px-3 py-1 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 border border-blue-500/30 text-xs font-semibold rounded-lg shrink-0 transition-colors"
-            >
-              + Manage Lists
-            </button>
+            <div className="flex items-center gap-2 shrink-0">
+              {onOpenCollectionEditor && activeCollectionId && (
+                <button
+                  onClick={onOpenCollectionEditor}
+                  className="px-3 py-1 bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 shadow-sm"
+                >
+                  <Bookmark className="w-3.5 h-3.5" />
+                  <span>Choose Pokémon</span>
+                </button>
+              )}
+              <button
+                onClick={onOpenCollectionsModal}
+                className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs font-semibold rounded-lg transition-colors"
+              >
+                + Manage Lists
+              </button>
+            </div>
           </div>
         )}
       </div>

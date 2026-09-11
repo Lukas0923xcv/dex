@@ -5,7 +5,7 @@ export interface Pokemon {
   names?: Record<string, string>;
   formId?: string;
   formName?: string;
-  category: 'standard' | 'mega' | 'form';
+  category: 'standard' | 'mega' | 'form' | 'costume';
   generation: number;
   type1: string;
   type2?: string | null;
@@ -17,6 +17,7 @@ export interface Pokemon {
   hasShiny: boolean;
   isMega: boolean;
   isForm: boolean;
+  isCostume?: boolean;
   releasedInGo: boolean;
   // User Progress fields
   caught?: boolean;
@@ -37,7 +38,7 @@ export interface CustomCollection {
   caughtItems: number;
 }
 
-export type TrackingMode = 'standard' | 'shiny' | 'mega' | 'form' | 'custom';
+export type TrackingMode = 'standard' | 'shiny' | 'mega' | 'form' | 'costume' | 'custom';
 
 export type StatusFilter = 'all' | 'caught' | 'uncaught';
 
@@ -46,6 +47,7 @@ export interface FilterState {
   generation: number | 'all';
   type: string | 'all';
   status: StatusFilter;
+  releasedOnly: boolean;
   activeCollectionId: string | null;
   sortBy: 'dexAsc' | 'dexDesc' | 'nameAsc';
 }

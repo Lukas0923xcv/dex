@@ -2,11 +2,19 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
-// Ensure output directories exist
 const dataDir = path.join(__dirname, '..', 'data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
+
+// 69 Species from National Dex #001 to #1025 currently unreleased in Pokémon GO (source: Bulbapedia)
+const UNRELEASED_DEX_NRS = new Set([
+  489, 490, 493, // Phione, Manaphy, Arceus
+  746, 771, 772, 773, 774, 801, // Wishiwashi, Pyukumuku, Type: Null, Silvally, Minior, Magearna
+  833, 834, 868, 869, 871, 875, 878, 879, 880, 881, 882, 883, 896, 897, 898, 902, // Galar/Hisui unreleased
+  946, 947, 951, 952, 953, 954, 963, 964, 967, 976, 981, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 995,
+  1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1014, 1015, 1016, 1017, 1018, 1020, 1021, 1022, 1023, 1024, 1025
+]);
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
@@ -32,7 +40,6 @@ function fetchJson(url) {
 
 function formatTypeName(rawType) {
   if (!rawType) return null;
-  // Handle POKEMON_TYPE_GRASS or { names: { English: 'Grass' } }
   if (typeof rawType === 'object') {
     if (rawType.names && rawType.names.English) return rawType.names.English;
     if (rawType.type) return formatTypeName(rawType.type);
@@ -50,6 +57,16 @@ function cleanFormName(formId) {
     .join(' ');
 }
 
+function formatCostumeName(costume) {
+  if (!costume) return 'Costume';
+  return costume
+    .replace(/_NOEVOLVE/g, '')
+    .replace(/^COSTUME_/, 'Costume ')
+    .split('_')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(' ');
+}
+
 async function main() {
   console.log('Fetching Pokémon GO Game Master Dex...');
   const pogoDexUrl = 'https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json';
@@ -59,7 +76,7 @@ async function main() {
     pogoData = await fetchJson(pogoDexUrl);
     console.log(`Fetched ${pogoData.length} Pokémon GO entries.`);
   } catch (err) {
-    console.error('Failed to fetch from pokemon-go-api, will use offline fallback generator:', err.message);
+    console.error('Failed to fetch from pokemon-go-api:', err.message);
   }
 
   const allItems = [];
@@ -71,8 +88,9 @@ async function main() {
     const gen = entry.generation || (dexNr <= 151 ? 1 : dexNr <= 251 ? 2 : dexNr <= 386 ? 3 : dexNr <= 493 ? 4 : dexNr <= 649 ? 5 : dexNr <= 721 ? 6 : dexNr <= 809 ? 7 : dexNr <= 905 ? 8 : 9);
     const type1 = formatTypeName(entry.primaryType);
     const type2 = formatTypeName(entry.secondaryType);
+    const isReleased = !UNRELEASED_DEX_NRS.has(dexNr);
 
-    // Standard entry
+    // 1. Standard entry
     const standardId = `poke_${dexNr}_base`;
     if (!processedIds.has(standardId)) {
       processedIds.add(standardId);
@@ -102,11 +120,12 @@ async function main() {
         hasShiny: true,
         isMega: false,
         isForm: false,
-        releasedInGo: true
+        isCostume: false,
+        releasedInGo: isReleased
       });
     }
 
-    // Mega Evolutions
+    // 2. Mega & Primal Evolutions
     if (entry.megaEvolutions && typeof entry.megaEvolutions === 'object') {
       const megas = Array.isArray(entry.megaEvolutions) ? entry.megaEvolutions : Object.values(entry.megaEvolutions);
       megas.forEach((mega, index) => {
@@ -144,13 +163,14 @@ async function main() {
             hasShiny: true,
             isMega: true,
             isForm: false,
+            isCostume: false,
             releasedInGo: true
           });
         }
       });
     }
 
-    // Regional Forms (Alolan, Galarian, Hisuian, Paldean)
+    // 3. Regional Forms (Alolan, Galarian, Hisuian, Paldean)
     if (entry.regionForms && typeof entry.regionForms === 'object') {
       const forms = Array.isArray(entry.regionForms) ? entry.regionForms : Object.values(entry.regionForms);
       forms.forEach((rf) => {
@@ -193,6 +213,80 @@ async function main() {
             hasShiny: true,
             isMega: false,
             isForm: true,
+            isCostume: false,
+            releasedInGo: true
+          });
+        }
+      });
+    }
+
+    // 4. Vivillon Patterns from assetForms (dexNr === 666)
+    if (dexNr === 666 && entry.assetForms) {
+      entry.assetForms.forEach(af => {
+        if (af.form && af.form !== 'NORMAL') {
+          const vPattern = af.form;
+          const vId = `poke_666_form_vivillon_${vPattern.toLowerCase()}`;
+          if (!processedIds.has(vId)) {
+            processedIds.add(vId);
+            const patternName = cleanFormName(vPattern) + ' Pattern';
+            allItems.push({
+              id: vId,
+              dexNr: 666,
+              name: `Vivillon (${patternName})`,
+              names: { English: `Vivillon (${patternName})` },
+              formId: vPattern,
+              formName: patternName,
+              category: 'form',
+              generation: 6,
+              type1: 'Bug',
+              type2: 'Flying',
+              spriteUrl: af.image,
+              shinySpriteUrl: af.shinyImage || af.image,
+              fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/666.png`,
+              fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/666.png`,
+              officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/666.png`,
+              hasShiny: Boolean(af.shinyImage),
+              isMega: false,
+              isForm: true,
+              isCostume: false,
+              releasedInGo: true
+            });
+          }
+        }
+      });
+    }
+
+    // 5. Costumed Pokémon from assetForms
+    if (entry.assetForms && Array.isArray(entry.assetForms)) {
+      const costumes = entry.assetForms.filter(af => af.costume);
+      costumes.forEach(af => {
+        const costumeKey = af.costume;
+        const costumeId = `poke_${dexNr}_costume_${costumeKey.toLowerCase()}${af.isFemale ? '_f' : ''}`;
+        if (!processedIds.has(costumeId)) {
+          processedIds.add(costumeId);
+          const costumeLabel = formatCostumeName(costumeKey);
+          const fullName = `${baseName} (${costumeLabel}${af.isFemale ? ' ♀' : ''})`;
+
+          allItems.push({
+            id: costumeId,
+            dexNr: dexNr,
+            name: fullName,
+            names: { English: fullName },
+            formId: costumeKey,
+            formName: costumeLabel,
+            category: 'costume',
+            generation: gen,
+            type1: type1 || 'Normal',
+            type2: type2 || null,
+            spriteUrl: af.image,
+            shinySpriteUrl: af.shinyImage || af.image,
+            fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${dexNr}.png`,
+            fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${dexNr}.png`,
+            officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${dexNr}.png`,
+            hasShiny: Boolean(af.shinyImage),
+            isMega: false,
+            isForm: false,
+            isCostume: true,
             releasedInGo: true
           });
         }
@@ -200,7 +294,7 @@ async function main() {
     }
   }
 
-  // Add Special Pokémon GO Alternate Forms (Castform, Deoxys, Vivillon, Unown, Furfrou, Necrozma, etc.)
+  // 6. Special Pokémon Alternate Forms (Castform, Deoxys, Furfrou, Rotom, Unown, etc.)
   const specialForms = [
     // Castform
     { dexNr: 351, base: 'Castform', formId: 'SUNNY', label: 'Sunny Form', type1: 'Fire', type2: null, icon: 'pm351.fSUNNY.icon.png' },
@@ -246,6 +340,36 @@ async function main() {
     { dexNr: 745, base: 'Lycanroc', formId: 'DUSK', label: 'Dusk Form', type1: 'Rock', type2: null, icon: 'pm745.fDUSK.icon.png' }
   ];
 
+  // Add Furfrou trims (Natural, Heart, Star, Diamond, Debutante, Matron, Dandy, La Reine, Kabuki, Pharaoh)
+  const furfrouTrims = ['HEART', 'STAR', 'DIAMOND', 'DEBUTANTE', 'MATRON', 'DANDY', 'LA_REINE', 'KABUKI', 'PHARAOH'];
+  furfrouTrims.forEach(trim => {
+    specialForms.push({
+      dexNr: 676,
+      base: 'Furfrou',
+      formId: trim,
+      label: cleanFormName(trim) + ' Trim',
+      type1: 'Normal',
+      type2: null,
+      icon: `pm676.f${trim}.icon.png`
+    });
+  });
+
+  // Add Unown forms (A-Z, !, ?)
+  const unownLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').concat(['EXCLAMATION_POINT', 'QUESTION_MARK']);
+  unownLetters.forEach(letter => {
+    const label = letter === 'EXCLAMATION_POINT' ? '!' : letter === 'QUESTION_MARK' ? '?' : letter;
+    const fileSuffix = letter === 'EXCLAMATION_POINT' ? 'EXCLAMATION' : letter === 'QUESTION_MARK' ? 'QUESTION' : letter;
+    specialForms.push({
+      dexNr: 201,
+      base: 'Unown',
+      formId: letter,
+      label: `Unown ${label}`,
+      type1: 'Psychic',
+      type2: null,
+      icon: `pm201.f${fileSuffix}.icon.png`
+    });
+  });
+
   specialForms.forEach(sf => {
     const specialId = `poke_${sf.dexNr}_special_${sf.formId.toLowerCase()}`;
     if (!processedIds.has(specialId)) {
@@ -271,15 +395,16 @@ async function main() {
         hasShiny: true,
         isMega: false,
         isForm: true,
+        isCostume: false,
         releasedInGo: true
       });
     }
   });
 
-  // Sort: Standard first by dexNr, then Megas by dexNr, then Forms by dexNr
+  // Sort: Standard first by dexNr, then Megas, then Forms, then Costumes
   allItems.sort((a, b) => {
     if (a.category !== b.category) {
-      const order = { standard: 1, mega: 2, form: 3 };
+      const order = { standard: 1, mega: 2, form: 3, costume: 4 };
       return (order[a.category] || 9) - (order[b.category] || 9);
     }
     if (a.dexNr !== b.dexNr) return a.dexNr - b.dexNr;
@@ -291,11 +416,13 @@ async function main() {
     total: allItems.length,
     standard: allItems.filter(p => p.category === 'standard').length,
     megas: allItems.filter(p => p.category === 'mega').length,
-    forms: allItems.filter(p => p.category === 'form').length
+    forms: allItems.filter(p => p.category === 'form').length,
+    costumes: allItems.filter(p => p.category === 'costume').length,
+    releasedInGo: allItems.filter(p => p.releasedInGo).length,
+    unreleasedInGo: allItems.filter(p => !p.releasedInGo).length
   };
   console.log('Summary:', summary);
 
-  // Write to data/pokemon-data.json
   const outputPath = path.join(dataDir, 'pokemon-data.json');
   fs.writeFileSync(outputPath, JSON.stringify(allItems, null, 2), 'utf8');
   console.log(`Successfully written to ${outputPath}`);

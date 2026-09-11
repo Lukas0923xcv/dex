@@ -28,7 +28,8 @@ router.get('/pokemon', (req, res) => {
       type,
       status, // 'all', 'caught', 'uncaught'
       collectionId,
-      limit = 2000,
+      releasedOnly,
+      limit = 2500,
       offset = 0
     } = req.query;
 
@@ -51,6 +52,7 @@ router.get('/pokemon', (req, res) => {
         p.has_shiny as hasShiny,
         p.is_mega as isMega,
         p.is_form as isForm,
+        p.is_costume as isCostume,
         p.released_in_go as releasedInGo,
         COALESCE(up.caught, 0) as caught,
         COALESCE(up.shiny_caught, 0) as shinyCaught,
@@ -119,6 +121,10 @@ router.get('/pokemon', (req, res) => {
       }
     }
 
+    if (releasedOnly === 'true' || releasedOnly === '1') {
+      sql += ` AND p.released_in_go = 1`;
+    }
+
     // Sort order
     sql += ` ORDER BY p.dex_nr ASC, p.category ASC, p.id ASC LIMIT ? OFFSET ?`;
     params.push(parseInt(limit, 10), parseInt(offset, 10));
@@ -131,6 +137,7 @@ router.get('/pokemon', (req, res) => {
       hasShiny: Boolean(r.hasShiny),
       isMega: Boolean(r.isMega),
       isForm: Boolean(r.isForm),
+      isCostume: Boolean(r.isCostume),
       releasedInGo: Boolean(r.releasedInGo),
       caught: Boolean(r.caught),
       shinyCaught: Boolean(r.shinyCaught),
@@ -318,6 +325,37 @@ router.delete('/collections/:id/items/:pokemonId', (req, res) => {
     `).run(collectionId, pokemonId);
 
     res.json({ success: true, collectionId, pokemonId });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/collections/:id/items/batch
+router.post('/collections/:id/items/batch', (req, res) => {
+  try {
+    const { id: collectionId } = req.params;
+    const { pokemonIds = [], mode = 'replace' } = req.body;
+
+    const now = new Date().toISOString();
+    const insertStmt = db.prepare(`
+      INSERT OR IGNORE INTO custom_collection_items (collection_id, pokemon_id, added_at)
+      VALUES (?, ?, ?)
+    `);
+
+    db.exec('BEGIN TRANSACTION;');
+    try {
+      if (mode === 'replace') {
+        db.prepare('DELETE FROM custom_collection_items WHERE collection_id = ?').run(collectionId);
+      }
+      for (const pid of pokemonIds) {
+        insertStmt.run(collectionId, pid, now);
+      }
+      db.exec('COMMIT;');
+      res.json({ success: true, collectionId, count: pokemonIds.length });
+    } catch (err) {
+      db.exec('ROLLBACK;');
+      throw err;
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
