@@ -1,0 +1,15 @@
+{
+  "name": "pogo-dex-server",
+  "version": "1.0.0",
+  "description": "Lightweight SQLite Backend for Pokémon GO Dex Tracker",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "seed": "node src/db/seed.js"
+  },
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}

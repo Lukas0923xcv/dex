@@ -1,0 +1,27 @@
+{
+  "name": "pogo-dex",
+  "version": "1.0.0",
+  "description": "Self-Hosted Pokémon GO Dex Tracker for GitHub Pages and Ubuntu Server 26 / Docker",
+  "private": true,
+  "scripts": {
+    "compile:data": "node scripts/compile-pogo-data.js",
+    "install:all": "npm install --prefix server && npm install --prefix client",
+    "dev:server": "cd server && npm start",
+    "dev:client": "cd client && npm run dev",
+    "build:client": "cd client && npm run build",
+    "build": "npm run compile:data && npm run build:client",
+    "seed": "cd server && npm run seed",
+    "start": "node server/src/server.js"
+  },
+  "keywords": [
+    "pokemon-go",
+    "pokedex",
+    "dex-tracker",
+    "living-dex",
+    "shiny-tracker",
+    "docker",
+    "github-pages"
+  ],
+  "author": "Lukas0923xcv",
+  "license": "MIT"
+}
