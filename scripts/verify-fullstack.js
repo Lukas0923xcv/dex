@@ -37,7 +37,7 @@ async function main() {
 
   // Wait for server to become ready
   let ready = false;
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 35; i++) {
     await new Promise(r => setTimeout(r, 400));
     try {
       const res = await request('http://127.0.0.1:3456/api/health');
@@ -84,6 +84,23 @@ async function main() {
     console.log(`[TEST 3c] Released Only: HTTP ${releasedRes.status}, count: ${releasedRes.data.length}`);
     if (releasedRes.data.some(p => !p.releasedInGo)) throw new Error('Unreleased pokemon returned when releasedOnly=true');
     console.log('✓ Released in GO filter passed');
+
+    // 3d. Form Sprite & Name Validation Test
+    const formsRes = await request('http://localhost:3456/api/pokemon?category=form&limit=500');
+    const tox = formsRes.data.find(p => p.id === 'poke_849_special_low_key');
+    if (!tox || !tox.spriteUrl.includes('10184.png')) {
+      throw new Error(`Toxtricity Low Key has invalid sprite: ${tox?.spriteUrl}`);
+    }
+    const ursh = formsRes.data.find(p => p.id === 'poke_892_special_rapid_strike');
+    if (!ursh || !ursh.spriteUrl.includes('10191.png')) {
+      throw new Error(`Urshifu Rapid Strike has invalid sprite: ${ursh?.spriteUrl}`);
+    }
+    const taurosBreeds = formsRes.data.filter(p => p.dexNr === 128);
+    const taurosNames = new Set(taurosBreeds.map(t => t.name));
+    if (taurosNames.size !== taurosBreeds.length) {
+      throw new Error(`Duplicate Paldean Tauros names found: ${Array.from(taurosNames)}`);
+    }
+    console.log(`[TEST 3d] Form accuracy passed (Toxtricity: 10184, Urshifu: 10191, Tauros breeds: ${taurosNames.size})`);
 
     // 4. Progress Toggle Test
     const wasCaught = pokeRes.data.find(p => p.id === 'poke_1_base')?.caught ?? false;
