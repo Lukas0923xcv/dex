@@ -32208,6 +32208,58 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_3_form_female",
+    "dexNr": 3,
+    "name": "Venusaur (Female)",
+    "names": {
+      "English": "Venusaur (Female)",
+      "German": "Bisaflor (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Grass",
+    "type2": "Poison",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/3.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/3.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/3.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/3.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_12_form_female",
+    "dexNr": 12,
+    "name": "Butterfree (Female)",
+    "names": {
+      "English": "Butterfree (Female)",
+      "German": "Smettbo (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Bug",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/12.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/12.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/12.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/12.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_19_form_rattata_alola",
     "dexNr": 19,
     "name": "Alolan Rattata",
@@ -32230,6 +32282,32 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_19_form_female",
+    "dexNr": 19,
+    "name": "Rattata (Female)",
+    "names": {
+      "English": "Rattata (Female)",
+      "German": "Rattfratz (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/19.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/19.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/19.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/19.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -32258,6 +32336,58 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_20_form_female",
+    "dexNr": 20,
+    "name": "Raticate (Female)",
+    "names": {
+      "English": "Raticate (Female)",
+      "German": "Rattikarl (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/20.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/20.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/20.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/20.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_form_female",
+    "dexNr": 25,
+    "name": "Pikachu (Female)",
+    "names": {
+      "English": "Pikachu (Female)",
+      "German": "Pikachu (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/25.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/25.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_26_form_raichu_alola",
     "dexNr": 26,
     "name": "Alolan Raichu",
@@ -32280,6 +32410,32 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_26_form_female",
+    "dexNr": 26,
+    "name": "Raichu (Female)",
+    "names": {
+      "English": "Raichu (Female)",
+      "German": "Raichu (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/26.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/26.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/26.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/26.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/26.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -32380,6 +32536,110 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_41_form_female",
+    "dexNr": 41,
+    "name": "Zubat (Female)",
+    "names": {
+      "English": "Zubat (Female)",
+      "German": "Zubat (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Poison",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/41.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/41.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/41.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/41.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/41.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_42_form_female",
+    "dexNr": 42,
+    "name": "Golbat (Female)",
+    "names": {
+      "English": "Golbat (Female)",
+      "German": "Golbat (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Poison",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/42.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/42.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/42.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/42.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/42.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_44_form_female",
+    "dexNr": 44,
+    "name": "Gloom (Female)",
+    "names": {
+      "English": "Gloom (Female)",
+      "German": "Duflor (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Grass",
+    "type2": "Poison",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/44.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/44.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/44.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/44.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/44.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_45_form_female",
+    "dexNr": 45,
+    "name": "Vileplume (Female)",
+    "names": {
+      "English": "Vileplume (Female)",
+      "German": "Giflor (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Grass",
+    "type2": "Poison",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/45.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/45.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/45.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/45.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/45.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -32555,6 +32815,58 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_64_form_female",
+    "dexNr": 64,
+    "name": "Kadabra (Female)",
+    "names": {
+      "English": "Kadabra (Female)",
+      "German": "Kadabra (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Psychic",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/64.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/64.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/64.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/64.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/64.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_65_form_female",
+    "dexNr": 65,
+    "name": "Alakazam (Female)",
+    "names": {
+      "English": "Alakazam (Female)",
+      "German": "Simsala (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Psychic",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/65.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/65.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/65.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/65.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/65.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -32758,6 +33070,58 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_84_form_female",
+    "dexNr": 84,
+    "name": "Doduo (Female)",
+    "names": {
+      "English": "Doduo (Female)",
+      "German": "Dodu (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/84.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/84.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/84.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/84.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/84.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_85_form_female",
+    "dexNr": 85,
+    "name": "Dodrio (Female)",
+    "names": {
+      "English": "Dodrio (Female)",
+      "German": "Dodri (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/85.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/85.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/85.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/85.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/85.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_88_form_grimer_alola",
     "dexNr": 88,
     "name": "Alolan Grimer",
@@ -32805,6 +33169,32 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_97_form_female",
+    "dexNr": 97,
+    "name": "Hypno (Female)",
+    "names": {
+      "English": "Hypno (Female)",
+      "German": "Hypno (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Psychic",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/97.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/97.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/97.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/97.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/97.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -32933,6 +33323,110 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_111_form_female",
+    "dexNr": 111,
+    "name": "Rhyhorn (Female)",
+    "names": {
+      "English": "Rhyhorn (Female)",
+      "German": "Rihorn (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Ground",
+    "type2": "Rock",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/111.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/111.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/111.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/111.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/111.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_112_form_female",
+    "dexNr": 112,
+    "name": "Rhydon (Female)",
+    "names": {
+      "English": "Rhydon (Female)",
+      "German": "Rizeros (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Ground",
+    "type2": "Rock",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/112.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/112.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/112.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/112.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/112.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_118_form_female",
+    "dexNr": 118,
+    "name": "Goldeen (Female)",
+    "names": {
+      "English": "Goldeen (Female)",
+      "German": "Goldini (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/118.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/118.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/118.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/118.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/118.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_119_form_female",
+    "dexNr": 119,
+    "name": "Seaking (Female)",
+    "names": {
+      "English": "Seaking (Female)",
+      "German": "Golking (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/119.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/119.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/119.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/119.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/119.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_122_form_mr_mime_galarian",
     "dexNr": 122,
     "name": "Galarian Mr. Mime",
@@ -32955,6 +33449,32 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_123_form_female",
+    "dexNr": 123,
+    "name": "Scyther (Female)",
+    "names": {
+      "English": "Scyther (Female)",
+      "German": "Sichlor (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Bug",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/123.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/123.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/123.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/123.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/123.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -33033,6 +33553,84 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_129_form_female",
+    "dexNr": 129,
+    "name": "Magikarp (Female)",
+    "names": {
+      "English": "Magikarp (Female)",
+      "German": "Karpador (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/129.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/129.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/129.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/129.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/129.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_130_form_female",
+    "dexNr": 130,
+    "name": "Gyarados (Female)",
+    "names": {
+      "English": "Gyarados (Female)",
+      "German": "Garados (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Water",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/130.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/130.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/130.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/130.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/130.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_133_form_female",
+    "dexNr": 133,
+    "name": "Eevee (Female)",
+    "names": {
+      "English": "Eevee (Female)",
+      "German": "Evoli (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 1,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/133.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/133.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/133.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/133.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_144_form_articuno_galarian",
     "dexNr": 144,
     "name": "Galarian Articuno",
@@ -33108,6 +33706,32 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_154_form_female",
+    "dexNr": 154,
+    "name": "Meganium (Female)",
+    "names": {
+      "English": "Meganium (Female)",
+      "German": "Meganie (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Grass",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/154.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/154.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/154.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/154.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/154.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_157_form_typhlosion_hisuian",
     "dexNr": 157,
     "name": "Hisuian Typhlosion",
@@ -33133,6 +33757,162 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_165_form_female",
+    "dexNr": 165,
+    "name": "Ledyba (Female)",
+    "names": {
+      "English": "Ledyba (Female)",
+      "German": "Ledyba (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Bug",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/165.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/165.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/165.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/165.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/165.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_166_form_female",
+    "dexNr": 166,
+    "name": "Ledian (Female)",
+    "names": {
+      "English": "Ledian (Female)",
+      "German": "Ledian (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Bug",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/166.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/166.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/166.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/166.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/166.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_178_form_female",
+    "dexNr": 178,
+    "name": "Xatu (Female)",
+    "names": {
+      "English": "Xatu (Female)",
+      "German": "Xatu (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Psychic",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/178.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/178.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/178.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/178.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/178.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_185_form_female",
+    "dexNr": 185,
+    "name": "Sudowoodo (Female)",
+    "names": {
+      "English": "Sudowoodo (Female)",
+      "German": "Mogelbaum (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Rock",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/185.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/185.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/185.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/185.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/185.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_186_form_female",
+    "dexNr": 186,
+    "name": "Politoed (Female)",
+    "names": {
+      "English": "Politoed (Female)",
+      "German": "Quaxo (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/186.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/186.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/186.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/186.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/186.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_190_form_female",
+    "dexNr": 190,
+    "name": "Aipom (Female)",
+    "names": {
+      "English": "Aipom (Female)",
+      "German": "Griffel (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/190.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/190.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/190.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/190.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/190.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_194_form_wooper_paldea",
     "dexNr": 194,
     "name": "Paldean Wooper",
@@ -33155,6 +33935,84 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_194_form_female",
+    "dexNr": 194,
+    "name": "Wooper (Female)",
+    "names": {
+      "English": "Wooper (Female)",
+      "German": "Felino (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Water",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/194.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/194.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/194.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/194.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/194.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_195_form_female",
+    "dexNr": 195,
+    "name": "Quagsire (Female)",
+    "names": {
+      "English": "Quagsire (Female)",
+      "German": "Morlord (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Water",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/195.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/195.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/195.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/195.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/195.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_198_form_female",
+    "dexNr": 198,
+    "name": "Murkrow (Female)",
+    "names": {
+      "English": "Murkrow (Female)",
+      "German": "Kramurx (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Dark",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/198.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/198.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/198.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/198.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/198.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -33205,6 +34063,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33230,6 +34089,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33255,6 +34115,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33280,6 +34141,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33305,6 +34167,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33330,6 +34193,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33355,6 +34219,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33380,6 +34245,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33405,6 +34271,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33430,6 +34297,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33455,6 +34323,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33480,6 +34349,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33505,6 +34375,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33530,6 +34401,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33555,6 +34427,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33580,6 +34453,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33605,6 +34479,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33630,6 +34505,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33655,6 +34531,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33680,6 +34557,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33705,6 +34583,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33730,6 +34609,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33755,6 +34635,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33780,6 +34661,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33805,6 +34687,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33830,6 +34713,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33855,6 +34739,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -33880,6 +34765,111 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_202_form_female",
+    "dexNr": 202,
+    "name": "Wobbuffet (Female)",
+    "names": {
+      "English": "Wobbuffet (Female)",
+      "German": "Woingenau (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Psychic",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/202.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/202.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/202.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/202.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/202.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_203_form_female",
+    "dexNr": 203,
+    "name": "Girafarig (Female)",
+    "names": {
+      "English": "Girafarig (Female)",
+      "German": "Girafarig (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Normal",
+    "type2": "Psychic",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/203.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/203.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/203.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/203.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/203.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_207_form_female",
+    "dexNr": 207,
+    "name": "Gligar (Female)",
+    "names": {
+      "English": "Gligar (Female)",
+      "German": "Skorgla (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Ground",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/207.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/207.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/207.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/207.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/207.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_208_form_female",
+    "dexNr": 208,
+    "name": "Steelix (Female)",
+    "names": {
+      "English": "Steelix (Female)",
+      "German": "Stahlos (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Steel",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/208.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/208.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/208.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/208.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/208.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -33908,6 +34898,58 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_212_form_female",
+    "dexNr": 212,
+    "name": "Scizor (Female)",
+    "names": {
+      "English": "Scizor (Female)",
+      "German": "Scherox (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Bug",
+    "type2": "Steel",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/212.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/212.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/212.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/212.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/212.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_214_form_female",
+    "dexNr": 214,
+    "name": "Heracross (Female)",
+    "names": {
+      "English": "Heracross (Female)",
+      "German": "Skaraborn (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Bug",
+    "type2": "Fighting",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/214.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/214.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/214.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/214.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/214.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_215_form_sneasel_hisuian",
     "dexNr": 215,
     "name": "Hisuian Sneasel",
@@ -33933,6 +34975,84 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_215_form_female",
+    "dexNr": 215,
+    "name": "Sneasel (Female)",
+    "names": {
+      "English": "Sneasel (Female)",
+      "German": "Sniebel (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Dark",
+    "type2": "Ice",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/215.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/215.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/215.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/215.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/215.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_217_form_female",
+    "dexNr": 217,
+    "name": "Ursaring (Female)",
+    "names": {
+      "English": "Ursaring (Female)",
+      "German": "Ursaring (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/217.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/217.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/217.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/217.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/217.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_221_form_female",
+    "dexNr": 221,
+    "name": "Piloswine (Female)",
+    "names": {
+      "English": "Piloswine (Female)",
+      "German": "Keifel (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Ice",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/221.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/221.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/221.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/221.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/221.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_222_form_corsola_galarian",
     "dexNr": 222,
     "name": "Galarian Corsola",
@@ -33955,6 +35075,162 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_224_form_female",
+    "dexNr": 224,
+    "name": "Octillery (Female)",
+    "names": {
+      "English": "Octillery (Female)",
+      "German": "Octillery (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/224.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/224.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/224.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/224.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/224.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_229_form_female",
+    "dexNr": 229,
+    "name": "Houndoom (Female)",
+    "names": {
+      "English": "Houndoom (Female)",
+      "German": "Hundemon (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Dark",
+    "type2": "Fire",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/229.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/229.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/229.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/229.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/229.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_232_form_female",
+    "dexNr": 232,
+    "name": "Donphan (Female)",
+    "names": {
+      "English": "Donphan (Female)",
+      "German": "Donphan (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 2,
+    "type1": "Ground",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/232.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/232.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/232.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/232.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/232.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_255_form_female",
+    "dexNr": 255,
+    "name": "Torchic (Female)",
+    "names": {
+      "English": "Torchic (Female)",
+      "German": "Flemmli (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Fire",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/255.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/255.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/255.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/255.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/255.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_256_form_female",
+    "dexNr": 256,
+    "name": "Combusken (Female)",
+    "names": {
+      "English": "Combusken (Female)",
+      "German": "Jungglut (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Fire",
+    "type2": "Fighting",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/256.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/256.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/256.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/256.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/256.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_257_form_female",
+    "dexNr": 257,
+    "name": "Blaziken (Female)",
+    "names": {
+      "English": "Blaziken (Female)",
+      "German": "Lohgock (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Fire",
+    "type2": "Fighting",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/257.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/257.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/257.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/257.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/257.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -34008,6 +35284,370 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_267_form_female",
+    "dexNr": 267,
+    "name": "Beautifly (Female)",
+    "names": {
+      "English": "Beautifly (Female)",
+      "German": "Papinella (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Bug",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/267.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/267.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/267.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/267.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/267.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_269_form_female",
+    "dexNr": 269,
+    "name": "Dustox (Female)",
+    "names": {
+      "English": "Dustox (Female)",
+      "German": "Pudox (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Bug",
+    "type2": "Poison",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/269.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/269.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/269.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/269.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/269.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_272_form_female",
+    "dexNr": 272,
+    "name": "Ludicolo (Female)",
+    "names": {
+      "English": "Ludicolo (Female)",
+      "German": "Kappalores (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Water",
+    "type2": "Grass",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/272.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/272.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/272.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/272.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/272.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_274_form_female",
+    "dexNr": 274,
+    "name": "Nuzleaf (Female)",
+    "names": {
+      "English": "Nuzleaf (Female)",
+      "German": "Blanas (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Grass",
+    "type2": "Dark",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/274.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/274.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/274.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/274.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/274.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_275_form_female",
+    "dexNr": 275,
+    "name": "Shiftry (Female)",
+    "names": {
+      "English": "Shiftry (Female)",
+      "German": "Tengulist (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Grass",
+    "type2": "Dark",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/275.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/275.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/275.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/275.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/275.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_307_form_female",
+    "dexNr": 307,
+    "name": "Meditite (Female)",
+    "names": {
+      "English": "Meditite (Female)",
+      "German": "Meditie (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Fighting",
+    "type2": "Psychic",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/307.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/307.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/307.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/307.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/307.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_308_form_female",
+    "dexNr": 308,
+    "name": "Medicham (Female)",
+    "names": {
+      "English": "Medicham (Female)",
+      "German": "Meditalis (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Fighting",
+    "type2": "Psychic",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/308.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/308.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/308.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/308.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/308.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_315_form_female",
+    "dexNr": 315,
+    "name": "Roselia (Female)",
+    "names": {
+      "English": "Roselia (Female)",
+      "German": "Roselia (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Grass",
+    "type2": "Poison",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/315.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/315.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/315.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/315.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/315.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_316_form_female",
+    "dexNr": 316,
+    "name": "Gulpin (Female)",
+    "names": {
+      "English": "Gulpin (Female)",
+      "German": "Schluppuck (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Poison",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/316.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/316.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/316.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/316.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/316.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_317_form_female",
+    "dexNr": 317,
+    "name": "Swalot (Female)",
+    "names": {
+      "English": "Swalot (Female)",
+      "German": "Schlukwech (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Poison",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/317.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/317.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/317.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/317.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/317.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_322_form_female",
+    "dexNr": 322,
+    "name": "Numel (Female)",
+    "names": {
+      "English": "Numel (Female)",
+      "German": "Camaub (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Fire",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/322.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/322.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/322.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/322.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/322.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_323_form_female",
+    "dexNr": 323,
+    "name": "Camerupt (Female)",
+    "names": {
+      "English": "Camerupt (Female)",
+      "German": "Camerupt (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Fire",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/323.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/323.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/323.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/323.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/323.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_332_form_female",
+    "dexNr": 332,
+    "name": "Cacturne (Female)",
+    "names": {
+      "English": "Cacturne (Female)",
+      "German": "Noktuska (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Grass",
+    "type2": "Dark",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/332.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/332.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/332.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/332.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/332.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_350_form_female",
+    "dexNr": 350,
+    "name": "Milotic (Female)",
+    "names": {
+      "English": "Milotic (Female)",
+      "German": "Milotic (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/350.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/350.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/350.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/350.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/350.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_351_special_rainy",
     "dexNr": 351,
     "name": "Castform (Rainy Form)",
@@ -34030,6 +35670,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34055,6 +35696,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34080,6 +35722,33 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_369_form_female",
+    "dexNr": 369,
+    "name": "Relicanth (Female)",
+    "names": {
+      "English": "Relicanth (Female)",
+      "German": "Relicanth (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 3,
+    "type1": "Water",
+    "type2": "Rock",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/369.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/369.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/369.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/369.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/369.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -34105,6 +35774,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34130,6 +35800,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34155,6 +35826,293 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_396_form_female",
+    "dexNr": 396,
+    "name": "Starly (Female)",
+    "names": {
+      "English": "Starly (Female)",
+      "German": "Staralili (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Normal",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/396.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/396.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/396.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/396.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/396.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_397_form_female",
+    "dexNr": 397,
+    "name": "Staravia (Female)",
+    "names": {
+      "English": "Staravia (Female)",
+      "German": "Staravia (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Normal",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/397.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/397.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/397.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/397.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/397.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_398_form_female",
+    "dexNr": 398,
+    "name": "Staraptor (Female)",
+    "names": {
+      "English": "Staraptor (Female)",
+      "German": "Staraptor (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Normal",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/398.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/398.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/398.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/398.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/398.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_399_form_female",
+    "dexNr": 399,
+    "name": "Bidoof (Female)",
+    "names": {
+      "English": "Bidoof (Female)",
+      "German": "Bidiza (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/399.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/399.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/399.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/399.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/399.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_400_form_female",
+    "dexNr": 400,
+    "name": "Bibarel (Female)",
+    "names": {
+      "English": "Bibarel (Female)",
+      "German": "Bidifas (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Normal",
+    "type2": "Water",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/400.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/400.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/400.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/400.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/400.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_401_form_female",
+    "dexNr": 401,
+    "name": "Kricketot (Female)",
+    "names": {
+      "English": "Kricketot (Female)",
+      "German": "Zirpurze (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Bug",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/401.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/401.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/401.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/401.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/401.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_402_form_female",
+    "dexNr": 402,
+    "name": "Kricketune (Female)",
+    "names": {
+      "English": "Kricketune (Female)",
+      "German": "Zirpeise (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Bug",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/402.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/402.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/402.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/402.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/402.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_403_form_female",
+    "dexNr": 403,
+    "name": "Shinx (Female)",
+    "names": {
+      "English": "Shinx (Female)",
+      "German": "Sheinux (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/403.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/403.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/403.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/403.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/403.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_404_form_female",
+    "dexNr": 404,
+    "name": "Luxio (Female)",
+    "names": {
+      "English": "Luxio (Female)",
+      "German": "Luxio (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/404.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/404.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/404.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/404.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/404.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_405_form_female",
+    "dexNr": 405,
+    "name": "Luxray (Female)",
+    "names": {
+      "English": "Luxray (Female)",
+      "German": "Luxtra (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/405.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/405.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/405.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/405.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/405.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_407_form_female",
+    "dexNr": 407,
+    "name": "Roserade (Female)",
+    "names": {
+      "English": "Roserade (Female)",
+      "German": "Roserade (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Grass",
+    "type2": "Poison",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/407.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/407.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/407.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/407.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/407.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -34180,6 +36138,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34205,6 +36164,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34230,6 +36190,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34255,6 +36216,111 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_415_form_female",
+    "dexNr": 415,
+    "name": "Combee (Female)",
+    "names": {
+      "English": "Combee (Female)",
+      "German": "Wadribie (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Bug",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/415.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/415.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/415.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/415.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/415.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_417_form_female",
+    "dexNr": 417,
+    "name": "Pachirisu (Female)",
+    "names": {
+      "English": "Pachirisu (Female)",
+      "German": "Pachirisu (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/417.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/417.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/417.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/417.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/417.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_418_form_female",
+    "dexNr": 418,
+    "name": "Buizel (Female)",
+    "names": {
+      "English": "Buizel (Female)",
+      "German": "Bamelin (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/418.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/418.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/418.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/418.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/418.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_419_form_female",
+    "dexNr": 419,
+    "name": "Floatzel (Female)",
+    "names": {
+      "English": "Floatzel (Female)",
+      "German": "Bojelin (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/419.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/419.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/419.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/419.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/419.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -34280,6 +36346,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34305,6 +36372,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34330,6 +36398,423 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_424_form_female",
+    "dexNr": 424,
+    "name": "Ambipom (Female)",
+    "names": {
+      "English": "Ambipom (Female)",
+      "German": "Ambidiffel (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Normal",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/424.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/424.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/424.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/424.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/424.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_443_form_female",
+    "dexNr": 443,
+    "name": "Gible (Female)",
+    "names": {
+      "English": "Gible (Female)",
+      "German": "Kaumalat (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Dragon",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/443.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/443.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/443.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/443.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/443.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_444_form_female",
+    "dexNr": 444,
+    "name": "Gabite (Female)",
+    "names": {
+      "English": "Gabite (Female)",
+      "German": "Knarksel (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Dragon",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/444.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/444.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/444.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/444.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/444.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_445_form_female",
+    "dexNr": 445,
+    "name": "Garchomp (Female)",
+    "names": {
+      "English": "Garchomp (Female)",
+      "German": "Knakrack (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Dragon",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/445.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/445.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/445.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/445.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/445.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_449_form_female",
+    "dexNr": 449,
+    "name": "Hippopotas (Female)",
+    "names": {
+      "English": "Hippopotas (Female)",
+      "German": "Hippopotas (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Ground",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/449.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/449.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/449.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/449.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/449.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_450_form_female",
+    "dexNr": 450,
+    "name": "Hippowdon (Female)",
+    "names": {
+      "English": "Hippowdon (Female)",
+      "German": "Hippoterus (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Ground",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/450.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/450.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/450.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/450.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/450.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_453_form_female",
+    "dexNr": 453,
+    "name": "Croagunk (Female)",
+    "names": {
+      "English": "Croagunk (Female)",
+      "German": "Glibunkel (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Poison",
+    "type2": "Fighting",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/453.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/453.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/453.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/453.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/453.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_454_form_female",
+    "dexNr": 454,
+    "name": "Toxicroak (Female)",
+    "names": {
+      "English": "Toxicroak (Female)",
+      "German": "Toxiquak (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Poison",
+    "type2": "Fighting",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/454.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/454.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/454.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/454.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/454.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_456_form_female",
+    "dexNr": 456,
+    "name": "Finneon (Female)",
+    "names": {
+      "English": "Finneon (Female)",
+      "German": "Finneon (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/456.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/456.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/456.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/456.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/456.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_457_form_female",
+    "dexNr": 457,
+    "name": "Lumineon (Female)",
+    "names": {
+      "English": "Lumineon (Female)",
+      "German": "Lumineon (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Water",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/457.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/457.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/457.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/457.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/457.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_459_form_female",
+    "dexNr": 459,
+    "name": "Snover (Female)",
+    "names": {
+      "English": "Snover (Female)",
+      "German": "Shnebedeck (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Grass",
+    "type2": "Ice",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/459.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/459.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/459.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/459.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/459.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_460_form_female",
+    "dexNr": 460,
+    "name": "Abomasnow (Female)",
+    "names": {
+      "English": "Abomasnow (Female)",
+      "German": "Rexblisar (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Grass",
+    "type2": "Ice",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/460.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/460.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/460.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/460.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/460.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_461_form_female",
+    "dexNr": 461,
+    "name": "Weavile (Female)",
+    "names": {
+      "English": "Weavile (Female)",
+      "German": "Snibunna (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Dark",
+    "type2": "Ice",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/461.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/461.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/461.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/461.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/461.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_464_form_female",
+    "dexNr": 464,
+    "name": "Rhyperior (Female)",
+    "names": {
+      "English": "Rhyperior (Female)",
+      "German": "Rihornior (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Ground",
+    "type2": "Rock",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/464.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/464.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/464.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/464.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/464.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_465_form_female",
+    "dexNr": 465,
+    "name": "Tangrowth (Female)",
+    "names": {
+      "English": "Tangrowth (Female)",
+      "German": "Tangoloss (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Grass",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/465.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/465.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/465.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/465.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/465.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_473_form_female",
+    "dexNr": 473,
+    "name": "Mamoswine (Female)",
+    "names": {
+      "English": "Mamoswine (Female)",
+      "German": "Mamutel (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 4,
+    "type1": "Ice",
+    "type2": "Ground",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/473.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/473.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/473.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/473.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/473.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -34355,6 +36840,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34380,6 +36866,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34405,6 +36892,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34430,6 +36918,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34455,6 +36944,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34480,6 +36970,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34505,6 +36996,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34530,6 +37022,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34555,6 +37048,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34580,6 +37074,32 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_521_form_female",
+    "dexNr": 521,
+    "name": "Unfezant (Female)",
+    "names": {
+      "English": "Unfezant (Female)",
+      "German": "Fasasnob (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 5,
+    "type1": "Normal",
+    "type2": "Flying",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/521.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/521.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/521.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/521.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/521.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -34630,6 +37150,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34655,6 +37176,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34830,6 +37352,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34855,6 +37378,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34880,6 +37404,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34905,6 +37430,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34930,6 +37456,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -34955,6 +37482,59 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_592_form_female",
+    "dexNr": 592,
+    "name": "Frillish (Female)",
+    "names": {
+      "English": "Frillish (Female)",
+      "German": "Quabbel (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 5,
+    "type1": "Water",
+    "type2": "Ghost",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/592.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/592.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/592.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/592.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/592.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_593_form_female",
+    "dexNr": 593,
+    "name": "Jellicent (Female)",
+    "names": {
+      "English": "Jellicent (Female)",
+      "German": "Apoquallyp (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 5,
+    "type1": "Water",
+    "type2": "Ghost",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/593.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/593.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/593.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/593.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/593.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -35030,6 +37610,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35055,6 +37636,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35080,6 +37662,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35105,6 +37688,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35130,6 +37714,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35155,6 +37740,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35180,6 +37766,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35205,6 +37792,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35230,6 +37818,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35713,6 +38302,32 @@
     "releasedInGo": true
   },
   {
+    "id": "poke_668_form_female",
+    "dexNr": 668,
+    "name": "Pyroar (Female)",
+    "names": {
+      "English": "Pyroar (Female)",
+      "German": "Pyroleo (Weiblich)"
+    },
+    "formId": "FEMALE",
+    "formName": "Female",
+    "category": "form",
+    "generation": 6,
+    "type1": "Fire",
+    "type2": "Normal",
+    "spriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/668.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/668.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/668.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/668.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/668.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": true,
+    "isCostume": false,
+    "isGenderDifference": true,
+    "releasedInGo": true
+  },
+  {
     "id": "poke_669_special_blue",
     "dexNr": 669,
     "name": "Flabébé (Blue Flower)",
@@ -35735,6 +38350,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35760,6 +38376,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35785,6 +38402,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35810,6 +38428,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35835,6 +38454,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35860,6 +38480,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35885,6 +38506,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35910,6 +38532,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35935,6 +38558,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35960,6 +38584,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -35985,6 +38610,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36010,6 +38636,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36035,6 +38662,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36060,6 +38688,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36085,6 +38714,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36110,6 +38740,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36135,6 +38766,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36160,6 +38792,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36185,6 +38818,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36210,6 +38844,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36235,6 +38870,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36260,6 +38896,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -36285,6 +38922,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36310,6 +38948,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36335,6 +38974,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36360,6 +39000,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36385,6 +39026,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36410,6 +39052,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36460,6 +39103,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36485,6 +39129,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36510,6 +39155,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36560,6 +39206,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36585,6 +39232,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36610,6 +39258,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36635,6 +39284,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36660,6 +39310,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36685,6 +39336,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36710,6 +39362,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36735,6 +39388,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36760,6 +39414,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -36785,6 +39440,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36810,6 +39466,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36835,6 +39492,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36860,6 +39518,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36885,6 +39544,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": true,
     "releasedInGo": true
   },
   {
@@ -36910,6 +39570,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -36935,6 +39596,7 @@
     "isMega": false,
     "isForm": true,
     "isCostume": false,
+    "isGenderDifference": false,
     "releasedInGo": true
   },
   {
@@ -37754,30 +40416,6 @@
     "releasedInGo": true
   },
   {
-    "id": "poke_25_costume_anniversary_2022_noevolve",
-    "dexNr": 25,
-    "name": "Pikachu (Anniversary 2022)",
-    "names": {
-      "English": "Pikachu (Anniversary 2022)"
-    },
-    "formId": "ANNIVERSARY_2022_NOEVOLVE",
-    "formName": "Anniversary 2022",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Electric",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cANNIVERSARY_2022_NOEVOLVE.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cANNIVERSARY_2022_NOEVOLVE.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
     "id": "poke_25_costume_anniversary",
     "dexNr": 25,
     "name": "Pikachu (Anniversary)",
@@ -37792,6 +40430,30 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cANNIVERSARY.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cANNIVERSARY.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_anniversary_2022_noevolve",
+    "dexNr": 25,
+    "name": "Pikachu (Anniversary 2022)",
+    "names": {
+      "English": "Pikachu (Anniversary 2022)"
+    },
+    "formId": "ANNIVERSARY_2022_NOEVOLVE",
+    "formName": "Anniversary 2022",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cANNIVERSARY_2022_NOEVOLVE.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.cANNIVERSARY_2022_NOEVOLVE.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -38378,30 +41040,6 @@
     "releasedInGo": true
   },
   {
-    "id": "poke_25_costume_gotour_2024_a_02",
-    "dexNr": 25,
-    "name": "Pikachu (Gotour 2024 A 02)",
-    "names": {
-      "English": "Pikachu (Gotour 2024 A 02)"
-    },
-    "formId": "GOTOUR_2024_A_02",
-    "formName": "Gotour 2024 A 02",
-    "category": "costume",
-    "generation": 1,
-    "type1": "Electric",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2024_A_02.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2024_A_02.s.icon.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": false,
-    "isCostume": true,
-    "releasedInGo": true
-  },
-  {
     "id": "poke_25_costume_gotour_2024_a",
     "dexNr": 25,
     "name": "Pikachu (Gotour 2024 A)",
@@ -38426,20 +41064,20 @@
     "releasedInGo": true
   },
   {
-    "id": "poke_25_costume_gotour_2024_b_02",
+    "id": "poke_25_costume_gotour_2024_a_02",
     "dexNr": 25,
-    "name": "Pikachu (Gotour 2024 B 02)",
+    "name": "Pikachu (Gotour 2024 A 02)",
     "names": {
-      "English": "Pikachu (Gotour 2024 B 02)"
+      "English": "Pikachu (Gotour 2024 A 02)"
     },
-    "formId": "GOTOUR_2024_B_02",
-    "formName": "Gotour 2024 B 02",
+    "formId": "GOTOUR_2024_A_02",
+    "formName": "Gotour 2024 A 02",
     "category": "costume",
     "generation": 1,
     "type1": "Electric",
     "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2024_B_02.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2024_B_02.s.icon.png",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2024_A_02.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2024_A_02.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -38474,20 +41112,20 @@
     "releasedInGo": true
   },
   {
-    "id": "poke_25_costume_gotour_2025_a_02",
+    "id": "poke_25_costume_gotour_2024_b_02",
     "dexNr": 25,
-    "name": "Pikachu (Gotour 2025 A 02)",
+    "name": "Pikachu (Gotour 2024 B 02)",
     "names": {
-      "English": "Pikachu (Gotour 2025 A 02)"
+      "English": "Pikachu (Gotour 2024 B 02)"
     },
-    "formId": "GOTOUR_2025_A_02",
-    "formName": "Gotour 2025 A 02",
+    "formId": "GOTOUR_2024_B_02",
+    "formName": "Gotour 2024 B 02",
     "category": "costume",
     "generation": 1,
     "type1": "Electric",
     "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_A_02.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_A_02.s.icon.png",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2024_B_02.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2024_B_02.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -38522,20 +41160,20 @@
     "releasedInGo": true
   },
   {
-    "id": "poke_25_costume_gotour_2025_b_02",
+    "id": "poke_25_costume_gotour_2025_a_02",
     "dexNr": 25,
-    "name": "Pikachu (Gotour 2025 B 02)",
+    "name": "Pikachu (Gotour 2025 A 02)",
     "names": {
-      "English": "Pikachu (Gotour 2025 B 02)"
+      "English": "Pikachu (Gotour 2025 A 02)"
     },
-    "formId": "GOTOUR_2025_B_02",
-    "formName": "Gotour 2025 B 02",
+    "formId": "GOTOUR_2025_A_02",
+    "formName": "Gotour 2025 A 02",
     "category": "costume",
     "generation": 1,
     "type1": "Electric",
     "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_B_02.icon.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_B_02.s.icon.png",
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_A_02.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_A_02.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
@@ -38560,6 +41198,30 @@
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_B.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_B.s.icon.png",
+    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
+    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
+    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+    "hasShiny": true,
+    "isMega": false,
+    "isForm": false,
+    "isCostume": true,
+    "releasedInGo": true
+  },
+  {
+    "id": "poke_25_costume_gotour_2025_b_02",
+    "dexNr": 25,
+    "name": "Pikachu (Gotour 2025 B 02)",
+    "names": {
+      "English": "Pikachu (Gotour 2025 B 02)"
+    },
+    "formId": "GOTOUR_2025_B_02",
+    "formName": "Gotour 2025 B 02",
+    "category": "costume",
+    "generation": 1,
+    "type1": "Electric",
+    "type2": null,
+    "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_B_02.icon.png",
+    "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.fGOTOUR_2025_B_02.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/25.png",
     "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/25.png",
     "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",

@@ -827,6 +827,7 @@ async function main() {
     germanName: 'Psiaugon (Weiblich)',
     type1: 'Psychic',
     type2: null,
+    isGenderDifference: true,
     spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10025.png',
     shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10025.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10025.png',
@@ -843,6 +844,7 @@ async function main() {
     germanName: 'Servol (Weiblich)',
     type1: 'Psychic',
     type2: 'Normal',
+    isGenderDifference: true,
     spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10186.png',
     shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10186.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10186.png',
@@ -859,6 +861,7 @@ async function main() {
     germanName: 'Fragrunz (Weiblich)',
     type1: 'Normal',
     type2: null,
+    isGenderDifference: true,
     spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10254.png',
     shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10254.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10254.png',
@@ -1002,10 +1005,60 @@ async function main() {
         isMega: false,
         isForm: true,
         isCostume: false,
+        isGenderDifference: Boolean(sf.isGenderDifference),
         releasedInGo: true
       });
     }
   });
+
+  // 6b. Sexual Dimorphism / Visual Gender Differences (98 Released Species)
+  const genderDiffsPath = path.join(__dirname, '..', 'data', 'gender-diffs.json');
+  if (fs.existsSync(genderDiffsPath)) {
+    const genderDiffs = JSON.parse(fs.readFileSync(genderDiffsPath, 'utf-8'));
+    const baseMap = new Map();
+    allItems.forEach(p => {
+      if (p.category === 'standard' && !baseMap.has(p.dexNr)) {
+        baseMap.set(p.dexNr, p);
+      }
+    });
+
+    genderDiffs.forEach(gd => {
+      const base = baseMap.get(gd.dexNr);
+      // Skip if not released in GO, or already in specialForms (678 Meowstic, 876 Indeedee, 916 Oinkologne)
+      if (!base || !base.releasedInGo || [678, 876, 916].includes(gd.dexNr)) {
+        return;
+      }
+      const femaleId = `poke_${gd.dexNr}_form_female`;
+      if (!processedIds.has(femaleId)) {
+        processedIds.add(femaleId);
+        const name = `${base.name} (Female)`;
+        const deName = base.names?.German ? `${base.names.German} (Weiblich)` : name;
+        allItems.push({
+          id: femaleId,
+          dexNr: gd.dexNr,
+          name: name,
+          names: { English: name, German: deName },
+          formId: 'FEMALE',
+          formName: 'Female',
+          category: 'form',
+          generation: base.generation,
+          type1: base.type1,
+          type2: base.type2,
+          spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/female/${gd.dexNr}.png`,
+          shinySpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/female/${gd.dexNr}.png`,
+          fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/female/${gd.dexNr}.png`,
+          fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/female/${gd.dexNr}.png`,
+          officialArtworkUrl: base.officialArtworkUrl || `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${gd.dexNr}.png`,
+          hasShiny: base.hasShiny,
+          isMega: false,
+          isForm: true,
+          isCostume: false,
+          isGenderDifference: true,
+          releasedInGo: true
+        });
+      }
+    });
+  }
 
   // 7. Verified Bulbapedia Costume Additions (Costume evolutions, recent event debuts, and special variants missing from base snapshot)
   const bulbapediaCostumes = [
@@ -1200,14 +1253,21 @@ async function main() {
     }
   }
 
-  // Sort: Standard first by dexNr, then Megas, then Forms, then Costumes
+  // Sort: Category order (standard, mega, form, costume), then dexNr, then base form first, then name
   allItems.sort((a, b) => {
     if (a.category !== b.category) {
       const order = { standard: 1, mega: 2, form: 3, costume: 4 };
       return (order[a.category] || 9) - (order[b.category] || 9);
     }
     if (a.dexNr !== b.dexNr) return a.dexNr - b.dexNr;
-    return a.name.localeCompare(b.name);
+    const isBase = p => p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
+    const aBase = isBase(a);
+    const bBase = isBase(b);
+    if (aBase !== bBase) return aBase ? -1 : 1;
+    if (Boolean(a.isGenderDifference) !== Boolean(b.isGenderDifference)) {
+      return a.isGenderDifference ? 1 : -1;
+    }
+    return (a.formName || a.name).localeCompare(b.formName || b.name);
   });
 
   console.log(`Total Pokémon compiled: ${allItems.length}`);

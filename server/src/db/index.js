@@ -40,6 +40,7 @@ db.exec(`
     is_mega INTEGER DEFAULT 0,
     is_form INTEGER DEFAULT 0,
     is_costume INTEGER DEFAULT 0,
+    is_gender_difference INTEGER DEFAULT 0,
     released_in_go INTEGER DEFAULT 1
   );
 
@@ -52,6 +53,11 @@ db.exec(`
 
 try {
   db.exec('ALTER TABLE pokemon ADD COLUMN is_costume INTEGER DEFAULT 0;');
+} catch (e) {
+  // Column already exists
+}
+try {
+  db.exec('ALTER TABLE pokemon ADD COLUMN is_gender_difference INTEGER DEFAULT 0;');
 } catch (e) {
   // Column already exists
 }
