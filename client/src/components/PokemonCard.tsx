@@ -126,6 +126,12 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
               {pokemon.formName}
             </span>
           )}
+          {(mode === 'shadow' || categoryType === 'shadow') && (
+            <span className="text-[10px] font-bold tracking-tight bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-700/80 px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-xs">
+              <Flame className="w-2.5 h-2.5 fill-current text-purple-600 dark:text-purple-400" />
+              Crypto
+            </span>
+          )}
         </div>
 
         {/* Action icons */}

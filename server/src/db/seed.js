@@ -13,27 +13,50 @@ function seedDatabase(force = false) {
 
   const pokemonList = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   const countRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
-  if (!force && countRow && countRow.count === pokemonList.length) {
-    console.log(`Database already up-to-date with ${countRow.count} Pokémon.`);
+  const shadowCountRow = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow = 1').get();
+  const expectedShadowCount = pokemonList.filter(p => p.hasShadow).length;
+  if (!force && countRow && countRow.count === pokemonList.length && shadowCountRow && shadowCountRow.count >= expectedShadowCount) {
+    console.log(`Database already up-to-date with ${countRow.count} Pokémon and ${shadowCountRow.count} Shadow/Crypto records.`);
     return;
   }
 
-  console.log(`Seeding ${pokemonList.length} Pokémon records into SQLite...`);
-  db.exec('DELETE FROM pokemon;');
+  console.log(`Seeding/updating ${pokemonList.length} Pokémon records in SQLite...`);
 
-  const insertStmt = db.prepare(`
+  const upsertStmt = db.prepare(`
     INSERT INTO pokemon (
       id, dex_nr, name, form_id, form_name, category, generation,
       type1, type2, sprite_url, shiny_sprite_url, fallback_sprite_url,
       fallback_shiny_url, official_artwork_url, has_shiny, has_shadow, is_mega, is_form, is_costume, is_gender_difference, released_in_go, names_json
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    ON CONFLICT(id) DO UPDATE SET
+      dex_nr = excluded.dex_nr,
+      name = excluded.name,
+      form_id = excluded.form_id,
+      form_name = excluded.form_name,
+      category = excluded.category,
+      generation = excluded.generation,
+      type1 = excluded.type1,
+      type2 = excluded.type2,
+      sprite_url = excluded.sprite_url,
+      shiny_sprite_url = excluded.shiny_sprite_url,
+      fallback_sprite_url = excluded.fallback_sprite_url,
+      fallback_shiny_url = excluded.fallback_shiny_url,
+      official_artwork_url = excluded.official_artwork_url,
+      has_shiny = excluded.has_shiny,
+      has_shadow = excluded.has_shadow,
+      is_mega = excluded.is_mega,
+      is_form = excluded.is_form,
+      is_costume = excluded.is_costume,
+      is_gender_difference = excluded.is_gender_difference,
+      released_in_go = excluded.released_in_go,
+      names_json = excluded.names_json
   `);
 
   db.exec('BEGIN TRANSACTION;');
   try {
     const toSql = (val) => (val === undefined || val === null ? null : val);
     for (const p of pokemonList) {
-      insertStmt.run(
+      upsertStmt.run(
         toSql(p.id),
         toSql(p.dexNr),
         toSql(p.name),
@@ -59,7 +82,7 @@ function seedDatabase(force = false) {
       );
     }
     db.exec('COMMIT;');
-    console.log(`Seeding completed successfully: ${pokemonList.length} records inserted.`);
+    console.log(`Seeding/updating completed successfully: ${pokemonList.length} records processed.`);
   } catch (err) {
     db.exec('ROLLBACK;');
     console.error('Failed to seed database:', err);

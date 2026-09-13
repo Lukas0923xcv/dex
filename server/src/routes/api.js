@@ -356,12 +356,12 @@ router.get('/collections', (req, res) => {
 
       // If collection has no explicit items (e.g. preset/rule-based), calculate dynamic pool count
       if (total === 0) {
-        let condition = '1=1';
+        const isShadowColl = c.categoryType === 'shadow' || c.categoryType === 'purified' || (c.name && (c.name.toLowerCase().includes('crypto') || c.name.toLowerCase().includes('shadow') || c.name.toLowerCase().includes('schatten')));
         if (c.categoryType === 'mega') {
           condition = "(p.category = 'mega' OR p.is_mega = 1)";
         } else if (c.categoryType === 'event') {
           condition = "(p.category = 'costume' OR p.is_costume = 1)";
-        } else if (c.categoryType === 'shadow' || c.categoryType === 'purified') {
+        } else if (isShadowColl) {
           condition = "p.has_shadow = 1";
         } else if (c.variantMode === 'single') {
           condition = "p.category = 'standard'";
@@ -375,7 +375,7 @@ router.get('/collections', (req, res) => {
 
         let caughtCol = 'up.caught';
         if (c.categoryType === 'lucky') caughtCol = 'up.lucky_caught';
-        else if (c.categoryType === 'shadow') caughtCol = 'up.shadow_caught';
+        else if (isShadowColl) caughtCol = 'up.shadow_caught';
         else if (c.categoryType === 'purified') caughtCol = 'up.purified_caught';
         else if (c.trackShiny) caughtCol = 'up.shiny_caught';
 

@@ -22,6 +22,7 @@ class StorageAdapter {
   private backendUrl = '';
   private isInitialized = false;
   private collectionItemsCache: Map<string, Set<string>> = new Map();
+  private collectionsCache: CustomCollection[] = [];
 
   constructor() {
     this.detectEnvironment();
@@ -101,7 +102,16 @@ class StorageAdapter {
       try {
         const res = await fetch(`${this.backendUrl}/api/pokemon?limit=2500`);
         if (res.ok) {
-          return await res.json();
+          const backendList: Pokemon[] = await res.json();
+          const localMap = new Map((localPokemonData as Pokemon[]).map(p => [p.id, p]));
+          return backendList.map(p => {
+            const local = localMap.get(p.id);
+            return {
+              ...p,
+              hasShadow: Boolean(p.hasShadow || local?.hasShadow),
+              hasShiny: p.hasShiny !== undefined ? Boolean(p.hasShiny) : Boolean(local?.hasShiny)
+            };
+          });
         }
       } catch (err) {
         console.warn('Backend fetch failed, falling back to local dataset:', err);
@@ -233,7 +243,23 @@ class StorageAdapter {
               this.collectionItemsCache.set(cId, new Set(pIds));
             }
           }
-          return collections;
+          const baseList = localPokemonData as Pokemon[];
+          const shadowCount = baseList.filter(p => Boolean(p.hasShadow)).length;
+          const healed = collections.map(c => {
+            const isShadowColl = c.categoryType === 'shadow' || c.categoryType === 'purified' || (c.name && (c.name.toLowerCase().includes('crypto') || c.name.toLowerCase().includes('shadow') || c.name.toLowerCase().includes('schatten')));
+            if (isShadowColl && c.categoryType !== 'shadow') {
+              c.categoryType = 'shadow';
+            }
+            if (isShadowColl && (c.totalItems === 0 || !c.totalItems)) {
+              return {
+                ...c,
+                totalItems: shadowCount
+              };
+            }
+            return c;
+          });
+          this.collectionsCache = healed;
+          return healed;
         }
       } catch (err) {
         console.warn('Backend getCollections failed, falling back to local:', err);
@@ -246,7 +272,7 @@ class StorageAdapter {
     const progress = this.getLocalProgress();
     const baseList = localPokemonData as Pokemon[];
 
-    return collections.map(c => {
+    const localResult = collections.map(c => {
       const isShadowColl = c.categoryType === 'shadow' || c.categoryType === 'purified' || c.name.toLowerCase().includes('crypto') || c.name.toLowerCase().includes('shadow') || c.name.toLowerCase().includes('schatten');
       if (isShadowColl && c.categoryType !== 'shadow') {
         c.categoryType = 'shadow';
@@ -325,6 +351,8 @@ class StorageAdapter {
         caughtItems: caughtCount
       };
     });
+    this.collectionsCache = localResult;
+    return localResult;
   }
 
   public async createCollection(
@@ -531,9 +559,9 @@ class StorageAdapter {
     }
 
     // Auto-populate / repair if this is a shadow collection
-    const collections = this.getLocalCollections();
-    const coll = collections.find(c => c.id === collectionId);
-    if (coll && (coll.categoryType === 'shadow' || coll.categoryType === 'purified' || coll.name.toLowerCase().includes('crypto') || coll.name.toLowerCase().includes('shadow') || coll.name.toLowerCase().includes('schatten'))) {
+    const allColls = this.collectionsCache.length > 0 ? this.collectionsCache : this.getLocalCollections();
+    const coll = allColls.find(c => c.id === collectionId);
+    if (coll && (coll.categoryType === 'shadow' || coll.categoryType === 'purified' || (coll.name && (coll.name.toLowerCase().includes('crypto') || coll.name.toLowerCase().includes('shadow') || coll.name.toLowerCase().includes('schatten'))))) {
       const baseList = localPokemonData as Pokemon[];
       const shadowIds = new Set(baseList.filter(p => Boolean(p.hasShadow)).map(p => p.id));
       this.collectionItemsCache.set(collectionId, shadowIds);
