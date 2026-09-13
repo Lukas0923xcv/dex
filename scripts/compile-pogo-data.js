@@ -148,7 +148,63 @@ async function main() {
         name: baseName,
         names: entry.names || { English: baseName },
         formId: 'NORMAL',
-        formName: 'Standard',
+        formName: ({
+          201: 'A',
+          327: 'Pattern 1',
+          351: 'Normal Form',
+          386: 'Normal Forme',
+          412: 'Plant Cloak',
+          413: 'Plant Cloak',
+          421: 'Overcast Form',
+          422: 'West Sea',
+          423: 'West Sea',
+          479: 'Normal Form',
+          483: 'Standard Forme',
+          484: 'Standard Forme',
+          487: 'Altered Forme',
+          492: 'Land Forme',
+          550: 'Red-Striped',
+          555: 'Standard Mode',
+          585: 'Spring Form',
+          586: 'Spring Form',
+          641: 'Incarnate Forme',
+          642: 'Incarnate Forme',
+          645: 'Incarnate Forme',
+          646: 'Standard Forme',
+          647: 'Ordinary Form',
+          648: 'Aria Forme',
+          649: 'Normal Drive',
+          666: 'Meadow Pattern',
+          669: 'Red Flower',
+          670: 'Red Flower',
+          671: 'Red Flower',
+          676: 'Natural Form',
+          678: 'Male',
+          710: 'Average Size',
+          711: 'Average Size',
+          718: '50% Forme',
+          720: 'Confined',
+          741: 'Baile Style',
+          745: 'Midday Form',
+          800: 'Standard Forme',
+          849: 'Amped Form',
+          854: 'Phony Form',
+          855: 'Phony Form',
+          876: 'Male',
+          877: 'Full Belly Mode',
+          888: 'Hero of Many Battles',
+          889: 'Hero of Many Battles',
+          892: 'Single Strike Style',
+          905: 'Incarnate Forme',
+          916: 'Male',
+          925: 'Family of Four',
+          931: 'Green Plumage',
+          978: 'Curly Form',
+          982: 'Two-Segment Form',
+          999: 'Roaming Form',
+          1012: 'Counterfeit Form',
+          1013: 'Unremarkable Form'
+        })[dexNr] || 'Standard',
         category: 'standard',
         generation: gen,
         type1: type1 || 'Normal',
@@ -307,7 +363,7 @@ async function main() {
     // 4. Vivillon Patterns from assetForms (dexNr === 666)
     if (dexNr === 666 && entry.assetForms) {
       entry.assetForms.forEach(af => {
-        if (af.form && af.form !== 'NORMAL') {
+        if (af.form && af.form !== 'NORMAL' && af.form !== 'MEADOW') {
           const vPattern = af.form;
           const vId = `poke_666_form_vivillon_${vPattern.toLowerCase()}`;
           if (!processedIds.has(vId)) {
@@ -901,10 +957,9 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10259.png'
   });
 
-  // Pumpkaboo & Gourgeist Size Variants (Small, Average, Large, Super)
+  // Pumpkaboo & Gourgeist Size Variants (Small, Large, Super)
   const pumpkinSizes = [
     { id: 'SMALL', label: 'Small Size', de: 'Kleine Größe' },
-    { id: 'AVERAGE', label: 'Average Size', de: 'Normalgröße' },
     { id: 'LARGE', label: 'Large Size', de: 'Große Größe' },
     { id: 'SUPER', label: 'Super Size', de: 'XL-Größe' }
   ];
@@ -960,11 +1015,11 @@ async function main() {
     });
   });
 
-  // Unown Forms (A-Z, !, ?) with 100% working PokeMiners icons + PokeAPI Home 3D fallbacks
-  const unownLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').concat(['EXCLAMATION_POINT', 'QUESTION_MARK']);
-  unownLetters.forEach((letter, idx) => {
+  // Unown Forms (B-Z, !, ? - A is base form) with 100% working PokeMiners icons + PokeAPI Home 3D fallbacks
+  const unownLetters = 'BCDEFGHIJKLMNOPQRSTUVWXYZ'.split('').concat(['EXCLAMATION_POINT', 'QUESTION_MARK']);
+  unownLetters.forEach((letter) => {
     const charLabel = letter === 'EXCLAMATION_POINT' ? '!' : letter === 'QUESTION_MARK' ? '?' : letter;
-    const pogoNum = 11 + idx; // 11 is A, 36 is Z, 37 is !, 38 is ?
+    const pogoNum = letter === 'EXCLAMATION_POINT' ? 37 : letter === 'QUESTION_MARK' ? 38 : (11 + (letter.charCodeAt(0) - 65));
     const homeSlug = letter === 'EXCLAMATION_POINT' ? 'exclamation' : letter === 'QUESTION_MARK' ? 'question' : letter.toLowerCase();
     specialForms.push({
       dexNr: 201,
@@ -983,15 +1038,7 @@ async function main() {
     });
   });
 
-  // Sinistea & Polteageist (Phony & Antique)
-  specialForms.push({
-    dexNr: 854, base: 'Sinistea', formId: 'PHONY', label: 'Phony Form', type1: 'Ghost', type2: null,
-    displayName: 'Sinistea (Phony Form)', germanName: 'Sinistea (Fälschungsform)',
-    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm854.fPHONY.icon.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm854.fPHONY.s.icon.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/854.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/854.png'
-  });
+  // Sinistea & Polteageist (Antique Form - Phony is base)
   specialForms.push({
     dexNr: 854, base: 'Sinistea', formId: 'ANTIQUE', label: 'Antique Form', type1: 'Ghost', type2: null,
     displayName: 'Sinistea (Antique Form)', germanName: 'Sinistea (Originalform)',
@@ -999,14 +1046,6 @@ async function main() {
     shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm854.fANTIQUE.s.icon.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10185.png',
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10185.png'
-  });
-  specialForms.push({
-    dexNr: 855, base: 'Polteageist', formId: 'PHONY', label: 'Phony Form', type1: 'Ghost', type2: null,
-    displayName: 'Polteageist (Phony Form)', germanName: 'Polteageist (Fälschungsform)',
-    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm855.fPHONY.icon.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm855.fPHONY.s.icon.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/855.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/855.png'
   });
   specialForms.push({
     dexNr: 855, base: 'Polteageist', formId: 'ANTIQUE', label: 'Antique Form', type1: 'Ghost', type2: null,
@@ -1017,15 +1056,7 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10186.png'
   });
 
-  // Poltchageist & Sinistcha
-  specialForms.push({
-    dexNr: 1012, base: 'Poltchageist', formId: 'COUNTERFEIT', label: 'Counterfeit Form', type1: 'Grass', type2: 'Ghost',
-    displayName: 'Poltchageist (Counterfeit Form)', germanName: 'Poltchageist (Fälschungsform)',
-    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1012.fCOUNTERFEIT.icon.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1012.fCOUNTERFEIT.s.icon.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1012.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1012.png'
-  });
+  // Poltchageist & Sinistcha (Masterpiece Form - Counterfeit/Unremarkable is base)
   specialForms.push({
     dexNr: 1012, base: 'Poltchageist', formId: 'MASTERPIECE', label: 'Masterpiece Form', type1: 'Grass', type2: 'Ghost',
     displayName: 'Poltchageist (Masterpiece Form)', germanName: 'Poltchageist (Kostbarkeitsform)',
@@ -1033,14 +1064,6 @@ async function main() {
     shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10274.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10274.png',
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10274.png'
-  });
-  specialForms.push({
-    dexNr: 1013, base: 'Sinistcha', formId: 'UNREMARKABLE', label: 'Unremarkable Form', type1: 'Grass', type2: 'Ghost',
-    displayName: 'Sinistcha (Unremarkable Form)', germanName: 'Sinistcha (Fälschungsform)',
-    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1013.fUNREMARKABLE.icon.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1013.fUNREMARKABLE.s.icon.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1013.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1013.png'
   });
   specialForms.push({
     dexNr: 1013, base: 'Sinistcha', formId: 'MASTERPIECE', label: 'Masterpiece Form', type1: 'Grass', type2: 'Ghost',
@@ -1069,8 +1092,8 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10242.png'
   });
 
-  // Spinda Patterns (1-9 & Heart)
-  for (let i = 1; i <= 9; i++) {
+  // Spinda Patterns (2-9 & Heart - Pattern 1 is base)
+  for (let i = 2; i <= 9; i++) {
     const pogoNum = 10 + i;
     const formKey = `PATTERN_${String(i).padStart(2, '0')}`;
     specialForms.push({
@@ -1091,15 +1114,7 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/327.png'
   });
 
-  // Morpeko
-  specialForms.push({
-    dexNr: 877, base: 'Morpeko', formId: 'FULL_BELLY', label: 'Full Belly Mode', type1: 'Electric', type2: 'Dark',
-    displayName: 'Morpeko (Full Belly Mode)', germanName: 'Morpeko (Pappsattmuster)',
-    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm877.icon.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/877.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/877.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/877.png'
-  });
+  // Morpeko (Hangry Mode - Full Belly is base)
   specialForms.push({
     dexNr: 877, base: 'Morpeko', formId: 'HANGRY', label: 'Hangry Mode', type1: 'Electric', type2: 'Dark',
     displayName: 'Morpeko (Hangry Mode)', germanName: 'Morpeko (Kohldampfmuster)',
@@ -1109,15 +1124,7 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10187.png'
   });
 
-  // Dudunsparce
-  specialForms.push({
-    dexNr: 982, base: 'Dudunsparce', formId: 'TWO_SEGMENT', label: 'Two-Segment Form', type1: 'Normal', type2: null,
-    displayName: 'Dudunsparce (Two-Segment Form)', germanName: 'Dummimisel (Zweisegmentform)',
-    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm982.icon.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/982.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/982.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/982.png'
-  });
+  // Dudunsparce (Three-Segment Form - Two-Segment is base)
   specialForms.push({
     dexNr: 982, base: 'Dudunsparce', formId: 'THREE_SEGMENT', label: 'Three-Segment Form', type1: 'Normal', type2: null,
     displayName: 'Dudunsparce (Three-Segment Form)', germanName: 'Dummimisel (Dreisegmentform)',
@@ -1127,15 +1134,7 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10255.png'
   });
 
-  // Maushold
-  specialForms.push({
-    dexNr: 925, base: 'Maushold', formId: 'FAMILY_OF_FOUR', label: 'Family of Four', type1: 'Normal', type2: null,
-    displayName: 'Maushold (Family of Four)', germanName: 'Famieps (Viererfamilie)',
-    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm925.fFAMILY_OF_FOUR.icon.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm925.fFAMILY_OF_FOUR.s.icon.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/925.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/925.png'
-  });
+  // Maushold (Family of Three - Family of Four is base)
   specialForms.push({
     dexNr: 925, base: 'Maushold', formId: 'FAMILY_OF_THREE', label: 'Family of Three', type1: 'Normal', type2: null,
     displayName: 'Maushold (Family of Three)', germanName: 'Famieps (Dreierfamilie)',
@@ -1145,9 +1144,8 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10257.png'
   });
 
-  // Squawkabilly
+  // Squawkabilly (Blue, Yellow, White - Green is base)
   const sqColors = [
-    { fid: 'GREEN_PLUMAGE', label: 'Green Plumage', de: 'Grünes Gefieder', homeId: '931' },
     { fid: 'BLUE_PLUMAGE', label: 'Blue Plumage', de: 'Blaues Gefieder', homeId: '10260' },
     { fid: 'YELLOW_PLUMAGE', label: 'Yellow Plumage', de: 'Gelbes Gefieder', homeId: '10261' },
     { fid: 'WHITE_PLUMAGE', label: 'White Plumage', de: 'Weißes Gefieder', homeId: '10262' }
@@ -1163,15 +1161,7 @@ async function main() {
     });
   });
 
-  // Gimmighoul
-  specialForms.push({
-    dexNr: 999, base: 'Gimmighoul', formId: 'ROAMING', label: 'Roaming Form', type1: 'Ghost', type2: null,
-    displayName: 'Gimmighoul (Roaming Form)', germanName: 'Gierspenst (Wanderform)',
-    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm999.icon.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm999.s.icon.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10263.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10263.png'
-  });
+  // Gimmighoul (Chest Form - Roaming is base)
   specialForms.push({
     dexNr: 999, base: 'Gimmighoul', formId: 'CHEST', label: 'Chest Form', type1: 'Ghost', type2: null,
     displayName: 'Gimmighoul (Chest Form)', germanName: 'Gierspenst (Truhenform)',
@@ -1181,15 +1171,7 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/999.png'
   });
 
-  // Meloetta & Keldeo
-  specialForms.push({
-    dexNr: 648, base: 'Meloetta', formId: 'ARIA', label: 'Aria Forme', type1: 'Normal', type2: 'Psychic',
-    displayName: 'Meloetta (Aria Forme)', germanName: 'Meloetta (Gesangsform)',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/648.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/648.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/648.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/648.png'
-  });
+  // Meloetta (Pirouette Forme - Aria is base)
   specialForms.push({
     dexNr: 648, base: 'Meloetta', formId: 'PIROUETTE', label: 'Pirouette Forme', type1: 'Normal', type2: 'Fighting',
     displayName: 'Meloetta (Pirouette Forme)', germanName: 'Meloetta (Tanzform)',
@@ -1198,14 +1180,8 @@ async function main() {
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10018.png',
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10018.png'
   });
-  specialForms.push({
-    dexNr: 647, base: 'Keldeo', formId: 'ORDINARY', label: 'Ordinary Form', type1: 'Water', type2: 'Fighting',
-    displayName: 'Keldeo (Ordinary Form)', germanName: 'Keldeo (Normalform)',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/647.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/647.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/647.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/647.png'
-  });
+
+  // Keldeo (Resolute Form - Ordinary is base)
   specialForms.push({
     dexNr: 647, base: 'Keldeo', formId: 'RESOLUTE', label: 'Resolute Form', type1: 'Water', type2: 'Fighting',
     displayName: 'Keldeo (Resolute Form)', germanName: 'Keldeo (Resolutform)',
@@ -1215,55 +1191,14 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10024.png'
   });
 
-  // Base / Primary forms of multi-form Pokémon
-  const primaryFormsList = [
-    { dexNr: 351, base: 'Castform', formId: 'NORMAL', label: 'Normal Form', de: 'Normalform', t1: 'Normal', t2: null, homeId: 351, pogoId: 11 },
-    { dexNr: 386, base: 'Deoxys', formId: 'NORMAL', label: 'Normal Forme', de: 'Normalform', t1: 'Psychic', t2: null, homeId: 386, pogoId: 11 },
-    { dexNr: 412, base: 'Burmy', formId: 'PLANT', label: 'Plant Cloak', de: 'Pflanzenumhang', t1: 'Bug', t2: null, homeId: 412, pogoId: 11 },
-    { dexNr: 413, base: 'Wormadam', formId: 'PLANT', label: 'Plant Cloak', de: 'Pflanzenumhang', t1: 'Bug', t2: 'Grass', homeId: 413, pogoId: 11 },
-    { dexNr: 421, base: 'Cherrim', formId: 'OVERCAST', label: 'Overcast Form', de: 'Wolkenform', t1: 'Grass', t2: null, homeId: 421, pogoId: 11 },
-    { dexNr: 422, base: 'Shellos', formId: 'WEST_SEA', label: 'West Sea', de: 'Westliches Meer', t1: 'Water', t2: null, homeId: 422, pogoId: 11 },
-    { dexNr: 423, base: 'Gastrodon', formId: 'WEST_SEA', label: 'West Sea', de: 'Westliches Meer', t1: 'Water', t2: 'Ground', homeId: 423, pogoId: 11 },
-    { dexNr: 479, base: 'Rotom', formId: 'NORMAL', label: 'Normal Form', de: 'Normalform', t1: 'Electric', t2: 'Ghost', homeId: 479 },
-    { dexNr: 487, base: 'Giratina', formId: 'ALTERED', label: 'Altered Forme', de: 'Wandelform', t1: 'Ghost', t2: 'Dragon', homeId: 487, pogoId: 11 },
-    { dexNr: 492, base: 'Shaymin', formId: 'LAND', label: 'Land Forme', de: 'Landform', t1: 'Grass', t2: null, homeId: 492, pogoId: 11 },
-    { dexNr: 550, base: 'Basculin', formId: 'RED_STRIPED', label: 'Red-Striped', de: 'Rotlinig', t1: 'Water', t2: null, homeId: 550, pogoId: 11 },
-    { dexNr: 555, base: 'Darmanitan', formId: 'ZEN', label: 'Zen Mode', de: 'Trance-Modus', t1: 'Fire', t2: 'Psychic', homeId: 10017 },
-    { dexNr: 585, base: 'Deerling', formId: 'SPRING', label: 'Spring Form', de: 'Frühlingsform', t1: 'Normal', t2: 'Grass', homeId: 585, pogoId: 11 },
-    { dexNr: 586, base: 'Sawsbuck', formId: 'SPRING', label: 'Spring Form', de: 'Frühlingsform', t1: 'Normal', t2: 'Grass', homeId: 586, pogoId: 11 },
-    { dexNr: 641, base: 'Tornadus', formId: 'INCARNATE', label: 'Incarnate Forme', de: 'Inkarnationsform', t1: 'Flying', t2: null, homeId: 641 },
-    { dexNr: 642, base: 'Thundurus', formId: 'INCARNATE', label: 'Incarnate Forme', de: 'Inkarnationsform', t1: 'Electric', t2: 'Flying', homeId: 642 },
-    { dexNr: 645, base: 'Landorus', formId: 'INCARNATE', label: 'Incarnate Forme', de: 'Inkarnationsform', t1: 'Ground', t2: 'Flying', homeId: 645 },
-    { dexNr: 905, base: 'Enamorus', formId: 'INCARNATE', label: 'Incarnate Forme', de: 'Inkarnationsform', t1: 'Fairy', t2: 'Flying', homeId: 905 },
-    { dexNr: 669, base: 'Flabébé', formId: 'RED', label: 'Red Flower', de: 'Rotblütler', t1: 'Fairy', t2: null, homeId: 669 },
-    { dexNr: 670, base: 'Floette', formId: 'RED', label: 'Red Flower', de: 'Rotblütler', t1: 'Fairy', t2: null, homeId: 670 },
-    { dexNr: 671, base: 'Florges', formId: 'RED', label: 'Red Flower', de: 'Rotblütler', t1: 'Fairy', t2: null, homeId: 671 },
-    { dexNr: 676, base: 'Furfrou', formId: 'NATURAL', label: 'Natural Form', de: 'Zottelform', t1: 'Normal', t2: null, homeId: 676 },
-    { dexNr: 741, base: 'Oricorio', formId: 'BAILE', label: 'Baile Style', de: 'Flamenco-Stil', t1: 'Fire', t2: 'Flying', homeId: 741 },
-    { dexNr: 745, base: 'Lycanroc', formId: 'MIDDAY', label: 'Midday Form', de: 'Tagform', t1: 'Rock', t2: null, homeId: 745 },
-    { dexNr: 849, base: 'Toxtricity', formId: 'AMPED', label: 'Amped Form', de: 'Hochfrequenz-Form', t1: 'Electric', t2: 'Poison', homeId: 849 },
-    { dexNr: 892, base: 'Urshifu', formId: 'SINGLE_STRIKE', label: 'Single Strike Style', de: 'Fokussierter Stil', t1: 'Fighting', t2: 'Dark', homeId: 892 },
-    { dexNr: 978, base: 'Tatsugiri', formId: 'CURLY', label: 'Curly Form', de: 'Gekrümmte Form', t1: 'Dragon', t2: 'Water', homeId: 978 },
-    { dexNr: 483, base: 'Dialga', formId: 'STANDARD', label: 'Standard Forme', de: 'Standardform', t1: 'Steel', t2: 'Dragon', homeId: 483 },
-    { dexNr: 484, base: 'Palkia', formId: 'STANDARD', label: 'Standard Forme', de: 'Standardform', t1: 'Water', t2: 'Dragon', homeId: 484 },
-    { dexNr: 888, base: 'Zacian', formId: 'HERO', label: 'Hero of Many Battles', de: 'Held des Krieges', t1: 'Fairy', t2: null, homeId: 888 },
-    { dexNr: 889, base: 'Zamazenta', formId: 'HERO', label: 'Hero of Many Battles', de: 'Held des Krieges', t1: 'Fighting', t2: null, homeId: 889 },
-    { dexNr: 718, base: 'Zygarde', formId: '50_PERCENT', label: '50% Forme', de: '50%-Form', t1: 'Dragon', t2: 'Ground', homeId: 718 },
-    { dexNr: 720, base: 'Hoopa', formId: 'CONFINED', label: 'Confined', de: 'Gebannt', t1: 'Psychic', t2: 'Ghost', homeId: 720 },
-    { dexNr: 800, base: 'Necrozma', formId: 'STANDARD', label: 'Standard Forme', de: 'Standardform', t1: 'Psychic', t2: null, homeId: 800 },
-    { dexNr: 646, base: 'Kyurem', formId: 'STANDARD', label: 'Standard Forme', de: 'Standardform', t1: 'Dragon', t2: 'Ice', homeId: 646 },
-    { dexNr: 649, base: 'Genesect', formId: 'NORMAL', label: 'Normal Drive', de: 'Normalmodul', t1: 'Bug', t2: 'Steel', homeId: 649, pogoId: 11 }
-  ];
-  primaryFormsList.forEach(pf => {
-    const sprite = pf.pogoId ? `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_${pf.dexNr}_${pf.pogoId}.png` : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${pf.homeId}.png`;
-    const shiny = pf.pogoId ? `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_${pf.dexNr}_${pf.pogoId}_shiny.png` : `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${pf.homeId}.png`;
-    specialForms.push({
-      dexNr: pf.dexNr, base: pf.base, formId: pf.formId, label: pf.label, type1: pf.t1, type2: pf.t2,
-      displayName: `${pf.base} (${pf.label})`, germanName: `${pf.base} (${pf.de})`,
-      spriteUrl: sprite, shinySpriteUrl: shiny,
-      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pf.homeId}.png`,
-      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${pf.homeId}.png`
-    });
+  // Darmanitan (Zen Mode - Standard Mode is base)
+  specialForms.push({
+    dexNr: 555, base: 'Darmanitan', formId: 'ZEN', label: 'Zen Mode', type1: 'Fire', type2: 'Psychic',
+    displayName: 'Darmanitan (Zen Mode)', germanName: 'Flampivian (Trance-Modus)',
+    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10017.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10017.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10017.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10017.png'
   });
 
   specialForms.forEach(sf => {

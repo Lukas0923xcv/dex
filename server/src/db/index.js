@@ -216,7 +216,26 @@ try {
   if (fs.existsSync(jsonPath)) {
     const pData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
     const countRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
-    if (!countRow || countRow.count < pData.length) {
+    const idSet = new Set(pData.map(p => p.id));
+    const allDbRows = db.prepare('SELECT id FROM pokemon').all();
+    const staleRows = allDbRows.filter(r => !idSet.has(r.id));
+
+    if (staleRows.length > 0) {
+      console.log(`Pruning ${staleRows.length} redundant Pokémon records from SQLite database...`);
+      const deleteStmt = db.prepare('DELETE FROM pokemon WHERE id = ?');
+      const deleteProgStmt = db.prepare('DELETE FROM progress WHERE pokemon_id = ?');
+      const deleteCollStmt = db.prepare('DELETE FROM custom_collection_items WHERE pokemon_id = ?');
+      db.exec('BEGIN TRANSACTION;');
+      for (const r of staleRows) {
+        deleteStmt.run(r.id);
+        deleteProgStmt.run(r.id);
+        deleteCollStmt.run(r.id);
+      }
+      db.exec('COMMIT;');
+      console.log('Successfully pruned redundant Pokémon records from SQLite.');
+    }
+
+    if (!countRow || countRow.count !== pData.length || staleRows.length > 0) {
       console.log(`Auto-healing SQLite pokemon records (current: ${countRow ? countRow.count : 0}, expected: ${pData.length})...`);
       const upsertStmt = db.prepare(`
         INSERT INTO pokemon (
@@ -278,6 +297,16 @@ try {
       db.exec('COMMIT;');
       const updatedRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
       console.log(`Successfully auto-healed SQLite pokemon table. Total records: ${updatedRow?.count}`);
+    } else {
+      // Sync form names on existing records
+      const updateFormNameStmt = db.prepare('UPDATE pokemon SET form_name = ? WHERE id = ? AND (form_name IS NULL OR form_name != ?)');
+      db.exec('BEGIN TRANSACTION;');
+      for (const p of pData) {
+        if (p.formName) {
+          updateFormNameStmt.run(p.formName, p.id, p.formName);
+        }
+      }
+      db.exec('COMMIT;');
     }
   }
 } catch (e) {
