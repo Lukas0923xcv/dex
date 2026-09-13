@@ -209,6 +209,81 @@ try {
 } catch (e) {
   console.warn('Hisui auto-heal note:', e.message);
 }
+
+// Auto-heal missing Pokémon records (forms, new releases, etc.) into SQLite
+try {
+  const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
+  if (fs.existsSync(jsonPath)) {
+    const pData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    const countRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
+    if (!countRow || countRow.count < pData.length) {
+      console.log(`Auto-healing SQLite pokemon records (current: ${countRow ? countRow.count : 0}, expected: ${pData.length})...`);
+      const upsertStmt = db.prepare(`
+        INSERT INTO pokemon (
+          id, dex_nr, name, form_id, form_name, category, generation,
+          type1, type2, sprite_url, shiny_sprite_url, fallback_sprite_url,
+          fallback_shiny_url, official_artwork_url, has_shiny, has_shadow, is_mega, is_form, is_costume, is_gender_difference, released_in_go, names_json
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(id) DO UPDATE SET
+          dex_nr = excluded.dex_nr,
+          name = excluded.name,
+          form_id = excluded.form_id,
+          form_name = excluded.form_name,
+          category = excluded.category,
+          generation = excluded.generation,
+          type1 = excluded.type1,
+          type2 = excluded.type2,
+          sprite_url = excluded.sprite_url,
+          shiny_sprite_url = excluded.shiny_sprite_url,
+          fallback_sprite_url = excluded.fallback_sprite_url,
+          fallback_shiny_url = excluded.fallback_shiny_url,
+          official_artwork_url = excluded.official_artwork_url,
+          has_shiny = excluded.has_shiny,
+          has_shadow = excluded.has_shadow,
+          is_mega = excluded.is_mega,
+          is_form = excluded.is_form,
+          is_costume = excluded.is_costume,
+          is_gender_difference = excluded.is_gender_difference,
+          released_in_go = excluded.released_in_go,
+          names_json = excluded.names_json
+      `);
+      db.exec('BEGIN TRANSACTION;');
+      const toSql = (val) => (val === undefined || val === null ? null : val);
+      for (const p of pData) {
+        upsertStmt.run(
+          toSql(p.id),
+          toSql(p.dexNr),
+          toSql(p.name),
+          toSql(p.formId),
+          toSql(p.formName),
+          toSql(p.category),
+          toSql(p.generation),
+          toSql(p.type1),
+          toSql(p.type2),
+          toSql(p.spriteUrl),
+          toSql(p.shinySpriteUrl),
+          toSql(p.fallbackSpriteUrl),
+          toSql(p.fallbackShinyUrl),
+          toSql(p.officialArtworkUrl),
+          p.hasShiny ? 1 : 0,
+          p.hasShadow ? 1 : 0,
+          p.isMega ? 1 : 0,
+          p.isForm ? 1 : 0,
+          p.isCostume ? 1 : 0,
+          p.isGenderDifference ? 1 : 0,
+          p.releasedInGo ? 1 : 0,
+          p.names ? JSON.stringify(p.names) : null
+        );
+      }
+      db.exec('COMMIT;');
+      const updatedRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
+      console.log(`Successfully auto-healed SQLite pokemon table. Total records: ${updatedRow?.count}`);
+    }
+  }
+} catch (e) {
+  console.warn('Pokemon table auto-heal note:', e.message);
+}
+
 // Initialize default account if none exists
 try {
   db.prepare(`
