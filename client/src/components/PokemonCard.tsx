@@ -122,7 +122,10 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
             {formatDexNumber(pokemon.dexNr)}
           </span>
           {pokemon.formName && pokemon.formName !== 'Standard' && (
-            <span className="text-[10px] font-medium tracking-tight bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[80px]">
+            <span
+              title={pokemon.formName}
+              className="text-[10px] font-medium tracking-tight bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[120px]"
+            >
               {pokemon.formName}
             </span>
           )}
@@ -310,6 +313,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
       {/* Bottom Info: Name and Type Pills */}
       <div className="mt-1 pt-1 border-t border-slate-100 dark:border-slate-800/80">
         <h3
+          title={pokemon.name}
           className={`text-sm font-semibold truncate leading-snug mb-1.5 transition-colors ${
             isCaught
               ? 'text-slate-900 dark:text-white font-bold'
