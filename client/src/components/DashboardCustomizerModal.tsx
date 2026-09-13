@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CustomCollection, DashboardTabConfig } from '../types';
-import { X, CheckCircle2, Sparkles, Zap, Layers, Bookmark, ArrowUp, ArrowDown, RotateCcw, Pin, Eye, EyeOff, Flame } from 'lucide-react';
+import { X, CheckCircle2, Sparkles, Zap, Layers, Bookmark, ArrowUp, ArrowDown, RotateCcw, Pin, Eye, EyeOff, Flame, Trash2 } from 'lucide-react';
 
 interface DashboardCustomizerModalProps {
   isOpen: boolean;
@@ -8,6 +8,8 @@ interface DashboardCustomizerModalProps {
   collections: CustomCollection[];
   currentTabs: DashboardTabConfig[];
   onSaveTabs: (tabs: DashboardTabConfig[]) => void;
+  onDeleteCollection?: (id: string) => Promise<void>;
+  onDeleteAllCollections?: () => Promise<void>;
 }
 
 export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> = ({
@@ -15,7 +17,9 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
   onClose,
   collections,
   currentTabs,
-  onSaveTabs
+  onSaveTabs,
+  onDeleteCollection,
+  onDeleteAllCollections
 }) => {
   const [tabs, setTabs] = useState<DashboardTabConfig[]>(() => {
     const list = currentTabs.filter(t => t.id !== 'custom');
@@ -245,10 +249,32 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
 
           {/* Custom Collections Section */}
           <div className="space-y-2.5">
-            <div className="flex items-center justify-between">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Eigene Sammlungen anheften ({collections.length})
-              </h3>
+            <div className="flex items-center justify-between gap-2 flex-wrap">
+              <div className="flex items-center gap-2">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Eigene Sammlungen anheften ({collections.length})
+                </h3>
+                {onDeleteAllCollections && collections.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (
+                        window.confirm(
+                          `Möchtest du wirklich ALLE ${collections.length} eigenen Sammlungen löschen? Dein Fang-Fortschritt bleibt erhalten.`
+                        )
+                      ) {
+                        await onDeleteAllCollections();
+                        setTabs(prev => prev.filter(t => t.type !== 'custom'));
+                      }
+                    }}
+                    className="text-[11px] text-rose-500 hover:text-rose-600 dark:text-rose-400 font-semibold flex items-center gap-1 hover:underline cursor-pointer ml-1"
+                    title="Alle eigenen Sammlungen löschen"
+                  >
+                    <Trash2 className="w-3 h-3" />
+                    <span>Alle löschen</span>
+                  </button>
+                )}
+              </div>
               <span className="text-[11px] text-slate-400">
                 Erscheinen direkt als Tabs auf deinem Dashboard
               </span>
@@ -256,7 +282,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
 
             {collections.length === 0 ? (
               <div className="p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 text-center text-xs text-slate-400">
-                Noch keine eigenen Sammlungen erstellt. Erstelle zuerst eine unter „Eigene Listen“.
+                Noch keine eigenen Sammlungen erstellt. Klicke auf „+ Neue Liste“ auf deinem Dashboard.
               </div>
             ) : (
               <div className="space-y-2">
@@ -330,6 +356,22 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                             <Pin className="w-3.5 h-3.5" />
                             <span>{tab.visible ? 'Angeheftet' : 'Anheften'}</span>
                           </button>
+
+                          {onDeleteCollection && coll && (
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                if (window.confirm(`Sammlung "${coll.name}" wirklich löschen?`)) {
+                                  await onDeleteCollection(coll.id);
+                                  setTabs(prev => prev.filter(t => t.collectionId !== coll.id));
+                                }
+                              }}
+                              className="p-1.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-400 hover:text-rose-500 transition-colors cursor-pointer"
+                              title={`Sammlung "${coll.name}" löschen`}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          )}
                         </div>
                       </div>
                     );
