@@ -112,7 +112,10 @@ async function main() {
     const dexNr = entry.dexNr;
     const baseName = entry.names?.English || entry.id;
     // Meltan (808) and Melmetal (809) are in the "Unbekannt" / Unknown category in Pokémon GO
-    const gen = (dexNr === 808 || dexNr === 809) ? 0 : (entry.generation || (dexNr <= 151 ? 1 : dexNr <= 251 ? 2 : dexNr <= 386 ? 3 : dexNr <= 493 ? 4 : dexNr <= 649 ? 5 : dexNr <= 721 ? 6 : dexNr <= 807 ? 7 : dexNr <= 905 ? 8 : 9));
+    // Hisui Pokemon (899 to 905) have their own region (Hisui = 85)
+    const gen = (dexNr === 808 || dexNr === 809) ? 0
+      : (dexNr >= 899 && dexNr <= 905) ? 85
+      : (dexNr >= 906 ? 9 : (entry.generation || (dexNr <= 151 ? 1 : dexNr <= 251 ? 2 : dexNr <= 386 ? 3 : dexNr <= 493 ? 4 : dexNr <= 649 ? 5 : dexNr <= 721 ? 6 : dexNr <= 807 ? 7 : 8)));
     const type1 = formatTypeName(entry.primaryType);
     const type2 = formatTypeName(entry.secondaryType);
     const isReleased = !UNRELEASED_DEX_NRS.has(dexNr);
@@ -283,7 +286,7 @@ async function main() {
             formId: formKey,
             formName: regionLabel,
             category: 'form',
-            generation: gen,
+            generation: formKey.includes('HISUI') ? 85 : gen,
             type1: formType1,
             type2: formType2,
             spriteUrl: formSprite,
@@ -993,7 +996,7 @@ async function main() {
         formId: sf.formId,
         formName: sf.label,
         category: 'form',
-        generation: gen,
+        generation: (sf.formId === 'WHITE_STRIPED' || (sf.dexNr >= 899 && sf.dexNr <= 905)) ? 85 : gen,
         type1: sf.type1,
         type2: sf.type2,
         spriteUrl: sf.spriteUrl,

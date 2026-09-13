@@ -21,6 +21,7 @@ const GENERATIONS = [
   { id: 6, label: 'Gen 6 · Kalos' },
   { id: 7, label: 'Gen 7 · Alola' },
   { id: 8, label: 'Gen 8 · Galar' },
+  { id: 85, label: 'Hisui' },
   { id: 9, label: 'Gen 9 · Paldea' },
   { id: 0, label: 'Unbekannt · Meltan' },
 ];
@@ -264,7 +265,11 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               <span>
                 {filters.generation === 'all'
                   ? 'Alle als erledigt'
-                  : `${GENERATIONS.find(g => g.id === filters.generation)?.label?.split('·')[1]?.trim() || 'Region'} erledigt`}
+                  : `${(() => {
+                      const genLabel = GENERATIONS.find(g => g.id === filters.generation)?.label;
+                      if (!genLabel) return 'Region';
+                      return genLabel.includes('·') ? genLabel.split('·')[1].trim() : genLabel;
+                    })()} erledigt`}
               </span>
             </button>
 
