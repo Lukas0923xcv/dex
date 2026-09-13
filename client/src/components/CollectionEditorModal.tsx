@@ -257,6 +257,13 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
             </button>
             <button
               type="button"
+              onClick={() => applyPreset(p => p.generation === 85)}
+              className="px-2.5 py-1 bg-teal-600/15 hover:bg-teal-600/25 border border-teal-600/40 text-teal-800 dark:text-teal-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              🏔️ Hisui (6)
+            </button>
+            <button
+              type="button"
               onClick={() => applyPreset(p => p.generation === 9)}
               className="px-2.5 py-1 bg-purple-600/15 hover:bg-purple-600/25 border border-purple-600/40 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
             >
@@ -397,6 +404,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               <option value={6}>Gen 6 · Kalos</option>
               <option value={7}>Gen 7 · Alola</option>
               <option value={8}>Gen 8 · Galar</option>
+              <option value={85}>Hisui</option>
               <option value={9}>Gen 9 · Paldea</option>
               <option value={0}>Meltan</option>
             </select>

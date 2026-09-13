@@ -159,6 +159,29 @@ try {
   console.warn('Shadow auto-heal note:', e.message);
 }
 
+// Auto-heal Hisui generation in SQLite if any Hisui Pokemon is still gen 9 or other gen
+try {
+  const hisuiGenCheck = db.prepare("SELECT COUNT(*) as count FROM pokemon WHERE id = 'poke_899_base' AND generation = 85").get();
+  if (!hisuiGenCheck || hisuiGenCheck.count === 0) {
+    console.log('Migrating Hisui Pokémon to generation 85 in SQLite database...');
+    const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
+    if (fs.existsSync(jsonPath)) {
+      const pData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      const updateGenStmt = db.prepare('UPDATE pokemon SET generation = ? WHERE id = ?');
+      db.exec('BEGIN TRANSACTION;');
+      for (const p of pData) {
+        if (p.generation === 85) {
+          updateGenStmt.run(85, p.id);
+        }
+      }
+      db.exec('COMMIT;');
+      console.log('Successfully updated Hisui Pokémon to generation 85 in SQLite database.');
+    }
+  }
+} catch (e) {
+  console.warn('Hisui generation auto-heal note:', e.message);
+}
+
 console.log('Database tables verified and WAL mode enabled.');
 
 module.exports = db;

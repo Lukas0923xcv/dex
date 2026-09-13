@@ -107,17 +107,17 @@ export const App: React.FC = () => {
   const getProgressLabel = () => {
     if (mode === 'standard') {
       return filters.generation !== 'all'
-        ? (filters.generation === 0 ? 'Unbekannt · Meltan Completion' : `Gen ${filters.generation} Completion`)
+        ? (filters.generation === 0 ? 'Unbekannt · Meltan Completion' : filters.generation === 85 ? 'Hisui Region Completion' : `Gen ${filters.generation} Completion`)
         : 'Standard Dex Completion';
     }
     if (mode === 'shiny') {
       return filters.generation !== 'all'
-        ? (filters.generation === 0 ? 'Unbekannt · Meltan Shiny Checklist' : `Gen ${filters.generation} Shiny Checklist`)
+        ? (filters.generation === 0 ? 'Unbekannt · Meltan Shiny Checklist' : filters.generation === 85 ? 'Hisui Shiny Checklist' : `Gen ${filters.generation} Shiny Checklist`)
         : 'Shiny Dex Completion';
     }
-    if (mode === 'shadow') return 'Crypto / Shadow Dex Completion';
+    if (mode === 'shadow') return filters.generation === 85 ? 'Hisui Crypto / Shadow Dex' : 'Crypto / Shadow Dex Completion';
     if (mode === 'mega') return 'Mega & Primal Dex';
-    if (mode === 'form') return 'Regional & Alternate Forms Dex';
+    if (mode === 'form') return filters.generation === 85 ? 'Hisui Formen Dex' : 'Regional & Alternate Forms Dex';
     if (mode === 'costume') return 'Event Costumes Dex';
     if (mode === 'custom') return activeCollection ? `${activeCollection.name} Progress` : 'Custom Checklist Progress';
     return 'Dex Progress';
