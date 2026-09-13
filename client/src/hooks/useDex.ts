@@ -159,11 +159,23 @@ export function useDex() {
     setCollections(prev => {
       const remaining = prev.filter(c => c.id !== id);
       if (filters.activeCollectionId === id) {
-        setFilters(f => ({ ...f, activeCollectionId: remaining.length > 0 ? remaining[0].id : null }));
+        if (remaining.length > 0) {
+          setFilters(f => ({ ...f, activeCollectionId: remaining[0].id }));
+        } else {
+          setFilters(f => ({ ...f, activeCollectionId: null }));
+          setMode(m => (m === 'custom' ? 'standard' : m));
+        }
       }
       return remaining;
     });
   }, [filters.activeCollectionId]);
+
+  const deleteAllCollections = useCallback(async () => {
+    await storage.deleteAllCollections();
+    setCollections([]);
+    setFilters(f => ({ ...f, activeCollectionId: null }));
+    setMode(m => (m === 'custom' ? 'standard' : m));
+  }, []);
 
   const toggleCollectionItem = useCallback(async (collectionId: string, pokemonId: string) => {
     const itemIds = storage.getCollectionItemIds(collectionId);
@@ -578,6 +590,7 @@ export function useDex() {
     markRegionCaught,
     createCollection,
     deleteCollection,
+    deleteAllCollections,
     toggleCollectionItem,
     setCollectionItems,
     exportBackup,

@@ -446,6 +446,8 @@ class StorageAdapter {
 
   public async deleteCollection(collectionId: string): Promise<boolean> {
     this.collectionItemsCache.delete(collectionId);
+    this.collectionsCache = this.collectionsCache.filter(c => c.id !== collectionId);
+
     if (this.isConnectedToBackend) {
       try {
         await fetch(`${this.backendUrl}/api/collections/${collectionId}`, { method: 'DELETE' });
@@ -459,6 +461,47 @@ class StorageAdapter {
 
     const items = this.getLocalCollectionItems().filter(i => i.collection_id !== collectionId);
     localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.DASHBOARD_TABS);
+      if (stored) {
+        const tabs: DashboardTabConfig[] = JSON.parse(stored);
+        const updated = tabs.filter(t => t.collectionId !== collectionId);
+        localStorage.setItem(STORAGE_KEYS.DASHBOARD_TABS, JSON.stringify(updated));
+      }
+    } catch {
+      // ignore
+    }
+
+    return true;
+  }
+
+  public async deleteAllCollections(): Promise<boolean> {
+    this.collectionItemsCache.clear();
+    this.collectionsCache = [];
+
+    if (this.isConnectedToBackend) {
+      try {
+        await fetch(`${this.backendUrl}/api/collections`, { method: 'DELETE' });
+      } catch {
+        // Continue to local cleanup
+      }
+    }
+
+    localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify([]));
+    localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify([]));
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.DASHBOARD_TABS);
+      if (stored) {
+        const tabs: DashboardTabConfig[] = JSON.parse(stored);
+        const updated = tabs.filter(t => t.type !== 'custom');
+        localStorage.setItem(STORAGE_KEYS.DASHBOARD_TABS, JSON.stringify(updated));
+      }
+    } catch {
+      // ignore
+    }
+
     return true;
   }
 

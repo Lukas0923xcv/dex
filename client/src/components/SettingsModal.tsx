@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StorageStatus, storage } from '../services/storage';
 import { BackupData } from '../types';
-import { X, Download, Upload, RefreshCw, Server, AlertTriangle, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { X, Download, Upload, RefreshCw, Server, AlertTriangle, CheckCircle2, ShieldCheck, Trash2 } from 'lucide-react';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -10,6 +10,7 @@ interface SettingsModalProps {
   onExport: () => Promise<BackupData>;
   onImport: (backup: BackupData) => Promise<void>;
   onReset: () => void;
+  onDeleteAllCollections?: () => Promise<void>;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -18,7 +19,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   storageStatus,
   onExport,
   onImport,
-  onReset
+  onReset,
+  onDeleteAllCollections
 }) => {
   const [remoteUrl, setRemoteUrl] = useState(storageStatus.backendUrl || '');
   const [importStatus, setImportStatus] = useState<string | null>(null);
@@ -212,14 +214,37 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
               </div>
             ) : (
-              <button
-                type="button"
-                onClick={() => setIsResetConfirmOpen(true)}
-                className="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2"
-              >
-                <RefreshCw className="w-3.5 h-3.5" />
-                Reset All Progress
-              </button>
+              <>
+                <button
+                  type="button"
+                  onClick={() => setIsResetConfirmOpen(true)}
+                  className="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  Reset All Progress
+                </button>
+
+                {onDeleteAllCollections && (
+                  <button
+                    type="button"
+                    onClick={async () => {
+                      if (
+                        window.confirm(
+                          'Möchtest du wirklich alle benutzerdefinierten Listen löschen?\n\nDein Fang-Fortschritt (alle markierten Pokémon & Varianten) bleibt dabei vollständig erhalten!'
+                        )
+                      ) {
+                        await onDeleteAllCollections();
+                        onClose();
+                      }
+                    }}
+                    className="w-full mt-2 py-2 bg-slate-100 hover:bg-rose-50 dark:bg-slate-800/80 dark:hover:bg-rose-950/30 border border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-800 text-slate-700 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                    title="Löscht alle erstellten Sammlungen, behält alle gefangenen Pokémon"
+                  >
+                    <Trash2 className="w-3.5 h-3.5 text-rose-500" />
+                    <span>Alle eigenen Listen löschen (Fänge behalten)</span>
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>

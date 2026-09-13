@@ -1,6 +1,6 @@
 import React from 'react';
 import { TrackingMode, CustomCollection, Theme, DashboardTabConfig } from '../types';
-import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus } from 'lucide-react';
+import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus, Trash2 } from 'lucide-react';
 
 interface HeaderProps {
   mode: TrackingMode;
@@ -16,6 +16,7 @@ interface HeaderProps {
   theme: Theme;
   onToggleTheme: () => void;
   dashboardTabs?: DashboardTabConfig[];
+  onDeleteCollection?: (id: string) => Promise<void> | void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -31,7 +32,8 @@ export const Header: React.FC<HeaderProps> = ({
   isBackendConnected,
   theme,
   onToggleTheme,
-  dashboardTabs = []
+  dashboardTabs = [],
+  onDeleteCollection
 }) => {
   const modes = [
     { id: 'standard' as TrackingMode, label: 'Standard Dex', icon: CheckCircle2 },
@@ -253,6 +255,23 @@ export const Header: React.FC<HeaderProps> = ({
                 >
                   <Bookmark className="w-3.5 h-3.5" />
                   <span>Pokémon auswählen</span>
+                </button>
+              )}
+              {onDeleteCollection && activeCollectionId && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    const activeColl = collections.find(c => c.id === activeCollectionId);
+                    const name = activeColl?.name ? `"${activeColl.name}"` : 'diese Sammlung';
+                    if (window.confirm(`Möchtest du die Liste ${name} wirklich löschen?`)) {
+                      onDeleteCollection(activeCollectionId);
+                    }
+                  }}
+                  className="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:hover:bg-rose-900/60 dark:text-rose-300 border border-rose-200 dark:border-rose-800/80 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                  title="Aktive Liste löschen"
+                >
+                  <Trash2 className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />
+                  <span className="hidden sm:inline">Liste löschen</span>
                 </button>
               )}
               <button

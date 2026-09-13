@@ -47,6 +47,7 @@ interface CustomCollectionsModalProps {
     }
   ) => Promise<any>;
   onDeleteCollection: (id: string) => Promise<void>;
+  onDeleteAllCollections?: () => Promise<void>;
   onOpenEditor: (collection: CustomCollection) => void;
 }
 
@@ -71,6 +72,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   onSelectCollection,
   onCreateCollection,
   onDeleteCollection,
+  onDeleteAllCollections,
   onOpenEditor
 }) => {
   const [activeTab, setActiveTab] = useState<'create' | 'list'>('create');
@@ -792,18 +794,39 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
           ) : (
             /* Tab 2: Existing Collections Management */
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
                   Deine gespeicherten Listen ({collections.length})
                 </h3>
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('create')}
-                  className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1 cursor-pointer"
-                >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Neue hinzufügen</span>
-                </button>
+                <div className="flex items-center gap-2">
+                  {onDeleteAllCollections && collections.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (
+                          window.confirm(
+                            `Möchtest du wirklich ALLE ${collections.length} benutzerdefinierten Listen unwiderruflich löschen?\n\nDein Fang-Fortschritt (gefangene Pokémon/Formen) bleibt vollständig erhalten!`
+                          )
+                        ) {
+                          await onDeleteAllCollections();
+                        }
+                      }}
+                      className="text-xs text-rose-400 hover:text-rose-300 font-semibold flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all cursor-pointer"
+                      title="Alle eigenen Sammlungen löschen"
+                    >
+                      <Trash2 className="w-3.5 h-3.5 text-rose-400" />
+                      <span>Alle löschen</span>
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab('create')}
+                    className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1 cursor-pointer"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Neue hinzufügen</span>
+                  </button>
+                </div>
               </div>
 
               {collections.length === 0 ? (

@@ -517,11 +517,29 @@ router.post('/collections', (req, res) => {
   }
 });
 
+// DELETE /api/collections (delete all custom collections)
+router.delete('/collections', (req, res) => {
+  try {
+    const deleteItems = db.prepare('DELETE FROM custom_collection_items');
+    const deleteCollections = db.prepare('DELETE FROM custom_collections');
+    db.transaction(() => {
+      deleteItems.run();
+      deleteCollections.run();
+    })();
+    res.json({ success: true, message: 'All custom collections deleted' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // DELETE /api/collections/:id
 router.delete('/collections/:id', (req, res) => {
   try {
     const { id } = req.params;
-    db.prepare('DELETE FROM custom_collections WHERE id = ?').run(id);
+    db.transaction(() => {
+      db.prepare('DELETE FROM custom_collection_items WHERE collection_id = ?').run(id);
+      db.prepare('DELETE FROM custom_collections WHERE id = ?').run(id);
+    })();
     res.json({ success: true, deletedId: id });
   } catch (err) {
     res.status(500).json({ error: err.message });

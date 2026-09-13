@@ -33,6 +33,7 @@ export const App: React.FC = () => {
     markRegionCaught,
     createCollection,
     deleteCollection,
+    deleteAllCollections,
     toggleCollectionItem,
     setCollectionItems,
     exportBackup,
@@ -154,6 +155,7 @@ export const App: React.FC = () => {
         theme={theme}
         onToggleTheme={toggleTheme}
         dashboardTabs={dashboardTabs}
+        onDeleteCollection={deleteCollection}
       />
 
       {/* Main Content Area */}
@@ -224,6 +226,7 @@ export const App: React.FC = () => {
         onSelectCollection={(id) => setFilters(f => ({ ...f, activeCollectionId: id }))}
         onCreateCollection={createCollection}
         onDeleteCollection={deleteCollection}
+        onDeleteAllCollections={deleteAllCollections}
         onOpenEditor={(coll) => setTargetCollectionForEdit(coll)}
       />
 
@@ -254,6 +257,7 @@ export const App: React.FC = () => {
         onExport={exportBackup}
         onImport={importBackup}
         onReset={resetAllProgress}
+        onDeleteAllCollections={deleteAllCollections}
       />
 
       <DashboardCustomizerModal
@@ -262,6 +266,8 @@ export const App: React.FC = () => {
         collections={collections}
         currentTabs={dashboardTabs}
         onSaveTabs={handleSaveDashboardTabs}
+        onDeleteCollection={deleteCollection}
+        onDeleteAllCollections={deleteAllCollections}
       />
     </div>
   );
