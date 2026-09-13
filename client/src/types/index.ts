@@ -95,20 +95,48 @@ export interface DashboardTabConfig {
   color?: string;
 }
 
+export interface UserAccount {
+  id: string;
+  name: string;
+  createdAt: string;
+}
+
+export type DexScope = 'standard' | 'shiny' | 'shadow' | 'mega' | 'form' | 'costume' | string;
+
 export interface BackupData {
   app: string;
   version: number;
   exportedAt: string;
   data: {
-    progress: Array<{
+    progress?: Array<{
       pokemon_id: string;
       caught?: number | boolean;
       shiny_caught?: number | boolean;
       lucky_caught?: number | boolean;
       hundo_caught?: number | boolean;
+      shadow_caught?: number | boolean;
+      purified_caught?: number | boolean;
       notes?: string;
       updated_at?: string;
     }>;
+    progressV2?: Array<{
+      account_id: string;
+      dex_scope: string;
+      pokemon_id: string;
+      caught?: number | boolean;
+      shiny_caught?: number | boolean;
+      lucky_caught?: number | boolean;
+      hundo_caught?: number | boolean;
+      shadow_caught?: number | boolean;
+      purified_caught?: number | boolean;
+      gender_m_caught?: number | boolean;
+      gender_f_caught?: number | boolean;
+      xxl_caught?: number | boolean;
+      xxs_caught?: number | boolean;
+      notes?: string;
+      updated_at?: string;
+    }>;
+    accounts?: Array<UserAccount>;
     collections: Array<{
       id: string;
       name: string;

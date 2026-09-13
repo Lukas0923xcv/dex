@@ -14,6 +14,13 @@ import { storage } from './services/storage';
 
 export const App: React.FC = () => {
   const {
+    accounts,
+    activeAccountId,
+    activeScope,
+    switchAccount,
+    createAccount,
+    renameAccount,
+    deleteAccount,
     pokemonList,
     filteredPokemon,
     collections,
@@ -38,6 +45,7 @@ export const App: React.FC = () => {
     setCollectionItems,
     exportBackup,
     importBackup,
+    resetScopeProgress,
     resetAllProgress
   } = useDex();
 
@@ -156,6 +164,12 @@ export const App: React.FC = () => {
         onToggleTheme={toggleTheme}
         dashboardTabs={dashboardTabs}
         onDeleteCollection={deleteCollection}
+        accounts={accounts}
+        activeAccountId={activeAccountId}
+        onSwitchAccount={switchAccount}
+        onCreateAccount={createAccount}
+        onRenameAccount={renameAccount}
+        onDeleteAccount={deleteAccount}
       />
 
       {/* Main Content Area */}
@@ -257,7 +271,10 @@ export const App: React.FC = () => {
         onExport={exportBackup}
         onImport={importBackup}
         onReset={resetAllProgress}
+        onResetScope={resetScopeProgress}
         onDeleteAllCollections={deleteAllCollections}
+        activeAccountName={accounts.find(a => a.id === activeAccountId)?.name || 'Haupt-Account'}
+        activeScopeName={getProgressLabel()}
       />
 
       <DashboardCustomizerModal
