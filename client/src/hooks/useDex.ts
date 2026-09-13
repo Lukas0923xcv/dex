@@ -12,7 +12,7 @@ const INITIAL_FILTERS: FilterState = {
   activeCollectionId: null,
   sortBy: 'dexAsc',
   showGenderTracking: false,
-  includeBaseInForms: false,
+  includeBaseInForms: true,
   shinyOnly: false,
   shadowOnly: false
 };
