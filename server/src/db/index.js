@@ -136,6 +136,29 @@ for (const sql of migrations) {
   } catch {}
 }
 
+// Auto-heal / populate has_shadow in SQLite if missing or zero
+try {
+  const shadowCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow = 1').get();
+  const expectedShadowCount = 458;
+  if (!shadowCheck || shadowCheck.count < expectedShadowCount) {
+    console.log(`Auto-healing SQLite shadow/crypto records (current: ${shadowCheck ? shadowCheck.count : 0}, expected: ${expectedShadowCount})...`);
+    const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
+    if (fs.existsSync(jsonPath)) {
+      const pData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      const updateStmt = db.prepare('UPDATE pokemon SET has_shadow = ? WHERE id = ?');
+      db.exec('BEGIN TRANSACTION;');
+      for (const p of pData) {
+        updateStmt.run(p.hasShadow ? 1 : 0, p.id);
+      }
+      db.exec('COMMIT;');
+      const updatedCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow = 1').get();
+      console.log(`Successfully auto-healed has_shadow in SQLite database. Total shadow records: ${updatedCheck?.count}`);
+    }
+  }
+} catch (e) {
+  console.warn('Shadow auto-heal note:', e.message);
+}
+
 console.log('Database tables verified and WAL mode enabled.');
 
 module.exports = db;
