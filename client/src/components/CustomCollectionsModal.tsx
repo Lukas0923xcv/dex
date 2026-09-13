@@ -90,6 +90,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [populateMode, setPopulateMode] = useState<'all' | 'custom'>('all');
 
+  useEffect(() => {
+    if (isOpen) {
+      setActiveTab('create');
+    }
+  }, [isOpen]);
+
   // 8 Category definitions with modern Lucide icons and soft gradient accents
   const categoryCards: Array<{
     id: CollectionCategoryType;

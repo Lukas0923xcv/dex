@@ -1,6 +1,6 @@
 import React from 'react';
 import { TrackingMode, CustomCollection, Theme, DashboardTabConfig } from '../types';
-import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame } from 'lucide-react';
+import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus } from 'lucide-react';
 
 interface HeaderProps {
   mode: TrackingMode;
@@ -40,7 +40,6 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'mega' as TrackingMode, label: 'Mega Dex', icon: Zap, color: 'text-rose-500 dark:text-rose-400' },
     { id: 'form' as TrackingMode, label: 'Alle Formen', icon: Layers, color: 'text-indigo-500 dark:text-indigo-400' },
     { id: 'costume' as TrackingMode, label: 'Kostüme', icon: Sparkles, color: 'text-pink-500 dark:text-pink-400' },
-    { id: 'custom' as TrackingMode, label: 'Eigene Listen', icon: Bookmark, color: 'text-blue-500 dark:text-blue-400' },
   ];
 
   return (
@@ -79,6 +78,16 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={onOpenCollectionsModal}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs transition-all shadow-md shadow-blue-500/20 cursor-pointer"
+              title="Neue eigene Liste / Sammlung erstellen"
+            >
+              <Plus className="w-3.5 h-3.5" />
+              <span>+ Neue Liste</span>
+            </button>
+
             {onOpenDashboardCustomizer && (
               <button
                 type="button"
@@ -119,9 +128,10 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Tracking Category Tabs */}
         <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1 scrollbar-thin">
           {(() => {
-            const tabsToDisplay = dashboardTabs && dashboardTabs.length > 0
-              ? dashboardTabs.filter(t => t.visible)
-              : modes.map(m => ({ id: m.id, label: m.label, type: 'preset' as const, visible: true }));
+            const tabsToDisplay = (dashboardTabs && dashboardTabs.length > 0
+              ? dashboardTabs
+              : modes.map(m => ({ id: m.id, label: m.label, type: 'preset' as const, visible: true }))
+            ).filter(t => t.visible && t.id !== 'custom');
 
             return tabsToDisplay.map((tab) => {
               if (tab.type === 'custom') {
@@ -182,6 +192,17 @@ export const Header: React.FC<HeaderProps> = ({
               );
             });
           })()}
+
+          {/* Add New List Button directly on the main dashboard */}
+          <button
+            type="button"
+            onClick={onOpenCollectionsModal}
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold bg-blue-50 hover:bg-blue-100 text-blue-700 dark:bg-blue-950/60 dark:hover:bg-blue-900/60 dark:text-blue-300 border border-dashed border-blue-300 dark:border-blue-700/80 transition-all cursor-pointer whitespace-nowrap shadow-xs shrink-0"
+            title="Neue eigene Liste / Sammlung erstellen"
+          >
+            <Plus className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+            <span>+ Neue Liste</span>
+          </button>
 
           {onOpenDashboardCustomizer && (
             <button

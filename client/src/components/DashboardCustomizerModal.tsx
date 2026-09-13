@@ -18,7 +18,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
   onSaveTabs
 }) => {
   const [tabs, setTabs] = useState<DashboardTabConfig[]>(() => {
-    const list = [...currentTabs];
+    const list = currentTabs.filter(t => t.id !== 'custom');
     const existingCollIds = new Set(
       list.filter(t => t.type === 'custom' && t.collectionId).map(t => t.collectionId)
     );
@@ -40,7 +40,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
 
   React.useEffect(() => {
     if (isOpen) {
-      const list = [...currentTabs];
+      const list = currentTabs.filter(t => t.id !== 'custom');
       const existingCollIds = new Set(
         list.filter(t => t.type === 'custom' && t.collectionId).map(t => t.collectionId)
       );
@@ -100,7 +100,6 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
       { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
       { id: 'form', label: 'Alle Formen', type: 'preset', visible: true, color: '#6366f1' },
       { id: 'costume', label: 'Kostüme', type: 'preset', visible: true, color: '#ec4899' },
-      { id: 'custom', label: 'Eigene Listen', type: 'preset', visible: true, color: '#3b82f6' },
     ];
     for (const coll of collections) {
       defaults.push({
