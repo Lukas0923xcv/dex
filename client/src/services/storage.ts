@@ -729,7 +729,6 @@ class StorageAdapter {
       { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
       { id: 'form', label: 'Alle Formen', type: 'preset', visible: true, color: '#6366f1' },
       { id: 'costume', label: 'Kostüme', type: 'preset', visible: true, color: '#ec4899' },
-      { id: 'custom', label: 'Eigene Listen', type: 'preset', visible: true, color: '#3b82f6' },
     ];
 
     try {
@@ -738,14 +737,40 @@ class StorageAdapter {
         const parsed: DashboardTabConfig[] = JSON.parse(stored);
         if (Array.isArray(parsed) && parsed.length > 0) {
           const existingCollIds = new Set(collections.map(c => c.id));
-          return parsed.filter(t => t.type === 'preset' || (t.collectionId && existingCollIds.has(t.collectionId)));
+          const filtered = parsed.filter(t => t.id !== 'custom' && (t.type === 'preset' || (t.collectionId && existingCollIds.has(t.collectionId))));
+
+          const storedCollIds = new Set(filtered.filter(t => t.type === 'custom' && t.collectionId).map(t => t.collectionId));
+          for (const coll of collections) {
+            if (!storedCollIds.has(coll.id)) {
+              filtered.push({
+                id: `custom:${coll.id}`,
+                label: coll.name,
+                type: 'custom',
+                collectionId: coll.id,
+                visible: true,
+                color: coll.color || '#3b82f6'
+              });
+            }
+          }
+          return filtered;
         }
       }
     } catch (e) {
       console.warn('Failed to parse dashboard tabs:', e);
     }
 
-    return defaultTabs;
+    const result = [...defaultTabs];
+    for (const coll of collections) {
+      result.push({
+        id: `custom:${coll.id}`,
+        label: coll.name,
+        type: 'custom',
+        collectionId: coll.id,
+        visible: true,
+        color: coll.color || '#3b82f6'
+      });
+    }
+    return result;
   }
 
   public saveDashboardTabs(tabs: DashboardTabConfig[]): void {

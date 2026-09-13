@@ -150,6 +150,7 @@ export function useDex() {
     const newColl = await storage.createCollection(name, description, color, options);
     setCollections(prev => [...prev, newColl]);
     setFilters(f => ({ ...f, activeCollectionId: newColl.id }));
+    setMode('custom');
     return newColl;
   }, []);
 
