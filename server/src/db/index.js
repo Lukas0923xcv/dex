@@ -87,6 +87,34 @@ db.exec(`
     FOREIGN KEY(pokemon_id) REFERENCES pokemon(id) ON DELETE CASCADE
   );
 
+  CREATE TABLE IF NOT EXISTS user_accounts (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    created_at TEXT NOT NULL
+  );
+
+  CREATE TABLE IF NOT EXISTS user_progress_v2 (
+    account_id TEXT NOT NULL DEFAULT 'default',
+    dex_scope TEXT NOT NULL DEFAULT 'standard',
+    pokemon_id TEXT NOT NULL,
+    caught INTEGER DEFAULT 0,
+    shiny_caught INTEGER DEFAULT 0,
+    lucky_caught INTEGER DEFAULT 0,
+    hundo_caught INTEGER DEFAULT 0,
+    shadow_caught INTEGER DEFAULT 0,
+    purified_caught INTEGER DEFAULT 0,
+    gender_m_caught INTEGER DEFAULT 0,
+    gender_f_caught INTEGER DEFAULT 0,
+    xxl_caught INTEGER DEFAULT 0,
+    xxs_caught INTEGER DEFAULT 0,
+    notes TEXT,
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY (account_id, dex_scope, pokemon_id),
+    FOREIGN KEY(pokemon_id) REFERENCES pokemon(id) ON DELETE CASCADE
+  );
+
+  CREATE INDEX IF NOT EXISTS idx_up2_lookup ON user_progress_v2(account_id, dex_scope, pokemon_id);
+
   CREATE TABLE IF NOT EXISTS custom_collections (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -179,7 +207,42 @@ try {
     }
   }
 } catch (e) {
-  console.warn('Hisui generation auto-heal note:', e.message);
+  console.warn('Hisui auto-heal note:', e.message);
+}
+// Initialize default account if none exists
+try {
+  db.prepare(`
+    INSERT OR IGNORE INTO user_accounts (id, name, created_at)
+    VALUES ('default', 'Haupt-Account', datetime('now'))
+  `).run();
+} catch (e) {
+  console.warn('Accounts init note:', e.message);
+}
+
+// Auto-migrate legacy user_progress into user_progress_v2 (account: 'default', scope: 'standard')
+try {
+  const v2Count = db.prepare('SELECT COUNT(*) as count FROM user_progress_v2').get();
+  if (!v2Count || v2Count.count === 0) {
+    const legacyCount = db.prepare('SELECT COUNT(*) as count FROM user_progress').get();
+    if (legacyCount && legacyCount.count > 0) {
+      console.log(`Migrating ${legacyCount.count} legacy progress records to user_progress_v2...`);
+      db.exec(`
+        INSERT OR IGNORE INTO user_progress_v2 (
+          account_id, dex_scope, pokemon_id, caught, shiny_caught, lucky_caught,
+          hundo_caught, shadow_caught, purified_caught, gender_m_caught,
+          gender_f_caught, xxl_caught, xxs_caught, notes, updated_at
+        )
+        SELECT 
+          'default', 'standard', pokemon_id, caught, shiny_caught, lucky_caught,
+          hundo_caught, shadow_caught, purified_caught, gender_m_caught,
+          gender_f_caught, xxl_caught, xxs_caught, notes, COALESCE(updated_at, datetime('now'))
+        FROM user_progress;
+      `);
+      console.log('Legacy user progress successfully migrated into user_progress_v2.');
+    }
+  }
+} catch (e) {
+  console.warn('Progress v2 migration note:', e.message);
 }
 
 console.log('Database tables verified and WAL mode enabled.');

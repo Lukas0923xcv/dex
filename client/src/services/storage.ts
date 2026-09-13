@@ -1,8 +1,11 @@
-import { Pokemon, CustomCollection, BackupData, DashboardTabConfig } from '../types';
+import { Pokemon, CustomCollection, BackupData, DashboardTabConfig, UserAccount, DexScope } from '../types';
 import localPokemonData from '../data/pokemon-data.json';
 
 const STORAGE_KEYS = {
-  PROGRESS: 'pogo_dex_progress_v1',
+  LEGACY_PROGRESS: 'pogo_dex_progress_v1',
+  PROGRESS_PREFIX: 'pogo_progress_v2_',
+  ACCOUNTS: 'pogo_accounts_v1',
+  ACTIVE_ACCOUNT: 'pogo_active_account_v1',
   COLLECTIONS: 'pogo_dex_collections_v1',
   COLLECTION_ITEMS: 'pogo_dex_collection_items_v1',
   REMOTE_API_URL: 'pogo_dex_remote_api_url_v1',
@@ -43,6 +46,8 @@ class StorageAdapter {
     if (this.isInitialized) {
       return this.getStatus();
     }
+
+    this.migrateLegacyProgressIfAny();
 
     const forceLocal = localStorage.getItem(STORAGE_KEYS.FORCE_LOCAL) === 'true';
     if (!forceLocal && this.backendUrl) {
@@ -96,11 +101,150 @@ class StorageAdapter {
     this.isInitialized = false;
   }
 
-  // --- Pokémon & Progress Retrieval ---
-  public async getPokemonList(): Promise<Pokemon[]> {
+  // --- Accounts Management ---
+  public getActiveAccountId(): string {
+    return localStorage.getItem(STORAGE_KEYS.ACTIVE_ACCOUNT) || 'default';
+  }
+
+  public setActiveAccountId(id: string): void {
+    localStorage.setItem(STORAGE_KEYS.ACTIVE_ACCOUNT, id);
+  }
+
+  public async getAccounts(): Promise<UserAccount[]> {
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/pokemon?limit=2500`);
+        const res = await fetch(`${this.backendUrl}/api/accounts`);
+        if (res.ok) {
+          const accounts: UserAccount[] = await res.json();
+          localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
+          return accounts;
+        }
+      } catch (err) {
+        console.warn('Backend getAccounts failed, fallback to local:', err);
+      }
+    }
+
+    try {
+      const stored = localStorage.getItem(STORAGE_KEYS.ACCOUNTS);
+      if (stored) {
+        return JSON.parse(stored);
+      }
+    } catch {}
+
+    const defaultAcc: UserAccount = {
+      id: 'default',
+      name: 'Haupt-Account',
+      createdAt: new Date().toISOString()
+    };
+    localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify([defaultAcc]));
+    return [defaultAcc];
+  }
+
+  public async createAccount(name: string): Promise<UserAccount> {
+    const cleanName = (name && name.trim()) ? name.trim() : 'Neuer Account';
+    if (this.isConnectedToBackend) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/accounts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: cleanName })
+        });
+        if (res.ok) {
+          const acc: UserAccount = await res.json();
+          const accounts = await this.getAccounts();
+          if (!accounts.some(a => a.id === acc.id)) {
+            accounts.push(acc);
+            localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
+          }
+          return acc;
+        }
+      } catch (err) {
+        console.warn('Backend createAccount failed, falling back to local:', err);
+      }
+    }
+
+    const newAcc: UserAccount = {
+      id: `acc_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      name: cleanName,
+      createdAt: new Date().toISOString()
+    };
+    const accounts = await this.getAccounts();
+    accounts.push(newAcc);
+    localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
+    return newAcc;
+  }
+
+  public async renameAccount(id: string, name: string): Promise<UserAccount> {
+    const cleanName = name.trim();
+    if (this.isConnectedToBackend) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/accounts/${id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: cleanName })
+        });
+        if (res.ok) {
+          const accounts = await this.getAccounts();
+          const target = accounts.find(a => a.id === id);
+          if (target) {
+            target.name = cleanName;
+            localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
+          }
+          return { id, name: cleanName, createdAt: target?.createdAt || new Date().toISOString() };
+        }
+      } catch (err) {
+        console.warn('Backend renameAccount failed, falling back to local:', err);
+      }
+    }
+
+    const accounts = await this.getAccounts();
+    const target = accounts.find(a => a.id === id);
+    if (target) {
+      target.name = cleanName;
+      localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
+    }
+    return target || { id, name: cleanName, createdAt: new Date().toISOString() };
+  }
+
+  public async deleteAccount(id: string): Promise<boolean> {
+    if (this.isConnectedToBackend) {
+      try {
+        await fetch(`${this.backendUrl}/api/accounts/${id}`, { method: 'DELETE' });
+      } catch (err) {
+        console.warn('Backend deleteAccount failed:', err);
+      }
+    }
+
+    let accounts = await this.getAccounts();
+    accounts = accounts.filter(a => a.id !== id);
+    if (accounts.length === 0) {
+      accounts = [{ id: 'default', name: 'Haupt-Account', createdAt: new Date().toISOString() }];
+    }
+    localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
+
+    const prefix = `${STORAGE_KEYS.PROGRESS_PREFIX}${id}_`;
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(prefix)) {
+        keysToRemove.push(key);
+      }
+    }
+    for (const k of keysToRemove) {
+      localStorage.removeItem(k);
+    }
+
+    if (this.getActiveAccountId() === id) {
+      this.setActiveAccountId(accounts[0].id);
+    }
+    return true;
+  }
+
+  // --- Pokémon & Progress Retrieval (Scoped by Account and Dex Scope) ---
+  public async getPokemonList(accountId: string = 'default', scope: DexScope = 'standard'): Promise<Pokemon[]> {
+    if (this.isConnectedToBackend) {
+      try {
+        const res = await fetch(`${this.backendUrl}/api/pokemon?limit=2500&accountId=${encodeURIComponent(accountId)}&dexScope=${encodeURIComponent(scope)}`);
         if (res.ok) {
           const backendList: Pokemon[] = await res.json();
           const localMap = new Map((localPokemonData as Pokemon[]).map(p => [p.id, p]));
@@ -118,9 +262,9 @@ class StorageAdapter {
       }
     }
 
-    // Local / GitHub Pages mode: use bundled dataset and join with localStorage progress
+    // Local / GitHub Pages mode: use bundled dataset and join with scoped localStorage progress
     const baseList = localPokemonData as Pokemon[];
-    const progressMap = this.getLocalProgress();
+    const progressMap = this.getLocalProgress(accountId, scope);
     const collectionItems = this.getLocalCollectionItems();
 
     return baseList.map(p => {
@@ -147,17 +291,38 @@ class StorageAdapter {
   // --- Toggle Progress (Caught, Shiny, Lucky, Shadow, Purified, Gender, Size) ---
   public async toggleProgress(
     pokemonId: string,
-    type: 'caught' | 'shiny' | 'lucky' | 'hundo' | 'shadow' | 'purified' | 'gender_m' | 'gender_f' | 'xxl' | 'xxs'
+    type: 'caught' | 'shiny' | 'lucky' | 'hundo' | 'shadow' | 'purified' | 'gender_m' | 'gender_f' | 'xxl' | 'xxs',
+    accountId: string = 'default',
+    scope: DexScope = 'standard'
   ): Promise<boolean> {
     if (this.isConnectedToBackend) {
       try {
         const res = await fetch(`${this.backendUrl}/api/progress/toggle`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pokemonId, type })
+          body: JSON.stringify({ pokemonId, type, accountId, dexScope: scope })
         });
         if (res.ok) {
           const data = await res.json();
+          const progress = this.getLocalProgress(accountId, scope);
+          const fieldMap: Record<string, string> = {
+            caught: 'caught',
+            shiny: 'shinyCaught',
+            lucky: 'luckyCaught',
+            hundo: 'hundoCaught',
+            shadow: 'shadowCaught',
+            purified: 'purifiedCaught',
+            gender_m: 'genderMCaught',
+            gender_f: 'genderFCaught',
+            xxl: 'xxlCaught',
+            xxs: 'xxsCaught'
+          };
+          const field = fieldMap[type] || 'caught';
+          const current = progress[pokemonId] || {};
+          current[field] = data.value;
+          current.updatedAt = data.updatedAt || new Date().toISOString();
+          progress[pokemonId] = current;
+          this.saveLocalProgress(accountId, scope, progress);
           return data.value;
         }
       } catch (err) {
@@ -166,7 +331,7 @@ class StorageAdapter {
     }
 
     // Local Mode
-    const progress = this.getLocalProgress();
+    const progress = this.getLocalProgress(accountId, scope);
     const current = progress[pokemonId] || {};
     const fieldMap: Record<string, string> = {
       caught: 'caught',
@@ -185,14 +350,16 @@ class StorageAdapter {
     current[field] = newVal;
     current.updatedAt = new Date().toISOString();
     progress[pokemonId] = current;
-    localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progress));
+    this.saveLocalProgress(accountId, scope, progress);
     return newVal;
   }
 
   // --- Batch Update Progress (e.g., mark entire Region as caught/uncaught) ---
   public async batchUpdateProgress(
     pokemonIds: string[],
-    values: { caught?: boolean; shinyCaught?: boolean; shadowCaught?: boolean }
+    values: { caught?: boolean; shinyCaught?: boolean; shadowCaught?: boolean },
+    accountId: string = 'default',
+    scope: DexScope = 'standard'
   ): Promise<boolean> {
     if (this.isConnectedToBackend) {
       try {
@@ -203,7 +370,9 @@ class StorageAdapter {
             pokemonIds,
             caught: values.caught,
             shinyCaught: values.shinyCaught,
-            shadowCaught: values.shadowCaught
+            shadowCaught: values.shadowCaught,
+            accountId,
+            dexScope: scope
           })
         });
       } catch (err) {
@@ -212,7 +381,7 @@ class StorageAdapter {
     }
 
     // Local Mode & Mirror
-    const progress = this.getLocalProgress();
+    const progress = this.getLocalProgress(accountId, scope);
     const now = new Date().toISOString();
     for (const id of pokemonIds) {
       const current = progress[id] || {};
@@ -222,16 +391,16 @@ class StorageAdapter {
       current.updatedAt = now;
       progress[id] = current;
     }
-    localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progress));
+    this.saveLocalProgress(accountId, scope, progress);
     return true;
   }
 
   // --- Custom Collections ---
-  public async getCollections(): Promise<CustomCollection[]> {
+  public async getCollections(accountId: string = 'default'): Promise<CustomCollection[]> {
     if (this.isConnectedToBackend) {
       try {
         const [collsRes, itemsRes] = await Promise.all([
-          fetch(`${this.backendUrl}/api/collections`),
+          fetch(`${this.backendUrl}/api/collections?accountId=${encodeURIComponent(accountId)}`),
           fetch(`${this.backendUrl}/api/collection-items`)
         ]);
         if (collsRes.ok) {
@@ -269,10 +438,10 @@ class StorageAdapter {
     // Local Mode
     const collections = this.getLocalCollections();
     const items = this.getLocalCollectionItems();
-    const progress = this.getLocalProgress();
     const baseList = localPokemonData as Pokemon[];
 
     const localResult = collections.map(c => {
+      const progress = this.getLocalProgress(accountId, `custom:${c.id}`);
       const isShadowColl = c.categoryType === 'shadow' || c.categoryType === 'purified' || c.name.toLowerCase().includes('crypto') || c.name.toLowerCase().includes('shadow') || c.name.toLowerCase().includes('schatten');
       if (isShadowColl && c.categoryType !== 'shadow') {
         c.categoryType = 'shadow';
@@ -627,22 +796,49 @@ class StorageAdapter {
       }
     }
 
-    const progressObj = this.getLocalProgress();
-    const progress = Object.entries(progressObj).map(([id, val]) => ({
-      pokemon_id: id,
-      caught: val.caught ? 1 : 0,
-      shiny_caught: val.shinyCaught ? 1 : 0,
-      lucky_caught: val.luckyCaught ? 1 : 0,
-      notes: val.notes,
-      updated_at: val.updatedAt
-    }));
+    const progressV2: any[] = [];
+    const accounts = await this.getAccounts();
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(STORAGE_KEYS.PROGRESS_PREFIX)) {
+        const rest = key.substring(STORAGE_KEYS.PROGRESS_PREFIX.length);
+        const underscoreIdx = rest.indexOf('_');
+        if (underscoreIdx > 0) {
+          const accId = rest.substring(0, underscoreIdx);
+          const scope = rest.substring(underscoreIdx + 1);
+          try {
+            const data = JSON.parse(localStorage.getItem(key) || '{}');
+            for (const [pid, val] of Object.entries<any>(data)) {
+              progressV2.push({
+                account_id: accId,
+                dex_scope: scope,
+                pokemon_id: pid,
+                caught: val.caught ? 1 : 0,
+                shiny_caught: val.shinyCaught ? 1 : 0,
+                lucky_caught: val.luckyCaught ? 1 : 0,
+                hundo_caught: val.hundoCaught ? 1 : 0,
+                shadow_caught: val.shadowCaught ? 1 : 0,
+                purified_caught: val.purifiedCaught ? 1 : 0,
+                gender_m_caught: val.genderMCaught ? 1 : 0,
+                gender_f_caught: val.genderFCaught ? 1 : 0,
+                xxl_caught: val.xxlCaught ? 1 : 0,
+                xxs_caught: val.xxsCaught ? 1 : 0,
+                notes: val.notes,
+                updated_at: val.updatedAt
+              });
+            }
+          } catch {}
+        }
+      }
+    }
 
     return {
       app: 'PokemonGoDexTracker',
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
       data: {
-        progress,
+        progressV2,
+        accounts,
         collections: this.getLocalCollections(),
         collectionItems: this.getLocalCollectionItems()
       }
@@ -670,17 +866,53 @@ class StorageAdapter {
     }
 
     // Local Storage Import
-    const progressMap: Record<string, any> = {};
-    for (const p of backup.data.progress || []) {
-      progressMap[p.pokemon_id] = {
-        caught: Boolean(p.caught),
-        shinyCaught: Boolean(p.shiny_caught),
-        luckyCaught: Boolean(p.lucky_caught),
-        notes: p.notes,
-        updatedAt: p.updated_at
-      };
+    if (Array.isArray(backup.data.accounts) && backup.data.accounts.length > 0) {
+      localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(backup.data.accounts));
     }
-    localStorage.setItem(STORAGE_KEYS.PROGRESS, JSON.stringify(progressMap));
+
+    if (Array.isArray(backup.data.progressV2) && backup.data.progressV2.length > 0) {
+      const groups = new Map<string, Record<string, any>>();
+      for (const p of backup.data.progressV2) {
+        const accId = p.account_id || 'default';
+        const scope = p.dex_scope || 'standard';
+        const key = this.getProgressKey(accId, scope);
+        if (!groups.has(key)) groups.set(key, {});
+        const map = groups.get(key)!;
+        map[p.pokemon_id] = {
+          caught: Boolean(p.caught),
+          shinyCaught: Boolean(p.shiny_caught),
+          luckyCaught: Boolean(p.lucky_caught),
+          hundoCaught: Boolean(p.hundo_caught),
+          shadowCaught: Boolean(p.shadow_caught),
+          purifiedCaught: Boolean(p.purified_caught),
+          genderMCaught: Boolean(p.gender_m_caught),
+          genderFCaught: Boolean(p.gender_f_caught),
+          xxlCaught: Boolean(p.xxl_caught),
+          xxsCaught: Boolean(p.xxs_caught),
+          notes: p.notes,
+          updatedAt: p.updated_at
+        };
+      }
+      for (const [k, obj] of groups.entries()) {
+        localStorage.setItem(k, JSON.stringify(obj));
+      }
+    } else if (Array.isArray(backup.data.progress) && backup.data.progress.length > 0) {
+      // Legacy import
+      const progressMap: Record<string, any> = {};
+      for (const p of backup.data.progress) {
+        progressMap[p.pokemon_id] = {
+          caught: Boolean(p.caught),
+          shinyCaught: Boolean(p.shiny_caught),
+          luckyCaught: Boolean(p.lucky_caught),
+          hundoCaught: Boolean(p.hundo_caught),
+          shadowCaught: Boolean(p.shadow_caught),
+          purifiedCaught: Boolean(p.purified_caught),
+          notes: p.notes,
+          updatedAt: p.updated_at
+        };
+      }
+      this.saveLocalProgress('default', 'standard', progressMap);
+    }
 
     if (backup.data.collections) {
       localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(backup.data.collections));
@@ -692,20 +924,85 @@ class StorageAdapter {
     return true;
   }
 
+  public async resetProgress(accountId: string = 'default', scope?: string): Promise<void> {
+    if (this.isConnectedToBackend) {
+      try {
+        await fetch(`${this.backendUrl}/api/progress/reset`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ accountId, dexScope: scope })
+        });
+      } catch (err) {
+        console.warn('Backend resetProgress failed:', err);
+      }
+    }
+
+    if (scope) {
+      localStorage.removeItem(this.getProgressKey(accountId, scope));
+    } else {
+      const prefix = `${STORAGE_KEYS.PROGRESS_PREFIX}${accountId}_`;
+      const toRemove: string[] = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        if (k && k.startsWith(prefix)) toRemove.push(k);
+      }
+      for (const k of toRemove) localStorage.removeItem(k);
+      if (accountId === 'default') {
+        localStorage.removeItem(STORAGE_KEYS.LEGACY_PROGRESS);
+      }
+    }
+  }
+
   public resetAllProgress(): void {
-    localStorage.removeItem(STORAGE_KEYS.PROGRESS);
+    const accId = this.getActiveAccountId();
+    this.resetProgress(accId);
     localStorage.removeItem(STORAGE_KEYS.COLLECTIONS);
     localStorage.removeItem(STORAGE_KEYS.COLLECTION_ITEMS);
     this.ensureDefaultLocalCollections();
   }
 
   // --- Private LocalStorage Helpers ---
-  private getLocalProgress(): Record<string, any> {
+  private migrateLegacyProgressIfAny() {
     try {
-      const data = localStorage.getItem(STORAGE_KEYS.PROGRESS);
+      const defaultKey = this.getProgressKey('default', 'standard');
+      if (!localStorage.getItem(defaultKey)) {
+        const legacy = localStorage.getItem(STORAGE_KEYS.LEGACY_PROGRESS);
+        if (legacy) {
+          localStorage.setItem(defaultKey, legacy);
+        }
+      }
+      const accountsJson = localStorage.getItem(STORAGE_KEYS.ACCOUNTS);
+      if (!accountsJson) {
+        const defaultAcc: UserAccount = {
+          id: 'default',
+          name: 'Haupt-Account',
+          createdAt: new Date().toISOString()
+        };
+        localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify([defaultAcc]));
+      }
+    } catch (e) {
+      console.warn('Legacy progress migration note:', e);
+    }
+  }
+
+  private getProgressKey(accountId: string = 'default', scope: string = 'standard'): string {
+    return `${STORAGE_KEYS.PROGRESS_PREFIX}${accountId}_${scope}`;
+  }
+
+  private getLocalProgress(accountId: string = 'default', scope: string = 'standard'): Record<string, any> {
+    try {
+      const data = localStorage.getItem(this.getProgressKey(accountId, scope));
       return data ? JSON.parse(data) : {};
     } catch {
       return {};
+    }
+  }
+
+  private saveLocalProgress(accountId: string = 'default', scope: string = 'standard', progress: Record<string, any>): void {
+    try {
+      localStorage.setItem(this.getProgressKey(accountId, scope), JSON.stringify(progress));
+    } catch (e) {
+      console.warn('Failed to save local progress:', e);
     }
   }
 

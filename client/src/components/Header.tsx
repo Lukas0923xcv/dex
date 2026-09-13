@@ -1,6 +1,6 @@
-import React from 'react';
-import { TrackingMode, CustomCollection, Theme, DashboardTabConfig } from '../types';
-import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus, Trash2 } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { TrackingMode, CustomCollection, Theme, DashboardTabConfig, UserAccount } from '../types';
+import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus, Trash2, User, ChevronDown, Check, Edit2, X } from 'lucide-react';
 
 interface HeaderProps {
   mode: TrackingMode;
@@ -17,6 +17,12 @@ interface HeaderProps {
   onToggleTheme: () => void;
   dashboardTabs?: DashboardTabConfig[];
   onDeleteCollection?: (id: string) => Promise<void> | void;
+  accounts?: UserAccount[];
+  activeAccountId?: string;
+  onSwitchAccount?: (id: string) => void;
+  onCreateAccount?: (name: string) => Promise<UserAccount>;
+  onRenameAccount?: (id: string, name: string) => Promise<UserAccount>;
+  onDeleteAccount?: (id: string) => Promise<void>;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -33,8 +39,53 @@ export const Header: React.FC<HeaderProps> = ({
   theme,
   onToggleTheme,
   dashboardTabs = [],
-  onDeleteCollection
+  onDeleteCollection,
+  accounts = [],
+  activeAccountId = 'default',
+  onSwitchAccount,
+  onCreateAccount,
+  onRenameAccount,
+  onDeleteAccount
 }) => {
+  const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const [isCreatingAccount, setIsCreatingAccount] = useState(false);
+  const [newAccName, setNewAccName] = useState('');
+  const [editingAccId, setEditingAccId] = useState<string | null>(null);
+  const [editingAccName, setEditingAccName] = useState('');
+  const accountMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(e.target as Node)) {
+        setIsAccountMenuOpen(false);
+        setIsCreatingAccount(false);
+        setEditingAccId(null);
+      }
+    };
+    if (isAccountMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isAccountMenuOpen]);
+
+  const activeAccount = accounts.find(a => a.id === activeAccountId) || { id: 'default', name: 'Haupt-Account' };
+
+  const handleCreateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newAccName.trim() || !onCreateAccount) return;
+    await onCreateAccount(newAccName.trim());
+    setNewAccName('');
+    setIsCreatingAccount(false);
+  };
+
+  const handleRenameSubmit = async (id: string) => {
+    if (!editingAccName.trim() || !onRenameAccount) return;
+    await onRenameAccount(id, editingAccName.trim());
+    setEditingAccId(null);
+  };
+
   const modes = [
     { id: 'standard' as TrackingMode, label: 'Standard Dex', icon: CheckCircle2 },
     { id: 'shiny' as TrackingMode, label: 'Shiny Dex', icon: Sparkles, color: 'text-amber-500 dark:text-amber-400' },
@@ -80,6 +131,183 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Quick Actions */}
           <div className="flex items-center gap-2">
+            {/* Multi-Account Switcher */}
+            <div className="relative" ref={accountMenuRef}>
+              <button
+                type="button"
+                onClick={() => setIsAccountMenuOpen(prev => !prev)}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-900/80 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs transition-all shadow-xs cursor-pointer"
+                title="Pokémon GO Account wechseln oder verwalten"
+              >
+                <div className="w-5 h-5 rounded-full bg-indigo-500/15 dark:bg-indigo-500/25 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+                  <User className="w-3.5 h-3.5" />
+                </div>
+                <span className="max-w-[110px] sm:max-w-[150px] truncate">{activeAccount.name}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              </button>
+
+              {/* Account Dropdown Modal */}
+              {isAccountMenuOpen && (
+                <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl py-2 z-50 animate-in fade-in zoom-in-95 duration-150">
+                  <div className="px-3.5 py-2 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                    <div>
+                      <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                        GO Trainer-Account
+                      </div>
+                      <div className="text-xs text-slate-500 dark:text-slate-400">
+                        Getrennter Fortschritt für jeden Account
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setIsAccountMenuOpen(false)}
+                      className="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-300"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Account List */}
+                  <div className="p-1.5 space-y-1 max-h-56 overflow-y-auto">
+                    {accounts.map(acc => {
+                      const isActive = acc.id === activeAccountId;
+                      const isEditing = editingAccId === acc.id;
+
+                      if (isEditing) {
+                        return (
+                          <div key={acc.id} className="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={editingAccName}
+                              onChange={e => setEditingAccName(e.target.value)}
+                              autoFocus
+                              onKeyDown={e => {
+                                if (e.key === 'Enter') handleRenameSubmit(acc.id);
+                                if (e.key === 'Escape') setEditingAccId(null);
+                              }}
+                              className="flex-1 px-2 py-1 text-xs bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white focus:outline-none"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleRenameSubmit(acc.id)}
+                              className="p-1 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 rounded"
+                              title="Speichern"
+                            >
+                              <Check className="w-3.5 h-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setEditingAccId(null)}
+                              className="p-1 text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700 rounded"
+                              title="Abbrechen"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        );
+                      }
+
+                      return (
+                        <div
+                          key={acc.id}
+                          className={`flex items-center justify-between p-2 rounded-xl text-xs transition-colors ${
+                            isActive
+                              ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 font-bold border border-blue-200/80 dark:border-blue-800/60'
+                              : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                          }`}
+                        >
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (onSwitchAccount) onSwitchAccount(acc.id);
+                              setIsAccountMenuOpen(false);
+                            }}
+                            className="flex items-center gap-2.5 flex-1 text-left cursor-pointer truncate mr-2"
+                          >
+                            <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 ${
+                              isActive ? 'bg-blue-600 text-white' : 'bg-slate-200 dark:bg-slate-800 text-slate-500'
+                            }`}>
+                              {isActive ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : <User className="w-3.5 h-3.5" />}
+                            </div>
+                            <span className="truncate">{acc.name}</span>
+                          </button>
+
+                          <div className="flex items-center gap-1 shrink-0">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setEditingAccId(acc.id);
+                                setEditingAccName(acc.name);
+                              }}
+                              className="p-1 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700 rounded transition-colors"
+                              title="Account umbenennen"
+                            >
+                              <Edit2 className="w-3 h-3" />
+                            </button>
+                            {accounts.length > 1 && onDeleteAccount && (
+                              <button
+                                type="button"
+                                onClick={async () => {
+                                  if (window.confirm(`Account "${acc.name}" und alle zugehörigen Fänge wirklich löschen?`)) {
+                                    await onDeleteAccount(acc.id);
+                                  }
+                                }}
+                                className="p-1 text-slate-400 hover:text-rose-600 dark:hover:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 rounded transition-colors"
+                                title="Account löschen"
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Create New Account */}
+                  <div className="p-2 border-t border-slate-100 dark:border-slate-800 mt-1">
+                    {isCreatingAccount ? (
+                      <form onSubmit={handleCreateSubmit} className="flex gap-1.5">
+                        <input
+                          type="text"
+                          placeholder="z.B. Zweit-Account"
+                          value={newAccName}
+                          onChange={e => setNewAccName(e.target.value)}
+                          autoFocus
+                          className="flex-1 px-2.5 py-1.5 text-xs bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-blue-500"
+                        />
+                        <button
+                          type="submit"
+                          className="px-2.5 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl cursor-pointer"
+                        >
+                          Hinzufügen
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsCreatingAccount(false);
+                            setNewAccName('');
+                          }}
+                          className="p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      </form>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => setIsCreatingAccount(true)}
+                        className="w-full py-1.5 px-3 flex items-center justify-center gap-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 rounded-xl transition-colors cursor-pointer border border-dashed border-blue-300 dark:border-blue-800"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>+ Neuer Account</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
             <button
               type="button"
               onClick={onOpenCollectionsModal}

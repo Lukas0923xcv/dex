@@ -18,6 +18,74 @@ router.get('/health', (req, res) => {
   }
 });
 
+// --- Accounts Management ---
+// GET /api/accounts
+router.get('/accounts', (req, res) => {
+  try {
+    const accounts = db.prepare('SELECT id, name, created_at as createdAt FROM user_accounts ORDER BY created_at ASC').all();
+    if (accounts.length === 0) {
+      const now = new Date().toISOString();
+      db.prepare("INSERT INTO user_accounts (id, name, created_at) VALUES ('default', 'Haupt-Account', ?)").run(now);
+      return res.json([{ id: 'default', name: 'Haupt-Account', createdAt: now }]);
+    }
+    res.json(accounts);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /api/accounts
+router.post('/accounts', (req, res) => {
+  try {
+    const { name } = req.body;
+    const cleanName = (name && name.trim()) ? name.trim() : 'Neuer Account';
+    const id = `acc_${Date.now()}_${crypto.randomBytes(3).toString('hex')}`;
+    const now = new Date().toISOString();
+    db.prepare('INSERT INTO user_accounts (id, name, created_at) VALUES (?, ?, ?)').run(id, cleanName, now);
+    res.status(201).json({ id, name: cleanName, createdAt: now });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// PUT /api/accounts/:id
+router.put('/accounts/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name } = req.body;
+    if (!name || !name.trim()) {
+      return res.status(400).json({ error: 'Name ist erforderlich' });
+    }
+    db.prepare('UPDATE user_accounts SET name = ? WHERE id = ?').run(name.trim(), id);
+    res.json({ id, name: name.trim() });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// DELETE /api/accounts/:id
+router.delete('/accounts/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const total = db.prepare('SELECT COUNT(*) as count FROM user_accounts').get().count;
+    if (total <= 1) {
+      return res.status(400).json({ error: 'Mindestens ein Account muss bestehen bleiben.' });
+    }
+    db.exec('BEGIN TRANSACTION;');
+    try {
+      db.prepare('DELETE FROM user_progress_v2 WHERE account_id = ?').run(id);
+      db.prepare('DELETE FROM user_accounts WHERE id = ?').run(id);
+      db.exec('COMMIT;');
+      res.json({ success: true, deletedId: id });
+    } catch (err) {
+      db.exec('ROLLBACK;');
+      throw err;
+    }
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET /api/pokemon
 router.get('/pokemon', (req, res) => {
   try {
@@ -32,8 +100,13 @@ router.get('/pokemon', (req, res) => {
       shadowOnly,
       shinyOnly,
       limit = 2500,
-      offset = 0
+      offset = 0,
+      accountId = 'default',
+      dexScope
     } = req.query;
+
+    const effectiveAccountId = accountId || 'default';
+    const effectiveScope = dexScope || (collectionId ? `custom:${collectionId}` : (category && category !== 'all' ? category : 'standard'));
 
     let sql = `
       SELECT 
@@ -73,12 +146,12 @@ router.get('/pokemon', (req, res) => {
         up.updated_at as updatedAt,
         CASE WHEN cci.pokemon_id IS NOT NULL THEN 1 ELSE 0 END as inCollection
       FROM pokemon p
-      LEFT JOIN user_progress up ON p.id = up.pokemon_id
+      LEFT JOIN user_progress_v2 up ON (p.id = up.pokemon_id AND up.account_id = ? AND up.dex_scope = ?)
       LEFT JOIN custom_collection_items cci ON p.id = cci.pokemon_id ${collectionId ? 'AND cci.collection_id = ?' : 'AND 1=0'}
       WHERE 1=1
     `;
 
-    const params = [];
+    const params = [effectiveAccountId, effectiveScope];
     if (collectionId) {
       params.push(collectionId);
     }
@@ -232,7 +305,7 @@ router.get('/pokemon', (req, res) => {
 // POST /api/progress/toggle
 router.post('/progress/toggle', (req, res) => {
   try {
-    const { pokemonId, type = 'caught' } = req.body;
+    const { pokemonId, type = 'caught', accountId = 'default', dexScope = 'standard' } = req.body;
     if (!pokemonId) {
       return res.status(400).json({ error: 'pokemonId is required' });
     }
@@ -252,27 +325,29 @@ router.post('/progress/toggle', (req, res) => {
     const field = fieldMap[type] || 'caught';
     const now = new Date().toISOString();
 
-    const existing = db.prepare('SELECT * FROM user_progress WHERE pokemon_id = ?').get(pokemonId);
+    const existing = db.prepare('SELECT * FROM user_progress_v2 WHERE account_id = ? AND dex_scope = ? AND pokemon_id = ?').get(accountId, dexScope, pokemonId);
 
     let newVal = 1;
     if (existing) {
       newVal = existing[field] ? 0 : 1;
       db.prepare(`
-        UPDATE user_progress
+        UPDATE user_progress_v2
         SET ${field} = ?, updated_at = ?
-        WHERE pokemon_id = ?
-      `).run(newVal, now, pokemonId);
+        WHERE account_id = ? AND dex_scope = ? AND pokemon_id = ?
+      `).run(newVal, now, accountId, dexScope, pokemonId);
     } else {
       db.prepare(`
-        INSERT INTO user_progress (pokemon_id, ${field}, updated_at)
-        VALUES (?, ?, ?)
-      `).run(pokemonId, 1, now);
+        INSERT INTO user_progress_v2 (account_id, dex_scope, pokemon_id, ${field}, updated_at)
+        VALUES (?, ?, ?, ?, ?)
+      `).run(accountId, dexScope, pokemonId, 1, now);
       newVal = 1;
     }
 
     res.json({
       pokemonId,
       type,
+      accountId,
+      dexScope,
       value: Boolean(newVal),
       updatedAt: now
     });
@@ -285,16 +360,16 @@ router.post('/progress/toggle', (req, res) => {
 // POST /api/progress/batch
 router.post('/progress/batch', (req, res) => {
   try {
-    const { pokemonIds, caught, shinyCaught, shadowCaught } = req.body;
+    const { pokemonIds, caught, shinyCaught, shadowCaught, accountId = 'default', dexScope = 'standard' } = req.body;
     if (!Array.isArray(pokemonIds) || pokemonIds.length === 0) {
       return res.status(400).json({ error: 'pokemonIds array required' });
     }
 
     const now = new Date().toISOString();
     const upsertStmt = db.prepare(`
-      INSERT INTO user_progress (pokemon_id, caught, shiny_caught, shadow_caught, updated_at)
-      VALUES (?, ?, ?, ?, ?)
-      ON CONFLICT(pokemon_id) DO UPDATE SET
+      INSERT INTO user_progress_v2 (account_id, dex_scope, pokemon_id, caught, shiny_caught, shadow_caught, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(account_id, dex_scope, pokemon_id) DO UPDATE SET
         caught = COALESCE(?, caught),
         shiny_caught = COALESCE(?, shiny_caught),
         shadow_caught = COALESCE(?, shadow_caught),
@@ -306,11 +381,11 @@ router.post('/progress/batch', (req, res) => {
       const cVal = caught !== undefined ? (caught ? 1 : 0) : null;
       const sVal = shinyCaught !== undefined ? (shinyCaught ? 1 : 0) : null;
       const shVal = shadowCaught !== undefined ? (shadowCaught ? 1 : 0) : null;
-      upsertStmt.run(id, cVal || 0, sVal || 0, shVal || 0, now, cVal, sVal, shVal, now);
+      upsertStmt.run(accountId, dexScope, id, cVal || 0, sVal || 0, shVal || 0, now, cVal, sVal, shVal, now);
     }
     db.exec('COMMIT;');
 
-    res.json({ success: true, count: pokemonIds.length });
+    res.json({ success: true, count: pokemonIds.length, accountId, dexScope });
   } catch (err) {
     db.exec('ROLLBACK;');
     console.error('Error batch updating progress:', err);
@@ -318,9 +393,26 @@ router.post('/progress/batch', (req, res) => {
   }
 });
 
+// POST /api/progress/reset
+router.post('/progress/reset', (req, res) => {
+  try {
+    const { accountId = 'default', dexScope } = req.body;
+    if (dexScope) {
+      db.prepare('DELETE FROM user_progress_v2 WHERE account_id = ? AND dex_scope = ?').run(accountId, dexScope);
+    } else {
+      db.prepare('DELETE FROM user_progress_v2 WHERE account_id = ?').run(accountId);
+    }
+    res.json({ success: true, accountId, dexScope });
+  } catch (err) {
+    console.error('Error resetting progress:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // GET /api/collections
 router.get('/collections', (req, res) => {
   try {
+    const accountId = req.query.accountId || 'default';
     const rawCollections = db.prepare(`
       SELECT 
         c.id,
@@ -345,10 +437,10 @@ router.get('/collections', (req, res) => {
         END) as caughtItems
       FROM custom_collections c
       LEFT JOIN custom_collection_items cci ON c.id = cci.collection_id
-      LEFT JOIN user_progress up ON cci.pokemon_id = up.pokemon_id
+      LEFT JOIN user_progress_v2 up ON (cci.pokemon_id = up.pokemon_id AND up.account_id = ? AND up.dex_scope = ('custom:' || c.id))
       GROUP BY c.id
       ORDER BY c.created_at ASC
-    `).all();
+    `).all(accountId);
 
     const collections = rawCollections.map(c => {
       let total = c.totalItems || 0;
@@ -357,6 +449,7 @@ router.get('/collections', (req, res) => {
       // If collection has no explicit items (e.g. preset/rule-based), calculate dynamic pool count
       if (total === 0) {
         const isShadowColl = c.categoryType === 'shadow' || c.categoryType === 'purified' || (c.name && (c.name.toLowerCase().includes('crypto') || c.name.toLowerCase().includes('shadow') || c.name.toLowerCase().includes('schatten')));
+        let condition = '';
         if (c.categoryType === 'mega') {
           condition = "(p.category = 'mega' OR p.is_mega = 1)";
         } else if (c.categoryType === 'event') {
@@ -384,9 +477,9 @@ router.get('/collections', (req, res) => {
             COUNT(*) as total,
             SUM(CASE WHEN ${caughtCol} = 1 THEN 1 ELSE 0 END) as caught
           FROM pokemon p
-          LEFT JOIN user_progress up ON p.id = up.pokemon_id
+          LEFT JOIN user_progress_v2 up ON (p.id = up.pokemon_id AND up.account_id = ? AND up.dex_scope = ?)
           WHERE ${condition}
-        `).get();
+        `).get(accountId, `custom:${c.id}`);
 
         if (fallbackRow) {
           total = fallbackRow.total || 0;
@@ -616,6 +709,9 @@ router.post('/collections/:id/items/batch', (req, res) => {
 // GET /api/stats
 router.get('/stats', (req, res) => {
   try {
+    const accountId = req.query.accountId || 'default';
+    const dexScope = req.query.dexScope || 'standard';
+
     // Overall category stats
     const statsQuery = db.prepare(`
       SELECT 
@@ -625,9 +721,9 @@ router.get('/stats', (req, res) => {
         SUM(CASE WHEN p.has_shiny = 1 THEN 1 ELSE 0 END) as shinyTotal,
         SUM(CASE WHEN up.shiny_caught = 1 THEN 1 ELSE 0 END) as shinyCaught
       FROM pokemon p
-      LEFT JOIN user_progress up ON p.id = up.pokemon_id
+      LEFT JOIN user_progress_v2 up ON (p.id = up.pokemon_id AND up.account_id = ? AND up.dex_scope = ?)
       GROUP BY p.category
-    `).all();
+    `).all(accountId, dexScope);
 
     // Generation stats
     const genQuery = db.prepare(`
@@ -636,11 +732,11 @@ router.get('/stats', (req, res) => {
         COUNT(p.id) as total,
         SUM(CASE WHEN up.caught = 1 THEN 1 ELSE 0 END) as caught
       FROM pokemon p
-      LEFT JOIN user_progress up ON p.id = up.pokemon_id
+      LEFT JOIN user_progress_v2 up ON (p.id = up.pokemon_id AND up.account_id = ? AND up.dex_scope = ?)
       WHERE p.category = 'standard'
       GROUP BY p.generation
       ORDER BY p.generation ASC
-    `).all();
+    `).all(accountId, dexScope);
 
     res.json({
       categories: statsQuery,
@@ -655,15 +751,19 @@ router.get('/stats', (req, res) => {
 router.get('/export', (req, res) => {
   try {
     const progress = db.prepare('SELECT * FROM user_progress').all();
+    const progressV2 = db.prepare('SELECT * FROM user_progress_v2').all();
+    const accounts = db.prepare('SELECT * FROM user_accounts').all();
     const collections = db.prepare('SELECT * FROM custom_collections').all();
     const collectionItems = db.prepare('SELECT * FROM custom_collection_items').all();
 
     res.json({
       app: 'PokemonGoDexTracker',
-      version: 1,
+      version: 2,
       exportedAt: new Date().toISOString(),
       data: {
         progress,
+        progressV2,
+        accounts,
         collections,
         collectionItems
       }
@@ -681,19 +781,37 @@ router.post('/import', (req, res) => {
       return res.status(400).json({ error: 'Invalid backup file format' });
     }
 
-    const { progress = [], collections = [], collectionItems = [] } = backup.data;
+    const {
+      progress = [],
+      progressV2 = [],
+      accounts = [],
+      collections = [],
+      collectionItems = []
+    } = backup.data;
 
     db.exec('BEGIN TRANSACTION;');
     try {
-      // Restore Progress
-      const progressStmt = db.prepare(`
-        INSERT INTO user_progress (
-          pokemon_id, caught, shiny_caught, lucky_caught, hundo_caught,
+      // Restore Accounts if present
+      if (Array.isArray(accounts) && accounts.length > 0) {
+        const accStmt = db.prepare(`
+          INSERT INTO user_accounts (id, name, created_at)
+          VALUES (?, ?, ?)
+          ON CONFLICT(id) DO UPDATE SET name = excluded.name
+        `);
+        for (const a of accounts) {
+          accStmt.run(a.id, a.name, a.created_at || a.createdAt || new Date().toISOString());
+        }
+      }
+
+      // Restore Progress V2
+      const progressV2Stmt = db.prepare(`
+        INSERT INTO user_progress_v2 (
+          account_id, dex_scope, pokemon_id, caught, shiny_caught, lucky_caught, hundo_caught,
           shadow_caught, purified_caught, gender_m_caught, gender_f_caught,
           xxl_caught, xxs_caught, notes, updated_at
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(pokemon_id) DO UPDATE SET
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ON CONFLICT(account_id, dex_scope, pokemon_id) DO UPDATE SET
           caught = excluded.caught,
           shiny_caught = excluded.shiny_caught,
           lucky_caught = excluded.lucky_caught,
@@ -708,22 +826,47 @@ router.post('/import', (req, res) => {
           updated_at = excluded.updated_at
       `);
 
-      for (const p of progress) {
-        progressStmt.run(
-          p.pokemon_id,
-          p.caught ? 1 : 0,
-          p.shiny_caught ? 1 : 0,
-          p.lucky_caught ? 1 : 0,
-          p.hundo_caught ? 1 : 0,
-          p.shadow_caught ? 1 : 0,
-          p.purified_caught ? 1 : 0,
-          p.gender_m_caught ? 1 : 0,
-          p.gender_f_caught ? 1 : 0,
-          p.xxl_caught ? 1 : 0,
-          p.xxs_caught ? 1 : 0,
-          p.notes || null,
-          p.updated_at || new Date().toISOString()
-        );
+      if (Array.isArray(progressV2) && progressV2.length > 0) {
+        for (const p of progressV2) {
+          progressV2Stmt.run(
+            p.account_id || p.accountId || 'default',
+            p.dex_scope || p.dexScope || 'standard',
+            p.pokemon_id || p.pokemonId,
+            p.caught ? 1 : 0,
+            p.shiny_caught || p.shinyCaught ? 1 : 0,
+            p.lucky_caught || p.luckyCaught ? 1 : 0,
+            p.hundo_caught || p.hundoCaught ? 1 : 0,
+            p.shadow_caught || p.shadowCaught ? 1 : 0,
+            p.purified_caught || p.purifiedCaught ? 1 : 0,
+            p.gender_m_caught || p.genderMCaught ? 1 : 0,
+            p.gender_f_caught || p.genderFCaught ? 1 : 0,
+            p.xxl_caught || p.xxlCaught ? 1 : 0,
+            p.xxs_caught || p.xxsCaught ? 1 : 0,
+            p.notes || null,
+            p.updated_at || p.updatedAt || new Date().toISOString()
+          );
+        }
+      } else if (Array.isArray(progress) && progress.length > 0) {
+        // Fallback for legacy v1 backups
+        for (const p of progress) {
+          progressV2Stmt.run(
+            'default',
+            'standard',
+            p.pokemon_id,
+            p.caught ? 1 : 0,
+            p.shiny_caught ? 1 : 0,
+            p.lucky_caught ? 1 : 0,
+            p.hundo_caught ? 1 : 0,
+            p.shadow_caught ? 1 : 0,
+            p.purified_caught ? 1 : 0,
+            p.gender_m_caught ? 1 : 0,
+            p.gender_f_caught ? 1 : 0,
+            p.xxl_caught ? 1 : 0,
+            p.xxs_caught ? 1 : 0,
+            p.notes || null,
+            p.updated_at || new Date().toISOString()
+          );
+        }
       }
 
       // Restore Collections
@@ -777,7 +920,8 @@ router.post('/import', (req, res) => {
       res.json({
         success: true,
         imported: {
-          progressCount: progress.length,
+          accountsCount: accounts.length,
+          progressCount: progressV2.length || progress.length,
           collectionsCount: collections.length,
           itemsCount: collectionItems.length
         }

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData } from '../types';
+import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData, UserAccount, DexScope } from '../types';
 import { storage, StorageStatus } from '../services/storage';
 import confetti from 'canvas-confetti';
 
@@ -18,6 +18,8 @@ const INITIAL_FILTERS: FilterState = {
 };
 
 export function useDex() {
+  const [accounts, setAccounts] = useState<UserAccount[]>([]);
+  const [activeAccountId, setActiveAccountId] = useState<string>(() => storage.getActiveAccountId());
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [collections, setCollections] = useState<CustomCollection[]>([]);
   const [mode, setMode] = useState<TrackingMode>('standard');
@@ -27,6 +29,13 @@ export function useDex() {
     const saved = localStorage.getItem('pogo_dex_theme');
     return (saved === 'dark' || saved === 'light') ? saved : 'light';
   });
+
+  const activeScope = useMemo<DexScope>(() => {
+    if (mode === 'custom') {
+      return `custom:${filters.activeCollectionId || 'default'}`;
+    }
+    return mode;
+  }, [mode, filters.activeCollectionId]);
 
   useEffect(() => {
     localStorage.setItem('pogo_dex_theme', theme);
@@ -40,6 +49,7 @@ export function useDex() {
   const toggleTheme = useCallback(() => {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   }, []);
+
   const [storageStatus, setStorageStatus] = useState<StorageStatus>({
     isBackendConnected: false,
     backendUrl: '',
@@ -53,11 +63,13 @@ export function useDex() {
       const status = await storage.init();
       setStorageStatus(status);
 
-      const [pokes, colls] = await Promise.all([
-        storage.getPokemonList(),
-        storage.getCollections()
+      const [accs, pokes, colls] = await Promise.all([
+        storage.getAccounts(),
+        storage.getPokemonList(activeAccountId, activeScope),
+        storage.getCollections(activeAccountId)
       ]);
 
+      setAccounts(accs);
       setPokemonList(pokes);
       setCollections(colls);
       if (colls.length > 0 && !filters.activeCollectionId) {
@@ -68,11 +80,41 @@ export function useDex() {
     } finally {
       setLoading(false);
     }
-  }, [filters.activeCollectionId]);
+  }, [activeAccountId, activeScope, filters.activeCollectionId]);
 
   useEffect(() => {
     refreshData();
   }, [refreshData]);
+
+  // Account Management Handlers
+  const switchAccount = useCallback(async (accountId: string) => {
+    storage.setActiveAccountId(accountId);
+    setActiveAccountId(accountId);
+  }, []);
+
+  const createAccount = useCallback(async (name: string) => {
+    const acc = await storage.createAccount(name);
+    const updated = await storage.getAccounts();
+    setAccounts(updated);
+    storage.setActiveAccountId(acc.id);
+    setActiveAccountId(acc.id);
+    return acc;
+  }, []);
+
+  const renameAccount = useCallback(async (id: string, name: string) => {
+    const updated = await storage.renameAccount(id, name);
+    const updatedList = await storage.getAccounts();
+    setAccounts(updatedList);
+    return updated;
+  }, []);
+
+  const deleteAccount = useCallback(async (id: string) => {
+    await storage.deleteAccount(id);
+    const updated = await storage.getAccounts();
+    setAccounts(updated);
+    const currentActive = storage.getActiveAccountId();
+    setActiveAccountId(currentActive);
+  }, []);
 
   // Dynamic feature toggle (caught, shiny, lucky, hundo, shadow, purified, gender, size)
   const toggleFeature = useCallback(async (
@@ -96,8 +138,13 @@ export function useDex() {
     setPokemonList(prev =>
       prev.map(p => (p.id === pokemonId ? { ...p, [key]: !p[key] } : p))
     );
-    await storage.toggleProgress(pokemonId, type);
-  }, []);
+    await storage.toggleProgress(pokemonId, type, activeAccountId, activeScope);
+
+    if (mode === 'custom') {
+      const updatedColls = await storage.getCollections(activeAccountId);
+      setCollections(updatedColls);
+    }
+  }, [activeAccountId, activeScope, mode]);
 
   // One-click caught toggle adapts to current mode or active collection type
   const toggleCaught = useCallback(async (pokemonId: string) => {
@@ -120,10 +167,9 @@ export function useDex() {
 
     await toggleFeature(pokemonId, targetType);
 
-    // Refresh collection counts
-    const colls = await storage.getCollections();
+    const colls = await storage.getCollections(activeAccountId);
     setCollections(colls);
-  }, [mode, collections, filters.activeCollectionId, toggleFeature]);
+  }, [mode, collections, filters.activeCollectionId, toggleFeature, activeAccountId]);
 
   // Toggle shiny status specifically
   const toggleShiny = useCallback(async (pokemonId: string) => {
@@ -185,18 +231,17 @@ export function useDex() {
       await storage.addItemToCollection(collectionId, pokemonId);
     }
 
-    // Refresh collection counts
-    const updatedColls = await storage.getCollections();
+    const updatedColls = await storage.getCollections(activeAccountId);
     setCollections(updatedColls);
     setPokemonList(prev => [...prev]);
-  }, []);
+  }, [activeAccountId]);
 
   const setCollectionItems = useCallback(async (collectionId: string, pokemonIds: string[]) => {
     await storage.setCollectionItems(collectionId, pokemonIds);
-    const updatedColls = await storage.getCollections();
+    const updatedColls = await storage.getCollections(activeAccountId);
     setCollections(updatedColls);
     setPokemonList(prev => [...prev]);
-  }, []);
+  }, [activeAccountId]);
 
   // Bulk mark caught/uncaught (for regions, whole lists, etc.)
   const markBatchCaught = useCallback(async (pokemonIds: string[], caught: boolean) => {
@@ -204,11 +249,16 @@ export function useDex() {
     const activeColl = collections.find(c => c.id === filters.activeCollectionId);
     const isShiny = mode === 'shiny' || Boolean(mode === 'custom' && activeColl?.trackShiny);
     const isShadow = mode === 'shadow' || Boolean(mode === 'custom' && activeColl?.categoryType === 'shadow');
-    await storage.batchUpdateProgress(pokemonIds, {
-      caught: (isShiny || isShadow) ? undefined : caught,
-      shinyCaught: isShiny ? caught : undefined,
-      shadowCaught: isShadow ? caught : undefined
-    });
+    await storage.batchUpdateProgress(
+      pokemonIds,
+      {
+        caught: (isShiny || isShadow) ? undefined : caught,
+        shinyCaught: isShiny ? caught : undefined,
+        shadowCaught: isShadow ? caught : undefined
+      },
+      activeAccountId,
+      activeScope
+    );
 
     setPokemonList(prev =>
       prev.map(p => {
@@ -222,9 +272,9 @@ export function useDex() {
       })
     );
 
-    const updatedColls = await storage.getCollections();
+    const updatedColls = await storage.getCollections(activeAccountId);
     setCollections(updatedColls);
-  }, [mode, collections, filters.activeCollectionId]);
+  }, [mode, collections, filters.activeCollectionId, activeAccountId, activeScope]);
 
   // Filtered Pokémon list
   const filteredPokemon = useMemo(() => {
@@ -564,12 +614,24 @@ export function useDex() {
     await refreshData();
   }, [refreshData]);
 
-  const resetAllProgress = useCallback(() => {
-    storage.resetAllProgress();
-    refreshData();
-  }, [refreshData]);
+  const resetScopeProgress = useCallback(async () => {
+    await storage.resetProgress(activeAccountId, activeScope);
+    await refreshData();
+  }, [activeAccountId, activeScope, refreshData]);
+
+  const resetAllProgress = useCallback(async () => {
+    await storage.resetProgress(activeAccountId);
+    await refreshData();
+  }, [activeAccountId, refreshData]);
 
   return {
+    accounts,
+    activeAccountId,
+    activeScope,
+    switchAccount,
+    createAccount,
+    renameAccount,
+    deleteAccount,
     pokemonList,
     filteredPokemon,
     collections,
@@ -595,6 +657,7 @@ export function useDex() {
     setCollectionItems,
     exportBackup,
     importBackup,
+    resetScopeProgress,
     resetAllProgress,
     refreshData
   };

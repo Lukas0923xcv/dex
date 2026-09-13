@@ -10,7 +10,10 @@ interface SettingsModalProps {
   onExport: () => Promise<BackupData>;
   onImport: (backup: BackupData) => Promise<void>;
   onReset: () => void;
+  onResetScope?: () => void;
   onDeleteAllCollections?: () => Promise<void>;
+  activeAccountName?: string;
+  activeScopeName?: string;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -20,7 +23,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onExport,
   onImport,
   onReset,
-  onDeleteAllCollections
+  onResetScope,
+  onDeleteAllCollections,
+  activeAccountName = 'Haupt-Account',
+  activeScopeName = 'Standard Dex'
 }) => {
   const [remoteUrl, setRemoteUrl] = useState(storageStatus.backendUrl || '');
   const [importStatus, setImportStatus] = useState<string | null>(null);
@@ -178,19 +184,24 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           </div>
 
           {/* Reset Danger Zone */}
-          <div className="pt-4 border-t border-slate-200 dark:border-slate-800">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-rose-500 dark:text-rose-400 mb-2">
-              Danger Zone
-            </h3>
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-rose-500 dark:text-rose-400 mb-0.5">
+                Danger Zone · {activeAccountName}
+              </h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                Fortschritte separat für die aktuelle Ansicht oder den gesamten Account zurücksetzen.
+              </p>
+            </div>
 
             {isResetConfirmOpen ? (
               <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl space-y-3">
                 <div className="flex items-center gap-2 text-rose-700 dark:text-rose-300 text-xs font-bold">
                   <AlertTriangle className="w-4 h-4 text-rose-500 dark:text-rose-400 shrink-0" />
-                  Are you absolutely sure you want to reset all progress?
+                  Möchtest du alle Fänge dieses Accounts wirklich zurücksetzen?
                 </div>
                 <p className="text-[11px] text-rose-800/80 dark:text-rose-200/80">
-                  This will unmark all caught Pokémon and reset custom collections.
+                  Alle markierten Pokémon (Standard, Shiny, Crypto, Formen, Megas, Kostüme) für "{activeAccountName}" werden zurückgesetzt.
                 </p>
                 <div className="flex gap-2">
                   <button
@@ -200,28 +211,44 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       setIsResetConfirmOpen(false);
                       onClose();
                     }}
-                    className="flex-1 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-xl transition-colors"
+                    className="flex-1 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
                   >
-                    Yes, Reset Everything
+                    Ja, alles für diesen Account löschen
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsResetConfirmOpen(false)}
-                    className="px-3 py-1.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors"
+                    className="px-3 py-1.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors cursor-pointer"
                   >
-                    Cancel
+                    Abbrechen
                   </button>
                 </div>
               </div>
             ) : (
-              <>
+              <div className="space-y-2">
+                {onResetScope && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (window.confirm(`Möchtest du wirklich nur den Fortschritt für "${activeScopeName}" in Account "${activeAccountName}" zurücksetzen?\n\nAlle anderen Dex-Modi (z.B. Formen, Standard, Shiny) bleiben unberührt!`)) {
+                        onResetScope();
+                        onClose();
+                      }
+                    }}
+                    className="w-full py-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                  >
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    <span>Nur "{activeScopeName}" zurücksetzen</span>
+                  </button>
+                )}
+
                 <button
                   type="button"
                   onClick={() => setIsResetConfirmOpen(true)}
                   className="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  Reset All Progress
+                  <span>Alle Dex-Fortschritte für "{activeAccountName}" zurücksetzen</span>
                 </button>
 
                 {onDeleteAllCollections && (
@@ -237,14 +264,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         onClose();
                       }
                     }}
-                    className="w-full mt-2 py-2 bg-slate-100 hover:bg-rose-50 dark:bg-slate-800/80 dark:hover:bg-rose-950/30 border border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-800 text-slate-700 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                    className="w-full py-2 bg-slate-100 hover:bg-rose-50 dark:bg-slate-800/80 dark:hover:bg-rose-950/30 border border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-800 text-slate-700 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                     title="Löscht alle erstellten Sammlungen, behält alle gefangenen Pokémon"
                   >
                     <Trash2 className="w-3.5 h-3.5 text-rose-500" />
                     <span>Alle eigenen Listen löschen (Fänge behalten)</span>
                   </button>
                 )}
-              </>
+              </div>
             )}
           </div>
         </div>
