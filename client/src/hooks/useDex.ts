@@ -17,6 +17,18 @@ const INITIAL_FILTERS: FilterState = {
   shadowOnly: false
 };
 
+export const isRegionalForm = (p: Pokemon) => {
+  const fid = (p.formId || '').toUpperCase();
+  const fname = (p.formName || '').toUpperCase();
+  const name = (p.name || '').toUpperCase();
+  return (
+    fid.includes('ALOLA') || fid.includes('GALAR') || fid.includes('HISUI') || fid.includes('PALDEA') ||
+    fname.includes('ALOLA') || fname.includes('GALAR') || fname.includes('HISUI') || fname.includes('PALDEA') ||
+    name.includes('ALOLAN') || name.includes('GALARIAN') || name.includes('HISUIAN') || name.includes('PALDEAN')
+  );
+};
+
+
 export function useDex() {
   const [accounts, setAccounts] = useState<UserAccount[]>([]);
   const [activeAccountId, setActiveAccountId] = useState<string>(() => storage.getActiveAccountId());
@@ -323,12 +335,21 @@ export function useDex() {
         return true;
       };
 
-      if (filters.includeBaseInForms) {
-        const formDexNrs = new Set(pokemonList.filter(isQualifyingForm).map(p => p.dexNr));
-        result = result.filter(p => isQualifyingForm(p) || (p.category === 'standard' && formDexNrs.has(p.dexNr)));
-      } else {
-        result = result.filter(isQualifyingForm);
-      }
+      const qualifyingForms = pokemonList.filter(isQualifyingForm);
+      const regionalDexNrs = new Set(
+        qualifyingForms.filter(isRegionalForm).map(p => p.dexNr)
+      );
+
+      result = result.filter(p => {
+        if (isQualifyingForm(p)) return true;
+        if (p.category === 'standard') {
+          // Regional forms show base versions (when includeBaseInForms is true, default true)
+          if (Boolean(filters.includeBaseInForms) && regionalDexNrs.has(p.dexNr)) {
+            return true;
+          }
+        }
+        return false;
+      });
     } else if (mode === 'costume') {
       result = result.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom') {
@@ -536,12 +557,20 @@ export function useDex() {
         return true;
       };
 
-      if (filters.includeBaseInForms) {
-        const formDexNrs = new Set(pokemonList.filter(isQualifyingForm).map(p => p.dexNr));
-        pool = pool.filter(p => isQualifyingForm(p) || (p.category === 'standard' && formDexNrs.has(p.dexNr)));
-      } else {
-        pool = pool.filter(isQualifyingForm);
-      }
+      const qualifyingForms = pokemonList.filter(isQualifyingForm);
+      const regionalDexNrs = new Set(
+        qualifyingForms.filter(isRegionalForm).map(p => p.dexNr)
+      );
+
+      pool = pool.filter(p => {
+        if (isQualifyingForm(p)) return true;
+        if (p.category === 'standard') {
+          if (Boolean(filters.includeBaseInForms) && regionalDexNrs.has(p.dexNr)) {
+            return true;
+          }
+        }
+        return false;
+      });
     } else if (mode === 'costume') {
       pool = pool.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom') {

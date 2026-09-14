@@ -58,7 +58,7 @@ const HOME_FORM_SPECIES = new Set([
   // Alternate forms using Home 3D renders
   479, 483, 484, 641, 642, 645, 646, 647, 648, 669, 670, 671, 676, 678,
   705, 706, 718, 720, 741, 745, 800, 849, 876, 888, 889, 892, 905,
-  916, 931, 978, 982, 1012
+  916, 931, 978, 982
 ]);
 
 export function getEffectiveSprite(pokemon: Pokemon, isShiny: boolean): string {
