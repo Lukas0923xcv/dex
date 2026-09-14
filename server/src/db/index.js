@@ -223,13 +223,15 @@ try {
     if (staleRows.length > 0) {
       console.log(`Pruning ${staleRows.length} redundant Pokémon records from SQLite database...`);
       const deleteStmt = db.prepare('DELETE FROM pokemon WHERE id = ?');
-      const deleteProgStmt = db.prepare('DELETE FROM progress WHERE pokemon_id = ?');
+      const deleteProgStmt = db.prepare('DELETE FROM user_progress WHERE pokemon_id = ?');
+      const deleteProgV2Stmt = db.prepare('DELETE FROM user_progress_v2 WHERE pokemon_id = ?');
       const deleteCollStmt = db.prepare('DELETE FROM custom_collection_items WHERE pokemon_id = ?');
       db.exec('BEGIN TRANSACTION;');
       for (const r of staleRows) {
-        deleteStmt.run(r.id);
-        deleteProgStmt.run(r.id);
         deleteCollStmt.run(r.id);
+        deleteProgStmt.run(r.id);
+        deleteProgV2Stmt.run(r.id);
+        deleteStmt.run(r.id);
       }
       db.exec('COMMIT;');
       console.log('Successfully pruned redundant Pokémon records from SQLite.');
@@ -298,13 +300,37 @@ try {
       const updatedRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
       console.log(`Successfully auto-healed SQLite pokemon table. Total records: ${updatedRow?.count}`);
     } else {
-      // Sync form names on existing records
-      const updateFormNameStmt = db.prepare('UPDATE pokemon SET form_name = ? WHERE id = ? AND (form_name IS NULL OR form_name != ?)');
+      // Sync form names and updated sprite URLs on existing records
+      const updateSpriteStmt = db.prepare(`
+        UPDATE pokemon SET 
+          form_name = ?,
+          sprite_url = ?,
+          shiny_sprite_url = ?,
+          fallback_sprite_url = ?,
+          fallback_shiny_url = ?
+        WHERE id = ? AND (
+          form_name IS NOT ? OR
+          sprite_url IS NOT ? OR
+          shiny_sprite_url IS NOT ? OR
+          fallback_sprite_url IS NOT ? OR
+          fallback_shiny_url IS NOT ?
+        )
+      `);
       db.exec('BEGIN TRANSACTION;');
       for (const p of pData) {
-        if (p.formName) {
-          updateFormNameStmt.run(p.formName, p.id, p.formName);
-        }
+        updateSpriteStmt.run(
+          p.formName || null,
+          p.spriteUrl || null,
+          p.shinySpriteUrl || null,
+          p.fallbackSpriteUrl || null,
+          p.fallbackShinyUrl || null,
+          p.id,
+          p.formName || null,
+          p.spriteUrl || null,
+          p.shinySpriteUrl || null,
+          p.fallbackSpriteUrl || null,
+          p.fallbackShinyUrl || null
+        );
       }
       db.exec('COMMIT;');
     }
