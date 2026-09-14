@@ -319,20 +319,22 @@ try {
       const updatedRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
       console.log(`Successfully auto-healed SQLite pokemon table. Total records: ${updatedRow?.count}`);
     } else {
-      // Sync form names and updated sprite URLs on existing records
+      // Sync form names, updated sprite URLs, and releasedInGo status on existing records
       const updateSpriteStmt = db.prepare(`
         UPDATE pokemon SET 
           form_name = ?,
           sprite_url = ?,
           shiny_sprite_url = ?,
           fallback_sprite_url = ?,
-          fallback_shiny_url = ?
+          fallback_shiny_url = ?,
+          released_in_go = ?
         WHERE id = ? AND (
           form_name IS NOT ? OR
           sprite_url IS NOT ? OR
           shiny_sprite_url IS NOT ? OR
           fallback_sprite_url IS NOT ? OR
-          fallback_shiny_url IS NOT ?
+          fallback_shiny_url IS NOT ? OR
+          released_in_go IS NOT ?
         )
       `);
       db.exec('BEGIN TRANSACTION;');
@@ -343,12 +345,14 @@ try {
           p.shinySpriteUrl || null,
           p.fallbackSpriteUrl || null,
           p.fallbackShinyUrl || null,
+          p.releasedInGo ? 1 : 0,
           p.id,
           p.formName || null,
           p.spriteUrl || null,
           p.shinySpriteUrl || null,
           p.fallbackSpriteUrl || null,
-          p.fallbackShinyUrl || null
+          p.fallbackShinyUrl || null,
+          p.releasedInGo ? 1 : 0
         );
       }
       db.exec('COMMIT;');

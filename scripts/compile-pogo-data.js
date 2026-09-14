@@ -192,7 +192,7 @@ async function main() {
       const HOME_FORM_SPECIES = new Set([
         479, 483, 484, 641, 642, 645, 646, 647, 648, 669, 670, 671, 676, 678,
         705, 706, 718, 720, 741, 745, 800, 849, 876, 888, 889, 892, 905,
-        916, 931, 978, 982, 1012
+        916, 931, 978, 982
       ]);
       if (HOME_FORM_SPECIES.has(dexNr)) {
         pogoIcon = homeArtwork;
@@ -207,6 +207,12 @@ async function main() {
       if (dexNr === 711) {
         pogoIcon = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fAVERAGE.icon.png`;
         pogoShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.s.fAVERAGE.icon.png`;
+      }
+
+      // Poltchageist base (Counterfeit Form)
+      if (dexNr === 1012) {
+        pogoIcon = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1012.fCOUNTERFEIT.icon.png`;
+        pogoShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1012.fCOUNTERFEIT.s.icon.png`;
       }
 
       allItems.push({
@@ -1127,28 +1133,29 @@ async function main() {
   specialForms.push({
     dexNr: 1012, base: 'Poltchageist', formId: 'MASTERPIECE', label: 'Masterpiece Form', type1: 'Grass', type2: 'Ghost',
     displayName: 'Poltchageist (Masterpiece Form)', germanName: 'Poltchageist (Kostbarkeitsform)',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10274.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10274.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10274.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10274.png'
+    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1012.fARTISAN.icon.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1012.fARTISAN.s.icon.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1012.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1012.png'
   });
   specialForms.push({
     dexNr: 1013, base: 'Sinistcha', formId: 'MASTERPIECE', label: 'Masterpiece Form', type1: 'Grass', type2: 'Ghost',
     displayName: 'Sinistcha (Masterpiece Form)', germanName: 'Sinistcha (Kostbarkeitsform)',
     spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1013.fMASTERPIECE.icon.png',
     shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm1013.fMASTERPIECE.s.icon.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10275.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10275.png'
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/1013.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1013.png'
   });
 
-  // Hisuian Sliggoo & Goodra
+  // Hisuian Sliggoo & Goodra (Unreleased in GO until Nov 2026 GO Wild Area)
   specialForms.push({
     dexNr: 705, base: 'Sliggoo', formId: 'HISUIAN', label: 'Hisuian Form', type1: 'Steel', type2: 'Dragon',
     displayName: 'Hisuian Sliggoo', germanName: 'Hisui-Viscargot',
     spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10241.png',
     shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10241.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10241.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10241.png'
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10241.png',
+    releasedInGo: false
   });
   specialForms.push({
     dexNr: 706, base: 'Goodra', formId: 'HISUIAN', label: 'Hisuian Form', type1: 'Steel', type2: 'Dragon',
@@ -1156,7 +1163,8 @@ async function main() {
     spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10242.png',
     shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10242.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10242.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10242.png'
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10242.png',
+    releasedInGo: false
   });
 
   // Spinda Patterns (2-9 & Heart - Pattern 1 is base)
@@ -1295,7 +1303,7 @@ async function main() {
         isForm: true,
         isCostume: false,
         isGenderDifference: Boolean(sf.isGenderDifference),
-        releasedInGo: true
+        releasedInGo: sf.releasedInGo !== undefined ? Boolean(sf.releasedInGo) : true
       });
     }
   });

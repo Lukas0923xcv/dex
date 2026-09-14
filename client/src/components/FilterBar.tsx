@@ -135,7 +135,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   ? 'bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border-indigo-400/60 shadow-sm font-bold'
                   : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
-              title="Basis-Formen neben den regionalen/alternativen Formen anzeigen"
+              title="Basis-Formen für Regionalformen anzeigen"
             >
               <span>👁️</span>
               <span>Basis-Formen</span>
