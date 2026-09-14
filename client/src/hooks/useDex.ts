@@ -297,6 +297,8 @@ export function useDex() {
     // 0. Filter by Released in GO (specifically a Pokémon GO dex)
     result = result.filter(p => p.releasedInGo);
 
+    const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
+
     // 1. Filter by Mode
     if (mode === 'standard') {
       result = result.filter(p => p.category === 'standard');
@@ -326,7 +328,6 @@ export function useDex() {
     } else if (mode === 'costume') {
       result = result.filter(p => p.category === 'costume' || p.isCostume);
     } else if (mode === 'custom') {
-      const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
       if (activeColl) {
         const itemIds = storage.getCollectionItemIds(activeColl.id);
         const includeGender = Boolean(filters.showGenderTracking);
@@ -365,14 +366,22 @@ export function useDex() {
         }
 
         if (activeColl.trackShiny) {
-          result = result.filter(p => p.hasShiny);
+          if (activeColl.categoryType === 'shadow') {
+            result = result.filter(p => Boolean(p.hasShadowShiny));
+          } else {
+            result = result.filter(p => p.hasShiny);
+          }
         }
       }
     }
 
     // 1b. Filter by Shiny Only (either toggle is on, or in custom mode with trackShiny)
     if (filters.shinyOnly) {
-      result = result.filter(p => p.hasShiny);
+      if (mode === 'shadow' || (mode === 'custom' && activeColl?.categoryType === 'shadow')) {
+        result = result.filter(p => Boolean(p.hasShadowShiny));
+      } else {
+        result = result.filter(p => p.hasShiny);
+      }
     }
 
     // 1c. Filter by Shadow Only (toggle is on)
@@ -394,9 +403,8 @@ export function useDex() {
     }
 
     // 4. Filter by Caught Status
-    const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
     const getPokemonCaughtStatus = (p: Pokemon) => {
-      if (mode === 'shiny') return Boolean(p.shinyCaught);
+      if (filters.shinyOnly || mode === 'shiny') return Boolean(p.shinyCaught);
       if (mode === 'shadow') return Boolean(p.shadowCaught);
       if (mode === 'custom' && (activeColl?.categoryType === 'shadow' || activeColl?.name.toLowerCase().includes('crypto') || activeColl?.name.toLowerCase().includes('shadow'))) return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
@@ -571,13 +579,21 @@ export function useDex() {
         }
 
         if (activeColl.trackShiny) {
-          pool = pool.filter(p => p.hasShiny);
+          if (activeColl.categoryType === 'shadow') {
+            pool = pool.filter(p => Boolean(p.hasShadowShiny));
+          } else {
+            pool = pool.filter(p => p.hasShiny);
+          }
         }
       }
     }
 
     if (filters.shinyOnly) {
-      pool = pool.filter(p => p.hasShiny);
+      if (mode === 'shadow' || (mode === 'custom' && activeColl?.categoryType === 'shadow')) {
+        pool = pool.filter(p => Boolean(p.hasShadowShiny));
+      } else {
+        pool = pool.filter(p => p.hasShiny);
+      }
     }
 
     if (filters.shadowOnly) {
@@ -590,7 +606,7 @@ export function useDex() {
 
     const total = pool.length;
     const caught = pool.filter(p => {
-      if (mode === 'shiny') return Boolean(p.shinyCaught);
+      if (filters.shinyOnly || mode === 'shiny') return Boolean(p.shinyCaught);
       if (mode === 'shadow') return Boolean(p.shadowCaught);
       if (mode === 'custom' && (activeColl?.categoryType === 'shadow' || activeColl?.name.toLowerCase().includes('crypto') || activeColl?.name.toLowerCase().includes('shadow'))) return Boolean(p.shadowCaught);
       if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);

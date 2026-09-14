@@ -127,6 +127,7 @@ router.get('/pokemon', (req, res) => {
         p.official_artwork_url as officialArtworkUrl,
         p.has_shiny as hasShiny,
         p.has_shadow as hasShadow,
+        p.has_shadow_shiny as hasShadowShiny,
         p.is_mega as isMega,
         p.is_form as isForm,
         p.is_costume as isCostume,
@@ -176,7 +177,11 @@ router.get('/pokemon', (req, res) => {
     }
 
     if (shinyOnly === 'true' || shinyOnly === '1') {
-      sql += ` AND p.has_shiny = 1`;
+      if (category === 'shadow' || category === 'crypto' || shadowOnly === 'true' || shadowOnly === '1') {
+        sql += ` AND p.has_shadow_shiny = 1`;
+      } else {
+        sql += ` AND p.has_shiny = 1`;
+      }
     }
 
     if (generation && generation !== 'all') {
@@ -220,11 +225,15 @@ router.get('/pokemon', (req, res) => {
         q = q.replace(/^mega\s+/, '');
       }
 
-      if (requireShadow) {
-        sql += ` AND p.has_shadow = 1`;
-      }
-      if (requireShiny) {
-        sql += ` AND p.has_shiny = 1`;
+      if (requireShadow && requireShiny) {
+        sql += ` AND p.has_shadow_shiny = 1`;
+      } else {
+        if (requireShadow) {
+          sql += ` AND p.has_shadow = 1`;
+        }
+        if (requireShiny) {
+          sql += ` AND p.has_shiny = 1`;
+        }
       }
       if (requireMega) {
         sql += ` AND (p.category = 'mega' OR p.is_mega = 1)`;
@@ -277,6 +286,7 @@ router.get('/pokemon', (req, res) => {
       names: r.namesJson ? JSON.parse(r.namesJson) : undefined,
       hasShiny: Boolean(r.hasShiny),
       hasShadow: Boolean(r.hasShadow),
+      hasShadowShiny: Boolean(r.hasShadowShiny),
       isMega: Boolean(r.isMega),
       isForm: Boolean(r.isForm),
       isCostume: Boolean(r.isCostume),

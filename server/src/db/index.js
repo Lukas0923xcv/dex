@@ -38,6 +38,7 @@ db.exec(`
     official_artwork_url TEXT,
     has_shiny INTEGER DEFAULT 1,
     has_shadow INTEGER DEFAULT 0,
+    has_shadow_shiny INTEGER DEFAULT 0,
     is_mega INTEGER DEFAULT 0,
     is_form INTEGER DEFAULT 0,
     is_costume INTEGER DEFAULT 0,
@@ -155,7 +156,8 @@ const migrations = [
   'ALTER TABLE custom_collections ADD COLUMN track_gender INTEGER DEFAULT 0;',
   'ALTER TABLE custom_collections ADD COLUMN track_background INTEGER DEFAULT 0;',
   'ALTER TABLE custom_collections ADD COLUMN track_size INTEGER DEFAULT 0;',
-  'ALTER TABLE pokemon ADD COLUMN has_shadow INTEGER DEFAULT 0;'
+  'ALTER TABLE pokemon ADD COLUMN has_shadow INTEGER DEFAULT 0;',
+  'ALTER TABLE pokemon ADD COLUMN has_shadow_shiny INTEGER DEFAULT 0;'
 ];
 
 for (const sql of migrations) {
@@ -185,6 +187,29 @@ try {
   }
 } catch (e) {
   console.warn('Shadow auto-heal note:', e.message);
+}
+
+// Auto-heal / populate has_shadow_shiny in SQLite if missing or zero
+try {
+  const shadowShinyCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow_shiny = 1').get();
+  const expectedShadowShinyCount = 340;
+  if (!shadowShinyCheck || shadowShinyCheck.count < expectedShadowShinyCount) {
+    console.log(`Auto-healing SQLite shadow shiny records (current: ${shadowShinyCheck ? shadowShinyCheck.count : 0}, expected: ${expectedShadowShinyCount})...`);
+    const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
+    if (fs.existsSync(jsonPath)) {
+      const pData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+      const updateStmt = db.prepare('UPDATE pokemon SET has_shadow_shiny = ? WHERE id = ?');
+      db.exec('BEGIN TRANSACTION;');
+      for (const p of pData) {
+        updateStmt.run(p.hasShadowShiny ? 1 : 0, p.id);
+      }
+      db.exec('COMMIT;');
+      const updatedCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow_shiny = 1').get();
+      console.log(`Successfully auto-healed has_shadow_shiny in SQLite database. Total shadow shiny records: ${updatedCheck?.count}`);
+    }
+  }
+} catch (e) {
+  console.warn('Shadow shiny auto-heal note:', e.message);
 }
 
 // Auto-heal Hisui generation in SQLite if any Hisui Pokemon is still gen 9 or other gen
@@ -243,8 +268,8 @@ try {
         INSERT INTO pokemon (
           id, dex_nr, name, form_id, form_name, category, generation,
           type1, type2, sprite_url, shiny_sprite_url, fallback_sprite_url,
-          fallback_shiny_url, official_artwork_url, has_shiny, has_shadow, is_mega, is_form, is_costume, is_gender_difference, released_in_go, names_json
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          fallback_shiny_url, official_artwork_url, has_shiny, has_shadow, has_shadow_shiny, is_mega, is_form, is_costume, is_gender_difference, released_in_go, names_json
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ON CONFLICT(id) DO UPDATE SET
           dex_nr = excluded.dex_nr,
           name = excluded.name,
@@ -261,6 +286,7 @@ try {
           official_artwork_url = excluded.official_artwork_url,
           has_shiny = excluded.has_shiny,
           has_shadow = excluded.has_shadow,
+          has_shadow_shiny = excluded.has_shadow_shiny,
           is_mega = excluded.is_mega,
           is_form = excluded.is_form,
           is_costume = excluded.is_costume,
@@ -288,6 +314,7 @@ try {
           toSql(p.officialArtworkUrl),
           p.hasShiny ? 1 : 0,
           p.hasShadow ? 1 : 0,
+          p.hasShadowShiny ? 1 : 0,
           p.isMega ? 1 : 0,
           p.isForm ? 1 : 0,
           p.isCostume ? 1 : 0,

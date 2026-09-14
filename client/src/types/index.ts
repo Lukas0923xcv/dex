@@ -16,6 +16,7 @@ export interface Pokemon {
   officialArtworkUrl?: string;
   hasShiny: boolean;
   hasShadow?: boolean;
+  hasShadowShiny?: boolean;
   isMega: boolean;
   isForm: boolean;
   isCostume?: boolean;
