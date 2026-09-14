@@ -150,7 +150,7 @@ export const App: React.FC = () => {
         mode={mode}
         onSelectMode={(newMode) => {
           setMode(newMode);
-          setFilters(f => ({ ...f, generation: 'all', search: '', status: 'all' }));
+          setFilters(f => ({ ...f, generation: 'all', search: '' }));
         }}
         collections={collections}
         activeCollectionId={filters.activeCollectionId}
