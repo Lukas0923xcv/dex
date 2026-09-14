@@ -1,6 +1,6 @@
 import React from 'react';
 import { FilterState, StatusFilter, TrackingMode, CustomCollection } from '../types';
-import { Search, X, Filter, ArrowUpDown, Check, RotateCcw, Sparkles, Flame } from 'lucide-react';
+import { Search, X, Check, RotateCcw, Sparkles, Flame } from 'lucide-react';
 
 interface FilterBarProps {
   filters: FilterState;
@@ -26,13 +26,6 @@ const GENERATIONS = [
   { id: 0, label: 'Unbekannt · Meltan' },
 ];
 
-const TYPES = [
-  'All Types',
-  'Normal', 'Fire', 'Water', 'Grass', 'Electric', 'Ice',
-  'Fighting', 'Poison', 'Ground', 'Flying', 'Psychic', 'Bug',
-  'Rock', 'Ghost', 'Dragon', 'Steel', 'Dark', 'Fairy'
-];
-
 export const FilterBar: React.FC<FilterBarProps> = ({
   filters,
   mode,
@@ -52,7 +45,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
   const hasActiveFilters =
     filters.search !== '' ||
     filters.generation !== 'all' ||
-    filters.type !== 'all' ||
     filters.status !== 'all' ||
     Boolean(filters.shinyOnly) ||
     Boolean(filters.shadowOnly) ||
@@ -172,35 +164,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           ))}
         </div>
 
-        {/* Type Dropdown */}
-        <div className="relative shrink-0">
-          <select
-            value={filters.type}
-            onChange={(e) => onFilterChange({ type: e.target.value === 'All Types' ? 'all' : e.target.value })}
-            className="w-full sm:w-auto appearance-none bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-sm text-slate-800 dark:text-slate-200 font-medium py-2 pl-3 pr-8 rounded-xl focus:outline-none focus:border-blue-500 cursor-pointer"
-          >
-            {TYPES.map((t) => (
-              <option key={t} value={t === 'All Types' ? 'all' : t} className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">
-                {t}
-              </option>
-            ))}
-          </select>
-          <Filter className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-        </div>
-
-        {/* Sort Selector */}
-        <div className="relative shrink-0">
-          <select
-            value={filters.sortBy}
-            onChange={(e) => onFilterChange({ sortBy: e.target.value as any })}
-            className="w-full sm:w-auto appearance-none bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 text-sm text-slate-800 dark:text-slate-200 font-medium py-2 pl-3 pr-8 rounded-xl focus:outline-none focus:border-blue-500 cursor-pointer"
-          >
-            <option value="dexAsc" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200"># Number (Low to High)</option>
-            <option value="dexDesc" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200"># Number (High to Low)</option>
-            <option value="nameAsc" className="bg-white dark:bg-slate-900 text-slate-800 dark:text-slate-200">Name (A to Z)</option>
-          </select>
-          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-        </div>
 
         {/* Clear Filters button */}
         {hasActiveFilters && (
