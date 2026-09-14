@@ -70,7 +70,7 @@ export function useDex() {
       ]);
 
       setAccounts(accs);
-      setPokemonList(pokes);
+      setPokemonList(pokes.filter(p => p.releasedInGo));
       setCollections(colls);
       if (colls.length > 0 && !filters.activeCollectionId) {
         setFilters(f => ({ ...f, activeCollectionId: colls[0].id }));
@@ -280,10 +280,8 @@ export function useDex() {
   const filteredPokemon = useMemo(() => {
     let result = [...pokemonList];
 
-    // 0. Filter by Released in GO (if enabled)
-    if (filters.releasedOnly) {
-      result = result.filter(p => p.releasedInGo);
-    }
+    // 0. Filter by Released in GO (specifically a Pokémon GO dex)
+    result = result.filter(p => p.releasedInGo);
 
     // 1. Filter by Mode
     if (mode === 'standard') {
@@ -489,9 +487,8 @@ export function useDex() {
   const currentViewStats = useMemo(() => {
     let pool = [...pokemonList];
 
-    if (filters.releasedOnly) {
-      pool = pool.filter(p => p.releasedInGo);
-    }
+    // Filter by Released in GO (specifically a Pokémon GO dex)
+    pool = pool.filter(p => p.releasedInGo);
 
     const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
 
@@ -591,7 +588,7 @@ export function useDex() {
     const percentage = total > 0 ? Math.round((caught / total) * 100) : 0;
 
     return { total, caught, percentage };
-  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.releasedOnly, filters.includeBaseInForms, filters.showGenderTracking, filters.shinyOnly, filters.shadowOnly, collections]);
+  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.includeBaseInForms, filters.showGenderTracking, filters.shinyOnly, filters.shadowOnly, collections]);
 
   // Trigger celebration on 100%
   useEffect(() => {

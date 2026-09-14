@@ -244,11 +244,11 @@ class StorageAdapter {
   public async getPokemonList(accountId: string = 'default', scope: DexScope = 'standard'): Promise<Pokemon[]> {
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/pokemon?limit=2500&accountId=${encodeURIComponent(accountId)}&dexScope=${encodeURIComponent(scope)}`);
+        const res = await fetch(`${this.backendUrl}/api/pokemon?limit=2500&releasedOnly=true&accountId=${encodeURIComponent(accountId)}&dexScope=${encodeURIComponent(scope)}`);
         if (res.ok) {
           const backendList: Pokemon[] = await res.json();
           const localMap = new Map((localPokemonData as Pokemon[]).map(p => [p.id, p]));
-          return backendList.map(p => {
+          return backendList.filter(p => p.releasedInGo).map(p => {
             const local = localMap.get(p.id);
             return {
               ...p,
@@ -263,7 +263,7 @@ class StorageAdapter {
     }
 
     // Local / GitHub Pages mode: use bundled dataset and join with scoped localStorage progress
-    const baseList = localPokemonData as Pokemon[];
+    const baseList = (localPokemonData as Pokemon[]).filter(p => p.releasedInGo);
     const progressMap = this.getLocalProgress(accountId, scope);
     const collectionItems = this.getLocalCollectionItems();
 

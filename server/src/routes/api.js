@@ -261,7 +261,7 @@ router.get('/pokemon', (req, res) => {
       }
     }
 
-    if (releasedOnly === 'true' || releasedOnly === '1') {
+    if (releasedOnly !== 'false' && releasedOnly !== '0') {
       sql += ` AND p.released_in_go = 1`;
     }
 

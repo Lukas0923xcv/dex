@@ -83,20 +83,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           )}
         </div>
 
-        {/* Released in Pokémon GO Availability Toggle */}
-        <button
-          type="button"
-          onClick={() => onFilterChange({ releasedOnly: !filters.releasedOnly })}
-          className={`flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold border transition-all shrink-0 select-none ${
-            filters.releasedOnly
-              ? 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/40 shadow-sm'
-              : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
-          }`}
-          title="Toggle to show only Pokémon currently released in Pokémon GO vs all 1025 National Pokédex species"
-        >
-          <span className={`w-2 h-2 rounded-full ${filters.releasedOnly ? 'bg-emerald-500 dark:bg-emerald-400 shadow-sm' : 'bg-slate-400 dark:bg-slate-500'}`} />
-          <span>{filters.releasedOnly ? 'Released in GO' : 'All 1,025 Dex'}</span>
-        </button>
 
         {/* Shiny Only Toggle (in shiny mode it's already full shiny) */}
         {mode !== 'shiny' && (
