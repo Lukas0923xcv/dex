@@ -22,12 +22,16 @@ export function useDex() {
   const [activeAccountId, setActiveAccountId] = useState<string>(() => storage.getActiveAccountId());
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [collections, setCollections] = useState<CustomCollection[]>([]);
-  const [mode, setMode] = useState<TrackingMode>('standard');
+  const [mode, setMode] = useState<TrackingMode>(() => storage.getSavedMode());
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState<FilterState>(() => ({
     ...INITIAL_FILTERS,
     status: storage.getSavedStatusFilter()
   }));
+
+  useEffect(() => {
+    storage.setSavedMode(mode);
+  }, [mode]);
 
   useEffect(() => {
     storage.setSavedStatusFilter(filters.status);
@@ -40,6 +44,9 @@ export function useDex() {
   const activeScope = useMemo<DexScope>(() => {
     if (mode === 'custom') {
       return `custom:${filters.activeCollectionId || 'default'}`;
+    }
+    if (mode === 'form') {
+      return 'standard';
     }
     return mode;
   }, [mode, filters.activeCollectionId]);
@@ -292,7 +299,10 @@ export function useDex() {
 
     // 1. Filter by Mode
     if (mode === 'standard') {
-      result = result.filter(p => p.category === 'standard');
+      const includeGender = Boolean(filters.showGenderTracking);
+      const isExcludedGenderForm = (p: Pokemon) =>
+        Boolean(p.isGenderDifference) && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id);
+      result = result.filter(p => (p.category === 'standard' || p.category === 'form') && !isExcludedGenderForm(p));
     } else if (mode === 'shiny') {
       // In Shiny mode, show all standard, megas, forms, and costumes that have shiny variations
       result = result.filter(p => p.hasShiny);
@@ -500,7 +510,10 @@ export function useDex() {
     const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
 
     if (mode === 'standard') {
-      pool = pool.filter(p => p.category === 'standard');
+      const includeGender = Boolean(filters.showGenderTracking);
+      const isExcludedGenderForm = (p: Pokemon) =>
+        Boolean(p.isGenderDifference) && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id);
+      pool = pool.filter(p => (p.category === 'standard' || p.category === 'form') && !isExcludedGenderForm(p));
     } else if (mode === 'shiny') {
       pool = pool.filter(p => p.hasShiny);
     } else if (mode === 'shadow') {

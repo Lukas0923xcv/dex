@@ -1,4 +1,4 @@
-import { Pokemon, CustomCollection, BackupData, DashboardTabConfig, UserAccount, DexScope, StatusFilter } from '../types';
+import { Pokemon, CustomCollection, BackupData, DashboardTabConfig, UserAccount, DexScope, StatusFilter, TrackingMode } from '../types';
 import localPokemonData from '../data/pokemon-data.json';
 
 const STORAGE_KEYS = {
@@ -11,7 +11,8 @@ const STORAGE_KEYS = {
   REMOTE_API_URL: 'pogo_dex_remote_api_url_v1',
   FORCE_LOCAL: 'pogo_dex_force_local_v1',
   DASHBOARD_TABS: 'pogo_dashboard_tabs_v1',
-  STATUS_FILTER: 'pogo_dex_status_filter_v1'
+  STATUS_FILTER: 'pogo_dex_status_filter_v1',
+  ACTIVE_MODE: 'pogo_dex_active_mode_v1'
 };
 
 export interface StorageStatus {
@@ -127,6 +128,27 @@ class StorageAdapter {
   public setSavedStatusFilter(status: StatusFilter): void {
     try {
       localStorage.setItem(STORAGE_KEYS.STATUS_FILTER, status);
+    } catch {
+      // ignore
+    }
+  }
+
+  public getSavedMode(): TrackingMode {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEYS.ACTIVE_MODE) as TrackingMode;
+      const validModes: TrackingMode[] = ['standard', 'shiny', 'shadow', 'mega', 'form', 'costume', 'custom'];
+      if (validModes.includes(saved)) {
+        return saved;
+      }
+    } catch {
+      // ignore
+    }
+    return 'standard';
+  }
+
+  public setSavedMode(mode: TrackingMode): void {
+    try {
+      localStorage.setItem(STORAGE_KEYS.ACTIVE_MODE, mode);
     } catch {
       // ignore
     }
