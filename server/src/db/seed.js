@@ -14,9 +14,11 @@ function seedDatabase(force = false) {
   const pokemonList = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   const countRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
   const shadowCountRow = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow = 1').get();
+  const shadowShinyCountRow = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow_shiny = 1').get();
   const expectedShadowCount = pokemonList.filter(p => p.hasShadow).length;
-  if (!force && countRow && countRow.count === pokemonList.length && shadowCountRow && shadowCountRow.count >= expectedShadowCount) {
-    console.log(`Database already up-to-date with ${countRow.count} Pokémon and ${shadowCountRow.count} Shadow/Crypto records.`);
+  const expectedShadowShinyCount = pokemonList.filter(p => p.hasShadowShiny).length;
+  if (!force && countRow && countRow.count === pokemonList.length && shadowCountRow && shadowCountRow.count >= expectedShadowCount && shadowShinyCountRow && shadowShinyCountRow.count >= expectedShadowShinyCount) {
+    console.log(`Database already up-to-date with ${countRow.count} Pokémon, ${shadowCountRow.count} Shadow/Crypto records, and ${shadowShinyCountRow.count} Shadow Shiny records.`);
     return;
   }
 
@@ -26,8 +28,8 @@ function seedDatabase(force = false) {
     INSERT INTO pokemon (
       id, dex_nr, name, form_id, form_name, category, generation,
       type1, type2, sprite_url, shiny_sprite_url, fallback_sprite_url,
-      fallback_shiny_url, official_artwork_url, has_shiny, has_shadow, is_mega, is_form, is_costume, is_gender_difference, released_in_go, names_json
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      fallback_shiny_url, official_artwork_url, has_shiny, has_shadow, has_shadow_shiny, is_mega, is_form, is_costume, is_gender_difference, released_in_go, names_json
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ON CONFLICT(id) DO UPDATE SET
       dex_nr = excluded.dex_nr,
       name = excluded.name,
@@ -44,6 +46,7 @@ function seedDatabase(force = false) {
       official_artwork_url = excluded.official_artwork_url,
       has_shiny = excluded.has_shiny,
       has_shadow = excluded.has_shadow,
+      has_shadow_shiny = excluded.has_shadow_shiny,
       is_mega = excluded.is_mega,
       is_form = excluded.is_form,
       is_costume = excluded.is_costume,
@@ -73,6 +76,7 @@ function seedDatabase(force = false) {
         toSql(p.officialArtworkUrl),
         p.hasShiny ? 1 : 0,
         p.hasShadow ? 1 : 0,
+        p.hasShadowShiny ? 1 : 0,
         p.isMega ? 1 : 0,
         p.isForm ? 1 : 0,
         p.isCostume ? 1 : 0,

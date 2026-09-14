@@ -110,6 +110,9 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
     showGender || (isCustomMode && (collection?.trackHundo || collection?.trackSize))
   );
 
+  const isShadowContext = mode === 'shadow' || categoryType === 'shadow' || (isCustomMode && isShadowCollection);
+  const canBeShiny = isShadowContext ? Boolean(pokemon.hasShadowShiny) : Boolean(pokemon.hasShiny);
+
   return (
     <div
       onClick={() => onToggleCaught(pokemon.id)}
@@ -156,11 +159,15 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
             {pokemon.inCollection ? <Bookmark className="w-3.5 h-3.5 fill-current" /> : <Plus className="w-3.5 h-3.5" />}
           </button>
 
-          {/* Shiny toggle button (if not in pure shiny mode) */}
-          {!isShinyMode && pokemon.hasShiny && (
+          {/* Shiny toggle button (only if shiny is possible in current context) */}
+          {!isShinyMode && canBeShiny && (
             <button
               type="button"
-              title={pokemon.shinyCaught ? 'Shiny caught!' : 'Mark shiny caught'}
+              title={
+                pokemon.shinyCaught
+                  ? (isShadowContext ? 'Crypto Shiny gefangen!' : 'Shiny caught!')
+                  : (isShadowContext ? 'Crypto Shiny markieren' : 'Mark shiny caught')
+              }
               onClick={(e) => {
                 e.stopPropagation();
                 onToggleShiny(pokemon.id);

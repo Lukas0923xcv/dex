@@ -297,6 +297,7 @@ class StorageAdapter {
             return {
               ...p,
               hasShadow: Boolean(p.hasShadow || local?.hasShadow),
+              hasShadowShiny: p.hasShadowShiny !== undefined ? Boolean(p.hasShadowShiny) : Boolean(local?.hasShadowShiny),
               hasShiny: p.hasShiny !== undefined ? Boolean(p.hasShiny) : Boolean(local?.hasShiny)
             };
           });
