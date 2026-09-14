@@ -23,8 +23,15 @@ export function useDex() {
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
   const [collections, setCollections] = useState<CustomCollection[]>([]);
   const [mode, setMode] = useState<TrackingMode>('standard');
-  const [filters, setFilters] = useState<FilterState>(INITIAL_FILTERS);
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState<FilterState>(() => ({
+    ...INITIAL_FILTERS,
+    status: storage.getSavedStatusFilter()
+  }));
+
+  useEffect(() => {
+    storage.setSavedStatusFilter(filters.status);
+  }, [filters.status]);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     const saved = localStorage.getItem('pogo_dex_theme');
     return (saved === 'dark' || saved === 'light') ? saved : 'light';
