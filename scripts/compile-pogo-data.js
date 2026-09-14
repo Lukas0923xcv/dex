@@ -136,10 +136,77 @@ async function main() {
         pogoIcon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/718.png`;
         pogoShiny = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/718.png`;
       }
-      // Override Vivillon base to use iconic pink Meadow pattern
+      // Vivillon base uses pink Meadow pattern from pokemon-go-api to match all other 19 patterns
       if (dexNr === 666) {
-        pogoIcon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/666.png`;
-        pogoShiny = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/666.png`;
+        pogoIcon = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm666.fMEADOW.icon.png`;
+        pogoShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm666.fMEADOW.s.icon.png`;
+      }
+
+      // Basculin base (Red-Striped) matches Blue-Striped and White-Striped from pokemon-go-api
+      if (dexNr === 550) {
+        pogoIcon = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm550.fRED_STRIPED.icon.png`;
+        pogoShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm550.fRED_STRIPED.s.icon.png`;
+      }
+
+      // Darmanitan base (Standard Mode) matches Zen Mode and Galarian forms from pokemon-go-api
+      if (dexNr === 555) {
+        pogoIcon = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm555.fSTANDARD.icon.png`;
+        pogoShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm555.fSTANDARD.s.icon.png`;
+      }
+
+      // Maushold base (Family of Four) matches Family of Three from pokemon-go-api
+      if (dexNr === 925) {
+        pogoIcon = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm925.fFAMILY_OF_FOUR.icon.png`;
+        pogoShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm925.fFAMILY_OF_FOUR.s.icon.png`;
+      }
+
+      // Gimmighoul base (Roaming Form) uses Home 3D 10263 to match Chest Form (999)
+      if (dexNr === 999) {
+        pogoIcon = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10263.png`;
+        pogoShiny = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10263.png`;
+      }
+
+      // Species whose alternate forms use PokeMiners icons - use matching PokeMiners base icon so all forms are identical size
+      const POKEMINERS_BASE_OVERRIDES = {
+        201: '201_11', // Unown A
+        327: '327_11', // Spinda Pattern 1
+        351: '351_11', // Castform Normal
+        386: '386_11', // Deoxys Normal
+        412: '412_11', // Burmy Plant
+        413: '413_11', // Wormadam Plant
+        421: '421_11', // Cherrim Overcast
+        422: '422_11', // Shellos West Sea
+        423: '423_11', // Gastrodon West Sea
+        487: '487_11', // Giratina Altered
+        492: '492_11', // Shaymin Land
+        585: '585_11', // Deerling Spring
+        586: '586_11', // Sawsbuck Spring
+        649: '649_11', // Genesect Normal
+      };
+      if (POKEMINERS_BASE_OVERRIDES[dexNr]) {
+        pogoIcon = `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_${POKEMINERS_BASE_OVERRIDES[dexNr]}.png`;
+        pogoShiny = `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_${POKEMINERS_BASE_OVERRIDES[dexNr]}_shiny.png`;
+      }
+
+      // Species whose alternate forms use PokeAPI Home 3D renders - use matching Home 3D base artwork so all forms are identical size
+      const HOME_FORM_SPECIES = new Set([
+        479, 483, 484, 641, 642, 645, 646, 647, 648, 669, 670, 671, 676, 678,
+        705, 706, 718, 720, 741, 745, 800, 849, 876, 888, 889, 892, 905,
+        916, 931, 978, 982, 1012
+      ]);
+      if (HOME_FORM_SPECIES.has(dexNr)) {
+        pogoIcon = homeArtwork;
+        pogoShiny = homeShiny;
+      }
+
+      // Pumpkaboo & Gourgeist Average Size base sprites
+      if (dexNr === 710) {
+        pogoIcon = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.fAVERAGE.icon.png`;
+        pogoShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm710.s.fAVERAGE.icon.png`;
+      }
+      if (dexNr === 711) {
+        pogoIcon = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.fAVERAGE.icon.png`;
+        pogoShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm711.s.fAVERAGE.icon.png`;
       }
 
       allItems.push({
@@ -795,15 +862,15 @@ async function main() {
   // Basculin (Blue-Striped & White-Striped)
   specialForms.push({
     dexNr: 550, base: 'Basculin', formId: 'BLUE_STRIPED', label: 'Blue-Striped', type1: 'Water', type2: null,
-    spriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_550_12.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_550_12_shiny.png',
+    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm550.fBLUE_STRIPED.icon.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm550.fBLUE_STRIPED.s.icon.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10016.png',
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10016.png'
   });
   specialForms.push({
     dexNr: 550, base: 'Basculin', formId: 'WHITE_STRIPED', label: 'White-Striped', type1: 'Water', type2: null,
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10247.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10247.png',
+    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm550.fWHITE_STRIPED.icon.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm550.fWHITE_STRIPED.s.icon.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10247.png',
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10247.png'
   });
@@ -1195,8 +1262,8 @@ async function main() {
   specialForms.push({
     dexNr: 555, base: 'Darmanitan', formId: 'ZEN', label: 'Zen Mode', type1: 'Fire', type2: 'Psychic',
     displayName: 'Darmanitan (Zen Mode)', germanName: 'Flampivian (Trance-Modus)',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10017.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10017.png',
+    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm555.fZEN.icon.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm555.fZEN.s.icon.png',
     fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10017.png',
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10017.png'
   });
@@ -1253,6 +1320,9 @@ async function main() {
       const femaleId = `poke_${gd.dexNr}_form_female`;
       if (!processedIds.has(femaleId)) {
         processedIds.add(femaleId);
+        // Align base form sprite with Home 3D so male and female have identical size & style
+        base.spriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${gd.dexNr}.png`;
+        base.shinySpriteUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${gd.dexNr}.png`;
         const name = `${base.name} (Female)`;
         const deName = base.names?.German ? `${base.names.German} (Weiblich)` : name;
         allItems.push({
