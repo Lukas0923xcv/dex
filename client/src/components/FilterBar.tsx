@@ -103,7 +103,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 ? 'bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-400/60 shadow-sm font-bold'
                 : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
-            title="Nur Pokémon anzeigen, die eine Crypto-Version (Schatten) in Pokémon GO besitzen (458 Spezies)"
+            title="Nur Pokémon anzeigen, die eine Crypto-Version (Schatten) in Pokémon GO besitzen (483 Spezies)"
           >
             <Flame className={`w-3.5 h-3.5 ${filters.shadowOnly ? 'text-purple-500' : 'text-slate-400'}`} />
             <span>Nur Crypto</span>

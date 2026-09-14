@@ -26,9 +26,9 @@ app.use('/api', apiRouter);
 
 // Serve static public assets (images, icons, etc.)
 const staticAssetPaths = [
+  path.join(__dirname, '..', '..', 'client', 'dist'),
   path.join(__dirname, '..', 'public'),
-  path.join(__dirname, '..', '..', 'client', 'public'),
-  path.join(__dirname, '..', '..', 'client', 'dist')
+  path.join(__dirname, '..', '..', 'client', 'public')
 ];
 for (const assetPath of staticAssetPaths) {
   if (fs.existsSync(assetPath)) {
@@ -38,8 +38,8 @@ for (const assetPath of staticAssetPaths) {
 
 // Serve static frontend build if present
 const clientDistPaths = [
-  path.join(__dirname, '..', 'public'),
   path.join(__dirname, '..', '..', 'client', 'dist'),
+  path.join(__dirname, '..', 'public'),
   path.join(__dirname, '..', 'dist')
 ];
 

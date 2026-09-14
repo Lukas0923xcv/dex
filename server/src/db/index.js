@@ -168,13 +168,13 @@ for (const sql of migrations) {
 
 // Auto-heal / populate has_shadow in SQLite if missing or zero
 try {
-  const shadowCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow = 1').get();
-  const expectedShadowCount = 458;
-  if (!shadowCheck || shadowCheck.count < expectedShadowCount) {
-    console.log(`Auto-healing SQLite shadow/crypto records (current: ${shadowCheck ? shadowCheck.count : 0}, expected: ${expectedShadowCount})...`);
-    const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
-    if (fs.existsSync(jsonPath)) {
-      const pData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+  const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
+  if (fs.existsSync(jsonPath)) {
+    const pData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    const expectedShadowCount = pData.filter(p => p.hasShadow).length;
+    const shadowCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow = 1').get();
+    if (!shadowCheck || shadowCheck.count < expectedShadowCount) {
+      console.log(`Auto-healing SQLite shadow/crypto records (current: ${shadowCheck ? shadowCheck.count : 0}, expected: ${expectedShadowCount})...`);
       const updateStmt = db.prepare('UPDATE pokemon SET has_shadow = ? WHERE id = ?');
       db.exec('BEGIN TRANSACTION;');
       for (const p of pData) {
@@ -184,20 +184,12 @@ try {
       const updatedCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow = 1').get();
       console.log(`Successfully auto-healed has_shadow in SQLite database. Total shadow records: ${updatedCheck?.count}`);
     }
-  }
-} catch (e) {
-  console.warn('Shadow auto-heal note:', e.message);
-}
 
-// Auto-heal / populate has_shadow_shiny in SQLite if missing or zero
-try {
-  const shadowShinyCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow_shiny = 1').get();
-  const expectedShadowShinyCount = 340;
-  if (!shadowShinyCheck || shadowShinyCheck.count < expectedShadowShinyCount) {
-    console.log(`Auto-healing SQLite shadow shiny records (current: ${shadowShinyCheck ? shadowShinyCheck.count : 0}, expected: ${expectedShadowShinyCount})...`);
-    const jsonPath = path.join(__dirname, '..', '..', '..', 'data', 'pokemon-data.json');
-    if (fs.existsSync(jsonPath)) {
-      const pData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+    // Auto-heal / populate has_shadow_shiny in SQLite if missing or zero
+    const expectedShadowShinyCount = pData.filter(p => p.hasShadowShiny).length;
+    const shadowShinyCheck = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow_shiny = 1').get();
+    if (!shadowShinyCheck || shadowShinyCheck.count < expectedShadowShinyCount) {
+      console.log(`Auto-healing SQLite shadow shiny records (current: ${shadowShinyCheck ? shadowShinyCheck.count : 0}, expected: ${expectedShadowShinyCount})...`);
       const updateStmt = db.prepare('UPDATE pokemon SET has_shadow_shiny = ? WHERE id = ?');
       db.exec('BEGIN TRANSACTION;');
       for (const p of pData) {
@@ -209,7 +201,7 @@ try {
     }
   }
 } catch (e) {
-  console.warn('Shadow shiny auto-heal note:', e.message);
+  console.warn('Shadow auto-heal note:', e.message);
 }
 
 // Auto-heal Hisui generation in SQLite if any Hisui Pokemon is still gen 9 or other gen

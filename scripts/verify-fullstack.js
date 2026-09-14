@@ -141,8 +141,8 @@ async function main() {
 
     // 3f. Gender Differences & Form Count Validation
     const allFormsRes = await request('http://localhost:3456/api/pokemon?category=form&limit=500');
-    if (allFormsRes.data.length !== 288) {
-      throw new Error(`Expected exactly 288 forms (190 regional + 98 gender diffs), got: ${allFormsRes.data.length}`);
+    if (allFormsRes.data.length !== 311) {
+      throw new Error(`Expected exactly 311 forms (210 regional/alternate + 101 gender diffs), got: ${allFormsRes.data.length}`);
     }
     const genderDiffForms = allFormsRes.data.filter(p => p.isGenderDifference);
     if (genderDiffForms.length !== 101) {
@@ -220,8 +220,9 @@ async function main() {
 
     // 6. Export Test
     const exportRes = await request('http://localhost:3456/api/export');
-    console.log(`[TEST 6] Export: HTTP ${exportRes.status}, progress count: ${exportRes.data.data.progress.length}`);
-    if (!exportRes.data.app || exportRes.data.data.progress.length === 0) {
+    const totalProgCount = (exportRes.data?.data?.progressV2?.length || 0) + (exportRes.data?.data?.progress?.length || 0);
+    console.log(`[TEST 6] Export: HTTP ${exportRes.status}, progress count: ${totalProgCount}`);
+    if (!exportRes.data.app || totalProgCount === 0) {
       throw new Error('Export returned empty or invalid data');
     }
     console.log('✓ Backup export passed');
@@ -288,11 +289,11 @@ async function main() {
     const shadowCount = allList.filter(p => p.hasShadow).length;
     console.log(`[TEST 10] Shiny & Shadow counts: Total=${allList.length}, Shinies=${shinyCount}, Shadows=${shadowCount}`);
 
-    if (shinyCount !== 1500) {
-      throw new Error(`Expected exactly 1500 released shiny species/forms, got: ${shinyCount}`);
+    if (shinyCount !== 1516) {
+      throw new Error(`Expected exactly 1516 released shiny species/forms, got: ${shinyCount}`);
     }
-    if (shadowCount !== 458) {
-      throw new Error(`Expected exactly 458 released shadow species/forms, got: ${shadowCount}`);
+    if (shadowCount !== 483) {
+      throw new Error(`Expected exactly 483 released shadow species/forms, got: ${shadowCount}`);
     }
 
     // Check shiny-locked species: Victini (#494), Marshadow (#802), Cosmog (#789)
@@ -323,8 +324,8 @@ async function main() {
     // 11. Shadow Category Query API Test
     const shadowQueryRes = await request('http://localhost:3456/api/pokemon?category=shadow&limit=1000');
     console.log(`[TEST 11] Shadow Query API: HTTP ${shadowQueryRes.status}, count: ${shadowQueryRes.data.length}`);
-    if (shadowQueryRes.data.length !== 458) {
-      throw new Error(`Expected 458 shadow pokemon from category=shadow query, got: ${shadowQueryRes.data.length}`);
+    if (shadowQueryRes.data.length !== 483) {
+      throw new Error(`Expected 483 shadow pokemon from category=shadow query, got: ${shadowQueryRes.data.length}`);
     }
     console.log('✓ Shadow category API query passed');
 
@@ -336,8 +337,8 @@ async function main() {
     const searchCompound = await request('http://localhost:3456/api/pokemon?search=crypto%20mewtu');
 
     console.log(`[TEST 12] Crypto Search: crypto=${searchCrypto.data.length}, shadow=${searchShadow.data.length}, schatten=${searchSchatten.data.length}, shadowOnly=${filterShadowOnly.data.length}, compound=${searchCompound.data.length}`);
-    if (searchCrypto.data.length !== 458 || searchShadow.data.length !== 458 || searchSchatten.data.length !== 458 || filterShadowOnly.data.length !== 458) {
-      throw new Error(`Smart crypto search failed to return all 458 shadow pokemon`);
+    if (searchCrypto.data.length !== 483 || searchShadow.data.length !== 483 || searchSchatten.data.length !== 483 || filterShadowOnly.data.length !== 483) {
+      throw new Error(`Smart crypto search failed to return all 483 shadow pokemon`);
     }
     if (searchCompound.data.length === 0 || !(searchCompound.data[0].name.toLowerCase().includes('mewt') || searchCompound.data[0].names?.German === 'Mewtu')) {
       throw new Error(`Compound search "crypto mewtu" failed`);
@@ -360,8 +361,18 @@ async function main() {
     }
     console.log('✓ Shadow batch progress update passed');
 
+    // 14. Delete Custom Collection Test (ensures db transaction fix works)
+    const deleteCollRes = await request(`http://localhost:3456/api/collections/${newCollRes.data.id}`, {
+      method: 'DELETE'
+    });
+    console.log(`[TEST 14] Delete Custom Collection: HTTP ${deleteCollRes.status}, result:`, deleteCollRes.data);
+    if (deleteCollRes.status !== 200 || !deleteCollRes.data.success) {
+      throw new Error('Failed to delete custom collection');
+    }
+    console.log('✓ Custom collection deletion verified (db transaction works)');
+
     console.log('\n=========================================');
-    console.log('🎉 ALL 13 FULL-STACK TESTS PASSED 100%! 🎉');
+    console.log('🎉 ALL 14 FULL-STACK TESTS PASSED 100%! 🎉');
     console.log('=========================================\n');
   } finally {
     serverProc.kill();
