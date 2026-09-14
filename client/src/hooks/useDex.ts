@@ -299,10 +299,7 @@ export function useDex() {
 
     // 1. Filter by Mode
     if (mode === 'standard') {
-      const includeGender = Boolean(filters.showGenderTracking);
-      const isExcludedGenderForm = (p: Pokemon) =>
-        Boolean(p.isGenderDifference) && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id);
-      result = result.filter(p => (p.category === 'standard' || p.category === 'form') && !isExcludedGenderForm(p));
+      result = result.filter(p => p.category === 'standard');
     } else if (mode === 'shiny') {
       // In Shiny mode, show all standard, megas, forms, and costumes that have shiny variations
       result = result.filter(p => p.hasShiny);
@@ -510,10 +507,7 @@ export function useDex() {
     const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
 
     if (mode === 'standard') {
-      const includeGender = Boolean(filters.showGenderTracking);
-      const isExcludedGenderForm = (p: Pokemon) =>
-        Boolean(p.isGenderDifference) && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id);
-      pool = pool.filter(p => (p.category === 'standard' || p.category === 'form') && !isExcludedGenderForm(p));
+      pool = pool.filter(p => p.category === 'standard');
     } else if (mode === 'shiny') {
       pool = pool.filter(p => p.hasShiny);
     } else if (mode === 'shadow') {
