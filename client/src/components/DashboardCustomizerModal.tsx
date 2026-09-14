@@ -79,7 +79,6 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
       const next = [...prev];
       const temp = next[index - 1];
       next[index - 1] = next[index];
-      next[index - 1] = next[index];
       next[index] = temp;
       return next;
     });

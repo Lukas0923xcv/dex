@@ -828,6 +828,14 @@ class StorageAdapter {
     return ids;
   }
 
+  public isPokemonInAnyCollection(pokemonId: string): boolean {
+    for (const ids of this.collectionItemsCache.values()) {
+      if (ids.has(pokemonId)) return true;
+    }
+    const items = this.getLocalCollectionItems();
+    return items.some(i => i.pokemon_id === pokemonId);
+  }
+
   // --- JSON Export & Import ---
   public async exportBackup(): Promise<BackupData> {
     if (this.isConnectedToBackend) {

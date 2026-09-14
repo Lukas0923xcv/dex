@@ -86,15 +86,18 @@ export function useDex() {
       setAccounts(accs);
       setPokemonList(pokes.filter(p => p.releasedInGo));
       setCollections(colls);
-      if (colls.length > 0 && !filters.activeCollectionId) {
-        setFilters(f => ({ ...f, activeCollectionId: colls[0].id }));
-      }
+      setFilters(f => {
+        if (colls.length > 0 && !f.activeCollectionId) {
+          return { ...f, activeCollectionId: colls[0].id };
+        }
+        return f;
+      });
     } catch (err) {
       console.error('Failed to initialize dex tracker:', err);
     } finally {
       setLoading(false);
     }
-  }, [activeAccountId, activeScope, filters.activeCollectionId]);
+  }, [activeAccountId, activeScope]);
 
   useEffect(() => {
     refreshData();
@@ -247,14 +250,15 @@ export function useDex() {
 
     const updatedColls = await storage.getCollections(activeAccountId);
     setCollections(updatedColls);
-    setPokemonList(prev => [...prev]);
+    const inAnyColl = storage.isPokemonInAnyCollection(pokemonId);
+    setPokemonList(prev => prev.map(p => p.id === pokemonId ? { ...p, inCollection: inAnyColl } : p));
   }, [activeAccountId]);
 
   const setCollectionItems = useCallback(async (collectionId: string, pokemonIds: string[]) => {
     await storage.setCollectionItems(collectionId, pokemonIds);
     const updatedColls = await storage.getCollections(activeAccountId);
     setCollections(updatedColls);
-    setPokemonList(prev => [...prev]);
+    setPokemonList(prev => prev.map(p => ({ ...p, inCollection: storage.isPokemonInAnyCollection(p.id) })));
   }, [activeAccountId]);
 
   // Bulk mark caught/uncaught (for regions, whole lists, etc.)

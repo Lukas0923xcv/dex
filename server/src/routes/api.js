@@ -145,20 +145,24 @@ router.get('/pokemon', (req, res) => {
         COALESCE(up.xxs_caught, 0) as xxsCaught,
         up.notes,
         up.updated_at as updatedAt,
-        CASE WHEN cci.pokemon_id IS NOT NULL THEN 1 ELSE 0 END as inCollection
+        CASE WHEN EXISTS (
+          SELECT 1 FROM custom_collection_items cci 
+          WHERE cci.pokemon_id = p.id ${collectionId ? 'AND cci.collection_id = ?' : ''}
+        ) THEN 1 ELSE 0 END as inCollection
       FROM pokemon p
       LEFT JOIN user_progress_v2 up ON (p.id = up.pokemon_id AND up.account_id = ? AND up.dex_scope = ?)
-      LEFT JOIN custom_collection_items cci ON p.id = cci.pokemon_id ${collectionId ? 'AND cci.collection_id = ?' : 'AND 1=0'}
       WHERE 1=1
     `;
 
-    const params = [effectiveAccountId, effectiveScope];
+    const params = [];
     if (collectionId) {
       params.push(collectionId);
     }
+    params.push(effectiveAccountId, effectiveScope);
 
     if (collectionId) {
-      sql += ` AND cci.pokemon_id IS NOT NULL`;
+      sql += ` AND EXISTS (SELECT 1 FROM custom_collection_items cci_filter WHERE cci_filter.pokemon_id = p.id AND cci_filter.collection_id = ?)`;
+      params.push(collectionId);
     }
 
     if (category && category !== 'all') {
@@ -625,11 +629,16 @@ router.delete('/collections', (req, res) => {
   try {
     const deleteItems = db.prepare('DELETE FROM custom_collection_items');
     const deleteCollections = db.prepare('DELETE FROM custom_collections');
-    db.transaction(() => {
+    db.exec('BEGIN TRANSACTION;');
+    try {
       deleteItems.run();
       deleteCollections.run();
-    })();
-    res.json({ success: true, message: 'All custom collections deleted' });
+      db.exec('COMMIT;');
+      res.json({ success: true, message: 'All custom collections deleted' });
+    } catch (err) {
+      db.exec('ROLLBACK;');
+      throw err;
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -639,11 +648,16 @@ router.delete('/collections', (req, res) => {
 router.delete('/collections/:id', (req, res) => {
   try {
     const { id } = req.params;
-    db.transaction(() => {
+    db.exec('BEGIN TRANSACTION;');
+    try {
       db.prepare('DELETE FROM custom_collection_items WHERE collection_id = ?').run(id);
       db.prepare('DELETE FROM custom_collections WHERE id = ?').run(id);
-    })();
-    res.json({ success: true, deletedId: id });
+      db.exec('COMMIT;');
+      res.json({ success: true, deletedId: id });
+    } catch (err) {
+      db.exec('ROLLBACK;');
+      throw err;
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

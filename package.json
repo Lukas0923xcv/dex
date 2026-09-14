@@ -8,7 +8,7 @@
     "install:all": "npm install --prefix server && npm install --prefix client",
     "dev:server": "cd server && npm start",
     "dev:client": "cd client && npm run dev",
-    "build:client": "cd client && npm run build",
+    "build:client": "npm --prefix client run build && node -e \"const fs=require('fs');const path=require('path');const s=path.join('client','dist'),d=path.join('server','public');if(fs.existsSync(s)){fs.cpSync(s,d,{recursive:true});}\"",
     "build": "npm run compile:data && npm run build:client",
     "seed": "cd server && npm run seed",
     "start": "node server/src/server.js"
