@@ -28,6 +28,63 @@ export const isRegionalForm = (p: Pokemon) => {
   );
 };
 
+const GERMAN_BASE_FORM_LABELS: Record<number, string> = {
+  201: 'A',
+  327: 'Muster 1',
+  351: 'Normalform',
+  386: 'Normalform',
+  412: 'Pflanzenumhang',
+  413: 'Pflanzenumhang',
+  421: 'Wolkenform',
+  422: 'Westliches Meer',
+  423: 'Westliches Meer',
+  479: 'Normalform',
+  483: 'Standardform',
+  484: 'Standardform',
+  487: 'Wandelform',
+  492: 'Landform',
+  550: 'Rotlinig',
+  555: 'Standardmodus',
+  585: 'Frühlingsform',
+  586: 'Frühlingsform',
+  641: 'Inkarnationsform',
+  642: 'Inkarnationsform',
+  645: 'Inkarnationsform',
+  646: 'Standardform',
+  647: 'Normalform',
+  648: 'Ariaform',
+  649: 'Normalmodul',
+  666: 'Wiesenmuster',
+  669: 'Rotblütler',
+  670: 'Rotblütler',
+  671: 'Rotblütler',
+  676: 'Zottelform',
+  678: 'Männlich',
+  710: 'Normalgroß',
+  711: 'Normalgroß',
+  718: '50%-Form',
+  720: 'Gebannt',
+  741: 'Flamenco-Stil',
+  745: 'Tagform',
+  800: 'Standardform',
+  849: 'Hochfrequenz-Form',
+  854: 'Fälschungsform',
+  855: 'Fälschungsform',
+  876: 'Männlich',
+  877: 'Pappsatt-Modus',
+  888: 'Held des Krieges',
+  889: 'Held des Krieges',
+  892: 'Fokussierter Stil',
+  905: 'Inkarnationsform',
+  916: 'Männlich',
+  925: 'Viererfamilie',
+  931: 'Grünes Gefieder',
+  978: 'Gekrümmte Form',
+  982: 'Zweistufige Form',
+  999: 'Wanderform',
+  1012: 'Nachahmungsform',
+  1013: 'Unscheinbare Form'
+};
 
 export function useDex() {
   const [accounts, setAccounts] = useState<UserAccount[]>([]);
@@ -339,6 +396,9 @@ export function useDex() {
       const regionalDexNrs = new Set(
         qualifyingForms.filter(isRegionalForm).map(p => p.dexNr)
       );
+      const nonRegionalFormDexNrs = new Set(
+        qualifyingForms.filter(p => !isRegionalForm(p)).map(p => p.dexNr)
+      );
 
       result = result.filter(p => {
         if (isQualifyingForm(p)) return true;
@@ -347,8 +407,28 @@ export function useDex() {
           if (Boolean(filters.includeBaseInForms) && regionalDexNrs.has(p.dexNr)) {
             return true;
           }
+          // Non-regional multi-form species show all versions
+          if (nonRegionalFormDexNrs.has(p.dexNr)) {
+            return true;
+          }
         }
         return false;
+      }).map(p => {
+        // Format non-regional base forms so they display with their form name rather than an unformed "base" version
+        if (p.category === 'standard' && nonRegionalFormDexNrs.has(p.dexNr) && p.formName && p.formName !== 'Standard') {
+          const deLabel = GERMAN_BASE_FORM_LABELS[p.dexNr] || p.formName;
+          return {
+            ...p,
+            isForm: true,
+            name: !p.name.includes('(') ? `${p.name} (${p.formName})` : p.name,
+            names: p.names ? {
+              ...p.names,
+              English: !p.name.includes('(') ? `${p.name} (${p.formName})` : (p.names.English || p.name),
+              German: (p.names.German && !p.names.German.includes('(')) ? `${p.names.German} (${deLabel})` : (p.names.German || p.name)
+            } : p.names
+          };
+        }
+        return p;
       });
     } else if (mode === 'costume') {
       result = result.filter(p => p.category === 'costume' || p.isCostume);
@@ -561,11 +641,17 @@ export function useDex() {
       const regionalDexNrs = new Set(
         qualifyingForms.filter(isRegionalForm).map(p => p.dexNr)
       );
+      const nonRegionalFormDexNrs = new Set(
+        qualifyingForms.filter(p => !isRegionalForm(p)).map(p => p.dexNr)
+      );
 
       pool = pool.filter(p => {
         if (isQualifyingForm(p)) return true;
         if (p.category === 'standard') {
           if (Boolean(filters.includeBaseInForms) && regionalDexNrs.has(p.dexNr)) {
+            return true;
+          }
+          if (nonRegionalFormDexNrs.has(p.dexNr)) {
             return true;
           }
         }
