@@ -398,6 +398,32 @@ try {
   console.warn('Progress v2 migration note:', e.message);
 }
 
+// Auto-seed 'form' scope in user_progress_v2 if 'form' scope is empty
+try {
+  const formCount = db.prepare("SELECT COUNT(*) as count FROM user_progress_v2 WHERE dex_scope = 'form'").get();
+  if (!formCount || formCount.count === 0) {
+    const standardCount = db.prepare("SELECT COUNT(*) as count FROM user_progress_v2 WHERE dex_scope = 'standard'").get();
+    if (standardCount && standardCount.count > 0) {
+      console.log('Seeding form dex_scope from standard progress...');
+      db.exec(`
+        INSERT OR IGNORE INTO user_progress_v2 (
+          account_id, dex_scope, pokemon_id, caught, shiny_caught, lucky_caught,
+          hundo_caught, shadow_caught, purified_caught, gender_m_caught,
+          gender_f_caught, xxl_caught, xxs_caught, notes, updated_at
+        )
+        SELECT 
+          account_id, 'form', pokemon_id, caught, shiny_caught, lucky_caught,
+          hundo_caught, shadow_caught, purified_caught, gender_m_caught,
+          gender_f_caught, xxl_caught, xxs_caught, notes, updated_at
+        FROM user_progress_v2
+        WHERE dex_scope = 'standard';
+      `);
+    }
+  }
+} catch (e) {
+  console.warn('Form scope migration note:', e.message);
+}
+
 console.log('Database tables verified and WAL mode enabled.');
 
 module.exports = db;

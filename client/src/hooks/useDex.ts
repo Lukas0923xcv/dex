@@ -114,9 +114,6 @@ export function useDex() {
     if (mode === 'custom') {
       return `custom:${filters.activeCollectionId || 'default'}`;
     }
-    if (mode === 'form') {
-      return 'standard';
-    }
     return mode;
   }, [mode, filters.activeCollectionId]);
 

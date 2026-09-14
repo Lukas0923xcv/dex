@@ -1045,7 +1045,17 @@ class StorageAdapter {
   private getLocalProgress(accountId: string = 'default', scope: string = 'standard'): Record<string, any> {
     try {
       const data = localStorage.getItem(this.getProgressKey(accountId, scope));
-      return data ? JSON.parse(data) : {};
+      if (data) {
+        return JSON.parse(data);
+      }
+      if (scope === 'form') {
+        const standardData = localStorage.getItem(this.getProgressKey(accountId, 'standard'));
+        if (standardData) {
+          localStorage.setItem(this.getProgressKey(accountId, 'form'), standardData);
+          return JSON.parse(standardData);
+        }
+      }
+      return {};
     } catch {
       return {};
     }
