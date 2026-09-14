@@ -102,12 +102,53 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex items-center justify-between gap-4 mb-3">
           <div className="flex items-center gap-3">
             {/* Pokéball Logo */}
-            <div className="relative w-9 h-9 rounded-full bg-gradient-to-b from-rose-500 to-rose-600 p-0.5 shadow-md shadow-rose-500/20 ring-2 ring-slate-200 dark:ring-slate-800 flex items-center justify-center shrink-0">
-              <div className="w-full h-1/2 bg-rose-500 rounded-t-full" />
-              <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-1.5 bg-slate-900 dark:bg-slate-950 flex items-center justify-center">
-                <div className="w-3.5 h-3.5 rounded-full bg-white border-2 border-slate-900 dark:border-slate-950 shadow" />
-              </div>
-              <div className="w-full h-1/2 bg-white rounded-b-full" />
+            <div className="relative w-9 h-9 shrink-0 flex items-center justify-center drop-shadow-md">
+              <svg
+                viewBox="0 0 100 100"
+                className="w-full h-full transform transition-transform hover:scale-105 duration-200 select-none"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <defs>
+                  <linearGradient id="headerPokeRed" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#ff4d5a" />
+                    <stop offset="100%" stopColor="#e11d48" />
+                  </linearGradient>
+                  <linearGradient id="headerPokeWhite" x1="0" y1="0" x2="0" y2="100" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#ffffff" />
+                    <stop offset="100%" stopColor="#e2e8f0" />
+                  </linearGradient>
+                  <radialGradient id="headerPokeGlint" cx="32" cy="22" r="28" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
+                    <stop offset="100%" stopColor="#ffffff" stopOpacity="0" />
+                  </radialGradient>
+                </defs>
+
+                {/* Dark Outer Outline */}
+                <circle cx="50" cy="50" r="48" fill="#0f172a" />
+
+                {/* Top Red Hemisphere */}
+                <path d="M 5 50 A 45 45 0 0 1 95 50 Z" fill="url(#headerPokeRed)" />
+
+                {/* Top Gloss Glint */}
+                <ellipse cx="34" cy="24" rx="14" ry="7" fill="#ffffff" fillOpacity="0.38" transform="rotate(-25 34 24)" />
+
+                {/* Bottom White Hemisphere */}
+                <path d="M 5 50 A 45 45 0 0 0 95 50 Z" fill="url(#headerPokeWhite)" />
+
+                {/* Center Horizontal Divider Band */}
+                <rect x="5" y="46" width="90" height="8" fill="#0f172a" />
+
+                {/* Center Button Ring Outer */}
+                <circle cx="50" cy="50" r="16" fill="#0f172a" />
+
+                {/* Center Button Middle Ring */}
+                <circle cx="50" cy="50" r="11" fill="#ffffff" />
+
+                {/* Center Button Core */}
+                <circle cx="50" cy="50" r="7" fill="#f1f5f9" stroke="#cbd5e1" strokeWidth="1.5" />
+                <circle cx="48" cy="48" r="2" fill="#ffffff" />
+              </svg>
             </div>
 
             <div>
