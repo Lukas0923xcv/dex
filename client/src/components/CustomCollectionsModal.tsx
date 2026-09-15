@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { CustomCollection, CollectionCategoryType, CollectionVariantMode, Pokemon } from '../types';
+import { REGION_OPTIONS, isPokemonInRegion, isGalarian, isAlolan, isHisuian, isPaldean } from '../utils/regions';
 import {
   X,
   Plus,
@@ -20,7 +21,8 @@ import {
   Dna,
   Ruler,
   Palette,
-  FolderKanban
+  FolderKanban,
+  Globe
 } from 'lucide-react';
 
 interface CustomCollectionsModalProps {
@@ -78,10 +80,14 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   const [activeTab, setActiveTab] = useState<'create' | 'list'>('create');
 
   // Form states
+  const [selectedRegion, setSelectedRegion] = useState<number | 'all'>('all');
   const [categoryType, setCategoryType] = useState<CollectionCategoryType>('normal');
   const [variantMode, setVariantMode] = useState<CollectionVariantMode>('multi');
+  const [includeForms, setIncludeForms] = useState<boolean>(true);
+  const [includeCostumes, setIncludeCostumes] = useState<boolean>(true);
   const [includeGenderForms, setIncludeGenderForms] = useState<boolean>(true);
-  const [trackShiny, setTrackShiny] = useState<boolean>(false);
+  const [filterOnlyShiny, setFilterOnlyShiny] = useState<boolean>(false);
+  const [trackShiny, setTrackShiny] = useState<boolean>(true);
   const [trackHundo, setTrackHundo] = useState<boolean>(false);
   const [trackGender, setTrackGender] = useState<boolean>(false);
   const [trackSize, setTrackSize] = useState<boolean>(false);
@@ -168,12 +174,21 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   useEffect(() => {
     if (isNameManuallyEdited) return;
 
+    const regObj = REGION_OPTIONS.find(r => r.id === selectedRegion);
+    const regLabel = regObj && regObj.id !== 'all' ? regObj.shortLabel : '';
+
     const parts: string[] = [];
-    if (trackShiny) parts.push('Schillernde');
+    if (regLabel) parts.push(regLabel);
+
+    if (filterOnlyShiny) {
+      parts.push('Shiny');
+    } else if (trackShiny) {
+      parts.push('Schillernde');
+    }
 
     const catLabels: Record<CollectionCategoryType, string> = {
-      normal: variantMode === 'multi' ? 'Multivarianten' : 'Standard',
-      event: 'Event-Kostüme',
+      normal: variantMode === 'multi' ? (includeForms ? 'Formen' : 'Basis') : 'Standard',
+      event: 'Kostüme',
       lucky: 'Glücks',
       mega: 'Mega & Primal',
       shadow: 'Crypto',
@@ -183,39 +198,61 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     };
     parts.push(catLabels[categoryType]);
 
+    if (includeCostumes && categoryType !== 'event' && variantMode === 'multi') {
+      parts.push('& Kostüme');
+    }
+
     if (trackHundo) parts.push('100% IV');
     parts.push('Sammlung');
 
     setName(parts.join(' '));
-  }, [categoryType, variantMode, trackShiny, trackHundo, isNameManuallyEdited]);
+  }, [categoryType, selectedRegion, variantMode, includeForms, includeCostumes, filterOnlyShiny, trackShiny, trackHundo, isNameManuallyEdited]);
 
-  // Gather matching Pokémon IDs based on category and variant mode
+  // Gather matching Pokémon IDs based on category, region, and variant mode
   const matchingPokemonIds = useMemo(() => {
     let list = [...allPokemon];
+
+    if (selectedRegion !== 'all') {
+      list = list.filter(p => isPokemonInRegion(p, selectedRegion));
+    }
+
+    const isRegionalForm = (p: Pokemon) => isGalarian(p) || isAlolan(p) || isHisuian(p) || isPaldean(p);
 
     if (categoryType === 'mega') {
       list = list.filter(p => p.category === 'mega' || p.isMega);
     } else if (categoryType === 'event') {
       list = list.filter(p => p.category === 'costume' || p.isCostume);
     } else if (categoryType === 'dynamax' || categoryType === 'gigantamax') {
-      if (variantMode === 'single') {
-        list = list.filter(p => p.category === 'standard');
+      if (variantMode === 'single' || !includeForms) {
+        list = list.filter(p => p.category === 'standard' || (selectedRegion !== 'all' && isRegionalForm(p)));
       } else {
         list = list.filter(p => p.category === 'standard' || p.category === 'form');
       }
     } else if (categoryType === 'shadow' || categoryType === 'purified') {
       list = list.filter(p => p.hasShadow);
-      if (variantMode === 'single') {
-        list = list.filter(p => p.category === 'standard');
+      if (variantMode === 'single' || !includeForms) {
+        list = list.filter(p => p.category === 'standard' || (selectedRegion !== 'all' && isRegionalForm(p)));
       } else {
         list = list.filter(p => p.category === 'standard' || p.category === 'form');
       }
     } else {
       // Normal, Lucky
       if (variantMode === 'single') {
-        list = list.filter(p => p.category === 'standard');
+        list = list.filter(p => p.category === 'standard' || (selectedRegion !== 'all' && isRegionalForm(p)));
+        // For single variant mode, ensure 1 unique entry per species/dexNr
+        const seen = new Set<number>();
+        list = list.filter(p => {
+          if (seen.has(p.dexNr)) return false;
+          seen.add(p.dexNr);
+          return true;
+        });
       } else {
-        list = list.filter(p => p.category === 'standard' || p.category === 'form');
+        list = list.filter(p => {
+          if (p.category === 'standard') return true;
+          if (p.category === 'form') return includeForms;
+          if (p.category === 'costume' || p.isCostume) return includeCostumes;
+          return false;
+        });
       }
     }
 
@@ -223,12 +260,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
       list = list.filter(p => !p.isGenderDifference);
     }
 
-    if (trackShiny) {
+    if (filterOnlyShiny) {
       list = list.filter(p => p.hasShiny);
     }
 
     return list.map(p => p.id);
-  }, [allPokemon, categoryType, variantMode, includeGenderForms, trackShiny]);
+  }, [allPokemon, categoryType, selectedRegion, variantMode, includeForms, includeCostumes, includeGenderForms, filterOnlyShiny]);
 
   if (!isOpen) return null;
 
@@ -239,10 +276,11 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     try {
       setIsSubmitting(true);
       const subLabel = variantMode === 'multi' ? 'Multivarianten' : 'Basis-Spezies';
+      const regLabel = selectedRegion !== 'all' ? ` · ${REGION_OPTIONS.find(r => r.id === selectedRegion)?.shortLabel}` : '';
       const initialPokemonIds = populateMode === 'all' ? matchingPokemonIds : [];
       const newColl = await onCreateCollection(
         name.trim(),
-        `${categoryType.toUpperCase()} · ${subLabel}`,
+        `${categoryType.toUpperCase()}${regLabel} · ${subLabel}`,
         selectedColor,
         {
           categoryType,
@@ -336,12 +374,81 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6 text-slate-100 scrollbar-thin">
           {activeTab === 'create' ? (
             <form onSubmit={handleCreate} className="space-y-6">
-              {/* Section 1: Kategorie-Fokus */}
+              {/* Section 1: Region & Herkunft (1-Klick Auswahl) */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-blue-600/30 text-blue-400 border border-blue-500/40 inline-flex items-center justify-center text-xs font-mono">
+                      1
+                    </span>
+                    Region & Herkunft wählen (1-Klick Auswahl)
+                  </label>
+                  <span className="text-xs text-slate-400">
+                    {selectedRegion === 'all'
+                      ? 'Gesamter Pokédex'
+                      : `${REGION_OPTIONS.find(r => r.id === selectedRegion)?.name}`}
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
+                  {REGION_OPTIONS.map((reg) => {
+                    const isSelected = selectedRegion === reg.id;
+                    return (
+                      <button
+                        key={String(reg.id)}
+                        type="button"
+                        onClick={() => setSelectedRegion(reg.id)}
+                        className={`flex items-center gap-2 p-2.5 rounded-xl border text-left transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-blue-600/20 border-2 border-blue-500 text-white shadow-md ring-1 ring-blue-500/30'
+                            : 'bg-slate-950/60 hover:bg-slate-800/50 border-slate-800 text-slate-400 hover:text-slate-200'
+                        }`}
+                      >
+                        <span className="text-base">{reg.icon}</span>
+                        <div className="min-w-0 flex-1">
+                          <div className={`text-xs font-bold truncate ${isSelected ? 'text-white' : 'text-slate-300'}`}>
+                            {reg.shortLabel}
+                          </div>
+                          <div className="text-[10px] text-slate-500 truncate">
+                            {reg.id === 'all' ? 'Alle' : reg.id === 8 ? 'inkl. Formen' : reg.id === 85 ? 'Hisui' : `Gen ${reg.id}`}
+                          </div>
+                        </div>
+                        {isSelected && <Check className="w-3.5 h-3.5 text-blue-400 shrink-0 stroke-[3]" />}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {selectedRegion !== 'all' && (
+                  <div className="p-3 bg-blue-500/10 border border-blue-500/30 rounded-xl flex items-center justify-between text-xs text-blue-200">
+                    <div className="flex items-center gap-2.5">
+                      <span className="text-xl">
+                        {REGION_OPTIONS.find(r => r.id === selectedRegion)?.icon}
+                      </span>
+                      <div>
+                        <div className="font-bold text-white">
+                          {REGION_OPTIONS.find(r => r.id === selectedRegion)?.name} ausgewählt
+                        </div>
+                        <div className="text-blue-300/80 text-[11px]">
+                          {selectedRegion === 8
+                            ? 'Beinhaltet Galar-Spezies (#810-#898), Galarian Regionalformen (Galar-Ponita, Galar-Zigzachs etc.) und Galar-Kostüme.'
+                            : `Filtert Sammlungs-Einträge auf Pokémon der Region ${REGION_OPTIONS.find(r => r.id === selectedRegion)?.shortLabel}.`}
+                        </div>
+                      </div>
+                    </div>
+                    <span className="px-2.5 py-1 rounded-lg bg-blue-500/20 text-blue-300 font-mono font-bold text-xs shrink-0">
+                      {matchingPokemonIds.length} Pokémon
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Section 2: Kategorie-Fokus */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
-                      1
+                      2
                     </span>
                     Kategorie-Fokus wählen
                   </label>
@@ -405,14 +512,19 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </div>
               </div>
 
-              {/* Section 2: Pokédex-Granularität */}
+              {/* Section 3: Formen, Events & Varianten */}
               <div className="space-y-3">
-                <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-                  <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
-                    2
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
+                    <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
+                      3
+                    </span>
+                    Formen & Event-Kostüme
+                  </label>
+                  <span className="text-xs text-slate-400">
+                    Formen, Kostüme und Geschlechter steuern
                   </span>
-                  Form-Granularität
-                </label>
+                </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {/* Multivariante */}
@@ -488,47 +600,156 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   </button>
                 </div>
 
-                {/* Gender Difference Forms Toggle for Multi Variant Mode */}
+                {/* Granular Toggles when in Multi Variant Mode */}
                 {variantMode === 'multi' && (
-                  <div
-                    onClick={() => setIncludeGenderForms(!includeGenderForms)}
-                    className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
-                      includeGenderForms
-                        ? 'bg-pink-500/10 border-pink-500/40 text-white'
-                        : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-400'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl text-base ${includeGenderForms ? 'bg-pink-500/20 text-pink-300' : 'bg-slate-900 text-slate-500'}`}>
-                        ⚧
+                  <div className="space-y-2 pt-1">
+                    {/* Forms Toggle */}
+                    <div
+                      onClick={() => setIncludeForms(!includeForms)}
+                      className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                        includeForms
+                          ? 'bg-emerald-500/10 border-emerald-500/40 text-white'
+                          : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-400'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-xl text-base ${includeForms ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-900 text-slate-500'}`}>
+                          <Layers className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs sm:text-sm font-semibold text-white">
+                            Alle Formen & Regionalformen einbeziehen
+                          </div>
+                          <div className="text-[11px] text-slate-400">
+                            {selectedRegion === 8
+                              ? 'Regionalformen (Galar-Ponita, Galar-Zigzachs, Galar-Corasonn etc.) und Wechselformen'
+                              : 'Regionalformen (Alola, Galar, Hisui, Paldea) sowie Spezialformen erfassen'}
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="text-xs sm:text-sm font-semibold text-white">
-                          Geschlechts-Formen einbeziehen (♀ Unterschiede)
-                        </div>
-                        <div className="text-[11px] text-slate-400">
-                          98 optische Geschlechtsunterschiede (Pikachu ♀, Woingenau ♀, Smettbo ♀ usw.) als eigene Sammler-Einträge
-                        </div>
+                      <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${includeForms ? 'bg-emerald-500' : 'bg-slate-800'}`}>
+                        <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${includeForms ? 'translate-x-5' : 'translate-x-0'}`} />
                       </div>
                     </div>
-                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${includeGenderForms ? 'bg-pink-500' : 'bg-slate-800'}`}>
-                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${includeGenderForms ? 'translate-x-5' : 'translate-x-0'}`} />
+
+                    {/* Event Costumes Toggle */}
+                    <div
+                      onClick={() => setIncludeCostumes(!includeCostumes)}
+                      className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                        includeCostumes
+                          ? 'bg-purple-500/10 border-purple-500/40 text-white'
+                          : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-400'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-xl text-base ${includeCostumes ? 'bg-purple-500/20 text-purple-300' : 'bg-slate-900 text-slate-500'}`}>
+                          <Gift className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs sm:text-sm font-semibold text-white">
+                            Event-Kostüme & Hüte einbeziehen
+                          </div>
+                          <div className="text-[11px] text-slate-400">
+                            {selectedRegion === 8
+                              ? '6 Galar-Kostüme (Meloetta-Ponita, Sonnenbrillen-Corasonn, Holiday Wolly etc.)'
+                              : 'Event- und Feiertags-Kostüme zu dieser Sammlung hinzufügen'}
+                          </div>
+                        </div>
+                      </div>
+                      <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${includeCostumes ? 'bg-purple-500' : 'bg-slate-800'}`}>
+                        <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${includeCostumes ? 'translate-x-5' : 'translate-x-0'}`} />
+                      </div>
+                    </div>
+
+                    {/* Gender Difference Forms Toggle */}
+                    <div
+                      onClick={() => setIncludeGenderForms(!includeGenderForms)}
+                      className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                        includeGenderForms
+                          ? 'bg-pink-500/10 border-pink-500/40 text-white'
+                          : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-400'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-xl text-base ${includeGenderForms ? 'bg-pink-500/20 text-pink-300' : 'bg-slate-900 text-slate-500'}`}>
+                          ⚧
+                        </div>
+                        <div>
+                          <div className="text-xs sm:text-sm font-semibold text-white">
+                            Geschlechts-Formen einbeziehen (♀ Unterschiede)
+                          </div>
+                          <div className="text-[11px] text-slate-400">
+                            98 optische Geschlechtsunterschiede (Pikachu ♀, Woingenau ♀, Servol ♀ usw.) als eigene Sammler-Einträge
+                          </div>
+                        </div>
+                      </div>
+                      <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${includeGenderForms ? 'bg-pink-500' : 'bg-slate-800'}`}>
+                        <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${includeGenderForms ? 'translate-x-5' : 'translate-x-0'}`} />
+                      </div>
                     </div>
                   </div>
                 )}
               </div>
 
-              {/* Section 3: Zusätzliche Tracking-Dimensionen */}
+              {/* Section 4: Shiny-Filter & Tracking-Optionen */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
-                      3
+                      4
                     </span>
-                    Tracking-Dimensionen
+                    Shiny-Filter & Tracking-Optionen
                   </label>
                   <span className="text-xs text-slate-400">
-                    Aktivierte Kriterien können für jedes Pokémon separat angehakt werden
+                    Verfügbarkeit & Karten-Kriterien
+                  </span>
+                </div>
+
+                {/* Shiny Availability Filter Toggle */}
+                <div
+                  onClick={() => {
+                    const next = !filterOnlyShiny;
+                    setFilterOnlyShiny(next);
+                    if (next) setTrackShiny(true);
+                  }}
+                  className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                    filterOnlyShiny
+                      ? 'bg-amber-500/10 border-amber-500/50 text-white shadow-md'
+                      : 'bg-slate-950/60 hover:bg-slate-800/40 border-slate-800 text-slate-300'
+                  }`}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className={`p-2 rounded-xl text-base ${filterOnlyShiny ? 'bg-amber-500/20 text-amber-300' : 'bg-slate-900 text-slate-400'}`}>
+                        <Sparkles className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
+                          <span>Nur als Shiny verfügbare Pokémon aufnehmen (Shiny-Checklist)</span>
+                          {filterOnlyShiny && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">
+                              Aktiv
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-[11px] text-slate-400 mt-0.5">
+                          {filterOnlyShiny
+                            ? `✨ Aktiv: Schließt unveröffentlichte Shinys aus. Fügt nur die ${selectedRegion === 8 ? '79 Galar-Shinys (inkl. Kostüme)' : 'in GO fangbaren Shinys'} hinzu.`
+                            : `🌐 Inaktiv: Fügt sowohl Shiny als auch reguläre Pokémon hinzu (${selectedRegion === 8 ? 'alle 108 Galar-Pokémon' : 'sowohl Shiny als auch reguläre'}).`}
+                        </div>
+                      </div>
+                    </div>
+                    <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${filterOnlyShiny ? 'bg-amber-500' : 'bg-slate-800'}`}>
+                      <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition duration-200 ease-in-out ${filterOnlyShiny ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Card Tracking Dimensions */}
+                <div className="text-xs font-semibold text-slate-400 pt-2 flex items-center justify-between">
+                  <span>Karten-Tracking aktivieren (Felder auf den Pokédex-Karten):</span>
+                  <span className="text-[11px] text-slate-500 font-normal">
+                    Kriterien separat anhaken
                   </span>
                 </div>
 
@@ -628,12 +849,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </div>
               </div>
 
-              {/* Section 4: Pokémon-Auswahl */}
+              {/* Section 5: Pokémon-Auswahl */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
-                      4
+                      5
                     </span>
                     Pokémon-Auswahl
                   </label>
@@ -673,7 +894,9 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         )}
                       </div>
                       <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                        Fügt direkt alle {matchingPokemonIds.length} Pokémon dieser Kategorie zur Liste hinzu.
+                        {selectedRegion !== 'all'
+                          ? `Fügt direkt alle ${matchingPokemonIds.length} Pokémon der Region ${REGION_OPTIONS.find(r => r.id === selectedRegion)?.name} (${filterOnlyShiny ? 'nur als Shiny verfügbar' : 'sowohl Shiny als auch regulär'}${includeForms ? ', inkl. Formen' : ''}${includeCostumes ? ' & Kostümen' : ''}) zur Liste hinzu.`
+                          : `Fügt direkt alle ${matchingPokemonIds.length} Pokémon dieser Auswahl (${filterOnlyShiny ? 'nur als Shiny verfügbar' : 'alle Varianten'}) zur Liste hinzu.`}
                       </p>
                     </div>
                   </button>
@@ -715,12 +938,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </div>
               </div>
 
-              {/* Section 5: Sammlungs-Design & Benennung */}
+              {/* Section 6: Sammlungs-Design & Benennung */}
               <div className="space-y-3.5 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <Palette className="w-4 h-4 text-slate-400" />
-                    5 · Design & Sammlungsname
+                    6 · Design & Sammlungsname
                   </label>
                   <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
                     {populateMode === 'all' ? `${matchingPokemonIds.length} Pokémon zugeordnet` : 'Manuelle Auswahl'}
