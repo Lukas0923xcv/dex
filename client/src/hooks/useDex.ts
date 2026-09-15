@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData, UserAccount, DexScope } from '../types';
 import { storage, StorageStatus } from '../services/storage';
+import { isPokemonInRegion } from '../utils/regions';
 import confetti from 'canvas-confetti';
 
 const INITIAL_FILTERS: FilterState = {
@@ -491,9 +492,9 @@ export function useDex() {
       result = result.filter(p => Boolean(p.hasShadow));
     }
 
-    // 2. Filter by Generation
+    // 2. Filter by Generation / Region
     if (filters.generation !== 'all') {
-      result = result.filter(p => p.generation === filters.generation);
+      result = result.filter(p => isPokemonInRegion(p, filters.generation));
     }
 
     // 3. Filter by Type
@@ -602,7 +603,7 @@ export function useDex() {
 
   const markRegionCaught = useCallback(async (generation: number | 'all', caught: boolean) => {
     const targetIds = filteredPokemon
-      .filter(p => generation === 'all' || p.generation === generation)
+      .filter(p => generation === 'all' || isPokemonInRegion(p, generation))
       .map(p => p.id);
     await markBatchCaught(targetIds, caught);
   }, [filteredPokemon, markBatchCaught]);
@@ -717,7 +718,7 @@ export function useDex() {
     }
 
     if (filters.generation !== 'all') {
-      pool = pool.filter(p => p.generation === filters.generation);
+      pool = pool.filter(p => isPokemonInRegion(p, filters.generation));
     }
 
     const total = pool.length;

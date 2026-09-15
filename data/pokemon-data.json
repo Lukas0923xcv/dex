@@ -46480,15 +46480,16 @@
   {
     "id": "poke_77_costume_gofest_2021_noevolve",
     "dexNr": 77,
-    "name": "Ponyta (Gofest 2021)",
+    "name": "Galarian Ponyta (Meloetta Hat)",
     "names": {
-      "English": "Ponyta (Gofest 2021)"
+      "English": "Galarian Ponyta (Meloetta Hat)",
+      "German": "Galar-Ponita (Meloetta-Hut)"
     },
     "formId": "GOFEST_2021_NOEVOLVE",
-    "formName": "Gofest 2021",
+    "formName": "Galarian (Meloetta Hat)",
     "category": "costume",
     "generation": 1,
-    "type1": "Fire",
+    "type1": "Psychic",
     "type2": null,
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm77.fGALARIAN.cGOFEST_2021_NOEVOLVE.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm77.fGALARIAN.cGOFEST_2021_NOEVOLVE.s.icon.png",
@@ -48482,16 +48483,17 @@
   {
     "id": "poke_222_costume_sunglasses",
     "dexNr": 222,
-    "name": "Corsola (Pink Sunglasses)",
+    "name": "Galarian Corsola (Sunglasses)",
     "names": {
-      "English": "Corsola (Pink Sunglasses)"
+      "English": "Galarian Corsola (Sunglasses)",
+      "German": "Galar-Corasonn (Sonnenbrille)"
     },
     "formId": "SUNGLASSES",
-    "formName": "Pink Sunglasses",
+    "formName": "Galarian (Sunglasses)",
     "category": "costume",
     "generation": 2,
-    "type1": "Water",
-    "type2": "Rock",
+    "type1": "Ghost",
+    "type2": null,
     "spriteUrl": "/images/costumes/GO0222GSunglasses.png",
     "shinySpriteUrl": "/images/costumes/GO0222GSunglasses.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/222.png",
@@ -48664,16 +48666,17 @@
   {
     "id": "poke_263_costume_gofest_2021_noevolve",
     "dexNr": 263,
-    "name": "Zigzagoon (Gofest 2021)",
+    "name": "Galarian Zigzagoon (Meloetta Hat)",
     "names": {
-      "English": "Zigzagoon (Gofest 2021)"
+      "English": "Galarian Zigzagoon (Meloetta Hat)",
+      "German": "Galar-Zigzachs (Meloetta-Hut)"
     },
     "formId": "GOFEST_2021_NOEVOLVE",
-    "formName": "Gofest 2021",
+    "formName": "Galarian (Meloetta Hat)",
     "category": "costume",
     "generation": 3,
-    "type1": "Normal",
-    "type2": null,
+    "type1": "Dark",
+    "type2": "Normal",
     "spriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm263.fGALARIAN.cGOFEST_2021_NOEVOLVE.icon.png",
     "shinySpriteUrl": "https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm263.fGALARIAN.cGOFEST_2021_NOEVOLVE.s.icon.png",
     "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/263.png",
@@ -50484,12 +50487,13 @@
   {
     "id": "poke_831_costume_winter_2024",
     "dexNr": 831,
-    "name": "Wooloo (Winter 2024)",
+    "name": "Holiday Wooloo",
     "names": {
-      "English": "Wooloo (Winter 2024)"
+      "English": "Holiday Wooloo",
+      "German": "Feiertags-Wolly"
     },
     "formId": "WINTER_2024",
-    "formName": "Winter 2024",
+    "formName": "Holiday (Winter 2024)",
     "category": "costume",
     "generation": 8,
     "type1": "Normal",
@@ -50510,12 +50514,13 @@
   {
     "id": "poke_832_costume_winter_2024",
     "dexNr": 832,
-    "name": "Dubwool (Winter 2024)",
+    "name": "Holiday Dubwool",
     "names": {
-      "English": "Dubwool (Winter 2024)"
+      "English": "Holiday Dubwool",
+      "German": "Feiertags-Zwollock"
     },
     "formId": "WINTER_2024",
-    "formName": "Winter 2024",
+    "formName": "Holiday (Winter 2024)",
     "category": "costume",
     "generation": 8,
     "type1": "Normal",
@@ -50536,12 +50541,13 @@
   {
     "id": "poke_870_costume_gofest_2025_train_conductor",
     "dexNr": 870,
-    "name": "Falinks (Gofest 2025 Train Conductor)",
+    "name": "Train Falinks",
     "names": {
-      "English": "Falinks (Gofest 2025 Train Conductor)"
+      "English": "Train Falinks",
+      "German": "Schaffner-Legios"
     },
     "formId": "GOFEST_2025_TRAIN_CONDUCTOR",
-    "formName": "Gofest 2025 Train Conductor",
+    "formName": "Train Conductor",
     "category": "costume",
     "generation": 8,
     "type1": "Fighting",

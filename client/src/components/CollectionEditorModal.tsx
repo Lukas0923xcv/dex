@@ -2,6 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Pokemon, CustomCollection } from '../types';
 import { storage } from '../services/storage';
 import { formatDexNumber } from '../utils/typeColors';
+import { isPokemonInRegion } from '../utils/regions';
 import { X, Search, Check, Filter, Sparkles, Layers, Zap, Bookmark } from 'lucide-react';
 
 interface CollectionEditorModalProps {
@@ -93,7 +94,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
     }
 
     if (genFilter !== 'all') {
-      result = result.filter(p => p.generation === genFilter);
+      result = result.filter(p => isPokemonInRegion(p, genFilter));
     }
 
     if (search.trim()) {
@@ -243,31 +244,38 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
             </button>
             <button
               type="button"
-              onClick={() => applyPreset(p => p.generation === 7)}
+              onClick={() => applyPreset(p => isPokemonInRegion(p, 7))}
               className="px-2.5 py-1 bg-orange-500/15 hover:bg-orange-500/25 border border-orange-500/40 text-orange-800 dark:text-orange-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
             >
-              🌺 Alola (88)
+              🌺 Alola (inkl. Formen & Kostüme)
             </button>
             <button
               type="button"
-              onClick={() => applyPreset(p => p.generation === 8)}
+              onClick={() => applyPreset(p => isPokemonInRegion(p, 8))}
               className="px-2.5 py-1 bg-blue-600/15 hover:bg-blue-600/25 border border-blue-600/40 text-blue-800 dark:text-blue-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
             >
-              ⚔️ Galar (89)
+              ⚔️ Galar Komplett (108)
             </button>
             <button
               type="button"
-              onClick={() => applyPreset(p => p.generation === 85)}
+              onClick={() => applyPreset(p => isPokemonInRegion(p, 8) && Boolean(p.hasShiny))}
+              className="px-2.5 py-1 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-800 dark:text-amber-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
+            >
+              ✨ Galar Shinys (79)
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset(p => isPokemonInRegion(p, 85))}
               className="px-2.5 py-1 bg-teal-600/15 hover:bg-teal-600/25 border border-teal-600/40 text-teal-800 dark:text-teal-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
             >
-              🏔️ Hisui (6)
+              🏔️ Hisui (inkl. Formen)
             </button>
             <button
               type="button"
-              onClick={() => applyPreset(p => p.generation === 9)}
+              onClick={() => applyPreset(p => isPokemonInRegion(p, 9))}
               className="px-2.5 py-1 bg-purple-600/15 hover:bg-purple-600/25 border border-purple-600/40 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
             >
-              🍇 Paldea (120)
+              🍇 Paldea (inkl. Formen)
             </button>
 
             {/* Gender Difference Forms Preset */}
