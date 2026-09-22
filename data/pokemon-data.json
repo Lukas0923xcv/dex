@@ -38004,34 +38004,6 @@
     "hasShadowShiny": false
   },
   {
-    "id": "poke_327_special_pattern_heart",
-    "dexNr": 327,
-    "name": "Spinda (Heart Pattern)",
-    "names": {
-      "English": "Spinda (Heart Pattern)",
-      "German": "Pandir (Herzmuster)"
-    },
-    "formId": "PATTERN_HEART",
-    "formName": "Heart Pattern",
-    "category": "form",
-    "generation": 3,
-    "type1": "Normal",
-    "type2": null,
-    "spriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_327_19.png",
-    "shinySpriteUrl": "https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_327_19_shiny.png",
-    "fallbackSpriteUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/327.png",
-    "fallbackShinyUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/327.png",
-    "officialArtworkUrl": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/327.png",
-    "hasShiny": true,
-    "isMega": false,
-    "isForm": true,
-    "isCostume": false,
-    "isGenderDifference": false,
-    "releasedInGo": true,
-    "hasShadow": false,
-    "hasShadowShiny": false
-  },
-  {
     "id": "poke_327_special_pattern_02",
     "dexNr": 327,
     "name": "Spinda (Pattern 2)",
@@ -38230,13 +38202,13 @@
   {
     "id": "poke_327_special_pattern_09",
     "dexNr": 327,
-    "name": "Spinda (Pattern 9)",
+    "name": "Spinda (Pattern 9 / Heart)",
     "names": {
-      "English": "Spinda (Pattern 9)",
-      "German": "Pandir (Muster 9)"
+      "English": "Spinda (Pattern 9 / Heart)",
+      "German": "Pandir (Muster 9 / Herz)"
     },
     "formId": "PATTERN_09",
-    "formName": "Pattern 9",
+    "formName": "Pattern 9 (Heart)",
     "category": "form",
     "generation": 3,
     "type1": "Normal",
