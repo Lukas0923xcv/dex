@@ -1,4 +1,4 @@
-import { Pokemon, CustomCollection, BackupData, DashboardTabConfig, UserAccount, DexScope, StatusFilter, TrackingMode } from '../types';
+import { Pokemon, CustomCollection, BackupData, SingleCollectionBackup, DashboardTabConfig, UserAccount, DexScope, StatusFilter, TrackingMode } from '../types';
 import localPokemonData from '../data/pokemon-data.json';
 
 const STORAGE_KEYS = {
@@ -833,7 +833,81 @@ class StorageAdapter {
   }
 
   // --- JSON Export & Import ---
-  public async exportBackup(): Promise<BackupData> {
+  public async exportBackup(collectionId?: string): Promise<BackupData | SingleCollectionBackup> {
+    if (collectionId) {
+      if (this.isConnectedToBackend) {
+        try {
+          const res = await this.fetchWithTimeout(`${this.backendUrl}/api/export?collectionId=${encodeURIComponent(collectionId)}`);
+          if (res.ok) {
+            return await res.json();
+          }
+        } catch (err) {
+          console.warn('Backend collection export failed, falling back to local storage:', err);
+        }
+      }
+
+      // Local export for single collection
+      const collections = this.collectionsCache.length > 0 ? this.collectionsCache : this.getLocalCollections();
+      const coll = collections.find(c => c.id === collectionId);
+      if (!coll) {
+        throw new Error(`Sammlung mit ID "${collectionId}" wurde nicht gefunden.`);
+      }
+
+      const collectionItems = this.getLocalCollectionItems().filter(i => i.collection_id === collectionId);
+      const progressV2: any[] = [];
+      const scopeKey = `custom:${collectionId}`;
+
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(STORAGE_KEYS.PROGRESS_PREFIX)) {
+          const rest = key.substring(STORAGE_KEYS.PROGRESS_PREFIX.length);
+          const underscoreIdx = rest.indexOf('_');
+          if (underscoreIdx > 0) {
+            const accId = rest.substring(0, underscoreIdx);
+            const scope = rest.substring(underscoreIdx + 1);
+            if (scope === scopeKey) {
+              try {
+                const data = JSON.parse(localStorage.getItem(key) || '{}');
+                for (const [pid, val] of Object.entries<any>(data)) {
+                  progressV2.push({
+                    account_id: accId,
+                    dex_scope: scope,
+                    pokemon_id: pid,
+                    caught: val.caught ? 1 : 0,
+                    shiny_caught: val.shinyCaught ? 1 : 0,
+                    lucky_caught: val.luckyCaught ? 1 : 0,
+                    hundo_caught: val.hundoCaught ? 1 : 0,
+                    shadow_caught: val.shadowCaught ? 1 : 0,
+                    purified_caught: val.purifiedCaught ? 1 : 0,
+                    gender_m_caught: val.genderMCaught ? 1 : 0,
+                    gender_f_caught: val.genderFCaught ? 1 : 0,
+                    xxl_caught: val.xxlCaught ? 1 : 0,
+                    xxs_caught: val.xxsCaught ? 1 : 0,
+                    notes: val.notes,
+                    updated_at: val.updatedAt
+                  });
+                }
+              } catch {}
+            }
+          }
+        }
+      }
+
+      return {
+        app: 'PokemonGoDexTracker',
+        version: 2,
+        type: 'collection',
+        exportedAt: new Date().toISOString(),
+        data: {
+          collection: coll,
+          collections: [coll],
+          collectionItems,
+          progressV2
+        }
+      } as any;
+    }
+
+    // Full export
     if (this.isConnectedToBackend) {
       try {
         const res = await fetch(`${this.backendUrl}/api/export`);
@@ -884,6 +958,7 @@ class StorageAdapter {
     return {
       app: 'PokemonGoDexTracker',
       version: 2,
+      type: 'full',
       exportedAt: new Date().toISOString(),
       data: {
         progressV2,
@@ -894,20 +969,31 @@ class StorageAdapter {
     };
   }
 
-  public async importBackup(backup: BackupData): Promise<boolean> {
+  public async importBackup(backup: any, specificCollectionId?: string): Promise<{ success: boolean; mode?: 'full' | 'collection'; collectionName?: string }> {
     if (!backup || !backup.data) {
-      throw new Error('Invalid backup file format');
+      throw new Error('Ungültiges Backup-Dateiformat.');
     }
+
+    const isSingle = backup.type === 'collection' || Boolean(backup.data.collection) || Boolean(specificCollectionId);
 
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/import`, {
+        const url = specificCollectionId
+          ? `${this.backendUrl}/api/import?collectionId=${encodeURIComponent(specificCollectionId)}`
+          : `${this.backendUrl}/api/import`;
+        const res = await this.fetchWithTimeout(url, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(backup)
         });
         if (res.ok) {
-          return true;
+          const result = await res.json();
+          // Clear memory caches so fresh data is loaded
+          this.collectionsCache = [];
+          this.collectionItemsCache.clear();
+          this.collectionItemsListCache = null;
+          this.progressCache.clear();
+          return result;
         }
       } catch (err) {
         console.warn('Backend import failed, importing locally:', err);
@@ -915,6 +1001,89 @@ class StorageAdapter {
     }
 
     // Local Storage Import
+    if (isSingle) {
+      const coll = backup.data.collection || (specificCollectionId
+        ? backup.data.collections?.find((c: any) => c.id === specificCollectionId)
+        : backup.data.collections?.[0]);
+
+      if (!coll) {
+        throw new Error('Gewählte Sammlung nicht in der Backup-Datei gefunden.');
+      }
+
+      const collId = coll.id;
+      // 1. Update collection in collections list
+      const existingColls = this.getLocalCollections();
+      const filteredColls = existingColls.filter(c => c.id !== collId);
+      const formattedColl: CustomCollection = {
+        id: collId,
+        name: coll.name,
+        description: coll.description || '',
+        color: coll.color || '#3b82f6',
+        categoryType: coll.categoryType || coll.category_type || 'normal',
+        variantMode: coll.variantMode || coll.variant_mode || 'multi',
+        trackShiny: Boolean(coll.trackShiny ?? coll.track_shiny),
+        trackHundo: Boolean(coll.trackHundo ?? coll.track_hundo),
+        trackGender: Boolean(coll.trackGender ?? coll.track_gender),
+        trackBackground: Boolean(coll.trackBackground ?? coll.track_background),
+        trackSize: Boolean(coll.trackSize ?? coll.track_size),
+        includeGenderForms: Boolean(coll.includeGenderForms ?? coll.include_gender_forms),
+        createdAt: coll.createdAt || coll.created_at || new Date().toISOString(),
+        totalItems: coll.totalItems || coll.total_items || 0,
+        caughtItems: 0
+      };
+      filteredColls.push(formattedColl);
+      this.collectionsCache = filteredColls;
+      localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(filteredColls));
+
+      // 2. Update collection items
+      const existingItems = this.getLocalCollectionItems().filter(i => i.collection_id !== collId);
+      const incomingItems = (backup.data.collectionItems || []).filter(
+        (i: any) => i.collection_id === collId || !i.collection_id
+      );
+      const newItems = incomingItems.map((i: any) => ({
+        collection_id: collId,
+        pokemon_id: i.pokemon_id || i.pokemonId,
+        added_at: i.added_at || i.addedAt || new Date().toISOString()
+      }));
+      formattedColl.totalItems = newItems.length;
+      const combinedItems = [...existingItems, ...newItems];
+      this.collectionItemsCache.delete(collId);
+      this.saveLocalCollectionItems(combinedItems);
+
+      // 3. Update progress for this custom scope
+      const progressEntries = backup.data.progressV2 || backup.data.progress || [];
+      const relevantProgress = progressEntries.filter(
+        (p: any) => (p.dex_scope === `custom:${collId}` || p.dexScope === `custom:${collId}`)
+      );
+      for (const p of relevantProgress) {
+        const accId = p.account_id || p.accountId || 'default';
+        const scope = `custom:${collId}`;
+        const curr = this.getLocalProgress(accId, scope);
+        curr[p.pokemon_id || p.pokemonId] = {
+          caught: Boolean(p.caught),
+          shinyCaught: Boolean(p.shiny_caught ?? p.shinyCaught),
+          luckyCaught: Boolean(p.lucky_caught ?? p.luckyCaught),
+          hundoCaught: Boolean(p.hundo_caught ?? p.hundoCaught),
+          shadowCaught: Boolean(p.shadow_caught ?? p.shadowCaught),
+          purifiedCaught: Boolean(p.purified_caught ?? p.purifiedCaught),
+          genderMCaught: Boolean(p.gender_m_caught ?? p.genderMCaught),
+          genderFCaught: Boolean(p.gender_f_caught ?? p.genderFCaught),
+          xxlCaught: Boolean(p.xxl_caught ?? p.xxlCaught),
+          xxsCaught: Boolean(p.xxs_caught ?? p.xxsCaught),
+          notes: p.notes,
+          updatedAt: p.updated_at || p.updatedAt || new Date().toISOString()
+        };
+        this.saveLocalProgress(accId, scope, curr);
+      }
+
+      return {
+        success: true,
+        mode: 'collection',
+        collectionName: formattedColl.name
+      };
+    }
+
+    // Full Restore Mode
     if (Array.isArray(backup.data.accounts) && backup.data.accounts.length > 0) {
       localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(backup.data.accounts));
     }
@@ -945,6 +1114,7 @@ class StorageAdapter {
       for (const [k, obj] of groups.entries()) {
         localStorage.setItem(k, JSON.stringify(obj));
       }
+      this.progressCache.clear();
     } else if (Array.isArray(backup.data.progress) && backup.data.progress.length > 0) {
       // Legacy import
       const progressMap: Record<string, any> = {};
@@ -961,6 +1131,7 @@ class StorageAdapter {
         };
       }
       this.saveLocalProgress('default', 'standard', progressMap);
+      this.progressCache.clear();
     }
 
     if (backup.data.collections) {
@@ -973,7 +1144,7 @@ class StorageAdapter {
       localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(backup.data.collectionItems));
     }
 
-    return true;
+    return { success: true, mode: 'full' };
   }
 
   public async resetProgress(accountId: string = 'default', scope?: string): Promise<void> {

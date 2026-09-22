@@ -22,7 +22,9 @@ import {
   Ruler,
   Palette,
   FolderKanban,
-  Globe
+  Globe,
+  Download,
+  Upload
 } from 'lucide-react';
 
 interface CustomCollectionsModalProps {
@@ -51,6 +53,8 @@ interface CustomCollectionsModalProps {
   onDeleteCollection: (id: string) => Promise<void>;
   onDeleteAllCollections?: () => Promise<void>;
   onOpenEditor: (collection: CustomCollection) => void;
+  onExportCollection?: (collectionId: string) => Promise<any>;
+  onImportBackup?: (backup: any, specificCollectionId?: string) => Promise<any>;
 }
 
 // Preset Accent Themes
@@ -75,9 +79,52 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
   onCreateCollection,
   onDeleteCollection,
   onDeleteAllCollections,
-  onOpenEditor
+  onOpenEditor,
+  onExportCollection,
+  onImportBackup
 }) => {
   const [activeTab, setActiveTab] = useState<'create' | 'list'>('create');
+
+  const handleExportSingleCollection = async (coll: CustomCollection) => {
+    try {
+      if (!onExportCollection) return;
+      const data = await onExportCollection(coll.id);
+      const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data, null, 2))}`;
+      const downloadAnchor = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const safeName = coll.name.toLowerCase().replace(/[^a-z0-9]/gi, '_');
+      downloadAnchor.setAttribute('href', jsonString);
+      downloadAnchor.setAttribute('download', `pogo-collection-${safeName}-${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    } catch (err: any) {
+      alert(`Export fehlgeschlagen: ${err.message}`);
+    }
+  };
+
+  const handleImportCollectionFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (event) => {
+      try {
+        const json = JSON.parse(event.target?.result as string);
+        if (!json.app || !json.data) {
+          throw new Error('Ungültiges Backup-Dateiformat.');
+        }
+        if (onImportBackup) {
+          const res = await onImportBackup(json);
+          alert(`Sammlung "${res?.collectionName || 'Sammlung'}" erfolgreich importiert!`);
+        }
+      } catch (err: any) {
+        alert(`Importieren fehlgeschlagen: ${err.message}`);
+      }
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+  };
 
   // Form states
   const [selectedRegion, setSelectedRegion] = useState<number | 'all'>('all');
@@ -1039,6 +1086,21 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   Deine gespeicherten Listen ({collections.length})
                 </h3>
                 <div className="flex items-center gap-2">
+                  {onImportBackup && (
+                    <label
+                      className="text-xs text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 transition-all cursor-pointer"
+                      title="Sammlung aus einer JSON-Datei importieren"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Importieren</span>
+                      <input
+                        type="file"
+                        accept=".json,application/json"
+                        onChange={handleImportCollectionFile}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
                   {onDeleteAllCollections && collections.length > 0 && (
                     <button
                       type="button"
@@ -1149,6 +1211,16 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
                           {/* Action Buttons */}
                           <div className="flex items-center gap-2 ml-2 shrink-0">
+                            {onExportCollection && (
+                              <button
+                                type="button"
+                                onClick={() => handleExportSingleCollection(c)}
+                                className="p-2 text-slate-400 hover:text-blue-400 hover:bg-slate-800/80 rounded-xl transition-colors cursor-pointer"
+                                title="Diese Sammlung als JSON exportieren"
+                              >
+                                <Download className="w-4 h-4" />
+                              </button>
+                            )}
                             <button
                               type="button"
                               onClick={() => {

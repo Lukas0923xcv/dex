@@ -7,8 +7,9 @@ interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   storageStatus: StorageStatus;
-  onExport: () => Promise<BackupData>;
-  onImport: (backup: BackupData) => Promise<void>;
+  collections?: CustomCollection[];
+  onExport: (collectionId?: string) => Promise<BackupData | SingleCollectionBackup>;
+  onImport: (backup: any, specificCollectionId?: string) => Promise<any>;
   onReset: () => void;
   onResetScope?: () => void;
   onDeleteAllCollections?: () => Promise<void>;
@@ -20,6 +21,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   isOpen,
   onClose,
   storageStatus,
+  collections = [],
   onExport,
   onImport,
   onReset,
@@ -31,6 +33,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [remoteUrl, setRemoteUrl] = useState(storageStatus.backendUrl || '');
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
+
+  // Export State
+  const [exportScope, setExportScope] = useState<'all' | 'collection'>('all');
+  const [selectedExportCollId, setSelectedExportCollId] = useState<string>(
+    collections.length > 0 ? collections[0].id : ''
+  );
+
+  // Import State
+  const [pendingImport, setPendingImport] = useState<{
+    backup: any;
+    isSingle: boolean;
+    collectionsList: Array<{ id: string; name: string }>;
+    selectedCollId: string;
+    mode: 'all' | 'collection';
+  } | null>(null);
+
+  useEffect(() => {
+    if (collections.length > 0 && (!selectedExportCollId || !collections.some(c => c.id === selectedExportCollId))) {
+      setSelectedExportCollId(collections[0].id);
+    }
+  }, [collections, selectedExportCollId]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -48,17 +71,26 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   // Handle file download
   const handleExport = async () => {
     try {
-      const data = await onExport();
+      const isSingle = exportScope === 'collection' && selectedExportCollId;
+      const data = await onExport(isSingle ? selectedExportCollId : undefined);
       const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data, null, 2))}`;
       const downloadAnchor = document.createElement('a');
       const dateStr = new Date().toISOString().slice(0, 10);
+
+      let filename = `pogo-dex-backup-${dateStr}.json`;
+      if (isSingle) {
+        const coll = collections.find(c => c.id === selectedExportCollId);
+        const safeName = coll ? coll.name.toLowerCase().replace(/[^a-z0-9]/gi, '_') : 'sammlung';
+        filename = `pogo-collection-${safeName}-${dateStr}.json`;
+      }
+
       downloadAnchor.setAttribute('href', jsonString);
-      downloadAnchor.setAttribute('download', `pogo-dex-backup-${dateStr}.json`);
+      downloadAnchor.setAttribute('download', filename);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
     } catch (err: any) {
-      alert(`Export failed: ${err.message}`);
+      alert(`Export fehlgeschlagen: ${err.message}`);
     }
   };
 
@@ -72,16 +104,51 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       try {
         const json = JSON.parse(event.target?.result as string);
         if (!json.app || !json.data) {
-          throw new Error('Invalid backup file format.');
+          throw new Error('Ungültiges Backup-Dateiformat.');
         }
-        await onImport(json);
-        setImportStatus('Backup successfully restored!');
-        setTimeout(() => setImportStatus(null), 3000);
+
+        const isSingle = json.type === 'collection' || Boolean(json.data.collection);
+        const collList: Array<{ id: string; name: string }> = [];
+        if (json.data.collection) {
+          collList.push({ id: json.data.collection.id, name: json.data.collection.name });
+        }
+        if (Array.isArray(json.data.collections)) {
+          for (const c of json.data.collections) {
+            if (!collList.some(existing => existing.id === c.id)) {
+              collList.push({ id: c.id, name: c.name });
+            }
+          }
+        }
+
+        setPendingImport({
+          backup: json,
+          isSingle,
+          collectionsList: collList,
+          selectedCollId: collList[0]?.id || '',
+          mode: isSingle ? 'collection' : 'all'
+        });
       } catch (err: any) {
-        alert(`Import failed: ${err.message}`);
+        alert(`Importieren fehlgeschlagen: ${err.message}`);
       }
     };
     reader.readAsText(file);
+    e.target.value = '';
+  };
+
+  const handleConfirmImport = async () => {
+    if (!pendingImport) return;
+    try {
+      const specificId = pendingImport.mode === 'collection' ? pendingImport.selectedCollId : undefined;
+      const res = await onImport(pendingImport.backup, specificId);
+      const msg = res?.mode === 'collection' || pendingImport.mode === 'collection'
+        ? `Sammlung "${res?.collectionName || 'Sammlung'}" erfolgreich importiert!`
+        : 'Gesamtes Backup erfolgreich wiederhergestellt!';
+      setImportStatus(msg);
+      setPendingImport(null);
+      setTimeout(() => setImportStatus(null), 4000);
+    } catch (err: any) {
+      alert(`Import fehlgeschlagen: ${err.message}`);
+    }
   };
 
   const handleSaveRemoteUrl = () => {
@@ -101,7 +168,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
           <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            Settings & Data Backup
+            Einstellungen & Daten-Backup
           </h2>
           <button
             onClick={onClose}
@@ -117,7 +184,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Storage Engine
+                Speicher-Engine
               </span>
               {storageStatus.isBackendConnected ? (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40">
@@ -127,21 +194,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               ) : (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/40">
                   <Server className="w-3.5 h-3.5" />
-                  GitHub Pages / Local
+                  GitHub Pages / Lokal
                 </span>
               )}
             </div>
 
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               {storageStatus.isBackendConnected
-                ? 'Your progress is persistently synced with your high-performance SQLite database on your server volume.'
-                : 'Running client-side on GitHub Pages. Data is stored safely in your browser and can be exported anytime.'}
+                ? 'Dein Fortschritt wird kontinuierlich mit deiner SQLite-Datenbank auf dem Server synchronisiert.'
+                : 'Läuft lokal im Browser (GitHub Pages). Deine Daten sind sicher im Browser gespeichert und können jederzeit exportiert werden.'}
             </p>
 
             {/* Custom Server Configuration for GitHub Pages */}
             <div className="pt-2 border-t border-slate-200 dark:border-slate-700/40">
               <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
-                Custom Remote Backend URL (Optional):
+                Eigene Server Backend-URL (Optional):
               </label>
               <div className="flex gap-2">
                 <input
@@ -154,50 +221,213 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <button
                   type="button"
                   onClick={handleSaveRemoteUrl}
-                  className="px-3 py-1.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-semibold rounded-xl transition-colors"
+                  className="px-3 py-1.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                 >
-                  Save
+                  Speichern
                 </button>
               </div>
             </div>
           </div>
 
           {/* Backup & Restore (JSON) */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Backup & Restore (JSON)
+              Backup & Wiederherstellung (JSON)
             </h3>
 
             {importStatus && (
-              <div className="p-3 bg-emerald-500/10 border border-emerald-500/40 rounded-xl flex items-center gap-2 text-emerald-700 dark:text-emerald-400 text-xs font-semibold">
-                <CheckCircle2 className="w-4 h-4" />
-                {importStatus}
+              <div className="p-3 bg-emerald-500/10 border border-emerald-500/40 rounded-xl flex items-center gap-2 text-emerald-700 dark:text-emerald-400 text-xs font-semibold animate-in fade-in duration-200">
+                <CheckCircle2 className="w-4 h-4 shrink-0" />
+                <span>{importStatus}</span>
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
-              {/* Export Button */}
-              <button
-                type="button"
-                onClick={handleExport}
-                className="flex flex-col items-center justify-center gap-2 p-4 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white transition-all group shadow-sm"
-              >
-                <Download className="w-6 h-6 text-blue-500 dark:text-blue-400 group-hover:scale-110 transition-transform" />
-                <span className="text-xs font-bold">Export Backup JSON</span>
-              </button>
+            {/* Interactive Import Review/Confirmation Dialog */}
+            {pendingImport ? (
+              <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl space-y-3 animate-in fade-in duration-200">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
+                    Import-Vorschau
+                  </span>
+                  <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-700 dark:text-blue-300 font-semibold">
+                    {pendingImport.isSingle ? 'Einzelne Sammlung' : 'Komplettes Backup'}
+                  </span>
+                </div>
 
-              {/* Import Button */}
-              <label className="flex flex-col items-center justify-center gap-2 p-4 bg-slate-50 hover:bg-slate-100 dark:bg-slate-800/80 dark:hover:bg-slate-750 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-700 hover:text-slate-900 dark:text-slate-200 dark:hover:text-white transition-all group shadow-sm cursor-pointer">
-                <Upload className="w-6 h-6 text-emerald-500 dark:text-emerald-400 group-hover:scale-110 transition-transform" />
-                <span className="text-xs font-bold">Import Backup JSON</span>
-                <input
-                  type="file"
-                  accept=".json,application/json"
-                  onChange={handleFileUpload}
-                  className="hidden"
-                />
-              </label>
-            </div>
+                {pendingImport.isSingle ? (
+                  <div className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
+                    <p>
+                      Gefundene Sammlung:{' '}
+                      <strong className="text-blue-600 dark:text-blue-400">
+                        {pendingImport.collectionsList[0]?.name || 'Unbenannt'}
+                      </strong>
+                    </p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                      Diese Sammlung und ihr Fang-Status werden hinzugefügt oder aktualisiert. Alle bestehenden Daten bleiben erhalten.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2.5">
+                    <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
+                      Wie möchtest du das Backup importieren?
+                    </p>
+                    <div className="space-y-2">
+                      <label className="flex items-start gap-2.5 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="importMode"
+                          checked={pendingImport.mode === 'all'}
+                          onChange={() => setPendingImport({ ...pendingImport, mode: 'all' })}
+                          className="mt-0.5"
+                        />
+                        <div className="text-xs">
+                          <span className="font-bold block text-slate-900 dark:text-white">
+                            Gesamtes Backup wiederherstellen
+                          </span>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                            Stellt alle Accounts, Sammlungen und Fänge wieder her (überschreibt bestehende Daten).
+                          </span>
+                        </div>
+                      </label>
+
+                      {pendingImport.collectionsList.length > 0 && (
+                        <label className="flex items-start gap-2.5 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 cursor-pointer">
+                          <input
+                            type="radio"
+                            name="importMode"
+                            checked={pendingImport.mode === 'collection'}
+                            onChange={() => setPendingImport({ ...pendingImport, mode: 'collection' })}
+                            className="mt-0.5"
+                          />
+                          <div className="text-xs flex-1">
+                            <span className="font-bold block text-slate-900 dark:text-white">
+                              Nur eine bestimmte Sammlung importieren
+                            </span>
+                            <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-2">
+                              Fügt nur die gewählte Sammlung hinzu. Deine restlichen Daten bleiben unverändert.
+                            </span>
+                            {pendingImport.mode === 'collection' && (
+                              <select
+                                value={pendingImport.selectedCollId}
+                                onChange={(e) =>
+                                  setPendingImport({ ...pendingImport, selectedCollId: e.target.value })
+                                }
+                                className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-xs text-slate-900 dark:text-white font-medium focus:outline-none"
+                              >
+                                {pendingImport.collectionsList.map((c) => (
+                                  <option key={c.id} value={c.id}>
+                                    {c.name}
+                                  </option>
+                                ))}
+                              </select>
+                            )}
+                          </div>
+                        </label>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex gap-2 pt-1">
+                  <button
+                    type="button"
+                    onClick={handleConfirmImport}
+                    className="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>Jetzt importieren</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPendingImport(null)}
+                    className="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
+                  >
+                    Abbrechen
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {/* Export Options Box */}
+                <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
+                      Exportieren:
+                    </span>
+                    <div className="flex bg-slate-200 dark:bg-slate-700/60 p-0.5 rounded-xl text-[11px] font-semibold">
+                      <button
+                        type="button"
+                        onClick={() => setExportScope('all')}
+                        className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                          exportScope === 'all'
+                            ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm font-bold'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                        }`}
+                      >
+                        Alles
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setExportScope('collection')}
+                        disabled={collections.length === 0}
+                        className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+                          exportScope === 'collection'
+                            ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm font-bold'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed'
+                        }`}
+                      >
+                        Einzelne Sammlung
+                      </button>
+                    </div>
+                  </div>
+
+                  {exportScope === 'collection' && collections.length > 0 && (
+                    <div className="space-y-1.5 animate-in fade-in duration-150">
+                      <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">
+                        Wähle die zu exportierende Sammlung:
+                      </label>
+                      <select
+                        value={selectedExportCollId}
+                        onChange={(e) => setSelectedExportCollId(e.target.value)}
+                        className="w-full px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:outline-none focus:border-blue-500"
+                      >
+                        {collections.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.name} ({c.totalItems} Pokémon)
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-2 gap-3 pt-1">
+                    {/* Export Button */}
+                    <button
+                      type="button"
+                      onClick={handleExport}
+                      className="flex items-center justify-center gap-2 py-2.5 px-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>
+                        {exportScope === 'all' ? 'Alles exportieren' : 'Sammlung exportieren'}
+                      </span>
+                    </button>
+
+                    {/* Import Button */}
+                    <label className="flex items-center justify-center gap-2 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer">
+                      <Upload className="w-4 h-4" />
+                      <span>JSON importieren</span>
+                      <input
+                        type="file"
+                        accept=".json,application/json"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Reset Danger Zone */}

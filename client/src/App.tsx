@@ -254,6 +254,8 @@ export const App: React.FC = () => {
         onDeleteCollection={deleteCollection}
         onDeleteAllCollections={deleteAllCollections}
         onOpenEditor={(coll) => setTargetCollectionForEdit(coll)}
+        onExportCollection={exportBackup}
+        onImportBackup={importBackup}
       />
 
       <CollectionEditorModal
@@ -280,6 +282,7 @@ export const App: React.FC = () => {
         isOpen={isSettingsOpen}
         onClose={() => setIsSettingsOpen(false)}
         storageStatus={storageStatus}
+        collections={collections}
         onExport={exportBackup}
         onImport={importBackup}
         onReset={resetAllProgress}
