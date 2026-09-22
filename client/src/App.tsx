@@ -47,8 +47,6 @@ export const App: React.FC = () => {
     importBackup,
     resetScopeProgress,
     resetAllProgress,
-    resetFilters,
-    getProgressLabel,
     refreshData
   } = useDex();
 

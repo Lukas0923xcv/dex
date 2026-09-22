@@ -977,7 +977,7 @@ class StorageAdapter {
     }
 
     if (backup.data.collections) {
-      this.collectionsCache = backup.data.collections;
+      this.collectionsCache = (backup.data.collections as unknown as CustomCollection[]);
       localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(backup.data.collections));
     }
     if (backup.data.collectionItems) {
