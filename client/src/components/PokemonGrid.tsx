@@ -16,6 +16,7 @@ interface PokemonGridProps {
     type: 'caught' | 'shiny' | 'lucky' | 'hundo' | 'shadow' | 'purified' | 'gender_m' | 'gender_f' | 'xxl' | 'xxs'
   ) => void;
   onOpenAddModal: (pokemon: Pokemon) => void;
+  onOpenDetailModal?: (pokemon: Pokemon) => void;
   onResetFilters?: () => void;
 }
 
@@ -29,6 +30,7 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
   onToggleShiny,
   onToggleFeature,
   onOpenAddModal,
+  onOpenDetailModal,
   onResetFilters
 }) => {
   if (pokemonList.length === 0) {
@@ -67,6 +69,7 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
           onToggleShiny={onToggleShiny}
           onToggleFeature={onToggleFeature}
           onOpenAddModal={onOpenAddModal}
+          onOpenDetailModal={onOpenDetailModal}
         />
       ))}
     </div>

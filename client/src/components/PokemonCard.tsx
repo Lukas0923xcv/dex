@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pokemon, TrackingMode, CustomCollection } from '../types';
 import { getTypeBadgeColor, formatDexNumber, getEffectiveSprite } from '../utils/typeColors';
-import { Check, Sparkles, Plus, Bookmark, Flame, Zap } from 'lucide-react';
+import { Check, Sparkles, Plus, Bookmark, Flame, Zap, Info } from 'lucide-react';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -16,6 +16,7 @@ interface PokemonCardProps {
     type: 'caught' | 'shiny' | 'lucky' | 'hundo' | 'shadow' | 'purified' | 'gender_m' | 'gender_f' | 'xxl' | 'xxs'
   ) => void;
   onOpenAddModal: (pokemon: Pokemon) => void;
+  onOpenDetailModal?: (pokemon: Pokemon) => void;
 }
 
 export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
@@ -27,7 +28,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
   onToggleCaught,
   onToggleShiny,
   onToggleFeature,
-  onOpenAddModal
+  onOpenAddModal,
+  onOpenDetailModal
 }) => {
   const isCustomMode = mode === 'custom';
   const isShadowCollection = Boolean(collection?.categoryType === 'shadow' || collection?.name.toLowerCase().includes('crypto') || collection?.name.toLowerCase().includes('shadow'));
@@ -142,6 +144,21 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
 
         {/* Action icons */}
         <div className="flex items-center gap-1">
+          {/* Info button */}
+          {onOpenDetailModal && (
+            <button
+              type="button"
+              title="Pokémon Info & Erhältlichkeit"
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenDetailModal(pokemon);
+              }}
+              className="p-1 rounded-md transition-colors text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-700/50"
+            >
+              <Info className="w-3.5 h-3.5" />
+            </button>
+          )}
+
           {/* Add to custom collection button */}
           <button
             type="button"
