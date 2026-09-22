@@ -18,7 +18,7 @@ interface PokemonCardProps {
   onOpenAddModal: (pokemon: Pokemon) => void;
 }
 
-export const PokemonCard: React.FC<PokemonCardProps> = ({
+export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
   pokemon,
   mode,
   collection,
@@ -356,4 +356,4 @@ export const PokemonCard: React.FC<PokemonCardProps> = ({
       </div>
     </div>
   );
-};
+});

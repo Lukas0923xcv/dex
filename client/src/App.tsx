@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDex } from './hooks/useDex';
 import { Header } from './components/Header';
 import { ProgressBar } from './components/ProgressBar';
@@ -46,7 +46,10 @@ export const App: React.FC = () => {
     exportBackup,
     importBackup,
     resetScopeProgress,
-    resetAllProgress
+    resetAllProgress,
+    resetFilters,
+    getProgressLabel,
+    refreshData
   } = useDex();
 
   // Modals state
@@ -56,6 +59,18 @@ export const App: React.FC = () => {
   const [targetCollectionForEdit, setTargetCollectionForEdit] = useState<CustomCollection | null>(null);
   const [targetPokemonForAdd, setTargetPokemonForAdd] = useState<Pokemon | null>(null);
   const [dashboardTabs, setDashboardTabs] = useState<DashboardTabConfig[]>(() => storage.getDashboardTabs(collections));
+
+  const handleResetFilters = useCallback(() => {
+    setFilters(f => ({
+      ...f,
+      search: '',
+      generation: 'all',
+      type: 'all',
+      status: 'all',
+      shinyOnly: false,
+      shadowOnly: false
+    }));
+  }, [setFilters]);
 
   // Sync dashboard tabs when collections update
   React.useEffect(() => {
@@ -217,16 +232,8 @@ export const App: React.FC = () => {
           onToggleCaught={toggleCaught}
           onToggleShiny={toggleShiny}
           onToggleFeature={toggleFeature}
-          onOpenAddModal={(p) => setTargetPokemonForAdd(p)}
-          onResetFilters={() => setFilters(f => ({
-            ...f,
-            search: '',
-            generation: 'all',
-            type: 'all',
-            status: 'all',
-            shinyOnly: false,
-            shadowOnly: false
-          }))}
+          onOpenAddModal={setTargetPokemonForAdd}
+          onResetFilters={handleResetFilters}
         />
       </main>
 
