@@ -575,9 +575,32 @@ export function useDex() {
     const isBaseForm = (p: Pokemon) =>
       p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
 
+    const getSizeRank = (p: Pokemon): number => {
+      const s = `${p.id} ${p.formName || ''} ${p.name || ''}`.toLowerCase();
+      if (s.includes('small') || s.includes('klein')) return 1;
+      if (s.includes('average') || s.includes('fall_2022') || s.includes('fall 2022') || s.includes('normalgroß') || s.includes('mittel')) return 2;
+      if (s.includes('large') || s.includes('groß') || s.includes('grosse')) return 3;
+      if (s.includes('super') || s.includes('xl') || s.includes('übergröße')) return 4;
+      return 99;
+    };
+
     result.sort((a, b) => {
       // Within the same species: Base form is always first, followed by forms, then gender differences
       if (a.dexNr === b.dexNr) {
+        // Size forms (Pumpkaboo #710, Gourgeist #711) sort from Small to Big: Small -> Average -> Large -> Super
+        if (a.dexNr === 710 || a.dexNr === 711) {
+          const aCostume = Boolean(a.isCostume || a.category === 'costume');
+          const bCostume = Boolean(b.isCostume || b.category === 'costume');
+          if (aCostume !== bCostume) {
+            return aCostume ? 1 : -1;
+          }
+          const aRank = getSizeRank(a);
+          const bRank = getSizeRank(b);
+          if (aRank !== bRank) {
+            return aRank - bRank;
+          }
+        }
+
         const aBase = isBaseForm(a);
         const bBase = isBaseForm(b);
         if (aBase !== bBase) {
