@@ -9,6 +9,7 @@ import { CollectionEditorModal } from './components/CollectionEditorModal';
 import { DashboardCustomizerModal } from './components/DashboardCustomizerModal';
 import { AddToCollectionModal } from './components/AddToCollectionModal';
 import { SettingsModal } from './components/SettingsModal';
+import { PokemonDetailModal } from './components/PokemonDetailModal';
 import { Pokemon, CustomCollection, DashboardTabConfig } from './types';
 import { storage } from './services/storage';
 
@@ -56,6 +57,7 @@ export const App: React.FC = () => {
   const [isDashboardCustomizerOpen, setIsDashboardCustomizerOpen] = useState(false);
   const [targetCollectionForEdit, setTargetCollectionForEdit] = useState<CustomCollection | null>(null);
   const [targetPokemonForAdd, setTargetPokemonForAdd] = useState<Pokemon | null>(null);
+  const [selectedPokemonForDetail, setSelectedPokemonForDetail] = useState<Pokemon | null>(null);
   const [dashboardTabs, setDashboardTabs] = useState<DashboardTabConfig[]>(() => storage.getDashboardTabs(collections));
 
   const handleResetFilters = useCallback(() => {
@@ -231,6 +233,7 @@ export const App: React.FC = () => {
           onToggleShiny={toggleShiny}
           onToggleFeature={toggleFeature}
           onOpenAddModal={setTargetPokemonForAdd}
+          onOpenDetailModal={setSelectedPokemonForDetail}
           onResetFilters={handleResetFilters}
         />
       </main>
@@ -238,7 +241,7 @@ export const App: React.FC = () => {
       {/* Footer */}
       <footer className="border-t border-slate-200 dark:border-slate-800/80 py-6 text-center text-xs text-slate-500 dark:text-slate-500">
         <p>
-          Pokémon GO Dex Tracker · Data sourced from Pokémon GO Game Master & PokéAPI · Not affiliated with Nintendo or Niantic.
+          Pokémon GO Dex Tracker · Data sourced from Pokémon GO Game Master &amp; PokéAPI · Not affiliated with Nintendo or Niantic.
         </p>
       </footer>
 
@@ -302,6 +305,18 @@ export const App: React.FC = () => {
         onDeleteAllCollections={deleteAllCollections}
         onExportPreset={exportBackup}
         onExportCollection={exportBackup}
+      />
+
+      <PokemonDetailModal
+        pokemon={selectedPokemonForDetail}
+        allPokemon={pokemonList}
+        mode={mode}
+        collection={activeCollection}
+        onClose={() => setSelectedPokemonForDetail(null)}
+        onNavigate={(p) => setSelectedPokemonForDetail(p)}
+        onToggleCaught={toggleCaught}
+        onToggleShiny={toggleShiny}
+        onToggleFeature={toggleFeature}
       />
     </div>
   );
