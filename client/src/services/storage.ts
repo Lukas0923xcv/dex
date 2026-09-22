@@ -28,9 +28,18 @@ class StorageAdapter {
   private isInitialized = false;
   private collectionItemsCache: Map<string, Set<string>> = new Map();
   private collectionsCache: CustomCollection[] = [];
+  private progressCache: Map<string, Record<string, any>> = new Map();
+  private pendingProgressSaves: Map<string, any> = new Map();
+  private collectionItemsListCache: Array<{ collection_id: string; pokemon_id: string; added_at?: string }> | null = null;
+  private pendingCollectionItemsSave: any = null;
 
   constructor() {
     this.detectEnvironment();
+    if (typeof window !== 'undefined') {
+      window.addEventListener('beforeunload', () => {
+        this.flushPendingSaves();
+      });
+    }
   }
 
   private detectEnvironment() {
@@ -643,7 +652,7 @@ class StorageAdapter {
 
     if (payload.pokemonIds.length > 0) {
       this.collectionItemsCache.set(newColl.id, new Set(payload.pokemonIds));
-      const items = this.getLocalCollectionItems();
+      const items = [...this.getLocalCollectionItems()];
       const now = new Date().toISOString();
       for (const pid of payload.pokemonIds) {
         items.push({
@@ -652,7 +661,7 @@ class StorageAdapter {
           added_at: now
         });
       }
-      localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+      this.saveLocalCollectionItems(items);
     }
 
     return newColl;
@@ -674,7 +683,7 @@ class StorageAdapter {
     localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(collections));
 
     const items = this.getLocalCollectionItems().filter(i => i.collection_id !== collectionId);
-    localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+    this.saveLocalCollectionItems(items);
 
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.DASHBOARD_TABS);
@@ -703,7 +712,7 @@ class StorageAdapter {
     }
 
     localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify([]));
-    localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify([]));
+    this.saveLocalCollectionItems([]);
 
     try {
       const stored = localStorage.getItem(STORAGE_KEYS.DASHBOARD_TABS);
@@ -739,14 +748,14 @@ class StorageAdapter {
       }
     }
 
-    const items = this.getLocalCollectionItems();
+    const items = [...this.getLocalCollectionItems()];
     if (!items.some(i => i.collection_id === collectionId && i.pokemon_id === pokemonId)) {
       items.push({
         collection_id: collectionId,
         pokemon_id: pokemonId,
         added_at: new Date().toISOString()
       });
-      localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+      this.saveLocalCollectionItems(items);
     }
     return true;
   }
@@ -770,7 +779,7 @@ class StorageAdapter {
     const items = this.getLocalCollectionItems().filter(
       i => !(i.collection_id === collectionId && i.pokemon_id === pokemonId)
     );
-    localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+    this.saveLocalCollectionItems(items);
     return true;
   }
 
@@ -799,7 +808,7 @@ class StorageAdapter {
         added_at: now
       });
     }
-    localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+    this.saveLocalCollectionItems(items);
     return true;
   }
 
@@ -968,9 +977,12 @@ class StorageAdapter {
     }
 
     if (backup.data.collections) {
+      this.collectionsCache = backup.data.collections;
       localStorage.setItem(STORAGE_KEYS.COLLECTIONS, JSON.stringify(backup.data.collections));
     }
     if (backup.data.collectionItems) {
+      this.collectionItemsListCache = backup.data.collectionItems;
+      this.collectionItemsCache.clear();
       localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(backup.data.collectionItems));
     }
 
@@ -991,8 +1003,10 @@ class StorageAdapter {
     }
 
     if (scope) {
+      this.progressCache.delete(this.getProgressKey(accountId, scope));
       localStorage.removeItem(this.getProgressKey(accountId, scope));
     } else {
+      this.progressCache.clear();
       const prefix = `${STORAGE_KEYS.PROGRESS_PREFIX}${accountId}_`;
       const toRemove: string[] = [];
       for (let i = 0; i < localStorage.length; i++) {
@@ -1009,6 +1023,10 @@ class StorageAdapter {
   public resetAllProgress(): void {
     const accId = this.getActiveAccountId();
     this.resetProgress(accId);
+    this.progressCache.clear();
+    this.collectionItemsCache.clear();
+    this.collectionItemsListCache = null;
+    this.collectionsCache = [];
     localStorage.removeItem(STORAGE_KEYS.COLLECTIONS);
     localStorage.removeItem(STORAGE_KEYS.COLLECTION_ITEMS);
     this.ensureDefaultLocalCollections();
@@ -1065,29 +1083,76 @@ class StorageAdapter {
   }
 
   private getLocalProgress(accountId: string = 'default', scope: string = 'standard'): Record<string, any> {
+    const key = this.getProgressKey(accountId, scope);
+    if (this.progressCache.has(key)) {
+      return this.progressCache.get(key)!;
+    }
     try {
-      const data = localStorage.getItem(this.getProgressKey(accountId, scope));
+      const data = localStorage.getItem(key);
       if (data) {
-        return JSON.parse(data);
+        const parsed = JSON.parse(data);
+        this.progressCache.set(key, parsed);
+        return parsed;
       }
       if (scope === 'form') {
         const standardData = localStorage.getItem(this.getProgressKey(accountId, 'standard'));
         if (standardData) {
           localStorage.setItem(this.getProgressKey(accountId, 'form'), standardData);
-          return JSON.parse(standardData);
+          const parsed = JSON.parse(standardData);
+          this.progressCache.set(key, parsed);
+          return parsed;
         }
       }
-      return {};
     } catch {
-      return {};
+      // ignore
     }
+    const empty: Record<string, any> = {};
+    this.progressCache.set(key, empty);
+    return empty;
   }
 
   private saveLocalProgress(accountId: string = 'default', scope: string = 'standard', progress: Record<string, any>): void {
-    try {
-      localStorage.setItem(this.getProgressKey(accountId, scope), JSON.stringify(progress));
-    } catch (e) {
-      console.warn('Failed to save local progress:', e);
+    const key = this.getProgressKey(accountId, scope);
+    this.progressCache.set(key, progress);
+
+    if (this.pendingProgressSaves.has(key)) {
+      clearTimeout(this.pendingProgressSaves.get(key));
+    }
+    const timer = setTimeout(() => {
+      try {
+        localStorage.setItem(key, JSON.stringify(progress));
+      } catch (e) {
+        console.warn('Failed to save local progress:', e);
+      }
+      this.pendingProgressSaves.delete(key);
+    }, 150);
+    this.pendingProgressSaves.set(key, timer);
+  }
+
+  public flushPendingSaves(): void {
+    for (const [key, timer] of this.pendingProgressSaves.entries()) {
+      clearTimeout(timer);
+      const data = this.progressCache.get(key);
+      if (data) {
+        try {
+          localStorage.setItem(key, JSON.stringify(data));
+        } catch (e) {
+          console.warn('Failed to flush progress save:', e);
+        }
+      }
+    }
+    this.pendingProgressSaves.clear();
+
+    if (this.pendingCollectionItemsSave) {
+      clearTimeout(this.pendingCollectionItemsSave);
+      this.pendingCollectionItemsSave = null;
+      if (this.collectionItemsListCache) {
+        try {
+          localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(this.collectionItemsListCache));
+        } catch (e) {
+          console.warn('Failed to flush collection items save:', e);
+        }
+      }
     }
   }
 
@@ -1101,12 +1166,32 @@ class StorageAdapter {
   }
 
   private getLocalCollectionItems(): Array<{ collection_id: string; pokemon_id: string; added_at?: string }> {
+    if (this.collectionItemsListCache) {
+      return this.collectionItemsListCache;
+    }
     try {
       const data = localStorage.getItem(STORAGE_KEYS.COLLECTION_ITEMS);
-      return data ? JSON.parse(data) : [];
+      const parsed = data ? JSON.parse(data) : [];
+      this.collectionItemsListCache = parsed;
+      return parsed;
     } catch {
       return [];
     }
+  }
+
+  private saveLocalCollectionItems(items: Array<{ collection_id: string; pokemon_id: string; added_at?: string }>): void {
+    this.collectionItemsListCache = items;
+    if (this.pendingCollectionItemsSave) {
+      clearTimeout(this.pendingCollectionItemsSave);
+    }
+    this.pendingCollectionItemsSave = setTimeout(() => {
+      try {
+        localStorage.setItem(STORAGE_KEYS.COLLECTION_ITEMS, JSON.stringify(items));
+      } catch (e) {
+        console.warn('Failed to save collection items:', e);
+      }
+      this.pendingCollectionItemsSave = null;
+    }, 150);
   }
 
   private ensureDefaultLocalCollections() {
