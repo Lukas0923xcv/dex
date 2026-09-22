@@ -1,6 +1,6 @@
 import React from 'react';
 import { FilterState, StatusFilter, TrackingMode, CustomCollection } from '../types';
-import { Search, X, Check, RotateCcw, Sparkles, Flame, ArrowUpDown } from 'lucide-react';
+import { Search, X, Check, RotateCcw, Sparkles, Flame, ArrowUpDown, Compass } from 'lucide-react';
 
 interface FilterBarProps {
   filters: FilterState;
@@ -46,6 +46,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     filters.search !== '' ||
     filters.generation !== 'all' ||
     filters.status !== 'all' ||
+    (Boolean(filters.availability) && filters.availability !== 'all') ||
     filters.sortBy !== 'dexAsc' ||
     Boolean(filters.shinyOnly) ||
     Boolean(filters.shadowOnly) ||
@@ -89,7 +90,34 @@ export const FilterBar: React.FC<FilterBarProps> = ({
             <option value="dexAsc" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white"># Number (Asc)</option>
             <option value="dexDesc" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white"># Number (Desc)</option>
             <option value="nameAsc" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Name (A–Z)</option>
-            <option value="availability" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Availability</option>
+          </select>
+        </div>
+
+        {/* Availability Filter Dropdown */}
+        <div className="flex items-center gap-1.5 shrink-0 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-2.5 py-1.5 shadow-2xs">
+          <Compass className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <label htmlFor="dex-availability-filter" className="sr-only">Filter by Availability</label>
+          <select
+            id="dex-availability-filter"
+            value={filters.availability || 'all'}
+            onChange={(e) => onFilterChange({ availability: e.target.value as any })}
+            className={`bg-transparent text-xs font-semibold focus:outline-none cursor-pointer pr-1 ${
+              filters.availability && filters.availability !== 'all'
+                ? 'text-blue-600 dark:text-blue-400 font-bold'
+                : 'text-slate-700 dark:text-slate-300'
+            }`}
+          >
+            <option value="all" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">All Availability</option>
+            <option value="wild" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Standard Wild</option>
+            <option value="biome" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Biome Exclusive</option>
+            <option value="regional" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Regional Exclusive</option>
+            <option value="raid" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Raid Exclusive</option>
+            <option value="egg" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Egg Exclusive</option>
+            <option value="evolution" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Evolution Only</option>
+            <option value="research" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Special Research</option>
+            <option value="event" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Event Exclusive</option>
+            <option value="costume" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Event Costume</option>
+            <option value="special" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Special Mechanics</option>
           </select>
         </div>
 

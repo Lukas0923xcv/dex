@@ -73,14 +73,28 @@ export type StatusFilter = 'all' | 'caught' | 'uncaught';
 
 export type Theme = 'dark' | 'light';
 
+export type AvailabilityFilterType =
+  | 'all'
+  | 'wild'
+  | 'biome'
+  | 'regional'
+  | 'raid'
+  | 'egg'
+  | 'evolution'
+  | 'research'
+  | 'event'
+  | 'costume'
+  | 'special';
+
 export interface FilterState {
   search: string;
   generation: number | 'all';
   type: string | 'all';
   status: StatusFilter;
+  availability?: AvailabilityFilterType;
   releasedOnly: boolean;
   activeCollectionId: string | null;
-  sortBy: 'dexAsc' | 'dexDesc' | 'nameAsc' | 'availability';
+  sortBy: 'dexAsc' | 'dexDesc' | 'nameAsc';
   showGenderTracking?: boolean;
   includeBaseInForms?: boolean;
   shinyOnly?: boolean;

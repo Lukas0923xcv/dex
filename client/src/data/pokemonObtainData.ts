@@ -1,4 +1,5 @@
 import { PokemonDetailInfo, RegionalInfo, ObtainMethodDetail, DexAlternativeMethod, AvailabilityTag } from '../types/pokemonInfo';
+import { AvailabilityFilterType } from '../types';
 
 // ============================================================
 // REGIONAL EXCLUSIVES DATA (Base species by Dex Number)
@@ -255,6 +256,7 @@ export const RESEARCH_ONLY_DEX_NRS = new Set<number>([
   718, // Zygarde
   719, // Diancie
   720, // Hoopa
+  721, // Volcanion (GO Fest 2025 & "Pressure Rising" Special Research)
   789, // Cosmog
   790, // Cosmoem
   802, // Marshadow
@@ -270,7 +272,6 @@ export const RESEARCH_ONLY_DEX_NRS = new Set<number>([
 // ============================================================
 export const UNRELEASED_DEX_NRS = new Set<number>([
   489, 490, 493, // Phione, Manaphy, Arceus
-  721,           // Volcanion
   801,           // Magearna (804 Naganadel is released)
   896, 897, 898, // Glastrier, Spectrier, Calyrex
   1001, 1002, 1003, 1004, // Treasures of Ruin
@@ -739,6 +740,7 @@ const SPECIAL_NOTES: Record<number, string> = {
   666:  "Vivillon's wing pattern depends on the region from which you pin postcards.",
   676:  'Furfrou can adopt different trims using form change, several of which are locked to specific real-world regions.',
   720:  'Hoopa Confined and Unbound are obtainable via special events and research storylines.',
+  721:  'Volcanion is a Mythical Pokémon obtainable via the "Pressure Rising" Special Research storyline (originally debuted during Pokémon GO Fest 2025).',
   789:  'Cosmog is a rare reward from special research storylines.',
   794:  'Buzzwole appears in 5-Star Raids in the Americas & Greenland. Remote Raids are globally accessible.',
   795:  'Pheromosa appears in 5-Star Raids in Europe, MEA & India. Remote Raids are globally accessible.',
@@ -1102,6 +1104,8 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
     let resDesc = 'Obtainable exclusively through special or seasonal research storylines (not in the wild).';
     if (dex === 890) {
       resDesc = 'Obtainable exclusively through the Special Research storyline during the Season of Max Out (cannot be encountered in the wild or in standard Raids).';
+    } else if (dex === 721) {
+      resDesc = 'Obtainable via the "Pressure Rising" Special Research storyline (first debuted during Pokémon GO Fest 2025). Cannot be encountered in the wild or in standard Raids.';
     }
     methods.push({
       type: 'research', label: 'Special Research', badgeColor: 'blue',
@@ -1526,6 +1530,60 @@ export function getAvailabilitySortRank(pokemon: {
       return 130;
     default:
       return 200;
+  }
+}
+
+// ============================================================
+// AVAILABILITY FILTER HELPER
+// ============================================================
+export function matchesAvailabilityFilter(
+  pokemon: {
+    dexNr: number;
+    id?: string;
+    category?: string;
+    isCostume?: boolean;
+    releasedInGo?: boolean;
+    formName?: string;
+  },
+  filter: AvailabilityFilterType
+): boolean {
+  if (!filter || filter === 'all') return true;
+
+  const isUnreleased = pokemon.releasedInGo === false || UNRELEASED_DEX_NRS.has(pokemon.dexNr);
+  if (isUnreleased) {
+    return false;
+  }
+
+  const tag = getPrimaryAvailabilityTag(pokemon);
+
+  switch (filter) {
+    case 'wild':
+      // Standard wild spawn (no special availability tag)
+      return tag === null;
+    case 'biome':
+      return tag?.type === 'biome';
+    case 'regional':
+      return tag?.type === 'wild' || tag?.shortLabel === 'Regional';
+    case 'raid':
+      return tag?.type === 'raid';
+    case 'egg':
+      return tag?.type === 'egg_exclusive';
+    case 'evolution':
+      return tag?.type === 'evolution_only';
+    case 'research':
+      return tag?.type === 'research' || tag?.type === 'paid_research';
+    case 'event':
+      return tag?.type === 'event_exclusive' && tag?.shortLabel !== 'Costume';
+    case 'costume':
+      return (
+        pokemon.category === 'costume' ||
+        Boolean(pokemon.isCostume) ||
+        tag?.shortLabel === 'Costume'
+      );
+    case 'special':
+      return tag?.type === 'special' && tag?.shortLabel !== 'Unreleased';
+    default:
+      return true;
   }
 }
 
