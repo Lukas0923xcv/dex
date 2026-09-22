@@ -28,6 +28,7 @@ export const REGIONAL_DATA: Record<number, RegionalInfo> = {
   // Gen 4
   417: { isRegional: true, regionName: 'Arctic / Subarctic Regions', countries: 'Canada, Alaska, Russia, Northern Scandinavia' },
   422: { isRegional: true, regionName: 'Hemisphere-split', hemisphere: 'Western / Eastern Hemisphere', notes: 'West Sea: West · East Sea: East' },
+  423: { isRegional: true, regionName: 'Hemisphere-split', hemisphere: 'Western / Eastern Hemisphere', notes: 'West Sea: West · East Sea: East' },
   439: { isRegional: true, regionName: 'Europe (5km Eggs)', countries: 'Europe (incl. Iceland, Cyprus)', notes: 'Hatches exclusively from 5km eggs sent by European friends' },
   441: { isRegional: true, regionName: 'Southern Hemisphere', hemisphere: 'Southern Hemisphere', countries: 'South America, South Africa, Australia, New Zealand' },
   455: { isRegional: true, regionName: 'Southeastern USA', countries: 'Florida, Georgia, North & South Carolina' },
@@ -89,9 +90,11 @@ const REGIONAL_DATA_BY_ID: Record<string, RegionalInfo> = {
   'poke_741_special_pa_u':     { isRegional: true, regionName: 'Africa / Pacific Islands / South Asia', countries: "Sub-Saharan Africa, Pacific Islands, South Asia (Pa'u Style)" },
   'poke_741_special_sensu':    { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, China, Southeast Asia, Australia (Sensu Style)' },
 
-  // ── Shellos & Gastrodon #422 ──────────────────────────────
+  // ── Shellos & Gastrodon #422, #423 ──────────────────────────────
   'poke_422_base':             { isRegional: true, regionName: 'Western Hemisphere', hemisphere: 'Western Hemisphere', notes: 'West Sea spawns west of the prime meridian (Americas, Western Europe)' },
   'poke_422_special_east_sea': { isRegional: true, regionName: 'Eastern Hemisphere', hemisphere: 'Eastern Hemisphere', notes: 'East Sea spawns east of the prime meridian (Eastern Europe, Asia, Oceania)' },
+  'poke_423_base':             { isRegional: true, regionName: 'Western Hemisphere', hemisphere: 'Western Hemisphere', notes: 'West Sea spawns west of the prime meridian (Americas, Western Europe)' },
+  'poke_423_special_east_sea': { isRegional: true, regionName: 'Eastern Hemisphere', hemisphere: 'Eastern Hemisphere', notes: 'East Sea spawns east of the prime meridian (Eastern Europe, Asia, Oceania)' },
 
   // ── Basculin #550 ──────────────────────────────────────────
   'poke_550_base':                   { isRegional: true, regionName: 'Eastern Hemisphere', hemisphere: 'Eastern Hemisphere', notes: 'Red-Striped Form spawns wild in the Eastern Hemisphere' },
@@ -220,6 +223,25 @@ export const RAID_ONLY_DEX_NRS = new Set<number>([
 ]);
 
 // ============================================================
+// ELITE RAID EXCLUSIVE POKÉMON (In-person Elite Raids at EX Gyms)
+// ============================================================
+export const ELITE_RAID_DEX_NRS = new Set<number>([
+  905, // Enamorus
+]);
+
+// ============================================================
+// 3-STAR RAID & RESEARCH EXCLUSIVE POKÉMON (Never in the wild)
+// ============================================================
+export const THREE_STAR_RAID_EXCLUSIVE_DEX_NRS = new Set<number>([
+  621, // Druddigon (3-Star Raids & Field Research)
+  776, // Turtonator (3-Star Raids, Field Research, 12km Eggs)
+  780, // Drampa (3-Star Raids & Field Research)
+  899, // Wyrdeer (3-Star Raids & Raid Day)
+  900, // Kleavor (3-Star Raids & Raid Day)
+  962, // Bombirdier (3-Star Raids)
+]);
+
+// ============================================================
 // SPECIAL RESEARCH ONLY (Mythicals & Box Legendaries)
 // ============================================================
 export const RESEARCH_ONLY_DEX_NRS = new Set<number>([
@@ -237,6 +259,7 @@ export const RESEARCH_ONLY_DEX_NRS = new Set<number>([
   790, // Cosmoem
   802, // Marshadow
   803, // Poipole
+  890, // Eternatus
   891, // Kubfu
   892, // Urshifu
   893, // Zarude
@@ -249,7 +272,7 @@ export const UNRELEASED_DEX_NRS = new Set<number>([
   489, 490, 493, // Phione, Manaphy, Arceus
   721,           // Volcanion
   801, 807,      // Magearna, Zeraora (804 Naganadel is released)
-  890, 896, 897, 898, // Eternatus, Glastrier, Spectrier, Calyrex
+  896, 897, 898, // Glastrier, Spectrier, Calyrex
   1001, 1002, 1003, 1004, // Treasures of Ruin
   1007, 1008, 1009, 1010, // Koraidon, Miraidon, Walking Wake, Iron Leaves
   1014, 1015, 1016, 1017, // Okidogi, Munkidori, Fezandipiti, Ogerpon
@@ -308,6 +331,7 @@ export const EVENT_EXCLUSIVE_DEX_NRS = new Set<number>([
   709, // Trevenant (Halloween events)
   710, // Pumpkaboo (Halloween events)
   711, // Gourgeist (Halloween events)
+  749, // Mudbray (Event exclusive wild / research)
 ]);
 
 export const EVENT_EXCLUSIVE_FORM_IDS = new Set<string>([
@@ -321,18 +345,26 @@ export const EVENT_EXCLUSIVE_FORM_IDS = new Set<string>([
 // ============================================================
 // BIOME EXCLUSIVE POKÉMON
 // ============================================================
-export const BIOME_EXCLUSIVE_DATA: Record<number, { biome: string; description: string }> = {
+export const BIOME_EXCLUSIVE_DATA: Record<number, { biome: string; shortLabel: string; description: string }> = {
   960: {
     biome: 'Beach Biome',
+    shortLabel: 'Beach Biome',
     description: 'Spawns exclusively along real-world ocean beaches and coastline biomes. Cannot be found inland!'
   },
   703: {
     biome: 'Mountain Biome',
+    shortLabel: 'Mountain Biome',
     description: 'Spawns primarily in high-elevation, mountain, and rocky biomes.'
   },
   615: {
     biome: 'Snow Biome & Glacial Lure',
+    shortLabel: 'Snow Biome',
     description: 'Spawns in snowy weather biomes or around active Glacial Lure Modules.'
+  },
+  843: {
+    biome: 'Desert / Dry Biome',
+    shortLabel: 'Desert Biome',
+    description: 'Spawns exclusively in desert, arid, and dry sandy biomes.'
   }
 };
 
@@ -342,7 +374,9 @@ export const BIOME_EXCLUSIVE_DATA: Record<number, { biome: string; description: 
 export const EVOLUTION_ONLY_DEX_NRS = new Set<number>([
   // Evolutions of Egg-Exclusive / Baby species
   637, // Volcarona (from Larvesta)
+  750, // Mudsdale (from Mudbray)
   758, // Salazzle (from female Salandit)
+  844, // Sandaconda (from Silicobra)
   966, // Revavroom (from Varoom)
   936, // Armarouge (from Charcadet)
   937, // Ceruledge (from Charcadet)
@@ -443,9 +477,9 @@ export const EVOLUTION_ONLY_DEX_NRS = new Set<number>([
 // MEGA / PRIMAL POKÉMON WITH RAIDS
 // ============================================================
 export const MEGA_RAID_POKEMON = new Set<number>([
-  3, 6, 9, 65, 94, 115, 127, 130, 142, 181, 208, 212, 214, 229, 248, 257,
+  3, 6, 9, 15, 18, 65, 80, 94, 115, 127, 130, 142, 181, 208, 212, 214, 229, 248, 254, 257,
   260, 282, 302, 303, 306, 308, 310, 319, 323, 334, 354, 359, 362, 373, 376,
-  380, 381, 384, 428, 445, 448, 460, 461, 531, 719, 720
+  380, 381, 382, 383, 384, 428, 445, 448, 460, 531, 719
 ]);
 
 // ============================================================
@@ -498,6 +532,12 @@ const FORM_OBTAIN_METHODS: Record<string, ObtainMethodDetail[]> = {
   // ── White-Striped Basculin (Routes & Mateo 7km Eggs) ───────
   'poke_550_special_white_striped': [
     { type: 'special', label: 'Routes & Mateo (7km Egg)', badgeColor: 'amber', description: 'Spawns while walking Routes and hatches from Mateo Gift Eggs (7km). Not normally found in the wild!', available: true }
+  ],
+
+  // ── Hoopa Unbound (Elite Raids & Form Change) ───────────────
+  'poke_720_special_unbound': [
+    { type: 'raid', label: 'Elite Raid', badgeColor: 'rose', description: 'Appeared in in-person Elite Raids and can be transformed from Hoopa Confined using Candy and Stardust.', available: true },
+    { type: 'special', label: 'Form Change', badgeColor: 'pink', description: 'Can change form from Hoopa Confined using 50 Hoopa Candy and 10,000 Stardust.', available: true }
   ],
 
   // ── Research & Event Exclusive Regional Forms ─────────────
@@ -709,11 +749,14 @@ const SPECIAL_NOTES: Record<number, string> = {
   806:  'Blacephalon appears in 5-Star Raids in the Western Hemisphere. Remote Raids are globally accessible.',
   808:  'Meltan can only be caught using the Mystery Box, which is activated by transferring a Pokémon to Pokémon HOME or Let\'s Go.',
   809:  'Melmetal evolves from Meltan with 400 Meltan Candy and can appear in special raids.',
+  843:  'Silicobra spawns exclusively in desert and arid biomes.',
   874:  'Stonjourner is a regional Pokémon that spawns exclusively in the wild in the United Kingdom.',
+  890:  'Eternatus is a Legendary Pokémon introduced as the climax of the Special Research storyline during the Season of Max Out.',
   893:  'Zarude is obtainable via seasonal Special Research storylines.',
   896:  'Glastrier is not yet available in Pokémon GO.',
   897:  'Spectrier is not yet available in Pokémon GO.',
   898:  'Calyrex is not yet available in Pokémon GO.',
+  905:  'Enamorus (Incarnate Forme) debuted exclusively in in-person Elite Raids at EX Gyms.',
   999:  'Gimmighoul (Roaming Form) appears exclusively around Golden PokéStops and when using the Coin Bag.',
   1000: 'Gholdengo evolves from Gimmighoul using 999 Gimmighoul Coins.',
 };
@@ -842,7 +885,9 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
     // Evolution Only (No wild spawns, no standard raids)
     let evoDesc = 'Obtainable exclusively by evolving its pre-evolution (cannot be encountered in the wild or standard Raids).';
     if (dex === 637) evoDesc = 'Evolves from Larvesta with 400 Larvesta Candy. Cannot be encountered in the wild or in Raids!';
+    else if (dex === 750) evoDesc = 'Evolves from Mudbray with 50 Mudbray Candy. Cannot be encountered in the wild or in standard Raids!';
     else if (dex === 758) evoDesc = 'Evolves exclusively from female Salandit with 50 Salandit Candy. Cannot be encountered in the wild or in Raids!';
+    else if (dex === 844) evoDesc = 'Evolves from Silicobra with 50 Silicobra Candy. Cannot be encountered in the wild or in standard Raids!';
     else if (dex === 966) evoDesc = 'Evolves from Varoom with 50 Varoom Candy. Cannot be encountered in the wild or in Raids!';
     else if (dex === 936) evoDesc = 'Evolves from Charcadet with 50 Charcadet Candy after defeating 30 Psychic-type Pokémon with Charcadet as your buddy.';
     else if (dex === 937) evoDesc = 'Evolves from Charcadet with 50 Charcadet Candy after defeating 30 Ghost-type Pokémon with Charcadet as your buddy.';
@@ -910,6 +955,9 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
     } else if (dex === 708 || dex === 709 || dex === 710 || dex === 711) {
       eventLabel = 'Halloween / Autumn Event';
       eventDesc = 'Spawns primarily during seasonal Halloween and Autumn events in October and November.';
+    } else if (dex === 749) {
+      eventLabel = 'Event Exclusive Wild / Research';
+      eventDesc = 'Mudbray spawns exclusively during featured events and themed Field Research tasks (not part of the standard wild spawn pool).';
     }
     methods.push({
       type: 'event_exclusive', label: eventLabel, badgeColor: 'purple',
@@ -983,6 +1031,60 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
       description: 'Extremely rare wild spawn along natural lakes, rivers, and bodies of water in its native region.',
       available: true
     });
+  } else if (ELITE_RAID_DEX_NRS.has(dex)) {
+    // Elite Raid Exclusives (Enamorus)
+    methods.push({
+      type: 'raid', label: 'Elite Raid', badgeColor: 'rose',
+      description: 'Appears exclusively in in-person Elite Raids at EX Gyms (cannot be encountered in the wild or via Remote Raid Pass).',
+      available: true
+    });
+  } else if (THREE_STAR_RAID_EXCLUSIVE_DEX_NRS.has(dex)) {
+    // 3-Star Raid Exclusives (Druddigon, Turtonator, Drampa, Bombirdier, etc.)
+    let raidDesc = 'Appears as a 3-Star Raid Boss and in Field Research tasks during events (not found in standard wild spawns).';
+    if (dex === 621) {
+      raidDesc = 'Appears exclusively in 3-Star Raids and featured Field Research tasks (cannot be encountered in the wild).';
+    } else if (dex === 776) {
+      raidDesc = 'Appears in 3-Star Raids, event Field Research tasks, and hatches from 12km Strange Eggs (cannot be encountered in the wild).';
+    } else if (dex === 780) {
+      raidDesc = 'Appears exclusively in 3-Star Raids and themed Field Research tasks (cannot be encountered in the wild).';
+    } else if (dex === 899 || dex === 900) {
+      raidDesc = 'Appears as a 3-Star Raid Boss during featured Raid Days and events (cannot be encountered in the wild or evolved normally in GO).';
+    } else if (dex === 962) {
+      raidDesc = 'Appears exclusively as a 3-Star Raid Boss during featured events (cannot be encountered in the wild).';
+    }
+    methods.push({
+      type: 'raid', label: '3-Star Raid', badgeColor: 'rose',
+      description: raidDesc,
+      available: true
+    });
+    if (dex === 621 || dex === 776 || dex === 780) {
+      methods.push({
+        type: 'research', label: 'Field Research', badgeColor: 'blue',
+        description: 'Available as an encounter reward from event-specific Field Research tasks.',
+        available: true
+      });
+    }
+    if (dex === 776) {
+      methods.push({
+        type: 'egg', label: '12km Strange Egg', badgeColor: 'amber',
+        description: 'Hatches from 12km Strange Eggs obtained by defeating Team GO Rocket Leaders.',
+        available: true
+      });
+    }
+  } else if (dex === 791 || dex === 792) {
+    // Solgaleo & Lunala (Evolution from Cosmoem + GO Fest Raids)
+    const isSolgaleo = dex === 791;
+    const time = isSolgaleo ? 'daytime' : 'nighttime';
+    methods.push({
+      type: 'evolution', label: 'Evolution', badgeColor: 'indigo',
+      description: `Evolves from Cosmoem with 100 Cosmog Candy during ${time}.`,
+      available: true
+    });
+    methods.push({
+      type: 'raid', label: '5-Star Raid (Event)', badgeColor: 'rose',
+      description: 'Appeared in 5-Star Raids during GO Fest events (not found in standard wild spawns).',
+      available: true
+    });
   } else if (RAID_ONLY_DEX_NRS.has(dex)) {
     // Standard raid-only legendaries (NO wild spawns!)
     methods.push({
@@ -991,10 +1093,14 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
       available: true
     });
   } else if (RESEARCH_ONLY_DEX_NRS.has(dex)) {
-    // Special research mythicals
+    // Special research mythicals & box legendaries
+    let resDesc = 'Obtainable exclusively through special or seasonal research storylines (not in the wild).';
+    if (dex === 890) {
+      resDesc = 'Obtainable exclusively through the Special Research storyline during the Season of Max Out (cannot be encountered in the wild or in standard Raids).';
+    }
     methods.push({
       type: 'research', label: 'Special Research', badgeColor: 'blue',
-      description: 'Obtainable exclusively through special or seasonal research storylines (not in the wild).',
+      description: resDesc,
       available: true
     });
   } else {
@@ -1229,11 +1335,48 @@ export function getPrimaryAvailabilityTag(pokemon: {
     };
   }
 
+  if (ELITE_RAID_DEX_NRS.has(dex)) {
+    return {
+      type: 'raid',
+      label: 'Elite Raid',
+      shortLabel: 'Elite Raid',
+      badgeColor: 'rose',
+      bg: 'bg-rose-100/70 dark:bg-rose-950/60',
+      textColor: 'text-rose-700 dark:text-rose-300',
+      border: 'border-rose-300 dark:border-rose-700/80'
+    };
+  }
+
+  if (THREE_STAR_RAID_EXCLUSIVE_DEX_NRS.has(dex)) {
+    return {
+      type: 'raid',
+      label: '3-Star Raid',
+      shortLabel: '3-Star Raid',
+      badgeColor: 'rose',
+      bg: 'bg-rose-100/70 dark:bg-rose-950/60',
+      textColor: 'text-rose-700 dark:text-rose-300',
+      border: 'border-rose-300 dark:border-rose-700/80'
+    };
+  }
+
+  if (dex === 791 || dex === 792) {
+    return {
+      type: 'evolution_only',
+      label: 'Evolution / Raid',
+      shortLabel: 'Evo / Raid',
+      badgeColor: 'indigo',
+      bg: 'bg-indigo-100/70 dark:bg-indigo-950/60',
+      textColor: 'text-indigo-700 dark:text-indigo-300',
+      border: 'border-indigo-300 dark:border-indigo-700/80'
+    };
+  }
+
   if (BIOME_EXCLUSIVE_DATA[dex]) {
+    const biomeData = BIOME_EXCLUSIVE_DATA[dex];
     return {
       type: 'biome',
-      label: BIOME_EXCLUSIVE_DATA[dex].biome,
-      shortLabel: 'Biome',
+      label: biomeData.biome,
+      shortLabel: biomeData.shortLabel || biomeData.biome,
       badgeColor: 'teal',
       bg: 'bg-teal-100/70 dark:bg-teal-950/60',
       textColor: 'text-teal-800 dark:text-teal-300',
