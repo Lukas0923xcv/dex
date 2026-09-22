@@ -1,10 +1,16 @@
 export type ObtainMethodType =
   | 'wild'
   | 'egg'
+  | 'egg_exclusive'
   | 'raid'
   | 'research'
+  | 'paid_research'
   | 'rocket'
   | 'evolution'
+  | 'evolution_only'
+  | 'event'
+  | 'event_exclusive'
+  | 'biome'
   | 'special'
   | 'trade';
 
@@ -14,6 +20,16 @@ export interface ObtainMethodDetail {
   badgeColor: string;
   description: string;
   available: boolean;
+}
+
+export interface AvailabilityTag {
+  type: ObtainMethodType;
+  label: string;
+  shortLabel?: string;
+  badgeColor: string;
+  bg: string;
+  textColor: string;
+  border: string;
 }
 
 export interface RegionalInfo {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Pokemon, TrackingMode, CustomCollection } from '../types';
 import { getTypeBadgeColor, formatDexNumber, getEffectiveSprite } from '../utils/typeColors';
+import { getPrimaryAvailabilityTag } from '../data/pokemonObtainData';
 import { Check, Sparkles, Plus, Bookmark, Flame, Zap, Info } from 'lucide-react';
 
 interface PokemonCardProps {
@@ -114,6 +115,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
 
   const isShadowContext = mode === 'shadow' || categoryType === 'shadow' || (isCustomMode && isShadowCollection);
   const canBeShiny = isShadowContext ? Boolean(pokemon.hasShadowShiny) : Boolean(pokemon.hasShiny);
+  const availabilityTag = getPrimaryAvailabilityTag(pokemon);
 
   return (
     <div
@@ -132,6 +134,14 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
               className="text-[10px] font-medium tracking-tight bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[120px]"
             >
               {pokemon.formName}
+            </span>
+          )}
+          {availabilityTag && (
+            <span
+              title={availabilityTag.label}
+              className={`text-[9px] font-semibold tracking-tight ${availabilityTag.bg} ${availabilityTag.textColor} border ${availabilityTag.border} px-1.5 py-0.5 rounded-md truncate max-w-[110px] shadow-2xs`}
+            >
+              {availabilityTag.shortLabel || availabilityTag.label}
             </span>
           )}
           {(mode === 'shadow' || categoryType === 'shadow') && (

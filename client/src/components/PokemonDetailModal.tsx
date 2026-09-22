@@ -6,7 +6,7 @@ import { getTypeBadgeColor, getEffectiveSprite } from '../utils/typeColors';
 import {
   X, ChevronLeft, ChevronRight, Sparkles, Check, Flame, MapPin,
   Globe, Swords, Egg, Binoculars, Star, Shuffle, AlertCircle, Info,
-  Navigation, ExternalLink
+  Navigation, ExternalLink, Compass, Ticket
 } from 'lucide-react';
 
 interface PokemonDetailModalProps {
@@ -26,14 +26,20 @@ function formatDexNumber(n: number): string {
 }
 
 const OBTAIN_TYPE_CONFIG: Record<string, { icon: React.ReactNode; color: string; bg: string; border: string }> = {
-  wild:      { icon: <Binoculars className="w-3.5 h-3.5" />, color: 'text-emerald-700 dark:text-emerald-300', bg: 'bg-emerald-50 dark:bg-emerald-950/50', border: 'border-emerald-300 dark:border-emerald-700' },
-  egg:       { icon: <Egg className="w-3.5 h-3.5" />, color: 'text-amber-700 dark:text-amber-300', bg: 'bg-amber-50 dark:bg-amber-950/50', border: 'border-amber-300 dark:border-amber-700' },
-  raid:      { icon: <Swords className="w-3.5 h-3.5" />, color: 'text-rose-700 dark:text-rose-300', bg: 'bg-rose-50 dark:bg-rose-950/50', border: 'border-rose-300 dark:border-rose-700' },
-  research:  { icon: <Star className="w-3.5 h-3.5" />, color: 'text-blue-700 dark:text-blue-300', bg: 'bg-blue-50 dark:bg-blue-950/50', border: 'border-blue-300 dark:border-blue-700' },
-  rocket:    { icon: <Flame className="w-3.5 h-3.5" />, color: 'text-purple-700 dark:text-purple-300', bg: 'bg-purple-50 dark:bg-purple-950/50', border: 'border-purple-300 dark:border-purple-700' },
-  evolution: { icon: <Shuffle className="w-3.5 h-3.5" />, color: 'text-indigo-700 dark:text-indigo-300', bg: 'bg-indigo-50 dark:bg-indigo-950/50', border: 'border-indigo-300 dark:border-indigo-700' },
-  special:   { icon: <Star className="w-3.5 h-3.5" />, color: 'text-pink-700 dark:text-pink-300', bg: 'bg-pink-50 dark:bg-pink-950/50', border: 'border-pink-300 dark:border-pink-700' },
-  trade:     { icon: <Shuffle className="w-3.5 h-3.5" />, color: 'text-slate-700 dark:text-slate-300', bg: 'bg-slate-50 dark:bg-slate-950/50', border: 'border-slate-300 dark:border-slate-700' },
+  wild:            { icon: <Binoculars className="w-3.5 h-3.5" />, color: 'text-emerald-700 dark:text-emerald-300', bg: 'bg-emerald-50 dark:bg-emerald-950/50', border: 'border-emerald-300 dark:border-emerald-700' },
+  egg:             { icon: <Egg className="w-3.5 h-3.5" />, color: 'text-amber-700 dark:text-amber-300', bg: 'bg-amber-50 dark:bg-amber-950/50', border: 'border-amber-300 dark:border-amber-700' },
+  egg_exclusive:   { icon: <Egg className="w-3.5 h-3.5" />, color: 'text-amber-800 dark:text-amber-300', bg: 'bg-amber-100/70 dark:bg-amber-950/60', border: 'border-amber-400 dark:border-amber-600' },
+  raid:            { icon: <Swords className="w-3.5 h-3.5" />, color: 'text-rose-700 dark:text-rose-300', bg: 'bg-rose-50 dark:bg-rose-950/50', border: 'border-rose-300 dark:border-rose-700' },
+  research:        { icon: <Star className="w-3.5 h-3.5" />, color: 'text-blue-700 dark:text-blue-300', bg: 'bg-blue-50 dark:bg-blue-950/50', border: 'border-blue-300 dark:border-blue-700' },
+  paid_research:   { icon: <Ticket className="w-3.5 h-3.5" />, color: 'text-amber-800 dark:text-amber-200', bg: 'bg-amber-100 dark:bg-amber-950/80', border: 'border-amber-400 dark:border-amber-600' },
+  rocket:          { icon: <Flame className="w-3.5 h-3.5" />, color: 'text-purple-700 dark:text-purple-300', bg: 'bg-purple-50 dark:bg-purple-950/50', border: 'border-purple-300 dark:border-purple-700' },
+  evolution:       { icon: <Shuffle className="w-3.5 h-3.5" />, color: 'text-indigo-700 dark:text-indigo-300', bg: 'bg-indigo-50 dark:bg-indigo-950/50', border: 'border-indigo-300 dark:border-indigo-700' },
+  evolution_only:  { icon: <Shuffle className="w-3.5 h-3.5" />, color: 'text-indigo-800 dark:text-indigo-200', bg: 'bg-indigo-100/70 dark:bg-indigo-950/60', border: 'border-indigo-400 dark:border-indigo-600' },
+  event:           { icon: <Sparkles className="w-3.5 h-3.5" />, color: 'text-pink-700 dark:text-pink-300', bg: 'bg-pink-50 dark:bg-pink-950/50', border: 'border-pink-300 dark:border-pink-700' },
+  event_exclusive: { icon: <Sparkles className="w-3.5 h-3.5" />, color: 'text-fuchsia-800 dark:text-fuchsia-200', bg: 'bg-fuchsia-100/70 dark:bg-fuchsia-950/60', border: 'border-fuchsia-400 dark:border-fuchsia-600' },
+  biome:           { icon: <Compass className="w-3.5 h-3.5" />, color: 'text-teal-800 dark:text-teal-200', bg: 'bg-teal-100/70 dark:bg-teal-950/60', border: 'border-teal-400 dark:border-teal-600' },
+  special:         { icon: <Star className="w-3.5 h-3.5" />, color: 'text-pink-700 dark:text-pink-300', bg: 'bg-pink-50 dark:bg-pink-950/50', border: 'border-pink-300 dark:border-pink-700' },
+  trade:           { icon: <Shuffle className="w-3.5 h-3.5" />, color: 'text-slate-700 dark:text-slate-300', bg: 'bg-slate-50 dark:bg-slate-950/50', border: 'border-slate-300 dark:border-slate-700' },
 };
 
 const ALT_TYPE_CONFIG: Record<string, { icon: React.ReactNode; color: string; bg: string }> = {

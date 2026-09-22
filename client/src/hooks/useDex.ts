@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData, SingleCollectionBackup, UserAccount, DexScope } from '../types';
 import { storage, StorageStatus } from '../services/storage';
 import { isPokemonInRegion } from '../utils/regions';
+import { getPrimaryAvailabilityTag } from '../data/pokemonObtainData';
 import confetti from 'canvas-confetti';
 
 const INITIAL_FILTERS: FilterState = {
@@ -909,6 +910,22 @@ export function useDex() {
         if (p.names && Object.values(p.names).some(n => n.toLowerCase().includes(q))) return true;
         if (p.type1.toLowerCase().includes(q)) return true;
         if (p.type2 && p.type2.toLowerCase().includes(q)) return true;
+
+        // Availability Tag search (egg, event, biome, paid, evolution, regional, incense, etc.)
+        const availTag = getPrimaryAvailabilityTag(p);
+        if (availTag) {
+          if (availTag.label.toLowerCase().includes(q)) return true;
+          if (availTag.shortLabel && availTag.shortLabel.toLowerCase().includes(q)) return true;
+          if (availTag.type.toLowerCase().includes(q)) return true;
+        }
+        if ((q === 'egg' || q === 'eggs') && availTag?.type === 'egg_exclusive') return true;
+        if (q === 'event' && (availTag?.type === 'event_exclusive' || p.category === 'costume' || p.isCostume)) return true;
+        if (q === 'biome' && availTag?.type === 'biome') return true;
+        if ((q === 'paid' || q === 'ticket') && availTag?.type === 'paid_research') return true;
+        if ((q === 'evolution' || q === 'evo') && availTag?.type === 'evolution_only') return true;
+        if (q === 'regional' && (availTag?.shortLabel === 'Regional' || isRegionalForm(p))) return true;
+        if ((q === 'incense' || q === 'daily') && availTag?.label.toLowerCase().includes('incense')) return true;
+
         return false;
       });
     }

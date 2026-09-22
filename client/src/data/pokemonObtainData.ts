@@ -1,4 +1,4 @@
-import { PokemonDetailInfo, RegionalInfo, ObtainMethodDetail, DexAlternativeMethod } from '../types/pokemonInfo';
+import { PokemonDetailInfo, RegionalInfo, ObtainMethodDetail, DexAlternativeMethod, AvailabilityTag } from '../types/pokemonInfo';
 
 // ============================================================
 // REGIONAL EXCLUSIVES DATA (Base species by Dex Number)
@@ -248,7 +248,7 @@ export const RESEARCH_ONLY_DEX_NRS = new Set<number>([
 export const UNRELEASED_DEX_NRS = new Set<number>([
   489, 490, 493, // Phione, Manaphy, Arceus
   721,           // Volcanion
-  801, 804, 807, // Magearna, Naganadel, Zeraora
+  801, 807,      // Magearna, Zeraora (804 Naganadel is released)
   890, 896, 897, 898, // Eternatus, Glastrier, Spectrier, Calyrex
   1001, 1002, 1003, 1004, // Treasures of Ruin
   1007, 1008, 1009, 1010, // Koraidon, Miraidon, Walking Wake, Iron Leaves
@@ -257,11 +257,186 @@ export const UNRELEASED_DEX_NRS = new Set<number>([
 ]);
 
 // ============================================================
-// BABY EGG POKÉMON (No wild spawns)
+// EGG EXCLUSIVE POKÉMON (Eggs ONLY — No wild spawns or Raids)
 // ============================================================
 export const BABY_EGG_POKEMON = new Set<number>([
-  172, 173, 174, 175, 236, 237, 238, 239, 240, 298, 360,
-  406, 438, 439, 440, 446, 447, 458, 459, 848
+  172, 173, 174, 175, 236, 238, 239, 240, 298, 360,
+  406, 433, 438, 439, 440, 446, 447, 458, 848
+]);
+
+export const STRANGE_12KM_EGG_POKEMON = new Set<number>([
+  551, // Sandile
+  624, // Pawniard
+  629, // Vullaby
+  757, // Salandit
+  965, // Varoom
+]);
+
+export const SPECIAL_EGG_EXCLUSIVE_POKEMON = new Set<number>([
+  636, // Larvesta (rare 2km/5km/10km)
+  935, // Charcadet (10km)
+  672, // Skiddo (Safari 7km Eggs / Special Research)
+]);
+
+export const EGG_EXCLUSIVE_DEX_NRS = new Set<number>([
+  ...BABY_EGG_POKEMON,
+  ...STRANGE_12KM_EGG_POKEMON,
+  ...SPECIAL_EGG_EXCLUSIVE_POKEMON
+]);
+
+// ============================================================
+// PAID RESEARCH / MASTERWORK EXCLUSIVES
+// ============================================================
+export const PAID_RESEARCH_DEX_NRS = new Set<number>([
+  647, // Keldeo (Ordinary Form: "Something Extraordinary" Paid Ticket)
+  893, // Zarude ("Rogue of the Jungle" Paid Masterwork Ticket)
+]);
+
+// ============================================================
+// EVENT EXCLUSIVE POKÉMON (Spawns / research only during limited events)
+// ============================================================
+export const EVENT_EXCLUSIVE_DEX_NRS = new Set<number>([
+  201, // Unown (28 letters during live/global events)
+  225, // Delibird (Holiday/Winter events in December)
+  292, // Shedinja (Special Bug/Halloween research breakthroughs)
+  327, // Spinda (Rotating monthly Field Research "5 Great Curveballs in a row")
+  442, // Spiritomb (Halloween Special/Timed Research in October)
+  479, // Rotom (GO Fest/Tour snapshot photobombs & promo codes)
+  562, // Yamask (Halloween events)
+  563, // Cofagrigus (Halloween events)
+  708, // Phantump (Halloween events)
+  709, // Trevenant (Halloween events)
+  710, // Pumpkaboo (Halloween events)
+  711, // Gourgeist (Halloween events)
+]);
+
+export const EVENT_EXCLUSIVE_FORM_IDS = new Set<string>([
+  'poke_562_form_yamask_galarian',    // Galarian Yamask (Halloween)
+  'poke_122_form_mr_mime_galarian',   // Galarian Mr. Mime (Holiday)
+  'poke_676_special_heart',          // Furfrou Heart Trim (Valentine's Day)
+  'poke_666_form_vivillon_fancy',     // Vivillon Fancy Pattern (Events)
+  'poke_666_form_vivillon_pokeball',  // Vivillon Poké Ball Pattern (Events)
+]);
+
+// ============================================================
+// BIOME EXCLUSIVE POKÉMON
+// ============================================================
+export const BIOME_EXCLUSIVE_DATA: Record<number, { biome: string; description: string }> = {
+  960: {
+    biome: 'Beach Biome',
+    description: 'Spawns exclusively along real-world ocean beaches and coastline biomes. Cannot be found inland!'
+  },
+  703: {
+    biome: 'Mountain Biome',
+    description: 'Spawns primarily in high-elevation, mountain, and rocky biomes.'
+  },
+  615: {
+    biome: 'Snow Biome & Glacial Lure',
+    description: 'Spawns in snowy weather biomes or around active Glacial Lure Modules.'
+  }
+};
+
+// ============================================================
+// EVOLUTION ONLY POKÉMON (Cannot spawn wild or in standard raids)
+// ============================================================
+export const EVOLUTION_ONLY_DEX_NRS = new Set<number>([
+  // Evolutions of Egg-Exclusive / Baby species
+  637, // Volcarona (from Larvesta)
+  758, // Salazzle (from female Salandit)
+  966, // Revavroom (from Varoom)
+  936, // Armarouge (from Charcadet)
+  937, // Ceruledge (from Charcadet)
+  552, // Krokorok (from Sandile)
+  553, // Krookodile (from Sandile)
+  630, // Mandibuzz (from Vullaby)
+  625, // Bisharp (from Pawniard)
+  673, // Gogoat (from Skiddo)
+  237, // Hitmontop (from Tyrogue)
+  468, // Togekiss (from Togetic with Sinnoh Stone)
+
+  // Mythical & Special Box evolutions
+  804,  // Naganadel (from Poipole)
+  809,  // Melmetal (from Meltan with 400 Candy)
+  1000, // Gholdengo (from Gimmighoul with 999 Coins)
+
+  // Special buddy & quest evolutions
+  979, // Annihilape (Primeape + 30 Ghost/Psychic defeats)
+  901, // Ursaluna (Ursaring + Full Moon)
+  865, // Sirfetch'd (Galarian Farfetch'd + 10 Excellent Throws)
+  866, // Mr. Rime (Galarian Mr. Mime + 50 Candy)
+  867, // Runerigus (Galarian Yamask + 10 raids)
+  864, // Cursola (Galarian Corsola + 50 Candy)
+  862, // Obstagoon (Galarian Linoone + 100 Candy)
+  863, // Perrserker (Galarian Meowth + 50 Candy)
+  904, // Overqwil (Hisuian Qwilfish + 10 raids)
+  903, // Sneasler (Hisuian Sneasel + 7km walk daytime)
+  902, // Basculegion (White-Striped Basculin)
+  980, // Clodsire (Paldean Wooper)
+  982, // Dudunsparce (Dunsparce)
+  923, // Pawmot (Pawmo + 25km explore)
+  947, // Brambleghast (Bramblin + 25km explore)
+  954, // Rabsca (Rellor + 25km explore)
+  939, // Bellibolt (Tadbulb)
+  961, // Wugtrio (Wiglett)
+  841, // Flapple (Applin + Tart Apple)
+  842, // Appletun (Applin + Sweet Apple)
+  855, // Polteageist (Sinistea + Cracked/Chipped Pot)
+  869, // Alcremie (Milcery + Sweet + spin)
+  925, // Maushold (Tandemaus)
+  886, // Drakloak (Dreepy)
+  887, // Dragapult (Dreepy)
+  997, // Arctibax (Frigibax)
+  998, // Baxcalibur (Frigibax)
+
+  // Starter middle & final evolutions (never wild in GO)
+  811, 812, // Thwackey, Rillaboom
+  814, 815, // Raboot, Cinderace
+  817, 818, // Drizzile, Inteleon
+  907, 908, // Floragato, Meowscarada
+  910, 911, // Crocalor, Skeledirge
+  913, 914, // Quaxwell, Quaquaval
+
+  // Johto item evolutions
+  182, // Bellossom (Sun Stone)
+  186, // Politoed (King's Rock)
+  192, // Sunflora (Sun Stone)
+  199, // Slowking (King's Rock)
+  208, // Steelix (Metal Coat)
+  212, // Scizor (Metal Coat)
+  230, // Kingdra (Dragon Scale)
+  233, // Porygon2 (Up-Grade)
+
+  // Sinnoh Stone & special mechanic evolutions
+  407, // Roserade (Sinnoh Stone)
+  424, // Ambipom (Sinnoh Stone)
+  429, // Mismagius (Sinnoh Stone)
+  430, // Honchkrow (Sinnoh Stone)
+  461, // Weavile (Sinnoh Stone)
+  462, // Magnezone (Magnetic Lure)
+  463, // Lickilicky (Sinnoh Stone)
+  464, // Rhyperior (Sinnoh Stone)
+  465, // Tangrowth (Sinnoh Stone)
+  466, // Electivire (Sinnoh Stone)
+  467, // Magmortar (Sinnoh Stone)
+  469, // Yanmega (Sinnoh Stone)
+  470, // Leafeon (Mossy Lure)
+  471, // Glaceon (Glacial Lure)
+  472, // Gliscor (Sinnoh Stone)
+  473, // Mamoswine (Sinnoh Stone)
+  474, // Porygon-Z (Sinnoh Stone)
+  475, // Gallade (Sinnoh Stone)
+  476, // Probopass (Magnetic Lure)
+  477, // Dusknoir (Sinnoh Stone)
+  478, // Froslass (Sinnoh Stone)
+  700, // Sylveon (70 Buddy Hearts)
+
+  // Unova Stone evolutions
+  512, // Simisage
+  514, // Simisear
+  516, // Simipour
+  518, // Musharna
+  604, // Eelektross
+  609, // Chandelure
 ]);
 
 // ============================================================
@@ -618,7 +793,7 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   // 1. Explicit form-specific obtain method overrides
   if (isFormOverride) {
     methods.push(...FORM_OBTAIN_METHODS[id]);
-  } else if (UNRELEASED_DEX_NRS.has(dex)) {
+  } else if (pokemon.releasedInGo === false || UNRELEASED_DEX_NRS.has(dex)) {
     // Unreleased in GO
     methods.push({
       type: 'special', label: 'Not in GO', badgeColor: 'slate',
@@ -626,27 +801,135 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
       available: false
     });
     return methods;
-  } else if (BABY_EGG_POKEMON.has(dex)) {
-    // Baby egg only (no wild spawns)
+  } else if (PAID_RESEARCH_DEX_NRS.has(dex)) {
+    // Paid Research / Masterwork Exclusive
+    let desc = 'Obtainable exclusively through a Paid Special Research or Masterwork Research Ticket.';
+    if (dex === 647) {
+      desc = "Ordinary Form is exclusively obtainable via the 'Something Extraordinary' Special Research Paid Ticket ($7.99 USD). It has never been released to free players in Pokémon GO.";
+    } else if (dex === 893) {
+      desc = "Obtainable via the 'Rogue of the Jungle' Paid Masterwork Research Ticket ($7.99 USD) or limited movie promotional research.";
+    }
     methods.push({
-      type: 'egg', label: 'Egg', badgeColor: 'amber',
-      description: 'Hatches exclusively from Eggs (2km, 5km, or 7km). Cannot be encountered in the wild.',
+      type: 'paid_research', label: 'Paid Research Exclusive', badgeColor: 'amber',
+      description: desc,
       available: true
     });
     return methods;
+  } else if (EGG_EXCLUSIVE_DEX_NRS.has(dex)) {
+    // Egg Exclusive (No wild spawns, no standard raids)
+    let eggLabel = 'Egg Exclusive';
+    let eggDesc = 'Hatches exclusively from Eggs (cannot be encountered in the wild or in Raids).';
+    if (STRANGE_12KM_EGG_POKEMON.has(dex)) {
+      eggLabel = '12km Strange Egg (Rocket Leader)';
+      eggDesc = 'Hatches exclusively from 12km Strange Eggs obtained by defeating Team GO Rocket Leaders (Cliff, Sierra, Arlo). Cannot be encountered in the wild!';
+    } else if (dex === 636) {
+      eggLabel = 'Egg Exclusive (2km / 5km / 10km)';
+      eggDesc = 'Extremely rare hatch exclusively from 2km, 5km, and 10km Eggs. Cannot be encountered in the wild!';
+    } else if (dex === 935) {
+      eggLabel = '10km Egg Exclusive';
+      eggDesc = 'Hatches exclusively from 10km Eggs (cannot be encountered in the wild).';
+    } else if (dex === 672) {
+      eggLabel = '7km Egg & Event Research';
+      eggDesc = 'Hatches from 7km Eggs during City Safari events or event research (cannot be found in regular wild spawns).';
+    }
+    methods.push({
+      type: 'egg_exclusive', label: eggLabel, badgeColor: 'amber',
+      description: eggDesc,
+      available: true
+    });
+    return methods;
+  } else if (EVOLUTION_ONLY_DEX_NRS.has(dex)) {
+    // Evolution Only (No wild spawns, no standard raids)
+    let evoDesc = 'Obtainable exclusively by evolving its pre-evolution (cannot be encountered in the wild or standard Raids).';
+    if (dex === 637) evoDesc = 'Evolves from Larvesta with 400 Larvesta Candy. Cannot be encountered in the wild or in Raids!';
+    else if (dex === 758) evoDesc = 'Evolves exclusively from female Salandit with 50 Salandit Candy. Cannot be encountered in the wild or in Raids!';
+    else if (dex === 966) evoDesc = 'Evolves from Varoom with 50 Varoom Candy. Cannot be encountered in the wild or in Raids!';
+    else if (dex === 936) evoDesc = 'Evolves from Charcadet with 50 Charcadet Candy after defeating 30 Psychic-type Pokémon with Charcadet as your buddy.';
+    else if (dex === 937) evoDesc = 'Evolves from Charcadet with 50 Charcadet Candy after defeating 30 Ghost-type Pokémon with Charcadet as your buddy.';
+    else if (dex === 979) evoDesc = 'Evolves from Primeape with 50 Mankey Candy after defeating 30 Ghost or Psychic-type Pokémon with Primeape as your buddy.';
+    else if (dex === 901) evoDesc = 'Evolves from Ursaring with 100 Teddiursa Candy during a real-world Full Moon event.';
+    else if (dex === 865) evoDesc = "Evolves from Galarian Farfetch'd with 50 Candy after achieving 10 Excellent Throws with Farfetch'd as your buddy.";
+    else if (dex === 866) evoDesc = 'Evolves from Galarian Mr. Mime with 50 Mime Candy. Cannot be caught in the wild!';
+    else if (dex === 867) evoDesc = 'Evolves from Galarian Yamask with 50 Yamask Candy after winning 10 raids with Yamask as your buddy.';
+    else if (dex === 864) evoDesc = 'Evolves from Galarian Corsola with 50 Corsola Candy. Cannot be caught in the wild!';
+    else if (dex === 862) evoDesc = 'Evolves from Galarian Linoone with 100 Zigzagoon Candy.';
+    else if (dex === 863) evoDesc = 'Evolves from Galarian Meowth with 50 Meowth Candy.';
+    else if (dex === 904) evoDesc = 'Evolves from Hisuian Qwilfish with 50 Candy after winning 10 raids with Qwilfish as your buddy.';
+    else if (dex === 903) evoDesc = 'Evolves from Hisuian Sneasel with 100 Candy after walking 7km as your buddy during daytime.';
+    else if (dex === 902) evoDesc = 'Evolves from White-Striped Basculin with 50 Basculin Candy.';
+    else if (dex === 980) evoDesc = 'Evolves from Paldean Wooper with 50 Wooper Candy.';
+    else if (dex === 982) evoDesc = 'Evolves from Dunsparce with 50 Dunsparce Candy.';
+    else if (dex === 923) evoDesc = 'Evolves from Pawmo with 100 Pawmi Candy after exploring 25km as your buddy.';
+    else if (dex === 947) evoDesc = 'Evolves from Bramblin with 50 Bramblin Candy after exploring 25km as your buddy.';
+    else if (dex === 954) evoDesc = 'Evolves from Rellor with 50 Rellor Candy after exploring 25km as your buddy.';
+    else if (dex === 939) evoDesc = 'Evolves from Tadbulb with 50 Tadbulb Candy.';
+    else if (dex === 961) evoDesc = 'Evolves from Wiglett with 50 Wiglett Candy. Cannot be encountered in the wild!';
+    else if (dex === 804) evoDesc = 'Evolves from Poipole with 200 Poipole Candy after catching 20 Dragon-type Pokémon as your buddy.';
+    else if (dex === 809) evoDesc = 'Evolves from Meltan with 400 Meltan Candy. Cannot be caught in the wild!';
+    else if (dex === 1000) evoDesc = 'Evolves from Gimmighoul using 999 Gimmighoul Coins. Cannot be caught in the wild!';
+
+    methods.push({
+      type: 'evolution_only', label: 'Evolution Only', badgeColor: 'indigo',
+      description: evoDesc,
+      available: true
+    });
+    return methods;
+  } else if (pokemon.category === 'costume' || pokemon.isCostume) {
+    // Event Costume
+    methods.push({
+      type: 'event_exclusive', label: 'Event Costume', badgeColor: 'pink',
+      description: 'Exclusive event costume available only during designated limited-time celebration events and raids.',
+      available: true
+    });
+    return methods;
+  } else if (EVENT_EXCLUSIVE_DEX_NRS.has(dex) || EVENT_EXCLUSIVE_FORM_IDS.has(id)) {
+    // Event Exclusive species
+    let eventLabel = 'Event Exclusive';
+    let eventDesc = 'Available exclusively during designated in-game events, festivals, or seasonal celebrations.';
+    if (dex === 201) {
+      eventLabel = 'Live Events & GO Fest';
+      eventDesc = 'Unown spawns almost exclusively during special live and global events (e.g. GO Fest, Safari Zones, Pokémon GO Tour, Global Challenges).';
+    } else if (dex === 225) {
+      eventLabel = 'Holiday / Winter Event';
+      eventDesc = 'Delibird appears in the wild exclusively during annual Holiday and Winter events in December.';
+    } else if (dex === 292) {
+      eventLabel = 'Research Breakthrough Event';
+      eventDesc = 'Available exclusively as a Research Breakthrough reward during special bug-themed and Halloween events.';
+    } else if (dex === 327) {
+      eventLabel = 'Monthly Field Research';
+      eventDesc = 'Available exclusively via rotating Monthly Field Research tasks ("Make 5 Great Curveball Throws in a row") with 9 different patterns.';
+    } else if (dex === 442) {
+      eventLabel = 'Halloween Special Research';
+      eventDesc = 'Spiritomb is exclusively available via Halloween Special and Timed Research quest lines in October.';
+    } else if (dex === 479) {
+      eventLabel = 'Snapshot Photobomb / Promo';
+      eventDesc = 'Rotom appears via snapshot photobombs or promo codes during in-person and global GO Fest and Tour events.';
+    } else if (dex === 562 || dex === 563) {
+      eventLabel = 'Halloween Event';
+      eventDesc = 'Yamask and Cofagrigus spawn exclusively during Halloween events in October.';
+    } else if (dex === 708 || dex === 709 || dex === 710 || dex === 711) {
+      eventLabel = 'Halloween / Autumn Event';
+      eventDesc = 'Spawns primarily during seasonal Halloween and Autumn events in October and November.';
+    }
+    methods.push({
+      type: 'event_exclusive', label: eventLabel, badgeColor: 'purple',
+      description: eventDesc,
+      available: true
+    });
+    return methods;
+  } else if (BIOME_EXCLUSIVE_DATA[dex]) {
+    // Biome Exclusive species
+    const biomeInfo = BIOME_EXCLUSIVE_DATA[dex];
+    methods.push({
+      type: 'biome', label: biomeInfo.biome, badgeColor: 'teal',
+      description: biomeInfo.description,
+      available: true
+    });
   } else if (dex === 808) {
     // Meltan
     methods.push({
       type: 'special', label: 'Mystery Box', badgeColor: 'pink',
       description: "Spawns after activating the Mystery Box by connecting to Pokémon HOME or Let's Go.",
-      available: true
-    });
-    return methods;
-  } else if (dex === 809) {
-    // Melmetal
-    methods.push({
-      type: 'evolution', label: 'Evolution', badgeColor: 'indigo',
-      description: 'Evolves from Meltan with 400 Meltan Candy.',
       available: true
     });
     return methods;
@@ -674,14 +957,6 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
       available: true
     });
     return methods;
-  } else if (dex === 1000) {
-    // Gholdengo
-    methods.push({
-      type: 'evolution', label: 'Evolution', badgeColor: 'indigo',
-      description: 'Evolves from Gimmighoul using 999 Gimmighoul Coins.',
-      available: true
-    });
-    return methods;
   } else if (dex === 664 || dex === 666) {
     // Scatterbug & Vivillon
     methods.push({
@@ -697,15 +972,15 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
       available: true
     });
   } else if (REGIONAL_LAKE_TRIO_DEX_NRS.has(dex)) {
-    // Lake Trio: regional raid + ultra rare wild
+    // Lake Trio: regional raid + ultra rare lake wild
     methods.push({
       type: 'raid', label: '5-Star Raid (Regional)', badgeColor: 'rose',
       description: 'Appears as a 5-Star Raid Boss in its native region (or worldwide via Remote Raid invitations).',
       available: true
     });
     methods.push({
-      type: 'wild', label: 'Wild (Regional - Extremely Rare)', badgeColor: 'emerald',
-      description: 'Spawns in the wild extremely rarely near bodies of water / lakes in its native region.',
+      type: 'biome', label: 'Lake / Water Biome (Ultra Rare)', badgeColor: 'teal',
+      description: 'Extremely rare wild spawn along natural lakes, rivers, and bodies of water in its native region.',
       available: true
     });
   } else if (RAID_ONLY_DEX_NRS.has(dex)) {
@@ -884,3 +1159,190 @@ export function getPokemonDetailInfo(pokemon: any, allPokemonList: any[]): Pokem
     specialNotes: SPECIAL_NOTES[dex]
   };
 }
+
+// ============================================================
+// PRIMARY AVAILABILITY TAG HELPER (Used for Card Badges & Search)
+// ============================================================
+export function getPrimaryAvailabilityTag(pokemon: {
+  dexNr: number;
+  id?: string;
+  category?: string;
+  isCostume?: boolean;
+  releasedInGo?: boolean;
+  formName?: string;
+}): AvailabilityTag | null {
+  const dex = pokemon.dexNr;
+  const id = pokemon.id || '';
+
+  if (pokemon.releasedInGo === false || UNRELEASED_DEX_NRS.has(dex)) {
+    return {
+      type: 'special',
+      label: 'Not in GO',
+      shortLabel: 'Unreleased',
+      badgeColor: 'slate',
+      bg: 'bg-slate-100 dark:bg-slate-800/80',
+      textColor: 'text-slate-600 dark:text-slate-400',
+      border: 'border-slate-300 dark:border-slate-700/80'
+    };
+  }
+
+  if (id === 'poke_144_form_articuno_galarian' || id === 'poke_145_form_zapdos_galarian' || id === 'poke_146_form_moltres_galarian') {
+    return {
+      type: 'special',
+      label: 'Daily Adventure Incense',
+      shortLabel: 'Daily Incense',
+      badgeColor: 'pink',
+      bg: 'bg-pink-100/70 dark:bg-pink-950/60',
+      textColor: 'text-pink-700 dark:text-pink-300',
+      border: 'border-pink-300 dark:border-pink-700/80'
+    };
+  }
+
+  if (pokemon.category === 'costume' || pokemon.isCostume) {
+    return {
+      type: 'event_exclusive',
+      label: 'Event Costume',
+      shortLabel: 'Costume',
+      badgeColor: 'pink',
+      bg: 'bg-pink-100/70 dark:bg-pink-950/60',
+      textColor: 'text-pink-700 dark:text-pink-300',
+      border: 'border-pink-300 dark:border-pink-700/80'
+    };
+  }
+
+  if (PAID_RESEARCH_DEX_NRS.has(dex)) {
+    return {
+      type: 'paid_research',
+      label: 'Paid Research',
+      shortLabel: 'Paid Ticket',
+      badgeColor: 'amber',
+      bg: 'bg-amber-100 dark:bg-amber-950/80',
+      textColor: 'text-amber-800 dark:text-amber-300',
+      border: 'border-amber-400 dark:border-amber-600/80'
+    };
+  }
+
+  if (EGG_EXCLUSIVE_DEX_NRS.has(dex)) {
+    return {
+      type: 'egg_exclusive',
+      label: 'Egg Exclusive',
+      shortLabel: 'Egg Only',
+      badgeColor: 'amber',
+      bg: 'bg-amber-100/70 dark:bg-amber-950/60',
+      textColor: 'text-amber-800 dark:text-amber-300',
+      border: 'border-amber-300 dark:border-amber-700/80'
+    };
+  }
+
+  if (EVENT_EXCLUSIVE_DEX_NRS.has(dex) || EVENT_EXCLUSIVE_FORM_IDS.has(id)) {
+    return {
+      type: 'event_exclusive',
+      label: 'Event Exclusive',
+      shortLabel: 'Event Only',
+      badgeColor: 'purple',
+      bg: 'bg-purple-100/70 dark:bg-purple-950/60',
+      textColor: 'text-purple-700 dark:text-purple-300',
+      border: 'border-purple-300 dark:border-purple-700/80'
+    };
+  }
+
+  if (BIOME_EXCLUSIVE_DATA[dex]) {
+    return {
+      type: 'biome',
+      label: BIOME_EXCLUSIVE_DATA[dex].biome,
+      shortLabel: 'Biome',
+      badgeColor: 'teal',
+      bg: 'bg-teal-100/70 dark:bg-teal-950/60',
+      textColor: 'text-teal-800 dark:text-teal-300',
+      border: 'border-teal-300 dark:border-teal-700/80'
+    };
+  }
+
+  if (EVOLUTION_ONLY_DEX_NRS.has(dex)) {
+    return {
+      type: 'evolution_only',
+      label: 'Evolution Only',
+      shortLabel: 'Evo Only',
+      badgeColor: 'indigo',
+      bg: 'bg-indigo-100/70 dark:bg-indigo-950/60',
+      textColor: 'text-indigo-700 dark:text-indigo-300',
+      border: 'border-indigo-300 dark:border-indigo-700/80'
+    };
+  }
+
+  if (REGIONAL_RAID_DEX_NRS.has(dex)) {
+    return {
+      type: 'raid',
+      label: '5-Star Raid (Regional)',
+      shortLabel: 'Regional Raid',
+      badgeColor: 'rose',
+      bg: 'bg-rose-100/70 dark:bg-rose-950/60',
+      textColor: 'text-rose-700 dark:text-rose-300',
+      border: 'border-rose-300 dark:border-rose-700/80'
+    };
+  }
+
+  if (RAID_ONLY_DEX_NRS.has(dex)) {
+    return {
+      type: 'raid',
+      label: '5-Star Raid',
+      shortLabel: 'Raid Only',
+      badgeColor: 'rose',
+      bg: 'bg-rose-100/70 dark:bg-rose-950/60',
+      textColor: 'text-rose-700 dark:text-rose-300',
+      border: 'border-rose-300 dark:border-rose-700/80'
+    };
+  }
+
+  if (RESEARCH_ONLY_DEX_NRS.has(dex)) {
+    return {
+      type: 'research',
+      label: 'Special Research',
+      shortLabel: 'Research',
+      badgeColor: 'blue',
+      bg: 'bg-blue-100/70 dark:bg-blue-950/60',
+      textColor: 'text-blue-700 dark:text-blue-300',
+      border: 'border-blue-300 dark:border-blue-700/80'
+    };
+  }
+
+  const isFormRegional = id ? (REGIONAL_DATA_BY_ID[id]?.isRegional === true) : false;
+  if (REGIONAL_DEX_NRS.has(dex) || isFormRegional) {
+    return {
+      type: 'wild',
+      label: 'Regional Exclusive',
+      shortLabel: 'Regional',
+      badgeColor: 'orange',
+      bg: 'bg-orange-100/70 dark:bg-orange-950/60',
+      textColor: 'text-orange-800 dark:text-orange-300',
+      border: 'border-orange-300 dark:border-orange-700/80'
+    };
+  }
+
+  if (dex === 808) {
+    return {
+      type: 'special',
+      label: 'Mystery Box',
+      shortLabel: 'Mystery Box',
+      badgeColor: 'pink',
+      bg: 'bg-pink-100/70 dark:bg-pink-950/60',
+      textColor: 'text-pink-700 dark:text-pink-300',
+      border: 'border-pink-300 dark:border-pink-700/80'
+    };
+  }
+
+  if (dex === 999) {
+    return {
+      type: 'special',
+      label: 'Coin Bag / Stop',
+      shortLabel: 'Coin Bag',
+      badgeColor: 'pink',
+      bg: 'bg-pink-100/70 dark:bg-pink-950/60',
+      textColor: 'text-pink-700 dark:text-pink-300',
+      border: 'border-pink-300 dark:border-pink-700/80'
+    };
+  }
+
+  return null;
+}
+
