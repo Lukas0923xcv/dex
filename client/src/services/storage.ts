@@ -1033,6 +1033,28 @@ class StorageAdapter {
         };
         localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify([defaultAcc]));
       }
+
+      // Migrate any duplicate Spinda heart pattern entries to Pattern 9
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(STORAGE_KEYS.PROGRESS_PREFIX)) {
+          const raw = localStorage.getItem(key);
+          if (raw && raw.includes('poke_327_special_pattern_heart')) {
+            try {
+              const data = JSON.parse(raw);
+              if (data['poke_327_special_pattern_heart']) {
+                if (!data['poke_327_special_pattern_09']) {
+                  data['poke_327_special_pattern_09'] = data['poke_327_special_pattern_heart'];
+                }
+                delete data['poke_327_special_pattern_heart'];
+                localStorage.setItem(key, JSON.stringify(data));
+              }
+            } catch {
+              // ignore
+            }
+          }
+        }
+      }
     } catch (e) {
       console.warn('Legacy progress migration note:', e);
     }
