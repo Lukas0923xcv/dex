@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StorageStatus, storage } from '../services/storage';
-import { BackupData } from '../types';
+import { BackupData, SingleCollectionBackup, CustomCollection } from '../types';
 import { X, Download, Upload, RefreshCw, Server, AlertTriangle, CheckCircle2, ShieldCheck, Trash2 } from 'lucide-react';
 
 interface SettingsModalProps {
