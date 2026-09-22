@@ -1084,68 +1084,51 @@ export function getPokemonDetailInfo(pokemon: any, allPokemonList: any[]): Pokem
   }
 
   const obtainMethods = buildObtainMethods(pokemon);
-  const manualAlternatives = (ALTERNATIVE_DEX_METHODS[dex] || [])
-    .filter(m => !m.relatedPokemonId || m.relatedPokemonId !== id);
 
-  // Dynamically add form-based alternatives
-  const relatedForms = (allPokemonList || []).filter(
-    p => p.dexNr === dex && p.id !== pokemon.id && p.category !== 'costume' && p.category !== 'mega'
-  );
+  // Alternative Pokédex methods only apply to the base/standard species entry!
+  // Catching an alternative form (e.g. Galarian Farfetch'd, Alolan Raichu) registers the base entry,
+  const isBasePokemon = pokemon.category === 'standard' || (!pokemon.isForm && !pokemon.isCostume && !pokemon.isMega);
 
-  const currentIsRegionalForm = Boolean(
-    (pokemon.formName || '').toLowerCase().match(/galar|alola|hisui|paldea/)
-  );
+  let alternativeDexMethods: DexAlternativeMethod[] = [];
 
-  const formAlternatives: DexAlternativeMethod[] = relatedForms
-    .filter(f => {
-      const fn = (f.formName || '').toLowerCase();
-      // If current view is a regional form, include the standard form as an alternative!
-      if (currentIsRegionalForm && (f.formName === 'Standard' || f.category === 'standard')) {
-        return true;
-      }
-      return fn.includes('galar') || fn.includes('alola') || fn.includes('hisui') || fn.includes('paldea');
-    })
-    .map(f => {
-      const isStandard = f.formName === 'Standard' || f.category === 'standard';
-      const fullName = isStandard
-        ? (f.name.toLowerCase().startsWith('standard') ? f.name : `Standard ${f.name}`)
-        : f.name;
+  if (isBasePokemon) {
+    const manualAlternatives = (ALTERNATIVE_DEX_METHODS[dex] || [])
+      .filter(m => !m.relatedPokemonId || m.relatedPokemonId !== id);
 
-      let description: string;
-      if (isStandard) {
-        let obtainHint = 'the wild or eggs';
-        if (RAID_ONLY_DEX_NRS.has(dex)) {
-          obtainHint = '5-Star Raids';
-        } else if (REGIONAL_DEX_NRS.has(dex)) {
-          obtainHint = 'regional wild spawns';
-        } else if (RESEARCH_ONLY_DEX_NRS.has(dex)) {
-          obtainHint = 'Special Research';
-        }
-        description = `${fullName} is the original base form (available via ${obtainHint}) and shares Pokédex entry #${String(dex).padStart(4, '0')}. Catching it also registers this entry in your Pokédex.`;
-      } else {
+    // Dynamically add form-based alternatives that register this base species
+    const relatedForms = (allPokemonList || []).filter(
+      p => p.dexNr === dex && p.id !== pokemon.id && p.category !== 'costume' && p.category !== 'mega'
+    );
+
+    const formAlternatives: DexAlternativeMethod[] = relatedForms
+      .filter(f => {
+        const fn = (f.formName || '').toLowerCase();
+        return fn.includes('galar') || fn.includes('alola') || fn.includes('hisui') || fn.includes('paldea');
+      })
+      .map(f => {
         const formTag = f.formName ? `${f.formName} ` : '';
         const formMethod = FORM_OBTAIN_METHODS[f.id]?.[0]?.label;
         const formHint = formMethod ? ` (available via ${formMethod})` : '';
-        description = `${fullName} is an alternative ${formTag}form${formHint} that shares Pokédex entry #${String(dex).padStart(4, '0')}. Catching it also registers this entry in your Pokédex.`;
-      }
+        const description = `${f.name} is an alternative ${formTag}form${formHint} that registers base Pokédex entry #${String(dex).padStart(4, '0')}. Catching it unlocks this entry in your Pokédex without needing the base form.`;
 
-      return {
-        type: 'form' as const,
-        title: `Catch ${fullName}`,
-        description,
-        relatedPokemonId: f.id,
-        badgeLabel: isStandard ? 'Standard Form' : (f.formName ? `${f.formName} Form` : 'Alternative Form')
-      };
-    });
+        return {
+          type: 'form' as const,
+          title: `Catch ${f.name}`,
+          description,
+          relatedPokemonId: f.id,
+          badgeLabel: f.formName ? `${f.formName} Form` : 'Alternative Form'
+        };
+      });
 
-  // Deduplicate: don't add form alternatives if manually specified
-  const manualIds = new Set(manualAlternatives.map(m => m.relatedPokemonId).filter(Boolean));
-  const filteredFormAlternatives = formAlternatives.filter(f => !manualIds.has(f.relatedPokemonId));
+    // Deduplicate: don't add form alternatives if manually specified
+    const manualIds = new Set(manualAlternatives.map(m => m.relatedPokemonId).filter(Boolean));
+    const filteredFormAlternatives = formAlternatives.filter(f => !manualIds.has(f.relatedPokemonId));
 
-  const alternativeDexMethods: DexAlternativeMethod[] = [
-    ...manualAlternatives,
-    ...filteredFormAlternatives
-  ];
+    alternativeDexMethods = [
+      ...manualAlternatives,
+      ...filteredFormAlternatives
+    ];
+  }
 
   return {
     dexNr: dex,
