@@ -151,6 +151,15 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
 
         {/* ===== Scrollable Body ===== */}
         <div className="flex-1 overflow-y-auto px-5 pb-5 space-y-4">
+          {/* Form base dex registration notice */}
+          {pokemon.isForm && (
+            <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-200/70 dark:border-blue-800/50 text-xs text-blue-700 dark:text-blue-300">
+              <Info className="w-3.5 h-3.5 shrink-0 text-blue-500" />
+              <span>
+                Catching this {pokemon.formName ? `${pokemon.formName} ` : ''}form also registers the base Pokédex entry <strong>{formatDexNumber(pokemon.dexNr)}</strong> in your Pokédex.
+              </span>
+            </div>
+          )}
 
           {/* Sprite + Quick Actions Row */}
           <div className="flex gap-4 items-start">
