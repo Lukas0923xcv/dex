@@ -312,8 +312,7 @@ export const EGG_EXCLUSIVE_DEX_NRS = new Set<number>([
 // PAID RESEARCH / MASTERWORK EXCLUSIVES
 // ============================================================
 export const PAID_RESEARCH_DEX_NRS = new Set<number>([
-  647, // Keldeo (Ordinary Form: "Something Extraordinary" Paid Ticket)
-  893, // Zarude ("Rogue of the Jungle" Paid Masterwork Ticket)
+  // Mythicals like Keldeo and Zarude debuted with ticketed events but received free Special Research releases
 ]);
 
 // ============================================================
@@ -735,6 +734,7 @@ const SPECIAL_NOTES: Record<number, string> = {
   489:  'Phione is not yet available in Pokémon GO.',
   490:  'Manaphy is not yet available in Pokémon GO.',
   493:  'Arceus is not yet available in Pokémon GO.',
+  647:  'Keldeo is a Mythical Pokémon obtainable via the "Tales of Transformation" Special Research storyline (first debuted in ticketed Special Research). It can change into its Resolute Form using 50 Keldeo Candy and 10,000 Stardust.',
   649:  'Genesect has multiple Drive forms featured in 5-Star Raids during events.',
   664:  'Scatterbug is encountered by pinning postcards from friends around the world in your Postcard Book.',
   666:  "Vivillon's wing pattern depends on the region from which you pin postcards.",
@@ -756,7 +756,7 @@ const SPECIAL_NOTES: Record<number, string> = {
   843:  'Silicobra spawns exclusively in desert and arid biomes.',
   874:  'Stonjourner is a regional Pokémon that spawns exclusively in the wild in the United Kingdom.',
   890:  'Eternatus is a Legendary Pokémon introduced as the climax of the Special Research storyline during the Season of Max Out.',
-  893:  'Zarude is obtainable via seasonal Special Research storylines.',
+  893:  'Zarude is a Mythical Pokémon obtainable via the "Search for Zarude" Special Research storyline and featured event celebrations.',
   896:  'Glastrier is not yet available in Pokémon GO.',
   897:  'Spectrier is not yet available in Pokémon GO.',
   898:  'Calyrex is not yet available in Pokémon GO.',
@@ -1102,10 +1102,14 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   } else if (RESEARCH_ONLY_DEX_NRS.has(dex)) {
     // Special research mythicals & box legendaries
     let resDesc = 'Obtainable exclusively through special or seasonal research storylines (not in the wild).';
-    if (dex === 890) {
-      resDesc = 'Obtainable exclusively through the Special Research storyline during the Season of Max Out (cannot be encountered in the wild or in standard Raids).';
+    if (dex === 647) {
+      resDesc = 'Obtainable via the "Tales of Transformation" Special Research storyline (first debuted in ticketed Special Research). Can change between Ordinary and Resolute Form using 50 Keldeo Candy and 10,000 Stardust.';
+    } else if (dex === 893) {
+      resDesc = 'Obtainable via the "Search for Zarude" Special Research storyline (and featured event celebrations). Cannot be encountered in the wild.';
     } else if (dex === 721) {
       resDesc = 'Obtainable via the "Pressure Rising" Special Research storyline (first debuted during Pokémon GO Fest 2025). Cannot be encountered in the wild or in standard Raids.';
+    } else if (dex === 890) {
+      resDesc = 'Obtainable exclusively through the Special Research storyline during the Season of Max Out (cannot be encountered in the wild or in standard Raids).';
     }
     methods.push({
       type: 'research', label: 'Special Research', badgeColor: 'blue',
