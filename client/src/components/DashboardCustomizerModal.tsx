@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CustomCollection, DashboardTabConfig } from '../types';
-import { X, CheckCircle2, Sparkles, Zap, Layers, Bookmark, ArrowUp, ArrowDown, RotateCcw, Pin, Eye, EyeOff, Flame, Trash2 } from 'lucide-react';
+import { X, CheckCircle2, Sparkles, Zap, Layers, Bookmark, ArrowUp, ArrowDown, RotateCcw, Pin, Eye, EyeOff, Flame, Trash2, Download } from 'lucide-react';
 
 interface DashboardCustomizerModalProps {
   isOpen: boolean;
@@ -10,6 +10,8 @@ interface DashboardCustomizerModalProps {
   onSaveTabs: (tabs: DashboardTabConfig[]) => void;
   onDeleteCollection?: (id: string) => Promise<void>;
   onDeleteAllCollections?: () => Promise<void>;
+  onExportPreset?: (presetId: string) => Promise<any>;
+  onExportCollection?: (collectionId: string) => Promise<any>;
 }
 
 export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> = ({
@@ -19,7 +21,9 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
   currentTabs,
   onSaveTabs,
   onDeleteCollection,
-  onDeleteAllCollections
+  onDeleteAllCollections,
+  onExportPreset,
+  onExportCollection
 }) => {
   useEffect(() => {
     if (!isOpen) return;
@@ -126,6 +130,41 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
       });
     }
     setTabs(defaults);
+  };
+
+  const handleExportPreset = async (presetId: string) => {
+    try {
+      if (!onExportPreset) return;
+      const data = await onExportPreset(`preset:${presetId}`);
+      const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data, null, 2))}`;
+      const downloadAnchor = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      downloadAnchor.setAttribute('href', jsonString);
+      downloadAnchor.setAttribute('download', `pogo-preset-${presetId}-${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    } catch (err: any) {
+      alert(`Export fehlgeschlagen: ${err.message}`);
+    }
+  };
+
+  const handleExportCollection = async (coll: CustomCollection) => {
+    try {
+      if (!onExportCollection) return;
+      const data = await onExportCollection(coll.id);
+      const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data, null, 2))}`;
+      const downloadAnchor = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const sanitized = coll.name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+      downloadAnchor.setAttribute('href', jsonString);
+      downloadAnchor.setAttribute('download', `pogo-collection-${sanitized}-${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    } catch (err: any) {
+      alert(`Export fehlgeschlagen: ${err.message}`);
+    }
   };
 
   const handleSave = () => {
@@ -245,18 +284,30 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                         </div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => toggleTabVisibility(tab.id)}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
-                          tab.visible
-                            ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 shadow-xs'
-                            : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700'
-                        }`}
-                      >
-                        {tab.visible ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-                        <span>{tab.visible ? 'Sichtbar' : 'Versteckt'}</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        {onExportPreset && (
+                          <button
+                            type="button"
+                            onClick={() => handleExportPreset(tab.id)}
+                            className="p-1.5 rounded-xl text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                            title={`"${tab.label}" als JSON exportieren`}
+                          >
+                            <Download className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                        <button
+                          type="button"
+                          onClick={() => toggleTabVisibility(tab.id)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all cursor-pointer flex items-center gap-1.5 ${
+                            tab.visible
+                              ? 'bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-800 shadow-xs'
+                              : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-700'
+                          }`}
+                        >
+                          {tab.visible ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+                          <span>{tab.visible ? 'Sichtbar' : 'Versteckt'}</span>
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
@@ -358,6 +409,17 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                                 <ArrowDown className="w-3.5 h-3.5" />
                               </button>
                             </div>
+                          )}
+
+                          {onExportCollection && coll && (
+                            <button
+                              type="button"
+                              onClick={() => handleExportCollection(coll)}
+                              className="p-1.5 rounded-xl text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+                              title={`Sammlung "${coll.name}" als JSON exportieren`}
+                            >
+                              <Download className="w-3.5 h-3.5" />
+                            </button>
                           )}
 
                           <button
