@@ -42,6 +42,19 @@ class StorageAdapter {
     }
   }
 
+  private async fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs: number = 4000): Promise<Response> {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      return await fetch(url, {
+        ...options,
+        signal: controller.signal
+      });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   private detectEnvironment() {
     const customUrl = localStorage.getItem(STORAGE_KEYS.REMOTE_API_URL);
     if (customUrl) {
@@ -349,42 +362,7 @@ class StorageAdapter {
     accountId: string = 'default',
     scope: DexScope = 'standard'
   ): Promise<boolean> {
-    if (this.isConnectedToBackend) {
-      try {
-        const res = await fetch(`${this.backendUrl}/api/progress/toggle`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pokemonId, type, accountId, dexScope: scope })
-        });
-        if (res.ok) {
-          const data = await res.json();
-          const progress = this.getLocalProgress(accountId, scope);
-          const fieldMap: Record<string, string> = {
-            caught: 'caught',
-            shiny: 'shinyCaught',
-            lucky: 'luckyCaught',
-            hundo: 'hundoCaught',
-            shadow: 'shadowCaught',
-            purified: 'purifiedCaught',
-            gender_m: 'genderMCaught',
-            gender_f: 'genderFCaught',
-            xxl: 'xxlCaught',
-            xxs: 'xxsCaught'
-          };
-          const field = fieldMap[type] || 'caught';
-          const current = progress[pokemonId] || {};
-          current[field] = data.value;
-          current.updatedAt = data.updatedAt || new Date().toISOString();
-          progress[pokemonId] = current;
-          this.saveLocalProgress(accountId, scope, progress);
-          return data.value;
-        }
-      } catch (err) {
-        console.warn('Backend toggle failed, persisting locally:', err);
-      }
-    }
-
-    // Local Mode
+    // 1. Immediately update in-memory cache and debounce localStorage save (zero UI latency)
     const progress = this.getLocalProgress(accountId, scope);
     const current = progress[pokemonId] || {};
     const fieldMap: Record<string, string> = {
@@ -405,6 +383,18 @@ class StorageAdapter {
     current.updatedAt = new Date().toISOString();
     progress[pokemonId] = current;
     this.saveLocalProgress(accountId, scope, progress);
+
+    // 2. Asynchronously sync to backend in background with timeout (never blocks UI)
+    if (this.isConnectedToBackend) {
+      this.fetchWithTimeout(`${this.backendUrl}/api/progress/toggle`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pokemonId, type, accountId, dexScope: scope })
+      }).catch(err => {
+        console.warn('Backend progress toggle sync failed:', err);
+      });
+    }
+
     return newVal;
   }
 
@@ -415,25 +405,6 @@ class StorageAdapter {
     accountId: string = 'default',
     scope: DexScope = 'standard'
   ): Promise<boolean> {
-    if (this.isConnectedToBackend) {
-      try {
-        await fetch(`${this.backendUrl}/api/progress/batch`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            pokemonIds,
-            caught: values.caught,
-            shinyCaught: values.shinyCaught,
-            shadowCaught: values.shadowCaught,
-            accountId,
-            dexScope: scope
-          })
-        });
-      } catch (err) {
-        console.warn('Backend batch progress update failed, persisting locally:', err);
-      }
-    }
-
     // Local Mode & Mirror
     const progress = this.getLocalProgress(accountId, scope);
     const now = new Date().toISOString();
@@ -446,6 +417,24 @@ class StorageAdapter {
       progress[id] = current;
     }
     this.saveLocalProgress(accountId, scope, progress);
+
+    if (this.isConnectedToBackend) {
+      this.fetchWithTimeout(`${this.backendUrl}/api/progress/batch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          pokemonIds,
+          caught: values.caught,
+          shinyCaught: values.shinyCaught,
+          shadowCaught: values.shadowCaught,
+          accountId,
+          dexScope: scope
+        })
+      }).catch(err => {
+        console.warn('Backend batch progress update failed:', err);
+      });
+    }
+
     return true;
   }
 
@@ -454,8 +443,8 @@ class StorageAdapter {
     if (this.isConnectedToBackend) {
       try {
         const [collsRes, itemsRes] = await Promise.all([
-          fetch(`${this.backendUrl}/api/collections?accountId=${encodeURIComponent(accountId)}`),
-          fetch(`${this.backendUrl}/api/collection-items`)
+          this.fetchWithTimeout(`${this.backendUrl}/api/collections?accountId=${encodeURIComponent(accountId)}`),
+          this.fetchWithTimeout(`${this.backendUrl}/api/collection-items`)
         ]);
         if (collsRes.ok) {
           const collections: CustomCollection[] = await collsRes.json();
@@ -736,18 +725,6 @@ class StorageAdapter {
     }
     set.add(pokemonId);
 
-    if (this.isConnectedToBackend) {
-      try {
-        await fetch(`${this.backendUrl}/api/collections/${collectionId}/items`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ pokemonId })
-        });
-      } catch {
-        // Fallback
-      }
-    }
-
     const items = [...this.getLocalCollectionItems()];
     if (!items.some(i => i.collection_id === collectionId && i.pokemon_id === pokemonId)) {
       items.push({
@@ -757,6 +734,17 @@ class StorageAdapter {
       });
       this.saveLocalCollectionItems(items);
     }
+
+    if (this.isConnectedToBackend) {
+      this.fetchWithTimeout(`${this.backendUrl}/api/collections/${collectionId}/items`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pokemonId })
+      }).catch(err => {
+        console.warn('Backend addItemToCollection background sync failed:', err);
+      });
+    }
+
     return true;
   }
 
@@ -766,20 +754,19 @@ class StorageAdapter {
       set.delete(pokemonId);
     }
 
-    if (this.isConnectedToBackend) {
-      try {
-        await fetch(`${this.backendUrl}/api/collections/${collectionId}/items/${pokemonId}`, {
-          method: 'DELETE'
-        });
-      } catch {
-        // Fallback
-      }
-    }
-
     const items = this.getLocalCollectionItems().filter(
       i => !(i.collection_id === collectionId && i.pokemon_id === pokemonId)
     );
     this.saveLocalCollectionItems(items);
+
+    if (this.isConnectedToBackend) {
+      this.fetchWithTimeout(`${this.backendUrl}/api/collections/${collectionId}/items/${pokemonId}`, {
+        method: 'DELETE'
+      }).catch(err => {
+        console.warn('Backend removeItemFromCollection background sync failed:', err);
+      });
+    }
+
     return true;
   }
 
