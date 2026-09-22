@@ -734,8 +734,8 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         </div>
                         <div className="text-[11px] text-slate-400 mt-0.5">
                           {filterOnlyShiny
-                            ? `✨ Aktiv: Schließt unveröffentlichte Shinys aus. Fügt nur die ${selectedRegion === 8 ? '79 Galar-Shinys (inkl. Kostüme)' : 'in GO fangbaren Shinys'} hinzu.`
-                            : `🌐 Inaktiv: Fügt sowohl Shiny als auch reguläre Pokémon hinzu (${selectedRegion === 8 ? 'alle 108 Galar-Pokémon' : 'sowohl Shiny als auch reguläre'}).`}
+                            ? `✨ Aktiv: Schließt unveröffentlichte Shinys aus. Fügt nur die ${matchingPokemonIds.length} in GO fangbaren Shinys hinzu.`
+                            : `🌐 Inaktiv: Fügt alle ${matchingPokemonIds.length} Pokémon der Auswahl hinzu (sowohl Shiny als auch reguläre).`}
                         </div>
                       </div>
                     </div>

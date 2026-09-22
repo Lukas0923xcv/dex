@@ -384,7 +384,7 @@ export function useDex() {
       const includeGender = Boolean(filters.showGenderTracking);
       const isQualifyingForm = (p: Pokemon) => {
         if (p.category !== 'form' && !p.isForm) return false;
-        if (p.isGenderDifference && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id)) {
+        if (p.isGenderDifference && !includeGender) {
           return false;
         }
         return true;
@@ -435,7 +435,7 @@ export function useDex() {
         const itemIds = storage.getCollectionItemIds(activeColl.id);
         const includeGender = Boolean(filters.showGenderTracking);
         const isExcludedGenderForm = (p: Pokemon) =>
-          Boolean(p.isGenderDifference) && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id);
+          Boolean(p.isGenderDifference) && !includeGender;
 
         if (itemIds.size > 0) {
           result = result.filter(p => itemIds.has(p.id) && !isExcludedGenderForm(p));
@@ -629,7 +629,7 @@ export function useDex() {
       const includeGender = Boolean(filters.showGenderTracking);
       const isQualifyingForm = (p: Pokemon) => {
         if (p.category !== 'form' && !p.isForm) return false;
-        if (p.isGenderDifference && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id)) {
+        if (p.isGenderDifference && !includeGender) {
           return false;
         }
         return true;
@@ -662,7 +662,7 @@ export function useDex() {
         const itemIds = storage.getCollectionItemIds(activeColl.id);
         const includeGender = Boolean(filters.showGenderTracking);
         const isExcludedGenderForm = (p: Pokemon) =>
-          Boolean(p.isGenderDifference) && !includeGender && !['poke_678_special_female', 'poke_876_special_female', 'poke_916_special_female'].includes(p.id);
+          Boolean(p.isGenderDifference) && !includeGender;
 
         if (itemIds.size > 0) {
           pool = pool.filter(p => itemIds.has(p.id) && !isExcludedGenderForm(p));

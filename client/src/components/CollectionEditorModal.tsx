@@ -254,14 +254,14 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               onClick={() => applyPreset(p => isPokemonInRegion(p, 8))}
               className="px-2.5 py-1 bg-blue-600/15 hover:bg-blue-600/25 border border-blue-600/40 text-blue-800 dark:text-blue-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
             >
-              ⚔️ Galar Komplett (108)
+              ⚔️ Galar Komplett
             </button>
             <button
               type="button"
               onClick={() => applyPreset(p => isPokemonInRegion(p, 8) && Boolean(p.hasShiny))}
               className="px-2.5 py-1 bg-amber-500/15 hover:bg-amber-500/25 border border-amber-500/40 text-amber-800 dark:text-amber-300 text-xs font-semibold rounded-lg shrink-0 transition-all flex items-center gap-1"
             >
-              ✨ Galar Shinys (79)
+              ✨ Galar Shinys
             </button>
             <button
               type="button"
