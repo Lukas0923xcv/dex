@@ -1651,6 +1651,22 @@ async function main() {
       return (order[a.category] || 9) - (order[b.category] || 9);
     }
     if (a.dexNr !== b.dexNr) return a.dexNr - b.dexNr;
+
+    // Size forms (Pumpkaboo #710, Gourgeist #711) sort from Small to Big
+    if (a.dexNr === 710 || a.dexNr === 711) {
+      const getSizeRank = p => {
+        const s = `${p.id} ${p.formName || ''} ${p.name || ''}`.toLowerCase();
+        if (s.includes('small') || s.includes('klein')) return 1;
+        if (s.includes('average') || s.includes('fall_2022') || s.includes('fall 2022') || s.includes('normalgroß') || s.includes('mittel')) return 2;
+        if (s.includes('large') || s.includes('groß') || s.includes('grosse')) return 3;
+        if (s.includes('super') || s.includes('xl') || s.includes('übergröße')) return 4;
+        return 99;
+      };
+      const aRank = getSizeRank(a);
+      const bRank = getSizeRank(b);
+      if (aRank !== bRank) return aRank - bRank;
+    }
+
     const isBase = p => p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
     const aBase = isBase(a);
     const bBase = isBase(b);
