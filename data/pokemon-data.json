@@ -20716,8 +20716,8 @@
       "Korean": "메로엣타",
       "Spanish": "Meloetta"
     },
-    "formId": "NORMAL",
-    "formName": "Aria Forme",
+    "formId": null,
+    "formName": "Standard",
     "category": "standard",
     "generation": 5,
     "type1": "Normal",
@@ -28044,8 +28044,8 @@
       "Korean": "모르페코",
       "Spanish": "Morpeko"
     },
-    "formId": "NORMAL",
-    "formName": "Full Belly Mode",
+    "formId": null,
+    "formName": "Standard",
     "category": "standard",
     "generation": 8,
     "type1": "Electric",
