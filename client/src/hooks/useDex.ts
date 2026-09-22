@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData, UserAccount, DexScope } from '../types';
 import { storage, StorageStatus } from '../services/storage';
 import { isPokemonInRegion } from '../utils/regions';
@@ -45,14 +45,15 @@ const GERMAN_BASE_FORM_LABELS: Record<number, string> = {
   487: 'Wandelform',
   492: 'Landform',
   550: 'Rotlinig',
-  555: 'Standardmodus',
+  555: 'Normalform',
   585: 'Frühlingsform',
   586: 'Frühlingsform',
   641: 'Inkarnationsform',
   642: 'Inkarnationsform',
   645: 'Inkarnationsform',
-  646: 'Standardform',
+  646: 'Kyurem',
   647: 'Normalform',
+  648: 'Arie',
   649: 'Normalmodul',
   666: 'Wiesenmuster',
   669: 'Rotblütler',
@@ -60,18 +61,25 @@ const GERMAN_BASE_FORM_LABELS: Record<number, string> = {
   671: 'Rotblütler',
   676: 'Zottelform',
   678: 'Männlich',
+  681: 'Schildform',
   710: 'Normalgroß',
   711: 'Normalgroß',
   718: '50%-Form',
   720: 'Gebannt',
-  741: 'Flamenco-Stil',
+  741: 'Flamenco',
   745: 'Tagform',
+  746: 'Einzelform',
+  774: 'Meteorform',
+  778: 'Verkleidungsform',
   800: 'Standardform',
-  849: 'Hochfrequenz-Form',
+  845: 'Schlingform',
+  849: 'Hoch-Form',
   854: 'Fälschungsform',
   855: 'Fälschungsform',
+  875: 'Kopfüber-Form',
   876: 'Männlich',
-  888: 'Held des Krieges',
+  877: 'Morpeko',
+  888: 'Kämpferheld',
   889: 'Held des Krieges',
   892: 'Fokussierter Stil',
   905: 'Inkarnationsform',
@@ -86,6 +94,7 @@ const GERMAN_BASE_FORM_LABELS: Record<number, string> = {
 };
 
 export function useDex() {
+  const inFlightRef = useRef<Set<string>>(new Set());
   const [accounts, setAccounts] = useState<UserAccount[]>([]);
   const [activeAccountId, setActiveAccountId] = useState<string>(() => storage.getActiveAccountId());
   const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
@@ -203,28 +212,36 @@ export function useDex() {
     pokemonId: string,
     type: 'caught' | 'shiny' | 'lucky' | 'hundo' | 'shadow' | 'purified' | 'gender_m' | 'gender_f' | 'xxl' | 'xxs'
   ) => {
-    const keyMap: Record<string, keyof Pokemon> = {
-      caught: 'caught',
-      shiny: 'shinyCaught',
-      lucky: 'luckyCaught',
-      hundo: 'hundoCaught',
-      shadow: 'shadowCaught',
-      purified: 'purifiedCaught',
-      gender_m: 'genderMCaught',
-      gender_f: 'genderFCaught',
-      xxl: 'xxlCaught',
-      xxs: 'xxsCaught'
-    };
-    const key = keyMap[type] || 'caught';
+    const lockKey = `feat_${pokemonId}_${type}`;
+    if (inFlightRef.current.has(lockKey)) return;
+    inFlightRef.current.add(lockKey);
 
-    setPokemonList(prev =>
-      prev.map(p => (p.id === pokemonId ? { ...p, [key]: !p[key] } : p))
-    );
-    await storage.toggleProgress(pokemonId, type, activeAccountId, activeScope);
+    try {
+      const keyMap: Record<string, keyof Pokemon> = {
+        caught: 'caught',
+        shiny: 'shinyCaught',
+        lucky: 'luckyCaught',
+        hundo: 'hundoCaught',
+        shadow: 'shadowCaught',
+        purified: 'purifiedCaught',
+        gender_m: 'genderMCaught',
+        gender_f: 'genderFCaught',
+        xxl: 'xxlCaught',
+        xxs: 'xxsCaught'
+      };
+      const key = keyMap[type] || 'caught';
 
-    if (mode === 'custom') {
-      const updatedColls = await storage.getCollections(activeAccountId);
-      setCollections(updatedColls);
+      setPokemonList(prev =>
+        prev.map(p => (p.id === pokemonId ? { ...p, [key]: !p[key] } : p))
+      );
+      await storage.toggleProgress(pokemonId, type, activeAccountId, activeScope);
+
+      if (mode === 'custom') {
+        const updatedColls = await storage.getCollections(activeAccountId);
+        setCollections(updatedColls);
+      }
+    } finally {
+      inFlightRef.current.delete(lockKey);
     }
   }, [activeAccountId, activeScope, mode]);
 
@@ -248,10 +265,7 @@ export function useDex() {
     }
 
     await toggleFeature(pokemonId, targetType);
-
-    const colls = await storage.getCollections(activeAccountId);
-    setCollections(colls);
-  }, [mode, collections, filters.activeCollectionId, toggleFeature, activeAccountId]);
+  }, [mode, collections, filters.activeCollectionId, toggleFeature]);
 
   // Toggle shiny status specifically
   const toggleShiny = useCallback(async (pokemonId: string) => {
@@ -306,17 +320,25 @@ export function useDex() {
   }, []);
 
   const toggleCollectionItem = useCallback(async (collectionId: string, pokemonId: string) => {
-    const itemIds = storage.getCollectionItemIds(collectionId);
-    if (itemIds.has(pokemonId)) {
-      await storage.removeItemFromCollection(collectionId, pokemonId);
-    } else {
-      await storage.addItemToCollection(collectionId, pokemonId);
-    }
+    const lockKey = `coll_${collectionId}_${pokemonId}`;
+    if (inFlightRef.current.has(lockKey)) return;
+    inFlightRef.current.add(lockKey);
 
-    const updatedColls = await storage.getCollections(activeAccountId);
-    setCollections(updatedColls);
-    const inAnyColl = storage.isPokemonInAnyCollection(pokemonId);
-    setPokemonList(prev => prev.map(p => p.id === pokemonId ? { ...p, inCollection: inAnyColl } : p));
+    try {
+      const itemIds = storage.getCollectionItemIds(collectionId);
+      if (itemIds.has(pokemonId)) {
+        await storage.removeItemFromCollection(collectionId, pokemonId);
+      } else {
+        await storage.addItemToCollection(collectionId, pokemonId);
+      }
+
+      const updatedColls = await storage.getCollections(activeAccountId);
+      setCollections(updatedColls);
+      const inAnyColl = storage.isPokemonInAnyCollection(pokemonId);
+      setPokemonList(prev => prev.map(p => p.id === pokemonId ? { ...p, inCollection: inAnyColl } : p));
+    } finally {
+      inFlightRef.current.delete(lockKey);
+    }
   }, [activeAccountId]);
 
   const setCollectionItems = useCallback(async (collectionId: string, pokemonIds: string[]) => {

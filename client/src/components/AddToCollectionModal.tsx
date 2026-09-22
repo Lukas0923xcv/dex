@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pokemon, CustomCollection } from '../types';
 import { storage } from '../services/storage';
 import { X, Bookmark, Check } from 'lucide-react';
@@ -9,7 +9,7 @@ interface AddToCollectionModalProps {
   pokemon: Pokemon | null;
   collections: CustomCollection[];
   onClose: () => void;
-  onToggleItem: (collectionId: string, pokemonId: string) => void;
+  onToggleItem: (collectionId: string, pokemonId: string) => void | Promise<void>;
   onOpenCreateCollection: () => void;
 }
 
@@ -21,11 +21,44 @@ export const AddToCollectionModal: React.FC<AddToCollectionModalProps> = ({
   onToggleItem,
   onOpenCreateCollection
 }) => {
+  const [pendingToggles, setPendingToggles] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen || !pokemon) return null;
 
+  const handleToggle = async (collId: string, pokemonId: string) => {
+    if (pendingToggles.has(collId)) return;
+    setPendingToggles(prev => new Set(prev).add(collId));
+    try {
+      await onToggleItem(collId, pokemonId);
+    } finally {
+      setPendingToggles(prev => {
+        const next = new Set(prev);
+        next.delete(collId);
+        return next;
+      });
+    }
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm">
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-slate-950/80 backdrop-blur-sm"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+      >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-3">
@@ -66,13 +99,15 @@ export const AddToCollectionModal: React.FC<AddToCollectionModalProps> = ({
             <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
               {collections.map((coll) => {
                 const itemIds = storage.getCollectionItemIds(coll.id);
-                const isInColl = itemIds.has(pokemon.id);
+                const isPending = pendingToggles.has(coll.id);
 
                 return (
                   <div
                     key={coll.id}
-                    onClick={() => onToggleItem(coll.id, pokemon.id)}
+                    onClick={() => handleToggle(coll.id, pokemon.id)}
                     className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer select-none transition-all ${
+                      isPending ? 'opacity-70 pointer-events-none' : ''
+                    } ${
                       isInColl
                         ? 'bg-blue-50 dark:bg-blue-950/40 border-blue-400 dark:border-blue-500/60 text-blue-900 dark:text-white'
                         : 'bg-slate-50 dark:bg-slate-800/40 border-slate-200 dark:border-slate-700/60 hover:bg-slate-100 dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300'
