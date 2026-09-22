@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Pokemon, TrackingMode, CustomCollection } from '../types';
 import { getTypeBadgeColor, formatDexNumber, getEffectiveSprite } from '../utils/typeColors';
 import { getPrimaryAvailabilityTag } from '../data/pokemonObtainData';
-import { Check, Sparkles, Plus, Bookmark, Flame, Zap, Info } from 'lucide-react';
+import { Plus, Bookmark, Flame, Zap, Info } from 'lucide-react';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -101,20 +101,11 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
     return 'bg-emerald-400';
   };
 
-  const getBadgeStyle = () => {
-    if (categoryType === 'shadow') return 'bg-purple-600 text-white';
-    if (categoryType === 'purified') return 'bg-cyan-500 text-slate-950';
-    if (categoryType === 'lucky' || isShinyMode) return 'bg-amber-500 text-slate-950';
-    return 'bg-emerald-500 text-slate-950';
-  };
-
   const showGender = Boolean(showGenderTracking || (isCustomMode && collection?.trackGender));
   const showFeatureStrip = Boolean(
     showGender || (isCustomMode && (collection?.trackHundo || collection?.trackSize))
   );
 
-  const isShadowContext = mode === 'shadow' || categoryType === 'shadow' || (isCustomMode && isShadowCollection);
-  const canBeShiny = isShadowContext ? Boolean(pokemon.hasShadowShiny) : Boolean(pokemon.hasShiny);
   const availabilityTag = getPrimaryAvailabilityTag(pokemon);
 
   return (
@@ -123,15 +114,15 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
       className={`pokemon-card group relative flex flex-col justify-between p-3 rounded-2xl border transition-all duration-200 cursor-pointer select-none overflow-hidden ${getCardStyle()}`}
     >
       {/* Top Bar: Dex #, Badges & Action Icons */}
-      <div className="flex items-center justify-between gap-1 mb-1 z-10">
-        <div className="flex items-center gap-1.5 flex-wrap">
-          <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400">
+      <div className="flex items-start justify-between gap-1 mb-1 z-10">
+        <div className="flex items-center gap-1.5 flex-wrap flex-1 min-w-0">
+          <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 shrink-0">
             {formatDexNumber(pokemon.dexNr)}
           </span>
           {pokemon.formName && pokemon.formName !== 'Standard' && (
             <span
               title={pokemon.formName}
-              className="text-[10px] font-medium tracking-tight bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[120px]"
+              className="text-[10px] font-medium tracking-tight bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[90px]"
             >
               {pokemon.formName}
             </span>
@@ -139,13 +130,13 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           {availabilityTag && (
             <span
               title={availabilityTag.label}
-              className={`text-[9px] font-semibold tracking-tight ${availabilityTag.bg} ${availabilityTag.textColor} border ${availabilityTag.border} px-1.5 py-0.5 rounded-md truncate max-w-[110px] shadow-2xs`}
+              className={`text-[9px] font-semibold tracking-tight ${availabilityTag.bg} ${availabilityTag.textColor} border ${availabilityTag.border} px-1.5 py-0.5 rounded-md truncate max-w-[95px] shadow-2xs`}
             >
               {availabilityTag.shortLabel || availabilityTag.label}
             </span>
           )}
           {(mode === 'shadow' || categoryType === 'shadow') && (
-            <span className="text-[10px] font-bold tracking-tight bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-700/80 px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-xs">
+            <span className="text-[10px] font-bold tracking-tight bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-700/80 px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-xs shrink-0">
               <Flame className="w-2.5 h-2.5 fill-current text-purple-600 dark:text-purple-400" />
               Shadow
             </span>
@@ -153,7 +144,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
         </div>
 
         {/* Action icons */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 shrink-0 ml-1">
           {/* Info button */}
           {onOpenDetailModal && (
             <button
@@ -186,29 +177,6 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
             {pokemon.inCollection ? <Bookmark className="w-3.5 h-3.5 fill-current" /> : <Plus className="w-3.5 h-3.5" />}
           </button>
 
-          {/* Shiny toggle button (only if shiny is possible in current context) */}
-          {!isShinyMode && canBeShiny && (
-            <button
-              type="button"
-              title={
-                pokemon.shinyCaught
-                  ? (isShadowContext ? 'Shadow Shiny caught!' : 'Shiny caught!')
-                  : (isShadowContext ? 'Mark Shadow Shiny caught' : 'Mark shiny caught')
-              }
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleShiny(pokemon.id);
-              }}
-              className={`p-1 rounded-md transition-colors ${
-                pokemon.shinyCaught
-                  ? 'text-amber-500 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20'
-                  : 'text-slate-400 dark:text-slate-500 hover:text-amber-500 dark:hover:text-amber-300 hover:bg-slate-100 dark:hover:bg-slate-700/50'
-              }`}
-            >
-              <Sparkles className={`w-3.5 h-3.5 ${pokemon.shinyCaught ? 'fill-current' : ''}`} />
-            </button>
-          )}
-
           {/* Shadow toggle button (if not in shadow mode, but pokemon has shadow) */}
           {mode !== 'shadow' && categoryType !== 'shadow' && pokemon.hasShadow && (
             <button
@@ -228,13 +196,6 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
             >
               <Flame className={`w-3.5 h-3.5 ${pokemon.shadowCaught ? 'fill-current' : ''}`} />
             </button>
-          )}
-
-          {/* Caught Checkmark Badge */}
-          {isCaught && (
-            <div className={`p-0.5 rounded-full ${getBadgeStyle()}`}>
-              <Check className="w-3 h-3 stroke-[3]" />
-            </div>
           )}
         </div>
       </div>

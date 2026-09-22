@@ -1,6 +1,6 @@
 import React from 'react';
 import { FilterState, StatusFilter, TrackingMode, CustomCollection } from '../types';
-import { Search, X, Check, RotateCcw, Sparkles, Flame } from 'lucide-react';
+import { Search, X, Check, RotateCcw, Sparkles, Flame, ArrowUpDown } from 'lucide-react';
 
 interface FilterBarProps {
   filters: FilterState;
@@ -46,6 +46,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({
     filters.search !== '' ||
     filters.generation !== 'all' ||
     filters.status !== 'all' ||
+    filters.sortBy !== 'dexAsc' ||
     Boolean(filters.shinyOnly) ||
     Boolean(filters.shadowOnly) ||
     (showFormsControls && Boolean(filters.showGenderTracking)) ||
@@ -73,6 +74,23 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               <X className="w-4 h-4" />
             </button>
           )}
+        </div>
+
+        {/* Sort Dropdown */}
+        <div className="flex items-center gap-1.5 shrink-0 bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 rounded-xl px-2.5 py-1.5 shadow-2xs">
+          <ArrowUpDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+          <label htmlFor="dex-sort-by" className="sr-only">Sort By</label>
+          <select
+            id="dex-sort-by"
+            value={filters.sortBy}
+            onChange={(e) => onFilterChange({ sortBy: e.target.value as any })}
+            className="bg-transparent text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none cursor-pointer pr-1"
+          >
+            <option value="dexAsc" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white"># Number (Asc)</option>
+            <option value="dexDesc" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white"># Number (Desc)</option>
+            <option value="nameAsc" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Name (A–Z)</option>
+            <option value="availability" className="bg-white dark:bg-slate-800 text-slate-900 dark:text-white">Availability</option>
+          </select>
         </div>
 
 

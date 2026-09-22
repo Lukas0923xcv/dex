@@ -80,7 +80,7 @@ export interface FilterState {
   status: StatusFilter;
   releasedOnly: boolean;
   activeCollectionId: string | null;
-  sortBy: 'dexAsc' | 'dexDesc' | 'nameAsc';
+  sortBy: 'dexAsc' | 'dexDesc' | 'nameAsc' | 'availability';
   showGenderTracking?: boolean;
   includeBaseInForms?: boolean;
   shinyOnly?: boolean;

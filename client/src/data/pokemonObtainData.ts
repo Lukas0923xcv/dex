@@ -271,7 +271,7 @@ export const RESEARCH_ONLY_DEX_NRS = new Set<number>([
 export const UNRELEASED_DEX_NRS = new Set<number>([
   489, 490, 493, // Phione, Manaphy, Arceus
   721,           // Volcanion
-  801, 807,      // Magearna, Zeraora (804 Naganadel is released)
+  801,           // Magearna (804 Naganadel is released)
   896, 897, 898, // Glastrier, Spectrier, Calyrex
   1001, 1002, 1003, 1004, // Treasures of Ruin
   1007, 1008, 1009, 1010, // Koraidon, Miraidon, Walking Wake, Iron Leaves
@@ -332,6 +332,7 @@ export const EVENT_EXCLUSIVE_DEX_NRS = new Set<number>([
   710, // Pumpkaboo (Halloween events)
   711, // Gourgeist (Halloween events)
   749, // Mudbray (Event exclusive wild / research)
+  807, // Zeraora (Event exclusive distributions)
 ]);
 
 export const EVENT_EXCLUSIVE_FORM_IDS = new Set<string>([
@@ -747,6 +748,7 @@ const SPECIAL_NOTES: Record<number, string> = {
   801:  'Magearna is not yet available in Pokémon GO.',
   805:  'Stakataka appears in 5-Star Raids in the Eastern Hemisphere. Remote Raids are globally accessible.',
   806:  'Blacephalon appears in 5-Star Raids in the Western Hemisphere. Remote Raids are globally accessible.',
+  807:  'Zeraora is a Mythical Pokémon made available during limited-time event celebrations.',
   808:  'Meltan can only be caught using the Mystery Box, which is activated by transferring a Pokémon to Pokémon HOME or Let\'s Go.',
   809:  'Melmetal evolves from Meltan with 400 Meltan Candy and can appear in special raids.',
   843:  'Silicobra spawns exclusively in desert and arid biomes.',
@@ -958,6 +960,9 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
     } else if (dex === 749) {
       eventLabel = 'Event Exclusive Wild / Research';
       eventDesc = 'Mudbray spawns exclusively during featured events and themed Field Research tasks (not part of the standard wild spawn pool).';
+    } else if (dex === 807) {
+      eventLabel = 'Event Exclusive';
+      eventDesc = 'Zeraora is a Mythical Pokémon made available during limited-time special event celebrations (not part of the standard wild spawn pool).';
     }
     methods.push({
       type: 'event_exclusive', label: eventLabel, badgeColor: 'purple',
@@ -1470,5 +1475,57 @@ export function getPrimaryAvailabilityTag(pokemon: {
   }
 
   return null;
+}
+
+// ============================================================
+// AVAILABILITY SORT RANK HELPER
+// ============================================================
+export function getAvailabilitySortRank(pokemon: {
+  dexNr: number;
+  id?: string;
+  category?: string;
+  isCostume?: boolean;
+  releasedInGo?: boolean;
+  formName?: string;
+}): number {
+  if (pokemon.releasedInGo === false || UNRELEASED_DEX_NRS.has(pokemon.dexNr)) {
+    return 999;
+  }
+
+  const tag = getPrimaryAvailabilityTag(pokemon);
+  if (!tag) {
+    // Standard wild spawn
+    return 10;
+  }
+
+  switch (tag.type) {
+    case 'biome':
+      return 20;
+    case 'wild':
+      return 30; // Regional Exclusive
+    case 'raid':
+      if (tag.shortLabel === '3-Star Raid') return 40;
+      if (tag.shortLabel === 'Raid Only') return 50; // 5-Star Raid
+      if (tag.shortLabel === 'Regional Raid') return 60; // 5-Star Raid Regional
+      if (tag.shortLabel === 'Elite Raid') return 70; // Elite Raid
+      return 50;
+    case 'egg_exclusive':
+      return 80;
+    case 'evolution_only':
+      return 90;
+    case 'research':
+      return 100;
+    case 'paid_research':
+      return 110;
+    case 'special':
+      if (tag.shortLabel === 'Daily Incense') return 120;
+      if (tag.shortLabel === 'Mystery Box' || tag.shortLabel === 'Coin Bag') return 125;
+      return 120;
+    case 'event_exclusive':
+      if (tag.shortLabel === 'Costume') return 140;
+      return 130;
+    default:
+      return 200;
+  }
 }
 
