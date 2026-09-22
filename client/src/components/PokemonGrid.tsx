@@ -39,16 +39,16 @@ export const PokemonGrid: React.FC<PokemonGridProps> = ({
         <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800/80 flex items-center justify-center mb-4 text-slate-400 dark:text-slate-500">
           <HelpCircle className="w-8 h-8" />
         </div>
-        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Keine Pokémon gefunden</h3>
+        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">No Pokémon found</h3>
         <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mb-6">
-          Keine Einträge für die aktuellen Filter oder Sammlungskriterien vorhanden.
+          No entries match the current filter or collection criteria.
         </p>
         {onResetFilters && (
           <button
             onClick={onResetFilters}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl shadow-md transition-colors"
           >
-            Filter zurücksetzen
+            Reset filters
           </button>
         )}
       </div>

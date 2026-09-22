@@ -88,12 +88,12 @@ export const AddToCollectionModal: React.FC<AddToCollectionModalProps> = ({
         {/* Collections checklist */}
         <div className="p-6 space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
-            Zu Sammlungen hinzufügen:
+            Add to collections:
           </p>
 
           {collections.length === 0 ? (
             <div className="text-center py-4 text-slate-500 dark:text-slate-400 text-sm">
-              Keine benutzerdefinierten Listen gefunden.
+              No custom lists found.
             </div>
           ) : (
             <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
@@ -146,13 +146,13 @@ export const AddToCollectionModal: React.FC<AddToCollectionModalProps> = ({
               className="text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors flex items-center gap-1"
             >
               <Bookmark className="w-3.5 h-3.5" />
-              Listen verwalten
+              Manage lists
             </button>
             <button
               onClick={onClose}
               className="px-4 py-1.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-semibold rounded-xl transition-colors"
             >
-              Fertig
+              Done
             </button>
           </div>
         </div>

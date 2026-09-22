@@ -93,14 +93,14 @@ export const App: React.FC = () => {
     // On preset modes (standard, shiny, shadow, mega, form, costume):
     // Find or create an editable custom dashboard based on the preset!
     const presetNameMap: Record<string, string> = {
-      standard: 'Mein Standard Dex',
-      shiny: 'Mein Shiny Dex',
-      shadow: 'Mein Crypto Dex',
-      mega: 'Mein Mega Dex',
-      form: 'Mein Formen Dex',
-      costume: 'Mein Kostüme Dex'
+      standard: 'My Standard Dex',
+      shiny: 'My Shiny Dex',
+      shadow: 'My Shadow Dex',
+      mega: 'My Mega Dex',
+      form: 'My Forms Dex',
+      costume: 'My Costumes Dex'
     };
-    const targetName = presetNameMap[mode] || 'Mein Custom Dashboard';
+    const targetName = presetNameMap[mode] || 'My Custom Dashboard';
     const existing = collections.find(c => c.name === targetName);
     if (existing) {
       setMode('custom');
@@ -110,7 +110,7 @@ export const App: React.FC = () => {
       const initialIds = filteredPokemon.map(p => p.id);
       const newColl = await createCollection(
         targetName,
-        `Persönliches Dashboard basierend auf ${targetName}`,
+        `Personal dashboard based on ${targetName}`,
         mode === 'shadow' ? '#a855f7' : mode === 'costume' ? '#ec4899' : mode === 'mega' ? '#ef4444' : mode === 'shiny' ? '#f59e0b' : '#3b82f6',
         {
           categoryType: mode === 'shadow' ? 'shadow' : mode === 'costume' ? 'event' : mode === 'mega' ? 'mega' : 'normal',
@@ -130,22 +130,22 @@ export const App: React.FC = () => {
   const getProgressLabel = () => {
     if (mode === 'standard') {
       return filters.generation !== 'all'
-        ? (filters.generation === 0 ? 'Unbekannt · Meltan Completion' : filters.generation === 85 ? 'Hisui Region Completion' : `Gen ${filters.generation} Completion`)
+        ? (filters.generation === 0 ? 'Unknown · Meltan Completion' : filters.generation === 85 ? 'Hisui Region Completion' : `Gen ${filters.generation} Completion`)
         : 'Standard Dex Completion';
     }
     if (mode === 'shiny') {
       return filters.generation !== 'all'
-        ? (filters.generation === 0 ? 'Unbekannt · Meltan Shiny Checklist' : filters.generation === 85 ? 'Hisui Shiny Checklist' : `Gen ${filters.generation} Shiny Checklist`)
+        ? (filters.generation === 0 ? 'Unknown · Meltan Shiny Checklist' : filters.generation === 85 ? 'Hisui Shiny Checklist' : `Gen ${filters.generation} Shiny Checklist`)
         : 'Shiny Dex Completion';
     }
-    if (mode === 'shadow') return filters.generation === 8 ? 'Galar Crypto / Shadow Dex' : filters.generation === 85 ? 'Hisui Crypto / Shadow Dex' : 'Crypto / Shadow Dex Completion';
+    if (mode === 'shadow') return filters.generation === 8 ? 'Galar Shadow Dex' : filters.generation === 85 ? 'Hisui Shadow Dex' : 'Shadow Dex Completion';
     if (mode === 'mega') return 'Mega & Primal Dex';
     if (mode === 'form') {
-      if (filters.generation === 8) return 'Galar Formen Dex';
-      if (filters.generation === 7) return 'Alola Formen Dex';
-      if (filters.generation === 85) return 'Hisui Formen Dex';
-      if (filters.generation === 9) return 'Paldea Formen Dex';
-      if (filters.generation !== 'all') return `Gen ${filters.generation} Formen Dex`;
+      if (filters.generation === 8) return 'Galar Forms Dex';
+      if (filters.generation === 7) return 'Alola Forms Dex';
+      if (filters.generation === 85) return 'Hisui Forms Dex';
+      if (filters.generation === 9) return 'Paldea Forms Dex';
+      if (filters.generation !== 'all') return `Gen ${filters.generation} Forms Dex`;
       return 'Regional & Alternate Forms Dex';
     }
     if (mode === 'costume') return 'Event Costumes Dex';

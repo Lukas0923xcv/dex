@@ -862,43 +862,43 @@ class StorageAdapter {
         }> = {
           standard: {
             name: 'Standard Dex',
-            description: 'Offizielle reguläre Spezies',
+            description: 'Official regular species',
             color: '#3b82f6',
             categoryType: 'normal',
             filter: (p) => p.category === 'standard' && Boolean(p.releasedInGo)
           },
           shiny: {
             name: 'Shiny Dex',
-            description: 'Freigeschaltete Schillernde Pokémon',
+            description: 'Released shiny Pokémon variants',
             color: '#f59e0b',
             categoryType: 'normal',
             trackShiny: true,
             filter: (p) => Boolean(p.hasShiny) && Boolean(p.releasedInGo)
           },
           shadow: {
-            name: 'Crypto Dex',
-            description: 'Offiziell erschienene Crypto-Pokémon',
+            name: 'Shadow Dex',
+            description: 'Officially released shadow Pokémon',
             color: '#a855f7',
             categoryType: 'shadow',
             filter: (p) => Boolean(p.hasShadow) && Boolean(p.releasedInGo)
           },
           mega: {
             name: 'Mega Dex',
-            description: 'Mega- und Primal-Entwicklungen',
+            description: 'Mega and Primal evolutions',
             color: '#f43f5e',
             categoryType: 'mega',
             filter: (p) => (p.category === 'mega' || Boolean(p.isMega)) && Boolean(p.releasedInGo)
           },
           form: {
-            name: 'Formen Dex',
-            description: 'Regionale Formen & alternative Gestalten',
+            name: 'Forms Dex',
+            description: 'Regional forms & alternative variants',
             color: '#6366f1',
             categoryType: 'normal',
             filter: (p) => (p.category === 'form' || Boolean(p.isForm) || p.category === 'standard') && Boolean(p.releasedInGo)
           },
           costume: {
-            name: 'Kostüme Dex',
-            description: 'Event-Pokémon mit Kostümen & Specials',
+            name: 'Costumes Dex',
+            description: 'Event Pokémon with costumes & specials',
             color: '#ec4899',
             categoryType: 'event',
             filter: (p) => (p.category === 'costume' || Boolean(p.isCostume)) && Boolean(p.releasedInGo)
@@ -907,7 +907,7 @@ class StorageAdapter {
 
         const def = presetDefs[presetKey];
         if (!def) {
-          throw new Error(`Preset-Dex "${collectionId}" nicht gefunden.`);
+          throw new Error(`Preset Dex "${collectionId}" not found.`);
         }
 
         const baseList = localPokemonData as Pokemon[];
@@ -991,7 +991,7 @@ class StorageAdapter {
       const collections = this.collectionsCache.length > 0 ? this.collectionsCache : this.getLocalCollections();
       const coll = collections.find(c => c.id === collectionId);
       if (!coll) {
-        throw new Error(`Sammlung mit ID "${collectionId}" wurde nicht gefunden.`);
+        throw new Error(`Collection with ID "${collectionId}" was not found.`);
       }
 
       const collectionItems = this.getLocalCollectionItems().filter(i => i.collection_id === collectionId);
@@ -1112,7 +1112,7 @@ class StorageAdapter {
 
   public async importBackup(backup: any, specificCollectionId?: string): Promise<{ success: boolean; mode?: 'full' | 'collection'; collectionName?: string }> {
     if (!backup || !backup.data) {
-      throw new Error('Ungültiges Backup-Dateiformat.');
+      throw new Error('Invalid backup file format.');
     }
 
     const isSingle = backup.type === 'collection' || Boolean(backup.data.collection) || Boolean(specificCollectionId);
@@ -1148,7 +1148,7 @@ class StorageAdapter {
         : backup.data.collections?.[0]);
 
       if (!coll) {
-        throw new Error('Gewählte Sammlung nicht in der Backup-Datei gefunden.');
+        throw new Error('Selected collection not found in backup file.');
       }
 
       const collId = coll.id;
@@ -1534,10 +1534,10 @@ class StorageAdapter {
     const defaultTabs: DashboardTabConfig[] = [
       { id: 'standard', label: 'Standard Dex', type: 'preset', visible: true },
       { id: 'shiny', label: 'Shiny Dex', type: 'preset', visible: true, color: '#f59e0b' },
-      { id: 'shadow', label: 'Crypto Dex', type: 'preset', visible: true, color: '#a855f7' },
+      { id: 'shadow', label: 'Shadow Dex', type: 'preset', visible: true, color: '#a855f7' },
       { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
-      { id: 'form', label: 'Alle Formen', type: 'preset', visible: true, color: '#6366f1' },
-      { id: 'costume', label: 'Kostüme', type: 'preset', visible: true, color: '#ec4899' },
+      { id: 'form', label: 'All Forms', type: 'preset', visible: true, color: '#6366f1' },
+      { id: 'costume', label: 'Costumes', type: 'preset', visible: true, color: '#ec4899' },
     ];
 
     try {

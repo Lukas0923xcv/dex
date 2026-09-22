@@ -114,10 +114,10 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
     const defaults: DashboardTabConfig[] = [
       { id: 'standard', label: 'Standard Dex', type: 'preset', visible: true },
       { id: 'shiny', label: 'Shiny Dex', type: 'preset', visible: true, color: '#f59e0b' },
-      { id: 'shadow', label: 'Crypto Dex', type: 'preset', visible: true, color: '#a855f7' },
+      { id: 'shadow', label: 'Shadow Dex', type: 'preset', visible: true, color: '#a855f7' },
       { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
-      { id: 'form', label: 'Alle Formen', type: 'preset', visible: true, color: '#6366f1' },
-      { id: 'costume', label: 'Kostüme', type: 'preset', visible: true, color: '#ec4899' },
+      { id: 'form', label: 'All Forms', type: 'preset', visible: true, color: '#6366f1' },
+      { id: 'costume', label: 'Costumes', type: 'preset', visible: true, color: '#ec4899' },
     ];
     for (const coll of collections) {
       defaults.push({
@@ -145,7 +145,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
       downloadAnchor.click();
       downloadAnchor.remove();
     } catch (err: any) {
-      alert(`Export fehlgeschlagen: ${err.message}`);
+      alert(`Export failed: ${err.message}`);
     }
   };
 
@@ -163,7 +163,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
       downloadAnchor.click();
       downloadAnchor.remove();
     } catch (err: any) {
-      alert(`Export fehlgeschlagen: ${err.message}`);
+      alert(`Export failed: ${err.message}`);
     }
   };
 
@@ -191,10 +191,10 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
             </div>
             <div>
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-                Dashboard anpassen
+                Customize Dashboard
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
-                Wähle aus, welche Presets und eigenen Listen direkt als Tabs in der Hauptleiste erscheinen
+                Choose which presets and custom lists appear directly as tabs in the main navigation
               </p>
             </div>
           </div>
@@ -210,7 +210,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
         {/* Live Preview */}
         <div className="px-6 py-3 bg-slate-50 dark:bg-slate-950/60 border-b border-slate-200 dark:border-slate-800 shrink-0">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">
-            Vorschau der Haupt-Navigation:
+            Main Navigation Preview:
           </span>
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
             {visibleTabs.map((t, idx) => (
@@ -233,7 +233,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
             ))}
             <div className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-semibold text-slate-400 dark:text-slate-500 border border-dashed border-slate-300 dark:border-slate-700">
               <Bookmark className="w-3.5 h-3.5" />
-              <span>Eigene Listen</span>
+              <span>Custom Lists</span>
             </div>
           </div>
         </div>
@@ -243,7 +243,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
           {/* Presets Section */}
           <div className="space-y-2.5">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Standard-Kategorien (Presets)
+              Default Categories (Presets)
             </h3>
             <div className="space-y-1.5">
               {tabs
@@ -273,13 +273,13 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                             {tab.label}
                           </div>
                           <div className="text-[11px] text-slate-400">
-                            {tab.id === 'standard' && 'Offizielle 1.025 Basis-Spezies'}
-                            {tab.id === 'shiny' && 'Nur freigeschaltete Schillernde Varianten'}
-                            {tab.id === 'shadow' && '458 offiziell erschienene Crypto-Pokémon'}
-                            {tab.id === 'mega' && 'Mega- & Protomorphose-Entwicklungen'}
-                            {tab.id === 'form' && 'Regionale & alternative Formen'}
-                            {tab.id === 'costume' && 'Event- & Kostüm-Pokémon'}
-                            {tab.id === 'custom' && 'Eigene Listen & Checklisten'}
+                            {tab.id === 'standard' && 'Official 1,025 base species'}
+                            {tab.id === 'shiny' && 'Only released shiny variants'}
+                            {tab.id === 'shadow' && '458 officially released shadow Pokémon'}
+                            {tab.id === 'mega' && 'Mega & Primal evolutions'}
+                            {tab.id === 'form' && 'Regional & alternative forms'}
+                            {tab.id === 'costume' && 'Event & costume Pokémon'}
+                            {tab.id === 'custom' && 'Custom lists & checklists'}
                           </div>
                         </div>
                       </div>
@@ -290,7 +290,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                             type="button"
                             onClick={() => handleExportPreset(tab.id)}
                             className="p-1.5 rounded-xl text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                            title={`"${tab.label}" als JSON exportieren`}
+                            title={`Export "${tab.label}" as JSON`}
                           >
                             <Download className="w-3.5 h-3.5" />
                           </button>
@@ -305,7 +305,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                           }`}
                         >
                           {tab.visible ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-                          <span>{tab.visible ? 'Sichtbar' : 'Versteckt'}</span>
+                          <span>{tab.visible ? 'Visible' : 'Hidden'}</span>
                         </button>
                       </div>
                     </div>
@@ -319,7 +319,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
             <div className="flex items-center justify-between gap-2 flex-wrap">
               <div className="flex items-center gap-2">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Eigene Sammlungen anheften ({collections.length})
+                  Pin Custom Collections ({collections.length})
                 </h3>
                 {onDeleteAllCollections && collections.length > 0 && (
                   <button
@@ -327,7 +327,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                     onClick={async () => {
                       if (
                         window.confirm(
-                          `Möchtest du wirklich ALLE ${collections.length} eigenen Sammlungen löschen? Dein Fang-Fortschritt bleibt erhalten.`
+                          `Are you sure you want to delete ALL ${collections.length} custom collections? Your catch progress will be preserved.`
                         )
                       ) {
                         await onDeleteAllCollections();
@@ -335,21 +335,21 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                       }
                     }}
                     className="text-[11px] text-rose-500 hover:text-rose-600 dark:text-rose-400 font-semibold flex items-center gap-1 hover:underline cursor-pointer ml-1"
-                    title="Alle eigenen Sammlungen löschen"
+                    title="Delete all custom collections"
                   >
                     <Trash2 className="w-3 h-3" />
-                    <span>Alle löschen</span>
+                    <span>Delete all</span>
                   </button>
                 )}
               </div>
               <span className="text-[11px] text-slate-400">
-                Erscheinen direkt als Tabs auf deinem Dashboard
+                Appear directly as tabs on your dashboard
               </span>
             </div>
 
             {collections.length === 0 ? (
               <div className="p-4 rounded-2xl border border-dashed border-slate-300 dark:border-slate-800 text-center text-xs text-slate-400">
-                Noch keine eigenen Sammlungen erstellt. Klicke auf „+ Neue Liste“ auf deinem Dashboard.
+                No custom collections created yet. Click "+ New List" on your dashboard.
               </div>
             ) : (
               <div className="space-y-2">
@@ -382,7 +382,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                             </div>
                             {coll && (
                               <div className="text-[11px] text-slate-400">
-                                {coll.caughtItems} / {coll.totalItems} gefangen
+                                {coll.caughtItems} / {coll.totalItems} caught
                               </div>
                             )}
                           </div>
@@ -396,7 +396,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                                 type="button"
                                 onClick={() => moveTabUp(tabs.indexOf(tab))}
                                 className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
-                                title="Nach links / vorne verschieben"
+                                title="Move left / up"
                               >
                                 <ArrowUp className="w-3.5 h-3.5" />
                               </button>
@@ -404,7 +404,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                                 type="button"
                                 onClick={() => moveTabDown(tabs.indexOf(tab))}
                                 className="p-1 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors cursor-pointer"
-                                title="Nach rechts / hinten verschieben"
+                                title="Move right / down"
                               >
                                 <ArrowDown className="w-3.5 h-3.5" />
                               </button>
@@ -416,7 +416,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                               type="button"
                               onClick={() => handleExportCollection(coll)}
                               className="p-1.5 rounded-xl text-slate-400 hover:text-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer"
-                              title={`Sammlung "${coll.name}" als JSON exportieren`}
+                              title={`Export collection "${coll.name}" as JSON`}
                             >
                               <Download className="w-3.5 h-3.5" />
                             </button>
@@ -432,20 +432,20 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                             }`}
                           >
                             <Pin className="w-3.5 h-3.5" />
-                            <span>{tab.visible ? 'Angeheftet' : 'Anheften'}</span>
+                            <span>{tab.visible ? 'Pinned' : 'Pin'}</span>
                           </button>
 
                           {onDeleteCollection && coll && (
                             <button
                               type="button"
                               onClick={async () => {
-                                if (window.confirm(`Sammlung "${coll.name}" wirklich löschen?`)) {
+                                if (window.confirm(`Are you sure you want to delete collection "${coll.name}"?`)) {
                                   await onDeleteCollection(coll.id);
                                   setTabs(prev => prev.filter(t => t.collectionId !== coll.id));
                                 }
                               }}
                               className="p-1.5 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-400 hover:text-rose-500 transition-colors cursor-pointer"
-                              title={`Sammlung "${coll.name}" löschen`}
+                              title={`Delete collection "${coll.name}"`}
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -467,7 +467,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
             className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Zurücksetzen</span>
+            <span>Reset</span>
           </button>
 
           <div className="flex items-center gap-3">
@@ -476,14 +476,14 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
               onClick={onClose}
               className="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition-colors cursor-pointer"
             >
-              Abbrechen
+              Cancel
             </button>
             <button
               type="button"
               onClick={handleSave}
               className="px-5 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-md shadow-blue-500/20 transition-all cursor-pointer"
             >
-              Änderungen speichern
+              Save changes
             </button>
           </div>
         </div>

@@ -5,69 +5,69 @@ import { PokemonDetailInfo, RegionalInfo, ObtainMethodDetail, DexAlternativeMeth
 // ============================================================
 export const REGIONAL_DATA: Record<number, RegionalInfo> = {
   // Gen 1
-  83:  { isRegional: true, regionName: 'Japan / Ostasien', countries: 'Japan, Südkorea, Hongkong, Taiwan', notes: 'Galar-Porenta (#083) ist weltweit verfügbar und teilt denselben Dex-Eintrag' },
-  115: { isRegional: true, regionName: 'Australien / Ozeanien', countries: 'Australien, Neuseeland, Teile Südostasiens', notes: 'Mega-Kangama kann weltweit in Mega-Raids bekämpft werden' },
-  122: { isRegional: true, regionName: 'Europa', countries: 'Ganz Europa (inklusive westliches Russland)', notes: 'Galar-Pantimos ist weltweit bei Events verfügbar; Mime Jr. schlüpft aus 5km-Eiern aus Europa' },
-  128: { isRegional: true, regionName: 'Nordamerika', countries: 'USA, Kanada, Teile Mexikos', notes: 'Paldea-Tauros Combat Breed ist weltweit verfügbar; Blaze und Aqua Breed sind regional' },
+  83:  { isRegional: true, regionName: 'Japan / East Asia', countries: 'Japan, South Korea, Hong Kong, Taiwan', notes: "Galarian Farfetch'd (#083) is available worldwide and shares the same Pokédex entry" },
+  115: { isRegional: true, regionName: 'Australia / Oceania', countries: 'Australia, New Zealand, parts of Southeast Asia', notes: 'Mega Kangaskhan can be battled worldwide in Mega Raids' },
+  122: { isRegional: true, regionName: 'Europe', countries: 'All of Europe (including western Russia)', notes: "Galarian Mr. Mime is available worldwide during events; Mime Jr. hatches from 5km eggs from Europe" },
+  128: { isRegional: true, regionName: 'North America', countries: 'USA, Canada, parts of Mexico', notes: 'Paldean Tauros Combat Breed is available worldwide; Blaze and Aqua Breeds are regional' },
 
   // Gen 2
-  214: { isRegional: true, regionName: 'Lateinamerika / Südliche USA', countries: 'Lateinamerika, Süd-Florida, Süd-Texas', notes: 'Mega-Heracross kann weltweit in Mega-Raids bekämpft werden' },
-  222: { isRegional: true, regionName: 'Tropische Regionen', hemisphere: 'Innerhalb ±26° Breitengrad (tropische Zone)', countries: 'Südliche USA, Karibik, Südostasien, Nordaustralien', notes: 'Galar-Corasonn registriert ebenfalls #222 und ist weltweit bei Events erhältlich' },
+  214: { isRegional: true, regionName: 'Latin America / Southern USA', countries: 'Latin America, South Florida, South Texas', notes: 'Mega Heracross can be battled worldwide in Mega Raids' },
+  222: { isRegional: true, regionName: 'Tropical Regions', hemisphere: 'Within ±26° latitude (tropical zone)', countries: 'Southern USA, Caribbean, Southeast Asia, Northern Australia', notes: "Galarian Corsola also registers #222 and is available worldwide during events" },
 
   // Gen 3
-  313: { isRegional: true, regionName: 'Europa / Asien / Ozeanien', countries: 'Europa, Asien, Australien, Neuseeland', notes: 'Gegenstück zu Illumise (Amerika/Afrika)' },
-  314: { isRegional: true, regionName: 'Amerika / Afrika', countries: 'Nord- und Südamerika, Afrika', notes: 'Gegenstück zu Volbeat (Europa/Asien/Ozeanien)' },
-  324: { isRegional: true, regionName: 'Südasien / Südostasien', countries: 'Indien, Nepal, Thailand, Indonesien, Teile Chinas' },
-  335: { isRegional: true, regionName: 'Europa / Asien / Ozeanien', countries: 'Europa, Asien, Australien', notes: 'Kann gelegentlich bei Events mit Vipitis die Hemisphäre tauschen' },
-  336: { isRegional: true, regionName: 'Amerika / Afrika', countries: 'Nord- und Südamerika, Afrika', notes: 'Kann gelegentlich bei Events mit Sengo die Hemisphäre tauschen' },
-  337: { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'Kann bei Sonnenwende-Events mit Sonnfel die Hemisphäre tauschen' },
-  338: { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'Kann bei Sonnenwende-Events mit Lunastein die Hemisphäre tauschen' },
-  357: { isRegional: true, regionName: 'Afrika / Naher Osten / Südspanien', countries: 'Afrika, Naher Osten, Südspanien, Zypern, Kreta' },
-  369: { isRegional: true, regionName: 'Südpazifik / Neuseeland', countries: 'Neuseeland, Fidschi, Vanuatu, Neukaledonien' },
+  313: { isRegional: true, regionName: 'Europe / Asia / Oceania', countries: 'Europe, Asia, Australia, New Zealand', notes: 'Counterpart to Illumise (Americas/Africa)' },
+  314: { isRegional: true, regionName: 'Americas / Africa', countries: 'North and South America, Africa', notes: 'Counterpart to Volbeat (Europe/Asia/Oceania)' },
+  324: { isRegional: true, regionName: 'South Asia / Southeast Asia', countries: 'India, Nepal, Thailand, Indonesia, parts of China' },
+  335: { isRegional: true, regionName: 'Europe / Asia / Oceania', countries: 'Europe, Asia, Australia', notes: 'Can occasionally swap hemispheres with Seviper during events' },
+  336: { isRegional: true, regionName: 'Americas / Africa', countries: 'North and South America, Africa', notes: 'Can occasionally swap hemispheres with Zangoose during events' },
+  337: { isRegional: true, regionName: 'Western Hemisphere', hemisphere: 'Western Hemisphere', notes: 'Can swap hemispheres with Solrock during solstice events' },
+  338: { isRegional: true, regionName: 'Eastern Hemisphere', hemisphere: 'Eastern Hemisphere', notes: 'Can swap hemispheres with Lunatone during solstice events' },
+  357: { isRegional: true, regionName: 'Africa / Middle East / Southern Spain', countries: 'Africa, Middle East, Southern Spain, Cyprus, Crete' },
+  369: { isRegional: true, regionName: 'South Pacific / New Zealand', countries: 'New Zealand, Fiji, Vanuatu, New Caledonia' },
 
   // Gen 4
-  417: { isRegional: true, regionName: 'Arktische / Subarktische Regionen', countries: 'Kanada, Alaska, Russland, nördliches Skandinavien' },
-  422: { isRegional: true, regionName: 'Hemisphären-getrennt', hemisphere: 'West-/Östliche Hemisphäre', notes: 'Westliches Meer: Westen · Östliches Meer: Osten' },
-  439: { isRegional: true, regionName: 'Europa (5km-Eier)', countries: 'Europa (inkl. Island, Zypern)', notes: 'Schlüpft ausschließlich aus 5km-Eiern aus europäischen Freundschaftsgeschenken' },
-  441: { isRegional: true, regionName: 'Südliche Hemisphäre', hemisphere: 'Südliche Hemisphäre', countries: 'Südamerika, Südafrika, Australien, Neuseeland' },
-  455: { isRegional: true, regionName: 'Südöstliche USA', countries: 'Florida, Georgia, North & South Carolina' },
-  480: { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, Australien, Südostasien, Indien', notes: '5-Sterne-Raid-Boss in Asien-Pazifik (Fern-Raid weltweit möglich). Extrem selten wild an Gewässern.' },
-  481: { isRegional: true, regionName: 'Europa / Afrika / Mittlerer Osten', countries: 'Europa, Afrika, Indien, Naher Osten', notes: '5-Sterne-Raid-Boss in Europa/Afrika/MEA (Fern-Raid weltweit möglich). Extrem selten wild an Gewässern.' },
-  482: { isRegional: true, regionName: 'Amerika & Grönland', countries: 'Nord- und Südamerika, Grönland', notes: '5-Sterne-Raid-Boss in Amerika (Fern-Raid weltweit möglich). Extrem selten wild an Gewässern.' },
+  417: { isRegional: true, regionName: 'Arctic / Subarctic Regions', countries: 'Canada, Alaska, Russia, Northern Scandinavia' },
+  422: { isRegional: true, regionName: 'Hemisphere-split', hemisphere: 'Western / Eastern Hemisphere', notes: 'West Sea: West · East Sea: East' },
+  439: { isRegional: true, regionName: 'Europe (5km Eggs)', countries: 'Europe (incl. Iceland, Cyprus)', notes: 'Hatches exclusively from 5km eggs sent by European friends' },
+  441: { isRegional: true, regionName: 'Southern Hemisphere', hemisphere: 'Southern Hemisphere', countries: 'South America, South Africa, Australia, New Zealand' },
+  455: { isRegional: true, regionName: 'Southeastern USA', countries: 'Florida, Georgia, North & South Carolina' },
+  480: { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, Australia, Southeast Asia, India', notes: '5-Star Raid Boss in Asia-Pacific (Remote Raid globally accessible). Extremely rare wild spawn near bodies of water.' },
+  481: { isRegional: true, regionName: 'Europe / Africa / Middle East', countries: 'Europe, Africa, India, Middle East', notes: '5-Star Raid Boss in Europe/Africa/MEA (Remote Raid globally accessible). Extremely rare wild spawn near bodies of water.' },
+  482: { isRegional: true, regionName: 'Americas & Greenland', countries: 'North and South America, Greenland', notes: '5-Star Raid Boss in Americas (Remote Raid globally accessible). Extremely rare wild spawn near bodies of water.' },
 
   // Gen 5
-  511: { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, Australien, Südostasien, Indien', notes: 'Gegenstück zu Grillmak (Europa/MEA) und Sodamak (Amerika)' },
-  512: { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, Australien, Südostasien, Indien', notes: 'Entwickelt sich aus Vegimak mit 50 Bonbons und Einall-Stein' },
-  513: { isRegional: true, regionName: 'Europa / Afrika / Mittlerer Osten / Indien', countries: 'Europa, Afrika, Naher Osten, Indien', notes: 'Gegenstück zu Vegimak (Asien-Pazifik) und Sodamak (Amerika)' },
-  514: { isRegional: true, regionName: 'Europa / Afrika / Mittlerer Osten / Indien', countries: 'Europa, Afrika, Naher Osten, Indien', notes: 'Entwickelt sich aus Grillmak mit 50 Bonbons und Einall-Stein' },
-  515: { isRegional: true, regionName: 'Amerika & Grönland', countries: 'Nord- und Südamerika, Grönland', notes: 'Gegenstück zu Vegimak (Asien-Pazifik) und Grillmak (Europa/MEA)' },
-  516: { isRegional: true, regionName: 'Amerika & Grönland', countries: 'Nord- und Südamerika, Grönland', notes: 'Entwickelt sich aus Sodamak mit 50 Bonbons und Einall-Stein' },
-  538: { isRegional: true, regionName: 'Amerika / Afrika', countries: 'Nord- und Südamerika, Afrika', notes: 'Gegenstück zu Karadonis (Europa/Asien/Ozeanien)' },
-  539: { isRegional: true, regionName: 'Europa / Asien / Ozeanien', countries: 'Europa, Asien, Australien', notes: 'Gegenstück zu Jiutesto (Amerika/Afrika)' },
-  550: { isRegional: true, regionName: 'Hemisphären-getrennt', hemisphere: 'West-/Östliche Hemisphäre', notes: 'Rotlinig: Östliche Hemisphäre · Blaulinig: Westliche Hemisphäre · Weißlinig: Routen & Mateo' },
-  556: { isRegional: true, regionName: 'Südliche USA / Lateinamerika / Karibik', countries: 'Südliche USA, Mexiko, Zentral- und Südamerika, Karibik' },
-  561: { isRegional: true, regionName: 'Ägypten / Griechenland / Naher Osten', countries: 'Ägypten, Griechenland, Israel, Jordanien' },
-  626: { isRegional: true, regionName: 'New York City & Umgebung', countries: 'New York City, New York State und Teile angrenzender US-Bundesstaaten' },
-  631: { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'Gegenstück zu Fermicula (Östliche Hemisphäre)' },
-  632: { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'Gegenstück zu Furnifraß (Westliche Hemisphäre)' },
+  511: { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, Australia, Southeast Asia, India', notes: 'Counterpart to Pansear (Europe/MEA) and Panpour (Americas)' },
+  512: { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, Australia, Southeast Asia, India', notes: 'Evolves from Pansage with 50 Candy and an Unova Stone' },
+  513: { isRegional: true, regionName: 'Europe / Africa / Middle East / India', countries: 'Europe, Africa, Middle East, India', notes: 'Counterpart to Pansage (Asia-Pacific) and Panpour (Americas)' },
+  514: { isRegional: true, regionName: 'Europe / Africa / Middle East / India', countries: 'Europe, Africa, Middle East, India', notes: 'Evolves from Pansear with 50 Candy and an Unova Stone' },
+  515: { isRegional: true, regionName: 'Americas & Greenland', countries: 'North and South America, Greenland', notes: 'Counterpart to Pansage (Asia-Pacific) and Pansear (Europe/MEA)' },
+  516: { isRegional: true, regionName: 'Americas & Greenland', countries: 'North and South America, Greenland', notes: 'Evolves from Panpour with 50 Candy and an Unova Stone' },
+  538: { isRegional: true, regionName: 'Americas / Africa', countries: 'North and South America, Africa', notes: 'Counterpart to Sawk (Europe/Asia/Oceania)' },
+  539: { isRegional: true, regionName: 'Europe / Asia / Oceania', countries: 'Europe, Asia, Australia', notes: 'Counterpart to Throh (Americas/Africa)' },
+  550: { isRegional: true, regionName: 'Hemisphere-split', hemisphere: 'Western / Eastern Hemisphere', notes: 'Red-Striped: Eastern Hemisphere · Blue-Striped: Western Hemisphere · White-Striped: Routes & Mateo' },
+  556: { isRegional: true, regionName: 'Southern USA / Latin America / Caribbean', countries: 'Southern USA, Mexico, Central & South America, Caribbean' },
+  561: { isRegional: true, regionName: 'Egypt / Greece / Middle East', countries: 'Egypt, Greece, Israel, Jordan' },
+  626: { isRegional: true, regionName: 'New York City & Vicinity', countries: 'New York City, New York State and parts of adjacent US states' },
+  631: { isRegional: true, regionName: 'Western Hemisphere', hemisphere: 'Western Hemisphere', notes: 'Counterpart to Durant (Eastern Hemisphere)' },
+  632: { isRegional: true, regionName: 'Eastern Hemisphere', hemisphere: 'Eastern Hemisphere', notes: 'Counterpart to Heatmor (Western Hemisphere)' },
 
   // Gen 6
-  701: { isRegional: true, regionName: 'Mexiko & Umgebung', countries: 'Mexiko und angrenzende südliche US-Grenzregionen' },
-  707: { isRegional: true, regionName: 'Frankreich & Nachbarländer', countries: 'Frankreich, Belgien, Luxemburg, Schweiz, Südengland' },
-  741: { isRegional: true, regionName: 'Verschiedene Regionen (Form-abhängig)', countries: 'Baile: Europa/MEA · Pom-Pom: Amerika · Pa\'u: Afrika/Pazifik · Sensu: Asien-Pazifik', notes: 'Jede Form hat eine andere weltweite Heimatregion' },
+  701: { isRegional: true, regionName: 'Mexico & Surrounding Area', countries: 'Mexico and bordering southern US border regions' },
+  707: { isRegional: true, regionName: 'France & Neighboring Areas', countries: 'France, Belgium, Luxembourg, Switzerland, Southern England' },
+  741: { isRegional: true, regionName: 'Various Regions (Form-dependent)', countries: "Baile: Europe/MEA · Pom-Pom: Americas · Pa'u: Africa/Pacific · Sensu: Asia-Pacific", notes: 'Each form has a different native world region' },
 
   // Gen 7
-  764: { isRegional: true, regionName: 'Hawaii', countries: 'Ausschließlich die Inseln Hawaiis (USA)' },
-  794: { isRegional: true, regionName: 'Amerika & Grönland', hemisphere: 'Westliche Hemisphäre', countries: 'Nord- und Südamerika, Grönland', notes: 'Erscheint als 5-Sterne-Raid-Boss nur in Amerika & Grönland (Fern-Raid weltweit möglich)' },
-  795: { isRegional: true, regionName: 'Europa / Afrika / Mittlerer Osten / Indien', countries: 'Europa, Mittlerer Osten, Afrika, Indien', notes: 'Erscheint als 5-Sterne-Raid-Boss nur in Europa/MEA/Indien (Fern-Raid weltweit möglich)' },
-  796: { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, Australien, Neuseeland, Südostasien', notes: 'Erscheint als 5-Sterne-Raid-Boss nur in Asien-Pazifik (Fern-Raid weltweit möglich)' },
-  797: { isRegional: true, regionName: 'Südliche Hemisphäre', hemisphere: 'Südliche Hemisphäre', countries: 'Südamerika, Südafrika, Australien, Neuseeland', notes: 'Erscheint als 5-Sterne-Raid-Boss nur auf der Südhalbkugel (Fern-Raid weltweit möglich)' },
-  798: { isRegional: true, regionName: 'Nördliche Hemisphäre', hemisphere: 'Nördliche Hemisphäre', countries: 'Nordamerika, Europa, Nordasien', notes: 'Erscheint als 5-Sterne-Raid-Boss nur auf der Nordhalbkugel (Fern-Raid weltweit möglich)' },
-  805: { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', countries: 'Europa, Asien, Afrika, Australien', notes: 'Erscheint als 5-Sterne-Raid-Boss nur in der östlichen Hemisphäre (Fern-Raid weltweit möglich)' },
-  806: { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', countries: 'Nord- und Südamerika', notes: 'Erscheint als 5-Sterne-Raid-Boss nur in der westlichen Hemisphäre (Fern-Raid weltweit möglich)' },
+  764: { isRegional: true, regionName: 'Hawaii', countries: 'Exclusively the Hawaiian Islands (USA)' },
+  794: { isRegional: true, regionName: 'Americas & Greenland', hemisphere: 'Western Hemisphere', countries: 'North and South America, Greenland', notes: 'Appears as 5-Star Raid Boss only in Americas & Greenland (Remote Raid globally accessible)' },
+  795: { isRegional: true, regionName: 'Europe / Africa / Middle East / India', countries: 'Europe, Middle East, Africa, India', notes: 'Appears as 5-Star Raid Boss only in Europe/MEA/India (Remote Raid globally accessible)' },
+  796: { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, Australia, New Zealand, Southeast Asia', notes: 'Appears as 5-Star Raid Boss only in Asia-Pacific (Remote Raid globally accessible)' },
+  797: { isRegional: true, regionName: 'Southern Hemisphere', hemisphere: 'Southern Hemisphere', countries: 'South America, South Africa, Australia, New Zealand', notes: 'Appears as 5-Star Raid Boss only in Southern Hemisphere (Remote Raid globally accessible)' },
+  798: { isRegional: true, regionName: 'Northern Hemisphere', hemisphere: 'Northern Hemisphere', countries: 'North America, Europe, North Asia', notes: 'Appears as 5-Star Raid Boss only in Northern Hemisphere (Remote Raid globally accessible)' },
+  805: { isRegional: true, regionName: 'Eastern Hemisphere', hemisphere: 'Eastern Hemisphere', countries: 'Europe, Asia, Africa, Australia', notes: 'Appears as 5-Star Raid Boss only in Eastern Hemisphere (Remote Raid globally accessible)' },
+  806: { isRegional: true, regionName: 'Western Hemisphere', hemisphere: 'Western Hemisphere', countries: 'North and South America', notes: 'Appears as 5-Star Raid Boss only in Western Hemisphere (Remote Raid globally accessible)' },
 
   // Gen 8 & 9
-  874: { isRegional: true, regionName: 'Großbritannien', countries: 'Großbritannien (England, Schottland, Wales)', notes: 'Erscheint exklusiv in Großbritannien in der Wildnis' },
+  874: { isRegional: true, regionName: 'United Kingdom', countries: 'United Kingdom (England, Scotland, Wales)', notes: 'Spawns exclusively in the wild in the United Kingdom' },
 };
 
 export const REGIONAL_DEX_NRS = new Set<number>(Object.keys(REGIONAL_DATA).map(Number));
@@ -78,98 +78,98 @@ export const REGIONAL_DEX_NRS = new Set<number>(Object.keys(REGIONAL_DATA).map(N
 // ============================================================
 const REGIONAL_DATA_BY_ID: Record<string, RegionalInfo> = {
   // ── Squawkabilly #931 ──────────────────────────────────────
-  'poke_931_base':                    { isRegional: true, regionName: 'Europa / Mittlerer Osten / Afrika', countries: 'Europa, Mittlerer Osten, Afrika (Grünes Gefieder)' },
-  'poke_931_special_blue_plumage':    { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Blaues Gefieder)' },
-  'poke_931_special_yellow_plumage':  { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, China, Südostasien, Australien, Neuseeland (Gelbes Gefieder)' },
-  'poke_931_special_white_plumage':   { isRegional: true, regionName: 'Afrika / Indien / Mittlerer Osten', countries: 'Indien, Teile Afrikas, Naher Osten (Weißes Gefieder)' },
+  'poke_931_base':                    { isRegional: true, regionName: 'Europe / Middle East / Africa', countries: 'Europe, Middle East, Africa (Green Plumage)' },
+  'poke_931_special_blue_plumage':    { isRegional: true, regionName: 'Americas', countries: 'North and South America (Blue Plumage)' },
+  'poke_931_special_yellow_plumage':  { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, China, Southeast Asia, Australia, New Zealand (Yellow Plumage)' },
+  'poke_931_special_white_plumage':   { isRegional: true, regionName: 'Africa / India / Middle East', countries: 'India, parts of Africa, Middle East (White Plumage)' },
 
   // ── Oricorio #741 ──────────────────────────────────────────
-  'poke_741_base':             { isRegional: true, regionName: 'Europa / Mittlerer Osten / Afrika', countries: 'Europa, Mittlerer Osten, Afrika (Flamenco-Stil / Baile)' },
-  'poke_741_special_pom_pom':  { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Cheerleading-Stil / Pom-Pom)' },
-  'poke_741_special_pa_u':     { isRegional: true, regionName: 'Afrika / Pazifik-Inseln / Südasien', countries: 'Subsahara-Afrika, Pazifik-Inseln, Südasien (Hula-Stil / Pa\'u)' },
-  'poke_741_special_sensu':    { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, China, Südostasien, Australien (Tanztheater-Stil / Sensu)' },
+  'poke_741_base':             { isRegional: true, regionName: 'Europe / Middle East / Africa', countries: 'Europe, Middle East, Africa (Baile Style)' },
+  'poke_741_special_pom_pom':  { isRegional: true, regionName: 'Americas', countries: 'North and South America (Pom-Pom Style)' },
+  'poke_741_special_pa_u':     { isRegional: true, regionName: 'Africa / Pacific Islands / South Asia', countries: "Sub-Saharan Africa, Pacific Islands, South Asia (Pa'u Style)" },
+  'poke_741_special_sensu':    { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, China, Southeast Asia, Australia (Sensu Style)' },
 
   // ── Shellos & Gastrodon #422 ──────────────────────────────
-  'poke_422_base':             { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'Westliches Meer erscheint westlich des Nullmeridians (Amerika, Westeuropa)' },
-  'poke_422_special_east_sea': { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'Östliches Meer erscheint östlich des Nullmeridians (Osteuropa, Asien, Ozeanien)' },
+  'poke_422_base':             { isRegional: true, regionName: 'Western Hemisphere', hemisphere: 'Western Hemisphere', notes: 'West Sea spawns west of the prime meridian (Americas, Western Europe)' },
+  'poke_422_special_east_sea': { isRegional: true, regionName: 'Eastern Hemisphere', hemisphere: 'Eastern Hemisphere', notes: 'East Sea spawns east of the prime meridian (Eastern Europe, Asia, Oceania)' },
 
   // ── Basculin #550 ──────────────────────────────────────────
-  'poke_550_base':                   { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'Rotlinige Form erscheint wild in der östlichen Hemisphäre' },
-  'poke_550_special_blue_striped':   { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'Blaulinige Form erscheint wild in der westlichen Hemisphäre' },
-  'poke_550_special_white_striped':  { isRegional: false, notes: 'Weißlinige Form: Weltweit über Routen & Mateo (7km-Eier) erhältlich' },
+  'poke_550_base':                   { isRegional: true, regionName: 'Eastern Hemisphere', hemisphere: 'Eastern Hemisphere', notes: 'Red-Striped Form spawns wild in the Eastern Hemisphere' },
+  'poke_550_special_blue_striped':   { isRegional: true, regionName: 'Western Hemisphere', hemisphere: 'Western Hemisphere', notes: 'Blue-Striped Form spawns wild in the Western Hemisphere' },
+  'poke_550_special_white_striped':  { isRegional: false, notes: 'White-Striped Form: Available worldwide via Routes & Mateo (7km Eggs)' },
 
   // ── Flabébé #669, Floette #670, Florges #671 ──────────────
-  'poke_669_base':            { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Rotblütler)' },
-  'poke_669_special_blue':    { isRegional: true, regionName: 'Europa / Asien-Pazifik', countries: 'Europa und Teile Asiens (Blaublütler)' },
-  'poke_669_special_yellow':  { isRegional: true, regionName: 'Amerika / Asien-Pazifik', countries: 'Nord- und Südamerika, Asien (Gelbblütler)' },
-  'poke_669_special_white':   { isRegional: false, notes: 'Weißblütler: Weltweit sehr selten in freier Wildbahn anzutreffen' },
-  'poke_669_special_orange':  { isRegional: false, notes: 'Orangeblütler: Weltweit sehr selten in freier Wildbahn anzutreffen' },
+  'poke_669_base':            { isRegional: true, regionName: 'Americas', countries: 'North and South America (Red Flower)' },
+  'poke_669_special_blue':    { isRegional: true, regionName: 'Europe / Asia-Pacific', countries: 'Europe and parts of Asia (Blue Flower)' },
+  'poke_669_special_yellow':  { isRegional: true, regionName: 'Americas / Asia-Pacific', countries: 'North and South America, Asia (Yellow Flower)' },
+  'poke_669_special_white':   { isRegional: false, notes: 'White Flower: Very rare wild spawn worldwide' },
+  'poke_669_special_orange':  { isRegional: false, notes: 'Orange Flower: Very rare wild spawn worldwide' },
 
-  'poke_670_base':            { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Rotblütler)' },
-  'poke_670_special_blue':    { isRegional: true, regionName: 'Europa / Asien-Pazifik', countries: 'Europa und Teile Asiens (Blaublütler)' },
-  'poke_670_special_yellow':  { isRegional: true, regionName: 'Amerika / Asien-Pazifik', countries: 'Nord- und Südamerika, Asien (Gelbblütler)' },
-  'poke_670_special_white':   { isRegional: false, notes: 'Weißblütler: Weltweit durch Entwicklung aus Flabébé (Weiß)' },
-  'poke_670_special_orange':  { isRegional: false, notes: 'Orangeblütler: Weltweit durch Entwicklung aus Flabébé (Orange)' },
+  'poke_670_base':            { isRegional: true, regionName: 'Americas', countries: 'North and South America (Red Flower)' },
+  'poke_670_special_blue':    { isRegional: true, regionName: 'Europe / Asia-Pacific', countries: 'Europe and parts of Asia (Blue Flower)' },
+  'poke_670_special_yellow':  { isRegional: true, regionName: 'Americas / Asia-Pacific', countries: 'North and South America, Asia (Yellow Flower)' },
+  'poke_670_special_white':   { isRegional: false, notes: 'White Flower: Evolves worldwide from Flabébé (White)' },
+  'poke_670_special_orange':  { isRegional: false, notes: 'Orange Flower: Evolves worldwide from Flabébé (Orange)' },
 
-  'poke_671_base':            { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Rotblütler)' },
-  'poke_671_special_blue':    { isRegional: true, regionName: 'Europa / Asien-Pazifik', countries: 'Europa und Teile Asiens (Blaublütler)' },
-  'poke_671_special_yellow':  { isRegional: true, regionName: 'Amerika / Asien-Pazifik', countries: 'Nord- und Südamerika, Asien (Gelbblütler)' },
-  'poke_671_special_white':   { isRegional: false, notes: 'Weißblütler: Weltweit durch Entwicklung aus Floette (Weiß)' },
-  'poke_671_special_orange':  { isRegional: false, notes: 'Orangeblütler: Weltweit durch Entwicklung aus Floette (Orange)' },
+  'poke_671_base':            { isRegional: true, regionName: 'Americas', countries: 'North and South America (Red Flower)' },
+  'poke_671_special_blue':    { isRegional: true, regionName: 'Europe / Asia-Pacific', countries: 'Europe and parts of Asia (Blue Flower)' },
+  'poke_671_special_yellow':  { isRegional: true, regionName: 'Americas / Asia-Pacific', countries: 'North and South America, Asia (Yellow Flower)' },
+  'poke_671_special_white':   { isRegional: false, notes: 'White Flower: Evolves worldwide from Floette (White)' },
+  'poke_671_special_orange':  { isRegional: false, notes: 'Orange Flower: Evolves worldwide from Floette (Orange)' },
 
   // ── Paldean Tauros #128 ────────────────────────────────────
-  'poke_128_form_tauros_paldea_combat': { isRegional: false, notes: 'Gefechtsvariante (Combat Breed): Weltweit bei Events verfügbar' },
-  'poke_128_form_tauros_paldea_blaze':  { isRegional: true, regionName: 'Spanien / Portugal', countries: 'Spanien und Portugal (Flammenvariante)', notes: 'Regional exklusiv in Spanien und Portugal' },
-  'poke_128_form_tauros_paldea_aqua':   { isRegional: true, regionName: 'UK / Irland', countries: 'Großbritannien und Irland (Flutenvariante)', notes: 'Regional exklusiv in UK und Irland' },
+  'poke_128_form_tauros_paldea_combat': { isRegional: false, notes: 'Combat Breed: Available worldwide during events' },
+  'poke_128_form_tauros_paldea_blaze':  { isRegional: true, regionName: 'Spain / Portugal', countries: 'Spain and Portugal (Blaze Breed)', notes: 'Regional exclusive to Spain and Portugal' },
+  'poke_128_form_tauros_paldea_aqua':   { isRegional: true, regionName: 'UK / Ireland', countries: 'United Kingdom and Ireland (Aqua Breed)', notes: 'Regional exclusive to UK and Ireland' },
 
   // ── Burmy #412 & Wormadam #413 ─────────────────────────────
-  'poke_412_base':           { isRegional: true, regionName: 'Europa / Afrika / Naher Osten / Indien', countries: 'Europa, Afrika, Naher Osten, Indien (Pflanzenumhang)' },
-  'poke_412_special_sandy':  { isRegional: true, regionName: 'Amerika & Grönland', countries: 'Nord- und Südamerika, Grönland (Sandumhang)' },
-  'poke_412_special_trash':  { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, Südostasien, Australien (Lumpenumhang)' },
-  'poke_413_base':           { isRegional: true, regionName: 'Europa / Afrika / Naher Osten / Indien', countries: 'Europa, Afrika, Naher Osten, Indien (Pflanzenumhang)' },
-  'poke_413_special_sandy':  { isRegional: true, regionName: 'Amerika & Grönland', countries: 'Nord- und Südamerika, Grönland (Sandumhang)' },
-  'poke_413_special_trash':  { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, Südostasien, Australien (Lumpenumhang)' },
+  'poke_412_base':           { isRegional: true, regionName: 'Europe / Africa / Middle East / India', countries: 'Europe, Africa, Middle East, India (Plant Cloak)' },
+  'poke_412_special_sandy':  { isRegional: true, regionName: 'Americas & Greenland', countries: 'North and South America, Greenland (Sandy Cloak)' },
+  'poke_412_special_trash':  { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, Southeast Asia, Australia (Trash Cloak)' },
+  'poke_413_base':           { isRegional: true, regionName: 'Europe / Africa / Middle East / India', countries: 'Europe, Africa, Middle East, India (Plant Cloak)' },
+  'poke_413_special_sandy':  { isRegional: true, regionName: 'Americas & Greenland', countries: 'North and South America, Greenland (Sandy Cloak)' },
+  'poke_413_special_trash':  { isRegional: true, regionName: 'Asia-Pacific', countries: 'Japan, Southeast Asia, Australia (Trash Cloak)' },
 
   // ── Furfrou #676 (Regional Trims) ──────────────────────────
-  'poke_676_base':               { isRegional: false, notes: 'Naturform (Zottelform) ist weltweit in der Wildnis verfügbar' },
-  'poke_676_special_matron':     { isRegional: false, notes: 'Fräuleinschnitt: Weltweit durch Formschnitt (10.000 Sternenstaub + 25 Bonbons) verfügbar' },
-  'poke_676_special_dandy':      { isRegional: false, notes: 'Kavalierschnitt: Weltweit durch Formschnitt (10.000 Sternenstaub + 25 Bonbons) verfügbar' },
-  'poke_676_special_heart':      { isRegional: false, notes: 'Herzchenschnitt: Weltweit exklusiv während des Valentinstag-Events verfügbar' },
-  'poke_676_special_debutante':  { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Damen-Schnitt / Debutante)' },
-  'poke_676_special_diamond':    { isRegional: true, regionName: 'Europa / Mittlerer Osten / Afrika', countries: 'Europa, Mittlerer Osten, Afrika (Diamantenschnitt)' },
-  'poke_676_special_star':       { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Asien-Pazifik (Sternchenschnitt)' },
-  'poke_676_special_la_reine':   { isRegional: true, regionName: 'Frankreich', countries: 'Ausschließlich in Frankreich (Königinnenschnitt / La Reine)' },
-  'poke_676_special_kabuki':     { isRegional: true, regionName: 'Japan', countries: 'Ausschließlich in Japan (Kabuki-Schnitt)' },
-  'poke_676_special_pharaoh':    { isRegional: true, regionName: 'Ägypten', countries: 'Ausschließlich in Ägypten (Pharaonenschnitt)' },
+  'poke_676_base':               { isRegional: false, notes: 'Natural Form is available worldwide in the wild' },
+  'poke_676_special_matron':     { isRegional: false, notes: 'Matron Trim: Available worldwide via form change (10,000 Stardust + 25 Candy)' },
+  'poke_676_special_dandy':      { isRegional: false, notes: 'Dandy Trim: Available worldwide via form change (10,000 Stardust + 25 Candy)' },
+  'poke_676_special_heart':      { isRegional: false, notes: "Heart Trim: Available worldwide exclusively during Valentine's Day events" },
+  'poke_676_special_debutante':  { isRegional: true, regionName: 'Americas', countries: 'North and South America (Debutante Trim)' },
+  'poke_676_special_diamond':    { isRegional: true, regionName: 'Europe / Middle East / Africa', countries: 'Europe, Middle East, Africa (Diamond Trim)' },
+  'poke_676_special_star':       { isRegional: true, regionName: 'Asia-Pacific', countries: 'Asia-Pacific (Star Trim)' },
+  'poke_676_special_la_reine':   { isRegional: true, regionName: 'France', countries: 'Exclusively in France (La Reine Trim)' },
+  'poke_676_special_kabuki':     { isRegional: true, regionName: 'Japan', countries: 'Exclusively in Japan (Kabuki Trim)' },
+  'poke_676_special_pharaoh':    { isRegional: true, regionName: 'Egypt', countries: 'Exclusively in Egypt (Pharaoh Trim)' },
 
   // ── Vivillon #666 (Postcard Regional Patterns) ─────────────
-  'poke_666_base':                           { isRegional: true, regionName: 'Mitteleuropa', countries: 'Deutschland, Schweiz, Frankreich, Italien (Wiesenmuster)' },
-  'poke_666_form_vivillon_archipelago':      { isRegional: true, regionName: 'Karibik / Florida', countries: 'Karibik, Florida, Südafrika (Archipel-Muster)' },
-  'poke_666_form_vivillon_continental':      { isRegional: true, regionName: 'Mittel- & Osteuropa / Argentinien', countries: 'Deutschland, Polen, Tschechien, Dänemark, Argentinien (Kontinentalmuster)' },
-  'poke_666_form_vivillon_elegant':          { isRegional: true, regionName: 'Japan', countries: 'Japan (Ziereffektmuster)' },
-  'poke_666_form_vivillon_fancy':            { isRegional: false, notes: 'Prunkmuster: Weltweit bei speziellen Events verfügbar' },
-  'poke_666_form_vivillon_garden':           { isRegional: true, regionName: 'UK / Irland / Neuseeland', countries: 'Großbritannien, Irland, Neuseeland (Gartenmuster)' },
-  'poke_666_form_vivillon_high_plains':      { isRegional: true, regionName: 'Westliche USA / Mexiko', countries: 'Westliche USA, Mexiko (Dürremuster)' },
-  'poke_666_form_vivillon_icy_snow':         { isRegional: true, regionName: 'Nordeuropa / Grönland', countries: 'Norwegen, Finnland, Nordschweden, Grönland (Frostmuster)' },
-  'poke_666_form_vivillon_jungle':           { isRegional: true, regionName: 'Äquatoriales Südamerika / Südostasien', countries: 'Kolumbien, Brasilien, Malaysia, Indonesien (Dschungelmuster)' },
-  'poke_666_form_vivillon_marine':           { isRegional: true, regionName: 'Südeuropa / Mittelmeer / Chile', countries: 'Spanien, Portugal, Griechenland, Chile (Marinestil)' },
-  'poke_666_form_vivillon_modern':           { isRegional: true, regionName: 'USA (Mittlerer Westen & Südosten)', countries: 'USA: Zentral- & Oststaaten (Modernes Muster)' },
-  'poke_666_form_vivillon_monsoon':          { isRegional: true, regionName: 'Südostasien / Indien', countries: 'Indien, Thailand, Vietnam, Taiwan (Monsunmuster)' },
-  'poke_666_form_vivillon_ocean':            { isRegional: true, regionName: 'Hawaii / Galápagos / Madagaskar', countries: 'Hawaii, Galápagos, Madagaskar, Réunion (Ozeanmuster)' },
-  'poke_666_form_vivillon_pokeball':         { isRegional: false, notes: 'Pokéball-Muster: Weltweit nur bei speziellen Sonder-Events verfügbar' },
-  'poke_666_form_vivillon_polar':            { isRegional: true, regionName: 'Kanada / Alaska / Nordost-USA', countries: 'Kanada, Alaska, Neuengland, Südchile (Schneefeldmuster)' },
-  'poke_666_form_vivillon_river':            { isRegional: true, regionName: 'Australien / Südafrika', countries: 'Australien, Südafrika (Flussdelta-Muster)' },
-  'poke_666_form_vivillon_sandstorm':        { isRegional: true, regionName: 'Naher Osten', countries: 'Saudi-Arabien, VAE, Israel, Ägypten (Sandsturmmuster)' },
-  'poke_666_form_vivillon_savanna':          { isRegional: true, regionName: 'Brasilien', countries: 'Brasilien (Savannenmuster)' },
-  'poke_666_form_vivillon_sun':              { isRegional: true, regionName: 'Mexiko / Madagaskar / Nordaustralien', countries: 'Mexiko, Madagaskar, Nordaustralien (Sonnenmuster)' },
-  'poke_666_form_vivillon_tundra':           { isRegional: true, regionName: 'Island / Nord-Skandinavien', countries: 'Island, Nordnorwegen, Nordschweden, Hokkaido (Tundramuster)' },
+  'poke_666_base':                           { isRegional: true, regionName: 'Central Europe', countries: 'Germany, Switzerland, France, Italy (Meadow Pattern)' },
+  'poke_666_form_vivillon_archipelago':      { isRegional: true, regionName: 'Caribbean / Florida', countries: 'Caribbean, Florida, South Africa (Archipelago Pattern)' },
+  'poke_666_form_vivillon_continental':      { isRegional: true, regionName: 'Central & Eastern Europe / Argentina', countries: 'Germany, Poland, Czech Republic, Denmark, Argentina (Continental Pattern)' },
+  'poke_666_form_vivillon_elegant':          { isRegional: true, regionName: 'Japan', countries: 'Japan (Elegant Pattern)' },
+  'poke_666_form_vivillon_fancy':            { isRegional: false, notes: 'Fancy Pattern: Available worldwide during special events' },
+  'poke_666_form_vivillon_garden':           { isRegional: true, regionName: 'UK / Ireland / New Zealand', countries: 'United Kingdom, Ireland, New Zealand (Garden Pattern)' },
+  'poke_666_form_vivillon_high_plains':      { isRegional: true, regionName: 'Western USA / Mexico', countries: 'Western USA, Mexico (High Plains Pattern)' },
+  'poke_666_form_vivillon_icy_snow':         { isRegional: true, regionName: 'Northern Europe / Greenland', countries: 'Norway, Finland, Northern Sweden, Greenland (Icy Snow Pattern)' },
+  'poke_666_form_vivillon_jungle':           { isRegional: true, regionName: 'Equatorial South America / Southeast Asia', countries: 'Colombia, Brazil, Malaysia, Indonesia (Jungle Pattern)' },
+  'poke_666_form_vivillon_marine':           { isRegional: true, regionName: 'Southern Europe / Mediterranean / Chile', countries: 'Spain, Portugal, Greece, Chile (Marine Pattern)' },
+  'poke_666_form_vivillon_modern':           { isRegional: true, regionName: 'USA (Midwest & Southeast)', countries: 'USA: Central & Eastern states (Modern Pattern)' },
+  'poke_666_form_vivillon_monsoon':          { isRegional: true, regionName: 'Southeast Asia / India', countries: 'India, Thailand, Vietnam, Taiwan (Monsoon Pattern)' },
+  'poke_666_form_vivillon_ocean':            { isRegional: true, regionName: 'Hawaii / Galápagos / Madagascar', countries: 'Hawaii, Galápagos, Madagascar, Réunion (Ocean Pattern)' },
+  'poke_666_form_vivillon_pokeball':         { isRegional: false, notes: 'Poké Ball Pattern: Available worldwide only during special events' },
+  'poke_666_form_vivillon_polar':            { isRegional: true, regionName: 'Canada / Alaska / Northeast USA', countries: 'Canada, Alaska, New England, Southern Chile (Polar Pattern)' },
+  'poke_666_form_vivillon_river':            { isRegional: true, regionName: 'Australia / South Africa', countries: 'Australia, South Africa (River Pattern)' },
+  'poke_666_form_vivillon_sandstorm':        { isRegional: true, regionName: 'Middle East', countries: 'Saudi Arabia, UAE, Israel, Egypt (Sandstorm Pattern)' },
+  'poke_666_form_vivillon_savanna':          { isRegional: true, regionName: 'Brazil', countries: 'Brazil (Savanna Pattern)' },
+  'poke_666_form_vivillon_sun':              { isRegional: true, regionName: 'Mexico / Madagascar / Northern Australia', countries: 'Mexico, Madagascar, Northern Australia (Sun Pattern)' },
+  'poke_666_form_vivillon_tundra':           { isRegional: true, regionName: 'Iceland / Northern Scandinavia', countries: 'Iceland, Northern Norway, Northern Sweden, Hokkaido (Tundra Pattern)' },
 
   // ── Explicit Non-Regional Overrides for Alternate Forms ────
   // Base species are regional, but these forms are globally accessible!
-  'poke_83_form_farfetchd_galarian':  { isRegional: false, notes: 'Galar-Porenta ist weltweit über 7km-Eier und Raids erhältlich (nur Kanto-Porenta ist Ostasien-exklusiv)' },
-  'poke_122_form_mr_mime_galarian':   { isRegional: false, notes: 'Galar-Pantimos ist weltweit bei Feiertags-Events erhältlich (nur Kanto-Pantimos ist Europa-exklusiv)' },
-  'poke_222_form_corsola_galarian':   { isRegional: false, notes: 'Galar-Corasonn ist weltweit bei Events und aus 7km-Eiern erhältlich (nur Johto-Corasonn ist tropisch)' },
-  'poke_222_costume_sunglasses':      { isRegional: false, notes: 'Event-Kostüm weltweit verfügbar' },
+  'poke_83_form_farfetchd_galarian':  { isRegional: false, notes: "Galarian Farfetch'd is available worldwide via 7km Eggs and Raids (only Kantonian Farfetch'd is East Asia exclusive)" },
+  'poke_122_form_mr_mime_galarian':   { isRegional: false, notes: "Galarian Mr. Mime is available worldwide during holiday events (only Kantonian Mr. Mime is Europe exclusive)" },
+  'poke_222_form_corsola_galarian':   { isRegional: false, notes: "Galarian Corsola is available worldwide during events and from 7km Eggs (only Johtonian Corsola is tropical)" },
+  'poke_222_costume_sunglasses':      { isRegional: false, notes: 'Event costume available worldwide' },
 };
 
 export const REGIONAL_FORM_IDS = new Set<string>(
@@ -280,227 +280,227 @@ export const MEGA_RAID_POKEMON = new Set<number>([
 const FORM_OBTAIN_METHODS: Record<string, ObtainMethodDetail[]> = {
   // ── Galarian Legendary Birds (Adventure Incense ONLY, NOT in Raids) ─
   'poke_144_form_articuno_galarian': [
-    { type: 'special', label: 'Täglicher Abenteuer-Rauch', badgeColor: 'pink', description: 'Erscheint ausschließlich extrem selten während des täglichen 15-minütigen Abenteuer-Rauchs (hohe Fluchtrate). Nicht in Raids!', available: true }
+    { type: 'special', label: 'Daily Adventure Incense', badgeColor: 'pink', description: 'Extremely rare spawn exclusively during the daily 15-minute Daily Adventure Incense (high flee rate). Not available in Raids!', available: true }
   ],
   'poke_145_form_zapdos_galarian': [
-    { type: 'special', label: 'Täglicher Abenteuer-Rauch', badgeColor: 'pink', description: 'Erscheint ausschließlich extrem selten während des täglichen 15-minütigen Abenteuer-Rauchs (hohe Fluchtrate). Nicht in Raids!', available: true }
+    { type: 'special', label: 'Daily Adventure Incense', badgeColor: 'pink', description: 'Extremely rare spawn exclusively during the daily 15-minute Daily Adventure Incense (high flee rate). Not available in Raids!', available: true }
   ],
   'poke_146_form_moltres_galarian': [
-    { type: 'special', label: 'Täglicher Abenteuer-Rauch', badgeColor: 'pink', description: 'Erscheint ausschließlich extrem selten während des täglichen 15-minütigen Abenteuer-Rauchs (hohe Fluchtrate). Nicht in Raids!', available: true }
+    { type: 'special', label: 'Daily Adventure Incense', badgeColor: 'pink', description: 'Extremely rare spawn exclusively during the daily 15-minute Daily Adventure Incense (high flee rate). Not available in Raids!', available: true }
   ],
 
   // ── Raid-Exclusive Regional Forms (3-Star Raids / Raid-Days, NOT wild) ─
   'poke_26_form_raichu_alola': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss (kann nicht wild gefangen oder normal aus Pikachu entwickelt werden).', available: true },
-    { type: 'research', label: 'Feldforschung', badgeColor: 'blue', description: 'Gelegentlich als Belohnung bei Event-Feldforschungen.', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss (cannot be encountered wild or evolved normally from Pikachu in GO).', available: true },
+    { type: 'research', label: 'Field Research', badgeColor: 'blue', description: 'Occasionally available as an event Field Research encounter reward.', available: true }
   ],
   'poke_105_form_marowak_alola': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss und Belohnung in der GO-Kampfliga (nicht in der Wildnis).', available: true },
-    { type: 'research', label: 'Feldforschung', badgeColor: 'blue', description: 'Gelegentlich bei Event-Feldforschungen.', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss and GO Battle League encounter reward (not in the wild).', available: true },
+    { type: 'research', label: 'Field Research', badgeColor: 'blue', description: 'Occasionally available in event Field Research tasks.', available: true }
   ],
   'poke_110_form_weezing_galarian': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss bei Events (nicht in freier Wildbahn).', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss during events (not in the wild).', available: true }
   ],
   'poke_628_form_braviary_hisuian': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss bei speziellen Raid-Tagen und Events (nicht wild).', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss during special Raid Days and events (not in the wild).', available: true }
   ],
   'poke_713_form_avalugg_hisuian': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss bei speziellen Raid-Tagen und Events (nicht wild).', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss during special Raid Days and events (not in the wild).', available: true }
   ],
   'poke_157_form_typhlosion_hisuian': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss bei speziellen Raid-Tagen und Events (nicht wild).', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss during special Raid Days and events (not in the wild).', available: true }
   ],
   'poke_503_form_samurott_hisuian': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss bei speziellen Raid-Tagen und Events (nicht wild).', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss during special Raid Days and events (not in the wild).', available: true }
   ],
   'poke_724_form_decidueye_hisuian': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss bei speziellen Raid-Tagen und Events (nicht wild).', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss during special Raid Days and events (not in the wild).', available: true }
   ],
   'poke_549_form_lilligant_hisuian': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss bei speziellen Events (nicht wild).', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss during special events (not in the wild).', available: true }
   ],
 
   // ── White-Striped Basculin (Routes & Mateo 7km Eggs) ───────
   'poke_550_special_white_striped': [
-    { type: 'special', label: 'Routen & Mateo (7km-Ei)', badgeColor: 'amber', description: 'Erscheint beim Gehen von Routen und schlüpft aus Mateo-Geschenk-Eiern (7km). Nicht regulär in der Wildnis!', available: true }
+    { type: 'special', label: 'Routes & Mateo (7km Egg)', badgeColor: 'amber', description: 'Spawns while walking Routes and hatches from Mateo Gift Eggs (7km). Not normally found in the wild!', available: true }
   ],
 
   // ── Research & Event Exclusive Regional Forms ─────────────
   'poke_122_form_mr_mime_galarian': [
-    { type: 'research', label: 'Event-Forschung', badgeColor: 'blue', description: 'Erhältlich bei Winter- und Feiertags-Events über Spezial- oder Befristete Forschung.', available: true },
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint während Feiertags-Events auch in Raids.', available: true }
+    { type: 'research', label: 'Event Research', badgeColor: 'blue', description: 'Available during winter/holiday events via Special or Timed Research.', available: true },
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Also appears in Raids during holiday events.', available: true }
   ],
   'poke_222_form_corsola_galarian': [
-    { type: 'egg', label: '7km-Ei / Event', badgeColor: 'amber', description: 'Schlüpft aus 7km-Eiern bei speziellen Events oder als Belohnung in Spezialforschungen (nicht regulär in der Wildnis).', available: true },
-    { type: 'research', label: 'Spezialforschung', badgeColor: 'blue', description: 'Spezialforschungsbelohnung bei Halloween-Events.', available: true }
+    { type: 'egg', label: '7km Egg / Event', badgeColor: 'amber', description: 'Hatches from 7km Eggs during special events or as a Special Research reward (not normally in the wild).', available: true },
+    { type: 'research', label: 'Special Research', badgeColor: 'blue', description: 'Special Research reward during Halloween events.', available: true }
   ],
   'poke_562_form_yamask_galarian': [
-    { type: 'research', label: 'Halloween-Forschung', badgeColor: 'blue', description: 'Erhältlich während Halloween-Events über Spezialforschungen und 7km-Eier.', available: true },
-    { type: 'raid', label: '1-Stern-Raid', badgeColor: 'rose', description: 'Erscheint bei Halloween-Events in 1-Stern-Raids.', available: true }
+    { type: 'research', label: 'Halloween Research', badgeColor: 'blue', description: 'Available during Halloween events via Special Research and 7km Eggs.', available: true },
+    { type: 'raid', label: '1-Star Raid', badgeColor: 'rose', description: 'Appears in 1-Star Raids during Halloween events.', available: true }
   ],
   'poke_570_form_zorua_hisuian': [
-    { type: 'special', label: 'Kumpel-Tarnung', badgeColor: 'pink', description: 'Erscheint bei Halloween-Events auf der Karte getarnt als dein Kumpel-Pokémon.', available: true }
+    { type: 'special', label: 'Buddy Disguise', badgeColor: 'pink', description: 'Appears on the map disguised as your current Buddy Pokémon during Halloween events.', available: true }
   ],
 
   // ── 7km Egg Primary / Exclusive Forms (Gift Eggs) ──────────
   'poke_83_form_farfetchd_galarian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern (Geschenke). Weltweit verfügbar!', available: true },
-    { type: 'raid', label: '1-Stern-Raid', badgeColor: 'rose', description: 'Erscheint zeitweise in 1-Stern-Raids bei passenden Events.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: "Hatches from 7km Gift Eggs. Available worldwide!", available: true },
+    { type: 'raid', label: '1-Star Raid', badgeColor: 'rose', description: 'Periodically featured in 1-Star Raids during relevant events.', available: true }
   ],
   'poke_52_form_meowth_galarian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern (Geschenke) und Feldforschungen.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs and Field Research.', available: true }
   ],
   'poke_77_form_ponyta_galarian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern (Geschenke).', available: true },
-    { type: 'raid', label: '1-Stern-Raid', badgeColor: 'rose', description: 'Erscheint bei Events in 1-Stern-Raids.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs.', available: true },
+    { type: 'raid', label: '1-Star Raid', badgeColor: 'rose', description: 'Appears in 1-Star Raids during events.', available: true }
   ],
   'poke_79_form_slowpoke_galarian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern (Geschenke) oder in 1-Stern-Raids/Feldforschungen.', available: true },
-    { type: 'raid', label: '1-Stern-Raid', badgeColor: 'rose', description: 'Erscheint bei Events in 1-Stern-Raids.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs, or in 1-Star Raids and Field Research.', available: true },
+    { type: 'raid', label: '1-Star Raid', badgeColor: 'rose', description: 'Appears in 1-Star Raids during events.', available: true }
   ],
   'poke_263_form_zigzagoon_galarian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern (Geschenke).', available: true },
-    { type: 'wild', label: 'Event-Wildnis', badgeColor: 'emerald', description: 'Erscheint während bestimmter Events auch in der Wildnis.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs.', available: true },
+    { type: 'wild', label: 'Event Wild', badgeColor: 'emerald', description: 'Spawns in the wild during certain events.', available: true }
   ],
   'poke_554_form_darumaka_galarian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern (Geschenke).', available: true },
-    { type: 'wild', label: 'Winter-Event Wildnis', badgeColor: 'emerald', description: 'Erscheint während Winter-Events in der Wildnis und Raids.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs.', available: true },
+    { type: 'wild', label: 'Winter Event Wild', badgeColor: 'emerald', description: 'Spawns in the wild and Raids during winter events.', available: true }
   ],
   'poke_618_form_stunfisk_galarian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern (Geschenke).', available: true },
-    { type: 'wild', label: 'Wildnis', badgeColor: 'emerald', description: 'Erscheint auch in der Wildnis auf der Karte.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs.', available: true },
+    { type: 'wild', label: 'Wild', badgeColor: 'emerald', description: 'Also spawns in the wild on the map.', available: true }
   ],
   'poke_27_form_sandshrew_alola': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft primär aus 7km-Freundschafts-Eiern (Geschenke).', available: true },
-    { type: 'wild', label: 'Event-Wildnis', badgeColor: 'emerald', description: 'Erscheint bei Eis-Events in der Wildnis.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Primarily hatches from 7km Gift Eggs.', available: true },
+    { type: 'wild', label: 'Event Wild', badgeColor: 'emerald', description: 'Spawns in the wild during ice-themed events.', available: true }
   ],
   'poke_37_form_vulpix_alola': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft primär aus 7km-Freundschafts-Eiern (Geschenke) und Feldforschungen.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Primarily hatches from 7km Gift Eggs and Field Research.', available: true }
   ],
   'poke_50_form_diglett_alola': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern.', available: true },
-    { type: 'wild', label: 'Wildnis / Events', badgeColor: 'emerald', description: 'Erscheint in der Wildnis und bei Events.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs.', available: true },
+    { type: 'wild', label: 'Wild / Events', badgeColor: 'emerald', description: 'Spawns in the wild and during events.', available: true }
   ],
   'poke_52_form_meowth_alola': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern (Geschenke) und Feldforschungen.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs and Field Research.', available: true }
   ],
   'poke_74_form_geodude_alola': [
-    { type: 'wild', label: 'Wildnis', badgeColor: 'emerald', description: 'Erscheint in der Wildnis auf der Karte.', available: true },
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft auch aus 7km-Freundschafts-Eiern.', available: true }
+    { type: 'wild', label: 'Wild', badgeColor: 'emerald', description: 'Spawns in the wild on the map.', available: true },
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Also hatches from 7km Gift Eggs.', available: true }
   ],
   'poke_88_form_grimer_alola': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft primär aus 7km-Freundschafts-Eiern (Geschenke) oder bei Events.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Primarily hatches from 7km Gift Eggs or during events.', available: true }
   ],
   'poke_103_form_exeggutor_alola': [
-    { type: 'raid', label: '3-Sterne-Raid', badgeColor: 'rose', description: 'Erscheint als 3-Sterne-Raid-Boss bei Events.', available: true },
-    { type: 'wild', label: 'Wildnis (selten)', badgeColor: 'emerald', description: 'Spawnt selten in freier Wildbahn auf der Karte.', available: true }
+    { type: 'raid', label: '3-Star Raid', badgeColor: 'rose', description: 'Appears as a 3-Star Raid Boss during events.', available: true },
+    { type: 'wild', label: 'Wild (Rare)', badgeColor: 'emerald', description: 'Spawns rarely in the wild on the map.', available: true }
   ],
   'poke_58_form_growlithe_hisuian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft primär aus 7km-Freundschafts-Eiern (Geschenke) und Feldforschungen.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Primarily hatches from 7km Gift Eggs and Field Research.', available: true }
   ],
   'poke_100_form_voltorb_hisuian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern.', available: true },
-    { type: 'wild', label: 'Event-Wildnis', badgeColor: 'emerald', description: 'Erscheint bei Hisui-Events in der Wildnis.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs.', available: true },
+    { type: 'wild', label: 'Event Wild', badgeColor: 'emerald', description: 'Spawns in the wild during Hisui-themed events.', available: true }
   ],
   'poke_211_form_qwilfish_hisuian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft aus 7km-Freundschafts-Eiern und erscheint bei Events wild.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Hatches from 7km Gift Eggs and spawns wild during events.', available: true }
   ],
   'poke_215_form_sneasel_hisuian': [
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft primär aus 7km-Freundschafts-Eiern (Geschenke) oder in 1-Stern-Raids.', available: true }
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Primarily hatches from 7km Gift Eggs or in 1-Star Raids.', available: true }
   ],
   'poke_194_form_wooper_paldea': [
-    { type: 'wild', label: 'Wildnis', badgeColor: 'emerald', description: 'Erscheint in der Wildnis auf der Karte.', available: true },
-    { type: 'egg', label: '7km-Ei', badgeColor: 'amber', description: 'Schlüpft auch aus 7km-Eiern.', available: true }
+    { type: 'wild', label: 'Wild', badgeColor: 'emerald', description: 'Spawns in the wild on the map.', available: true },
+    { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Also hatches from 7km Eggs.', available: true }
   ],
   'poke_705_special_hisuian': [
-    { type: 'raid', label: '3-Sterne-Raid / Entwicklung', badgeColor: 'rose', description: 'Erscheint in 3-Sterne-Raids oder durch Entwickeln von Viscora mit Bonbons bei Regen.', available: true }
+    { type: 'raid', label: '3-Star Raid / Evolution', badgeColor: 'rose', description: 'Appears in 3-Star Raids or by evolving Goomy with Candy during rain.', available: true }
   ],
 
   // ── Evolved Regional Forms (Evolution from Regional Base) ─
   'poke_20_form_raticate_alola': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Alola-Rattfratz mit 25 Bonbons bei Nacht.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Alolan Rattata with 25 Candy at night.', available: true }
   ],
   'poke_28_form_sandslash_alola': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Alola-Sandan mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Alolan Sandshrew with 50 Candy.', available: true }
   ],
   'poke_38_form_ninetales_alola': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Alola-Vulpix mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Alolan Vulpix with 50 Candy.', available: true }
   ],
   'poke_51_form_dugtrio_alola': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Alola-Digda mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Alolan Diglett with 50 Candy.', available: true }
   ],
   'poke_53_form_persian_alola': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Alola-Mauzi mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Alolan Meowth with 50 Candy.', available: true }
   ],
   'poke_75_form_graveler_alola': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Alola-Kleinstein mit 25 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Alolan Geodude with 25 Candy.', available: true }
   ],
   'poke_76_form_golem_alola': [
-    { type: 'evolution', label: 'Entwicklung / Tausch', badgeColor: 'indigo', description: 'Entwickelt sich aus Alola-Georok mit 100 Bonbons (oder kostenlos nach Tausch).', available: true }
+    { type: 'evolution', label: 'Evolution / Trade', badgeColor: 'indigo', description: 'Evolves from Alolan Graveler with 100 Candy (or free via Trade).', available: true }
   ],
   'poke_89_form_muk_alola': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Alola-Sleima mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Alolan Grimer with 50 Candy.', available: true }
   ],
   'poke_78_form_rapidash_galarian': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Galar-Ponita mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Galarian Ponyta with 50 Candy.', available: true }
   ],
   'poke_80_form_slowbro_galarian': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Galar-Flegmon (50 Bonbons + 30 Gift-Pokémon fangen als Kumpel).', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Galarian Slowpoke (50 Candy + catch 30 Poison-type Pokémon as buddy).', available: true }
   ],
   'poke_199_form_slowking_galarian': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Galar-Flegmon (50 Bonbons + 30 Psycho-Pokémon fangen als Kumpel).', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Galarian Slowpoke (50 Candy + catch 30 Psychic-type Pokémon as buddy).', available: true }
   ],
   'poke_264_form_linoone_galarian': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Galar-Zigzachs mit 25 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Galarian Zigzagoon with 25 Candy.', available: true }
   ],
   'poke_555_form_darmanitan_galarian_standard': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Galar-Flampion mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Galarian Darumaka with 50 Candy.', available: true }
   ],
   'poke_555_form_darmanitan_galarian_zen': [
-    { type: 'special', label: 'Zen-Modus', badgeColor: 'pink', description: 'Spezielle Zen-Modus-Form bei Events.', available: true }
+    { type: 'special', label: 'Zen Mode', badgeColor: 'pink', description: 'Special Zen Mode form featured during events.', available: true }
   ],
   'poke_59_form_arcanine_hisuian': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Hisui-Fukano mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Hisuian Growlithe with 50 Candy.', available: true }
   ],
   'poke_101_form_electrode_hisuian': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Hisui-Voltobal mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Hisuian Voltorb with 50 Candy.', available: true }
   ],
   'poke_571_form_zoroark_hisuian': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Hisui-Zorua mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Hisuian Zorua with 50 Candy.', available: true }
   ],
   'poke_706_special_hisuian': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus Hisui-Viscargot mit 100 Bonbons bei Regen / Regen-Lockmodul.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Hisuian Sliggoo with 100 Candy during rain / Rainy Lure Module.', available: true }
   ],
 
   // ── Paldean Tauros Breeds ──────────────────────────────────
   'poke_128_form_tauros_paldea_combat': [
-    { type: 'wild', label: 'Event-Wildnis', badgeColor: 'emerald', description: 'Erscheint während weltweiter Paldea-Events in der Wildnis.', available: true }
+    { type: 'wild', label: 'Event Wild', badgeColor: 'emerald', description: 'Spawns in the wild during worldwide Paldea events.', available: true }
   ],
   'poke_128_form_tauros_paldea_blaze': [
-    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Erscheint in freier Wildbahn exklusiv in Spanien und Portugal.', available: true }
+    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Spawns in the wild exclusively in Spain and Portugal.', available: true }
   ],
   'poke_128_form_tauros_paldea_aqua': [
-    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Erscheint in freier Wildbahn exklusiv in Großbritannien und Irland.', available: true }
+    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Spawns in the wild exclusively in the United Kingdom and Ireland.', available: true }
   ],
 
   // ── Burmy & Wormadam Cloaks ────────────────────────────────
   'poke_412_base': [
-    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Pflanzenumhang erscheint wild in Europa, Afrika, Naher Osten und Indien.', available: true }
+    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Plant Cloak spawns wild in Europe, Africa, Middle East, and India.', available: true }
   ],
   'poke_412_special_sandy': [
-    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Sandumhang erscheint wild in Nord- und Südamerika sowie Grönland.', available: true }
+    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Sandy Cloak spawns wild in North and South America, and Greenland.', available: true }
   ],
   'poke_412_special_trash': [
-    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Lumpenumhang erscheint wild im asiatisch-pazifischen Raum.', available: true }
+    { type: 'wild', label: 'Wild (Regional)', badgeColor: 'emerald', description: 'Trash Cloak spawns wild in the Asia-Pacific region.', available: true }
   ],
   'poke_413_base': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus weiblichem Burmy (Pflanzenumhang) mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from female Plant Cloak Burmy with 50 Candy.', available: true }
   ],
   'poke_413_special_sandy': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus weiblichem Burmy (Sandumhang) mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from female Sandy Cloak Burmy with 50 Candy.', available: true }
   ],
   'poke_413_special_trash': [
-    { type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo', description: 'Entwickelt sich aus weiblichem Burmy (Lumpenumhang) mit 50 Bonbons.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from female Trash Cloak Burmy with 50 Candy.', available: true }
   ],
 };
 
@@ -508,39 +508,39 @@ const FORM_OBTAIN_METHODS: Record<string, ObtainMethodDetail[]> = {
 // SPECIAL NOTES PER SPECIES
 // ============================================================
 const SPECIAL_NOTES: Record<number, string> = {
-  132:  'Ditto versteckt sich als anderes Pokémon. Es kann nicht direkt gefangen werden — es enthüllt sich erst nach dem Fangen.',
-  151:  'Mew ist nur über das spezielle Forschungsprojekt "Eine mysteriöse Entdeckung" erhältlich.',
-  201:  'Unown hat 28 verschiedene Buchstaben-Formen. Jede Form erscheint selten bei Events oder in bestimmten Regionen.',
-  235:  'Smeargle kann über den Fotomodus (Schnappschüsse) erscheinen — es schleicht sich ins Foto und kann danach gefangen werden.',
-  480:  'Uxie erscheint weltweit in 5-Sterne-Raids für Trainer mit Fern-Raid-Einladung. In freier Wildbahn extrem selten an Seen in Asien-Pazifik.',
-  481:  'Mesprit erscheint weltweit in 5-Sterne-Raids für Trainer mit Fern-Raid-Einladung. In freier Wildbahn extrem selten an Seen in Europa/Afrika/Nahost.',
-  482:  'Azelf erscheint weltweit in 5-Sterne-Raids für Trainer mit Fern-Raid-Einladung. In freier Wildbahn extrem selten an Seen in Amerika & Grönland.',
-  489:  'Phione ist noch nicht in Pokémon GO verfügbar.',
-  490:  'Manaphy ist noch nicht in Pokémon GO verfügbar.',
-  493:  'Arceus ist noch nicht in Pokémon GO verfügbar.',
-  649:  'Genesect hat viele Antrieb-Formen, die bei Events in 5-Sterne-Raids erscheinen.',
-  664:  'Purmel wird durch das Anheften von Postkarten von Freunden aus aller Welt im Postkartenbuch freigeschaltet.',
-  666:  'Vivillons Muster hängt von der Region ab, aus der du Postkarten anheftest.',
-  676:  'Coiffwaff kann durch Formschnitt verschiedene Frisuren annehmen, wovon einige an bestimmte Länder gebunden sind.',
-  720:  'Hoopa Eingeschränkt und Entfesselt sind über spezielle Events und Forschungsaufgaben erhältlich.',
-  789:  'Cosmog ist eine seltene Belohnung aus speziellen Forschungsaufgaben.',
-  794:  'Masskito (Buzzwole) erscheint in 5-Sterne-Raids in Amerika & Grönland. Fern-Raids weltweit möglich.',
-  795:  'Schabelle (Pheromosa) erscheint in 5-Sterne-Raids in Europa, MEA & Indien. Fern-Raids weltweit möglich.',
-  796:  'Voltriant (Xurkitree) erscheint in 5-Sterne-Raids in Asien-Pazifik. Fern-Raids weltweit möglich.',
-  797:  'Kaguron (Celesteela) erscheint in 5-Sterne-Raids auf der Südhalbkugel. Fern-Raids weltweit möglich.',
-  798:  'Katagami (Kartana) erscheint in 5-Sterne-Raids auf der Nordhalbkugel. Fern-Raids weltweit möglich.',
-  801:  'Magearna ist noch nicht in Pokémon GO verfügbar.',
-  805:  'Muramura (Stakataka) erscheint in 5-Sterne-Raids in der östlichen Hemisphäre. Fern-Raids weltweit möglich.',
-  806:  'Kopplosio (Blacephalon) erscheint in 5-Sterne-Raids in der westlichen Hemisphäre. Fern-Raids weltweit möglich.',
-  808:  'Meltan kann nur mit der Meltan-Box gefangen werden. Diese wird durch Verbindung mit Pokémon HOME aktiviert.',
-  809:  'Melmetal entwickelt sich aus Meltan mit 400 Bonbons und kann in speziellen Raids erscheinen.',
-  874:  'Humanolith (Stonjourner) ist ein regionales Pokémon und spawnt ausschließlich in Großbritannien.',
-  893:  'Zarude ist über saisonale spezielle Forschungsaufgaben erhältlich.',
-  896:  'Glastrier ist noch nicht in Pokémon GO verfügbar.',
-  897:  'Spectrier ist noch nicht in Pokémon GO verfügbar.',
-  898:  'Coronospa ist noch nicht in Pokémon GO verfügbar.',
-  999:  'Gimmighoul (Wandelform) erscheint ausschließlich an goldenen PokéStops und über den Münzbeutel.',
-  1000: 'Gholdengo entwickelt sich aus Gimmighoul mit 999 Gimmighoul-Münzen.',
+  132:  'Ditto disguises itself as other common Pokémon. It cannot be caught directly — it reveals itself only after being caught.',
+  151:  'Mew is only obtainable via the Special Research storyline "A Mythical Discovery".',
+  201:  'Unown has 28 letter forms. Forms spawn rarely during global events or in specific regions.',
+  235:  'Smeargle can appear via snapshot mode (photobomb) — it photobombs your picture and then spawns on the map.',
+  480:  'Uxie appears worldwide in 5-Star Raids for trainers invited via Remote Raid Pass. Extremely rare wild spawn near lakes/water in Asia-Pacific.',
+  481:  'Mesprit appears worldwide in 5-Star Raids for trainers invited via Remote Raid Pass. Extremely rare wild spawn near lakes/water in Europe/Africa/MEA.',
+  482:  'Azelf appears worldwide in 5-Star Raids for trainers invited via Remote Raid Pass. Extremely rare wild spawn near lakes/water in the Americas & Greenland.',
+  489:  'Phione is not yet available in Pokémon GO.',
+  490:  'Manaphy is not yet available in Pokémon GO.',
+  493:  'Arceus is not yet available in Pokémon GO.',
+  649:  'Genesect has multiple Drive forms featured in 5-Star Raids during events.',
+  664:  'Scatterbug is encountered by pinning postcards from friends around the world in your Postcard Book.',
+  666:  "Vivillon's wing pattern depends on the region from which you pin postcards.",
+  676:  'Furfrou can adopt different trims using form change, several of which are locked to specific real-world regions.',
+  720:  'Hoopa Confined and Unbound are obtainable via special events and research storylines.',
+  789:  'Cosmog is a rare reward from special research storylines.',
+  794:  'Buzzwole appears in 5-Star Raids in the Americas & Greenland. Remote Raids are globally accessible.',
+  795:  'Pheromosa appears in 5-Star Raids in Europe, MEA & India. Remote Raids are globally accessible.',
+  796:  'Xurkitree appears in 5-Star Raids in Asia-Pacific. Remote Raids are globally accessible.',
+  797:  'Celesteela appears in 5-Star Raids in the Southern Hemisphere. Remote Raids are globally accessible.',
+  798:  'Kartana appears in 5-Star Raids in the Northern Hemisphere. Remote Raids are globally accessible.',
+  801:  'Magearna is not yet available in Pokémon GO.',
+  805:  'Stakataka appears in 5-Star Raids in the Eastern Hemisphere. Remote Raids are globally accessible.',
+  806:  'Blacephalon appears in 5-Star Raids in the Western Hemisphere. Remote Raids are globally accessible.',
+  808:  'Meltan can only be caught using the Mystery Box, which is activated by transferring a Pokémon to Pokémon HOME or Let\'s Go.',
+  809:  'Melmetal evolves from Meltan with 400 Meltan Candy and can appear in special raids.',
+  874:  'Stonjourner is a regional Pokémon that spawns exclusively in the wild in the United Kingdom.',
+  893:  'Zarude is obtainable via seasonal Special Research storylines.',
+  896:  'Glastrier is not yet available in Pokémon GO.',
+  897:  'Spectrier is not yet available in Pokémon GO.',
+  898:  'Calyrex is not yet available in Pokémon GO.',
+  999:  'Gimmighoul (Roaming Form) appears exclusively around Golden PokéStops and when using the Coin Bag.',
+  1000: 'Gholdengo evolves from Gimmighoul using 999 Gimmighoul Coins.',
 };
 
 // ============================================================
@@ -548,60 +548,60 @@ const SPECIAL_NOTES: Record<number, string> = {
 // ============================================================
 const ALTERNATIVE_DEX_METHODS: Record<number, DexAlternativeMethod[]> = {
   83: [
-    { type: 'form', title: 'Galar-Porenta fangen', description: 'Galar-Porenta (#083) schlüpft weltweit aus 7km-Eiern oder Raids und registriert denselben Dex-Eintrag wie Kanto-Porenta.', badgeLabel: 'Galar-Form' }
+    { type: 'form', title: "Catch Galarian Farfetch'd", description: "Galarian Farfetch'd (#083) hatches worldwide from 7km Eggs or Raids and shares the same Pokédex entry as Kantonian Farfetch'd.", badgeLabel: 'Galarian Form', relatedPokemonId: 'poke_83_form_farfetchd_galarian' }
   ],
   115: [
-    { type: 'mega_raid', title: 'Mega-Kangama Raid', description: 'Mega-Kangama kann weltweit in Mega-Raids bekämpft werden. Ein erfolgreicher Fang registriert #115 Kangama im Pokédex.', badgeLabel: 'Mega-Raid' }
+    { type: 'mega_raid', title: 'Mega Kangaskhan Raid', description: 'Mega Kangaskhan can be battled worldwide in Mega Raids. A successful catch registers #115 Kangaskhan in your Pokédex.', badgeLabel: 'Mega Raid' }
   ],
   122: [
-    { type: 'form', title: 'Galar-Pantimos fangen', description: 'Galar-Pantimos ist weltweit bei Events erhältlich und registriert denselben Dex-Eintrag #122 wie das reguläre Pantimos.', badgeLabel: 'Galar-Form' },
-    { type: 'baby_egg', title: 'Pantimimi aus Geschenken schlüpfen', description: 'Pantimimi (#439) schlüpft aus 5km-Eiern, die von europäischen Freunden gesendet werden, und registriert den Dex-Eintrag beim Entwickeln.', badgeLabel: 'Baby-Ei' }
+    { type: 'form', title: 'Catch Galarian Mr. Mime', description: 'Galarian Mr. Mime is available worldwide during events and registers Pokédex entry #122.', badgeLabel: 'Galarian Form', relatedPokemonId: 'poke_122_form_mr_mime_galarian' },
+    { type: 'baby_egg', title: 'Hatch Mime Jr. from Gifts', description: 'Mime Jr. (#439) hatches from 5km Eggs sent by European friends and registers the Pokédex entry upon evolution.', badgeLabel: 'Baby Egg', relatedPokemonId: 'poke_439_base' }
   ],
   128: [
-    { type: 'form', title: 'Paldea-Tauros fangen', description: 'Paldea-Tauros (Gefechtsvariante) erscheint bei Events weltweit und teilt den Dex-Eintrag #128. Auch die Blaze- und Aqua-Formen registrieren #128.', badgeLabel: 'Paldea-Form' }
+    { type: 'form', title: 'Catch Paldean Tauros', description: 'Paldean Tauros (Combat Breed) appears worldwide during events and shares Pokédex entry #128. Blaze and Aqua Breeds also register #128.', badgeLabel: 'Paldean Form', relatedPokemonId: 'poke_128_form_tauros_paldea_combat' }
   ],
   214: [
-    { type: 'mega_raid', title: 'Mega-Skaraborn Raid', description: 'Mega-Skaraborn (Heracross) erscheint weltweit in Mega-Raids und registriert bei erfolgreichem Fang den Dex-Eintrag #214.', badgeLabel: 'Mega-Raid' },
-    { type: 'remote_raid', title: 'Remote-Raid', description: 'Wenn Skaraborn oder Mega-Skaraborn in Raids erscheint, können Remote-Raid-Pässe genutzt werden.', badgeLabel: 'Remote-Raid' }
+    { type: 'mega_raid', title: 'Mega Heracross Raid', description: 'Mega Heracross appears worldwide in Mega Raids and registers Pokédex entry #214 upon capture.', badgeLabel: 'Mega Raid' },
+    { type: 'remote_raid', title: 'Remote Raid', description: 'When Heracross or Mega Heracross appears in Raids, Remote Raid Passes can be used worldwide.', badgeLabel: 'Remote Raid' }
   ],
   222: [
-    { type: 'form', title: 'Galar-Corasonn fangen', description: 'Galar-Corasonn ist weltweit aus 7km-Eiern und bei Spezialforschungen erhältlich und registriert denselben Dex-Eintrag #222.', badgeLabel: 'Galar-Form' }
+    { type: 'form', title: 'Catch Galarian Corsola', description: 'Galarian Corsola is available worldwide from 7km Eggs and Special Research, registering Pokédex entry #222.', badgeLabel: 'Galarian Form', relatedPokemonId: 'poke_222_form_corsola_galarian' }
   ],
   337: [
-    { type: 'event', title: 'Hemisphären-Tausch Events', description: 'Lunastein und Sonnfel tauschen bei bestimmten Events (z.B. Sommer/Winter) die Hemisphären.', badgeLabel: 'Event-Tausch' }
+    { type: 'event', title: 'Hemisphere Swap Events', description: 'Lunatone and Solrock swap hemispheres during specific seasonal events (e.g. Solstice).', badgeLabel: 'Event Swap' }
   ],
   338: [
-    { type: 'event', title: 'Hemisphären-Tausch Events', description: 'Sonnfel und Lunastein tauschen bei bestimmten Events (z.B. Sommer/Winter) die Hemisphären.', badgeLabel: 'Event-Tausch' }
+    { type: 'event', title: 'Hemisphere Swap Events', description: 'Solrock and Lunatone swap hemispheres during specific seasonal events (e.g. Solstice).', badgeLabel: 'Event Swap' }
   ],
   480: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Uxie erscheint in 5-Sterne-Raids in Asien-Pazifik. Nutze einen Remote-Raid-Pass über Apps (z.B. PokeGenie) oder Freundeseinladungen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Uxie appears in 5-Star Raids in Asia-Pacific. Join remotely using a Remote Raid Pass via friend invitations or raid apps (e.g. PokéGenie).', badgeLabel: 'Remote Raid' }
   ],
   481: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Mesprit erscheint in 5-Sterne-Raids in Europa/Afrika/Nahost. Nutze einen Remote-Raid-Pass über Freundeseinladungen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Mesprit appears in 5-Star Raids in Europe/Africa/MEA. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
   482: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Azelf erscheint in 5-Sterne-Raids in Amerika & Grönland. Nutze einen Remote-Raid-Pass über Freundeseinladungen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Azelf appears in 5-Star Raids in the Americas & Greenland. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
   794: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Masskito (Buzzwole) erscheint in Raids in Amerika & Grönland. Du kannst über Fern-Raid-Einladungen von Freunden teilnehmen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Buzzwole appears in Raids in the Americas & Greenland. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
   795: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Schabelle (Pheromosa) erscheint in Raids in Europa/MEA/Indien. Du kannst über Fern-Raid-Einladungen von Freunden teilnehmen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Pheromosa appears in Raids in Europe/MEA/India. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
   796: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Voltriant (Xurkitree) erscheint in Raids in Asien-Pazifik. Du kannst über Fern-Raid-Einladungen von Freunden teilnehmen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Xurkitree appears in Raids in Asia-Pacific. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
   797: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Kaguron (Celesteela) erscheint in Raids auf der Südhalbkugel. Du kannst über Fern-Raid-Einladungen weltweit teilnehmen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Celesteela appears in Raids in the Southern Hemisphere. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
   798: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Katagami (Kartana) erscheint in Raids auf der Nordhalbkugel. Du kannst über Fern-Raid-Einladungen weltweit teilnehmen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Kartana appears in Raids in the Northern Hemisphere. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
   805: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Muramura (Stakataka) erscheint in Raids in der östlichen Hemisphäre. Nutze einen Remote-Raid-Pass für Einladungen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Stakataka appears in Raids in the Eastern Hemisphere. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
   806: [
-    { type: 'remote_raid', title: 'Remote-Raid (Weltweite Einladung)', description: 'Kopplosio (Blacephalon) erscheint in Raids in der westlichen Hemisphäre. Nutze einen Remote-Raid-Pass für Einladungen.', badgeLabel: 'Remote-Raid' }
+    { type: 'remote_raid', title: 'Remote Raid (Worldwide Invitation)', description: 'Blacephalon appears in Raids in the Western Hemisphere. Join remotely using a Remote Raid Pass via friend invitations.', badgeLabel: 'Remote Raid' }
   ],
 };
 
@@ -621,105 +621,105 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   } else if (UNRELEASED_DEX_NRS.has(dex)) {
     // Unreleased in GO
     methods.push({
-      type: 'special', label: 'Nicht im Spiel', badgeColor: 'slate',
-      description: 'Dieses Pokémon ist derzeit noch nicht in Pokémon GO verfügbar.',
+      type: 'special', label: 'Not in GO', badgeColor: 'slate',
+      description: 'This Pokémon is currently not available in Pokémon GO.',
       available: false
     });
     return methods;
   } else if (BABY_EGG_POKEMON.has(dex)) {
     // Baby egg only (no wild spawns)
     methods.push({
-      type: 'egg', label: 'Ei', badgeColor: 'amber',
-      description: 'Schlüpft ausschließlich aus Eiern (2km, 5km oder 7km). Kann nicht in freier Wildbahn gefangen werden.',
+      type: 'egg', label: 'Egg', badgeColor: 'amber',
+      description: 'Hatches exclusively from Eggs (2km, 5km, or 7km). Cannot be encountered in the wild.',
       available: true
     });
     return methods;
   } else if (dex === 808) {
     // Meltan
     methods.push({
-      type: 'special', label: 'Meltan-Box', badgeColor: 'pink',
-      description: 'Erscheint nach Aktivierung der Meltan-Box durch Verbindung mit Pokémon HOME oder Let\'s Go.',
+      type: 'special', label: 'Mystery Box', badgeColor: 'pink',
+      description: "Spawns after activating the Mystery Box by connecting to Pokémon HOME or Let's Go.",
       available: true
     });
     return methods;
   } else if (dex === 809) {
     // Melmetal
     methods.push({
-      type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo',
-      description: 'Entwickelt sich aus Meltan mit 400 Meltan-Bonbons.',
+      type: 'evolution', label: 'Evolution', badgeColor: 'indigo',
+      description: 'Evolves from Meltan with 400 Meltan Candy.',
       available: true
     });
     return methods;
   } else if (dex === 235) {
     // Smeargle
     methods.push({
-      type: 'special', label: 'Foto-Bomb', badgeColor: 'pink',
-      description: 'Erscheint nach Schnappschüssen (Fotomodus). Schleicht sich zufällig ins Bild.',
+      type: 'special', label: 'Photobomb', badgeColor: 'pink',
+      description: 'Appears via GO Snapshot mode. Randomly photobombs your photo and then spawns on the map.',
       available: true
     });
     return methods;
   } else if (dex === 132) {
     // Ditto
     methods.push({
-      type: 'wild', label: 'Als Tarnform', badgeColor: 'emerald',
-      description: 'Tarnt sich als häufige Wildtiere (z.B. Taubsi, Digda). Enthüllt sich erst nach dem Fangen.',
+      type: 'wild', label: 'Disguised Spawn', badgeColor: 'emerald',
+      description: 'Disguises itself as common wild Pokémon. Only reveals itself after being caught.',
       available: true
     });
     return methods;
   } else if (dex === 999) {
     // Gimmighoul
     methods.push({
-      type: 'special', label: 'Münzbeutel / Gold-Stop', badgeColor: 'pink',
-      description: 'Erscheint durch Aktivierung des Münzbeutels (Verbindung mit Pokémon Karmesin/Purpur) oder an Goldenen PokéStops.',
+      type: 'special', label: 'Coin Bag / Golden Stop', badgeColor: 'pink',
+      description: 'Spawns by activating the Coin Bag (connected to Pokémon Scarlet/Violet) or around Golden PokéStops.',
       available: true
     });
     return methods;
   } else if (dex === 1000) {
     // Gholdengo
     methods.push({
-      type: 'evolution', label: 'Entwicklung', badgeColor: 'indigo',
-      description: 'Entwickelt sich aus Gimmighoul mit 999 Gimmighoul-Münzen.',
+      type: 'evolution', label: 'Evolution', badgeColor: 'indigo',
+      description: 'Evolves from Gimmighoul using 999 Gimmighoul Coins.',
       available: true
     });
     return methods;
   } else if (dex === 664 || dex === 666) {
     // Scatterbug & Vivillon
     methods.push({
-      type: 'special', label: 'Postkarten-Buch', badgeColor: 'pink',
-      description: 'Wird durch das Anheften von Postkarten (Geschenke von Freunden) aus verschiedenen Weltregionen freigeschaltet.',
+      type: 'special', label: 'Postcard Book', badgeColor: 'pink',
+      description: 'Unlocked by pinning postcards received from friend gifts across different world regions.',
       available: true
     });
   } else if (REGIONAL_RAID_DEX_NRS.has(dex)) {
     // Ultra Beasts & regional raid exclusives (NO wild spawns!)
     methods.push({
-      type: 'raid', label: '5-Sterne-Raid (Regional)', badgeColor: 'rose',
-      description: 'Erscheint als 5-Sterne-Raid-Boss exklusiv in seiner Heimatregion (nicht in freier Wildbahn). Kann weltweit über Fern-Raid-Einladungen gefangen werden.',
+      type: 'raid', label: '5-Star Raid (Regional)', badgeColor: 'rose',
+      description: 'Appears as a 5-Star Raid Boss exclusively in its native region (not in the wild). Can be caught worldwide via Remote Raid invitations.',
       available: true
     });
   } else if (REGIONAL_LAKE_TRIO_DEX_NRS.has(dex)) {
     // Lake Trio: regional raid + ultra rare wild
     methods.push({
-      type: 'raid', label: '5-Sterne-Raid (Regional)', badgeColor: 'rose',
-      description: 'Erscheint als 5-Sterne-Raid-Boss in seiner Heimatregion (oder weltweit per Fern-Raid-Einladung).',
+      type: 'raid', label: '5-Star Raid (Regional)', badgeColor: 'rose',
+      description: 'Appears as a 5-Star Raid Boss in its native region (or worldwide via Remote Raid invitations).',
       available: true
     });
     methods.push({
-      type: 'wild', label: 'Wild (Regional - Extrem selten)', badgeColor: 'emerald',
-      description: 'Spawnt in freier Wildbahn extrem selten an Gewässern/Seen in seiner Heimatregion.',
+      type: 'wild', label: 'Wild (Regional - Extremely Rare)', badgeColor: 'emerald',
+      description: 'Spawns in the wild extremely rarely near bodies of water / lakes in its native region.',
       available: true
     });
   } else if (RAID_ONLY_DEX_NRS.has(dex)) {
     // Standard raid-only legendaries (NO wild spawns!)
     methods.push({
-      type: 'raid', label: '5-Sterne-Raid', badgeColor: 'rose',
-      description: 'Erscheint als 5-Sterne-Raid-Boss bei speziellen Raid-Stunden oder zeitlich begrenzten Events (nicht in freier Wildbahn).',
+      type: 'raid', label: '5-Star Raid', badgeColor: 'rose',
+      description: 'Appears as a 5-Star Raid Boss during featured raid rotations or limited-time events (not in the wild).',
       available: true
     });
   } else if (RESEARCH_ONLY_DEX_NRS.has(dex)) {
     // Special research mythicals
     methods.push({
-      type: 'research', label: 'Spezialforschung', badgeColor: 'blue',
-      description: 'Erhältlich ausschließlich über spezielle oder saisonale Forschungsaufgaben (nicht in der Wildnis).',
+      type: 'research', label: 'Special Research', badgeColor: 'blue',
+      description: 'Obtainable exclusively through special or seasonal research storylines (not in the wild).',
       available: true
     });
   } else {
@@ -730,8 +730,8 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
       type: 'wild', label: isRegional ? 'Wild (Regional)' : 'Wild',
       badgeColor: 'emerald',
       description: isRegional
-        ? 'Erscheint in der Wildnis, jedoch nur in bestimmten Regionen der Welt.'
-        : 'Erscheint in der Wildnis auf der Karte.',
+        ? 'Spawns in the wild, but only in specific regions of the world.'
+        : 'Spawns in the wild on the map.',
       available: true
     });
   }
@@ -749,8 +749,8 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   };
   if (!isFormOverride && eggDex[dex] && !methods.some(m => m.type === 'egg')) {
     methods.push({
-      type: 'egg', label: `${eggDex[dex]} Ei`, badgeColor: 'amber',
-      description: `Kann aus ${eggDex[dex]}-Eiern schlüpfen.`,
+      type: 'egg', label: `${eggDex[dex]} Egg`, badgeColor: 'amber',
+      description: `Can hatch from ${eggDex[dex]} Eggs.`,
       available: true
     });
   }
@@ -759,7 +759,7 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   if (pokemon.hasShadow) {
     methods.push({
       type: 'rocket', label: 'Team GO Rocket', badgeColor: 'purple',
-      description: 'Kann als Crypto-Pokémon nach dem Besiegen eines Team GO Rocket-Rüpels oder -Bosses gefangen werden.',
+      description: 'Can be caught as a Shadow Pokémon after defeating a Team GO Rocket Grunt or Leader.',
       available: true
     });
   }
@@ -767,8 +767,8 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   // Mega raids for eligible species
   if (MEGA_RAID_POKEMON.has(dex) && !methods.some(m => m.label.includes('Mega'))) {
     methods.push({
-      type: 'raid', label: 'Mega-Raid', badgeColor: 'rose',
-      description: 'Kann als Mega-Entwicklung in Mega-Raids bekämpft und danach in der Basisform gefangen werden.',
+      type: 'raid', label: 'Mega Raid', badgeColor: 'rose',
+      description: 'Can be battled as a Mega Evolution in Mega Raids and caught afterwards in its base form.',
       available: true
     });
   }
@@ -777,8 +777,8 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   const researchCommon = new Set([25, 50, 56, 66, 92, 147, 246, 349]);
   if (!isFormOverride && researchCommon.has(dex) && !methods.some(m => m.type === 'research')) {
     methods.push({
-      type: 'research', label: 'Feldforschung', badgeColor: 'blue',
-      description: 'Erscheint häufig als Belohnung in Feldforschungsaufgaben.',
+      type: 'research', label: 'Field Research', badgeColor: 'blue',
+      description: 'Frequently appears as an encounter reward in Field Research tasks.',
       available: true
     });
   }
@@ -809,7 +809,8 @@ export function getPokemonDetailInfo(pokemon: any, allPokemonList: any[]): Pokem
   }
 
   const obtainMethods = buildObtainMethods(pokemon);
-  const manualAlternatives = ALTERNATIVE_DEX_METHODS[dex] || [];
+  const manualAlternatives = (ALTERNATIVE_DEX_METHODS[dex] || [])
+    .filter(m => !m.relatedPokemonId || m.relatedPokemonId !== id);
 
   // Dynamically add form-based alternatives
   const relatedForms = (allPokemonList || []).filter(
@@ -829,13 +830,38 @@ export function getPokemonDetailInfo(pokemon: any, allPokemonList: any[]): Pokem
       }
       return fn.includes('galar') || fn.includes('alola') || fn.includes('hisui') || fn.includes('paldea');
     })
-    .map(f => ({
-      type: 'form' as const,
-      title: `${f.name} fangen`,
-      description: `${f.name} ist eine alternative Form und teilt den Dex-Eintrag #${String(dex).padStart(4, '0')}. Das Fangen dieser Form registriert ebenfalls den Pokédex-Eintrag.`,
-      relatedPokemonId: f.id,
-      badgeLabel: f.formName || 'Alternative Form'
-    }));
+    .map(f => {
+      const isStandard = f.formName === 'Standard' || f.category === 'standard';
+      const fullName = isStandard
+        ? (f.name.toLowerCase().startsWith('standard') ? f.name : `Standard ${f.name}`)
+        : f.name;
+
+      let description: string;
+      if (isStandard) {
+        let obtainHint = 'the wild or eggs';
+        if (RAID_ONLY_DEX_NRS.has(dex)) {
+          obtainHint = '5-Star Raids';
+        } else if (REGIONAL_DEX_NRS.has(dex)) {
+          obtainHint = 'regional wild spawns';
+        } else if (RESEARCH_ONLY_DEX_NRS.has(dex)) {
+          obtainHint = 'Special Research';
+        }
+        description = `${fullName} is the original base form (available via ${obtainHint}) and shares Pokédex entry #${String(dex).padStart(4, '0')}. Catching it also registers this entry in your Pokédex.`;
+      } else {
+        const formTag = f.formName ? `${f.formName} ` : '';
+        const formMethod = FORM_OBTAIN_METHODS[f.id]?.[0]?.label;
+        const formHint = formMethod ? ` (available via ${formMethod})` : '';
+        description = `${fullName} is an alternative ${formTag}form${formHint} that shares Pokédex entry #${String(dex).padStart(4, '0')}. Catching it also registers this entry in your Pokédex.`;
+      }
+
+      return {
+        type: 'form' as const,
+        title: `Catch ${fullName}`,
+        description,
+        relatedPokemonId: f.id,
+        badgeLabel: isStandard ? 'Standard Form' : (f.formName ? `${f.formName} Form` : 'Alternative Form')
+      };
+    });
 
   // Deduplicate: don't add form alternatives if manually specified
   const manualIds = new Set(manualAlternatives.map(m => m.relatedPokemonId).filter(Boolean));
