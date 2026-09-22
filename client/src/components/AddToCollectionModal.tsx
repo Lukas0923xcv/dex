@@ -99,6 +99,7 @@ export const AddToCollectionModal: React.FC<AddToCollectionModalProps> = ({
             <div className="space-y-2 max-h-60 overflow-y-auto pr-1">
               {collections.map((coll) => {
                 const itemIds = storage.getCollectionItemIds(coll.id);
+                const isInColl = itemIds.has(pokemon.id);
                 const isPending = pendingToggles.has(coll.id);
 
                 return (
