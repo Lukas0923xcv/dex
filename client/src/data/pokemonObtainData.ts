@@ -10,8 +10,8 @@ const REGIONAL_DATA: Record<number, RegionalInfo> = {
   128: { isRegional: true, regionName: 'Nordamerika', countries: 'USA, Kanada, Mexiko (westliche Hemisphäre)', notes: 'Paldea-Formen teilen denselben Dex-Eintrag und können weltweit erscheinen' },
   214: { isRegional: true, regionName: 'Lateinamerika / Teile Europas', countries: 'Lateinamerika, Florida, Texas, Spanien, Portugal', notes: 'Kann als Mega-Heracross-Raid auch außerhalb erscheinen' },
   222: { isRegional: true, regionName: 'Tropische Regionen', hemisphere: 'Innerhalb ±26° Breitengrad (tropische Zone)', countries: 'Südliche USA, Karibbik, Südostasien, Nordaustralien', notes: 'Galar-Corsola registriert ebenfalls #222 und ist weltweit verfügbar' },
-  313: { isRegional: true, regionName: 'Europa / Asien / Ozeanien', countries: 'Europa, Asien, Australien, Neuseeland', notes: 'Gegenstück zu Volbeat (Amerika/Afrika)' },
-  314: { isRegional: true, regionName: 'Amerika / Afrika', countries: 'Nord- und Südamerika, Afrika', notes: 'Gegenstück zu Illumine (Europa/Asien/Ozeanien)' },
+  313: { isRegional: true, regionName: 'Europa / Asien / Ozeanien', countries: 'Europa, Asien, Australien, Neuseeland', notes: 'Gegenstück zu Illumise (Amerika/Afrika)' },
+  314: { isRegional: true, regionName: 'Amerika / Afrika', countries: 'Nord- und Südamerika, Afrika', notes: 'Gegenstück zu Volbeat (Europa/Asien/Ozeanien)' },
   324: { isRegional: true, regionName: 'Südasien / Südostasien', countries: 'Indien, Nepal, Thailand, Indonesien, Teile Chinas' },
   335: { isRegional: true, regionName: 'Europa / Asien / Ozeanien', countries: 'Europa, Asien, Australien', notes: 'Kann gelegentlich mit Seviper die Hemisphäre tauschen' },
   336: { isRegional: true, regionName: 'Amerika / Afrika', countries: 'Amerika, Afrika', notes: 'Kann gelegentlich mit Zangoose die Hemisphäre tauschen' },
@@ -22,24 +22,26 @@ const REGIONAL_DATA: Record<number, RegionalInfo> = {
   417: { isRegional: true, regionName: 'Arktische Regionen', countries: 'Kanada, Alaska, Russland, nördliche Skandinavien' },
   441: { isRegional: true, regionName: 'Südliche Hemisphäre', hemisphere: 'Südliche Hemisphäre', countries: 'Südamerika, Südafrika, Australien, Neuseeland' },
   455: { isRegional: true, regionName: 'Südostliche USA', countries: 'Carolinas, Georgia, Florida-Bereich' },
-  480: { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, Australien, Südostasien, Indien', notes: 'Uxie erscheint in See-Raids für alle, aber nur in Asien-Pazifik-Regionen wild' },
-  481: { isRegional: true, regionName: 'Europa / Afrika / Mittlerer Osten', countries: 'Europa, Afrika, Indien, Naher Osten', notes: 'Mesprit erscheint in See-Raids für alle, aber nur in Europa/Afrika/Nahost wild' },
-  482: { isRegional: true, regionName: 'Amerika / Grönland', countries: 'Amerika, Grönland', notes: 'Azelf erscheint in See-Raids für alle, aber nur in Amerika wild' },
+  480: { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, Australien, Südostasien, Indien', notes: 'Uxie erscheint in 5-Sterne-Raids für alle, aber in freier Wildbahn nur in Asien-Pazifik' },
+  481: { isRegional: true, regionName: 'Europa / Afrika / Mittlerer Osten', countries: 'Europa, Afrika, Indien, Naher Osten', notes: 'Mesprit erscheint in 5-Sterne-Raids für alle, aber in freier Wildbahn nur in Europa/Afrika/Nahost' },
+  482: { isRegional: true, regionName: 'Amerika / Grönland', countries: 'Amerika, Grönland', notes: 'Azelf erscheint in 5-Sterne-Raids für alle, aber in freier Wildbahn nur in Amerika' },
   538: { isRegional: true, regionName: 'Amerika / Afrika', countries: 'Nord- und Südamerika, Afrika', notes: 'Gegenstück zu Karadakra (Europa/Asien/Ozeanien)' },
   539: { isRegional: true, regionName: 'Europa / Asien / Ozeanien', countries: 'Europa, Asien, Australien', notes: 'Gegenstück zu Hadokhan (Amerika/Afrika)' },
   556: { isRegional: true, regionName: 'Südliche USA / Lateinamerika / Karibik', countries: 'Texas, Mexiko, Zentralamerika, Karibik' },
   561: { isRegional: true, regionName: 'Naher Osten / Ägypten / Griechenland', countries: 'Ägypten, Israel, Jordanien, Griechenland' },
   626: { isRegional: true, regionName: 'New York City', countries: 'Nur New York City und unmittelbare Umgebung' },
-  631: { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'Gegenstück zu Durantula (östliche Hemisphäre)' },
-  632: { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'Gegenstück zu Voltolos (westliche Hemisphäre)' },
-  701: { isRegional: true, regionName: 'Mexiko / Zentralamerika / Texas', countries: 'Mexiko, Zentralamerika, Texas, Teile Südwestliche USA' },
+  631: { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'Gegenstück zu Durant (östliche Hemisphäre)' },
+  632: { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'Gegenstück zu Heatmor (westliche Hemisphäre)' },
+  701: { isRegional: true, regionName: 'Mexiko / Zentralamerika / Texas', countries: 'Mexiko, Zentralamerika, Texas, Teile der südwestlichen USA' },
   707: { isRegional: true, regionName: 'Frankreich und Umgebung', countries: 'Frankreich, Belgien, Luxemburg, Schweiz' },
-  780: { isRegional: true, regionName: 'Hawaii', countries: 'Ausschließlich Hawaii (USA)' },
-  796: { isRegional: true, regionName: 'Südliche Hemisphäre', hemisphere: 'Südliche Hemisphäre (Remote Raids möglich)' },
-  797: { isRegional: true, regionName: 'Nördliche Hemisphäre', hemisphere: 'Nördliche Hemisphäre (Remote Raids möglich)' },
-  805: { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre (Remote Raids möglich)' },
-  806: { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre (Remote Raids möglich)' },
+  741: { isRegional: true, regionName: 'Verschiedene Regionen', countries: 'Pom-Pom: Amerika · Pa\'u: Afrika/Pazifik/Südasien · Sensu: Asien-Pazifik · Baile: Europa/Naher Osten/Afrika', notes: 'Jede Form ist in einer anderen Region exklusiv' },
+  764: { isRegional: true, regionName: 'Hawaii', countries: 'Ausschließlich Hawaii (USA)' },
+  797: { isRegional: true, regionName: 'Südliche Hemisphäre', hemisphere: 'Südliche Hemisphäre', notes: 'Remote-Raids möglich während Ultra-Bestien-Events' },
+  798: { isRegional: true, regionName: 'Nördliche Hemisphäre', hemisphere: 'Nördliche Hemisphäre', notes: 'Remote-Raids möglich während Ultra-Bestien-Events' },
+  805: { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'Remote-Raids möglich während Ultra-Bestien-Events' },
+  806: { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'Remote-Raids möglich während Ultra-Bestien-Events' },
 };
+
 
 export const REGIONAL_DEX_NRS = new Set<number>(Object.keys(REGIONAL_DATA).map(Number));
 
@@ -128,17 +130,17 @@ const ALTERNATIVE_DEX_METHODS: Record<number, DexAlternativeMethod[]> = {
   482: [
     { type: 'remote_raid', title: '5-Sterne-Raid (weltweit)', description: 'Azelf erscheint weltweit in 5-Sterne-Raids. Nutze einen Remote-Raid-Pass oder eine Einladung von einem Freund in Amerika.', badgeLabel: 'Remote Raid' }
   ],
-  796: [
-    { type: 'remote_raid', title: 'Remote-Raid (Global-Event)', description: 'Während Ultra-Bestien-Events erscheint Stahlium weltweit in 5-Sterne-Raids. Remote-Raid-Pässe können genutzt werden.', badgeLabel: 'Remote Raid' }
-  ],
   797: [
-    { type: 'remote_raid', title: 'Remote-Raid (Global-Event)', description: 'Während Ultra-Bestien-Events erscheint Kartana weltweit in 5-Sterne-Raids. Remote-Raid-Pässe können genutzt werden.', badgeLabel: 'Remote Raid' }
+    { type: 'remote_raid', title: 'Remote-Raid (Global-Event)', description: 'Während Ultra-Bestien-Events erscheint Celesteela (Südliche Hemisphäre) weltweit in 5-Sterne-Raids. Remote-Raid-Pässe können genutzt werden.', badgeLabel: 'Remote Raid' }
+  ],
+  798: [
+    { type: 'remote_raid', title: 'Remote-Raid (Global-Event)', description: 'Während Ultra-Bestien-Events erscheint Kartana (Nördliche Hemisphäre) weltweit in 5-Sterne-Raids. Remote-Raid-Pässe können genutzt werden.', badgeLabel: 'Remote Raid' }
   ],
   805: [
-    { type: 'remote_raid', title: 'Remote-Raid (Global-Event)', description: 'Während Ultra-Bestien-Events erscheint Stakataka weltweit in 5-Sterne-Raids. Remote-Raid-Pässe können genutzt werden.', badgeLabel: 'Remote Raid' }
+    { type: 'remote_raid', title: 'Remote-Raid (Global-Event)', description: 'Während Ultra-Bestien-Events erscheint Stakataka (Östliche Hemisphäre) weltweit in 5-Sterne-Raids. Remote-Raid-Pässe können genutzt werden.', badgeLabel: 'Remote Raid' }
   ],
   806: [
-    { type: 'remote_raid', title: 'Remote-Raid (Global-Event)', description: 'Während Ultra-Bestien-Events erscheint Blacephalon weltweit in 5-Sterne-Raids. Remote-Raid-Pässe können genutzt werden.', badgeLabel: 'Remote Raid' }
+    { type: 'remote_raid', title: 'Remote-Raid (Global-Event)', description: 'Während Ultra-Bestien-Events erscheint Blacephalon (Westliche Hemisphäre) weltweit in 5-Sterne-Raids. Remote-Raid-Pässe können genutzt werden.', badgeLabel: 'Remote Raid' }
   ],
   808: [
     { type: 'special', title: 'Meltan-Box (Pokémon HOME)', description: 'Die Meltan-Box wird durch Verbindung deines Pokémon GO-Accounts mit Pokémon HOME freigeschaltet. Sie spawnt Meltan für 30 Minuten.', badgeLabel: 'Meltan-Box' }
