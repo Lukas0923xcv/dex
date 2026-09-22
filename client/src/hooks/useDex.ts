@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData, UserAccount, DexScope } from '../types';
+import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData, SingleCollectionBackup, UserAccount, DexScope } from '../types';
 import { storage, StorageStatus } from '../services/storage';
 import { isPokemonInRegion } from '../utils/regions';
 import confetti from 'canvas-confetti';
@@ -1109,13 +1109,14 @@ export function useDex() {
   }, [currentViewStats.caught, currentViewStats.total]);
 
   // Export / Import
-  const exportBackup = useCallback(async () => {
-    return await storage.exportBackup();
+  const exportBackup = useCallback(async (collectionId?: string): Promise<BackupData | SingleCollectionBackup> => {
+    return await storage.exportBackup(collectionId);
   }, []);
 
-  const importBackup = useCallback(async (backup: BackupData) => {
-    await storage.importBackup(backup);
+  const importBackup = useCallback(async (backup: any, specificCollectionId?: string) => {
+    const result = await storage.importBackup(backup, specificCollectionId);
     await refreshData();
+    return result;
   }, [refreshData]);
 
   const resetScopeProgress = useCallback(async () => {

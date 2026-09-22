@@ -104,9 +104,42 @@ export interface UserAccount {
 
 export type DexScope = 'standard' | 'shiny' | 'shadow' | 'mega' | 'form' | 'costume' | string;
 
+export interface SingleCollectionBackup {
+  app: string;
+  version: number;
+  type: 'collection';
+  exportedAt: string;
+  data: {
+    collection: CustomCollection;
+    collectionItems: Array<{
+      collection_id: string;
+      pokemon_id: string;
+      added_at?: string;
+    }>;
+    progress?: Array<{
+      account_id?: string;
+      dex_scope?: string;
+      pokemon_id: string;
+      caught?: number | boolean;
+      shiny_caught?: number | boolean;
+      lucky_caught?: number | boolean;
+      hundo_caught?: number | boolean;
+      shadow_caught?: number | boolean;
+      purified_caught?: number | boolean;
+      gender_m_caught?: number | boolean;
+      gender_f_caught?: number | boolean;
+      xxl_caught?: number | boolean;
+      xxs_caught?: number | boolean;
+      notes?: string;
+      updated_at?: string;
+    }>;
+  };
+}
+
 export interface BackupData {
   app: string;
   version: number;
+  type?: 'full' | 'collection';
   exportedAt: string;
   data: {
     progress?: Array<{
@@ -138,17 +171,20 @@ export interface BackupData {
       updated_at?: string;
     }>;
     accounts?: Array<UserAccount>;
-    collections: Array<{
+    collections: Array<CustomCollection | {
       id: string;
       name: string;
       description?: string;
       color?: string;
       created_at?: string;
+      createdAt?: string;
     }>;
     collectionItems: Array<{
       collection_id: string;
       pokemon_id: string;
       added_at?: string;
     }>;
+    collection?: CustomCollection;
   };
 }
+

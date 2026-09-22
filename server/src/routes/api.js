@@ -774,6 +774,47 @@ router.get('/stats', (req, res) => {
 // GET /api/export
 router.get('/export', (req, res) => {
   try {
+    const { collectionId } = req.query;
+
+    if (collectionId) {
+      const coll = db.prepare('SELECT * FROM custom_collections WHERE id = ?').get(collectionId);
+      if (!coll) {
+        return res.status(404).json({ error: 'Collection not found' });
+      }
+      const collectionItems = db.prepare('SELECT * FROM custom_collection_items WHERE collection_id = ?').all(collectionId);
+      const progressV2 = db.prepare('SELECT * FROM user_progress_v2 WHERE dex_scope = ?').all(`custom:${collectionId}`);
+
+      const formattedColl = {
+        id: coll.id,
+        name: coll.name,
+        description: coll.description,
+        color: coll.color,
+        categoryType: coll.category_type || 'normal',
+        variantMode: coll.variant_mode || 'multi',
+        trackShiny: Boolean(coll.track_shiny),
+        trackHundo: Boolean(coll.track_hundo),
+        trackGender: Boolean(coll.track_gender),
+        trackBackground: Boolean(coll.track_background),
+        trackSize: Boolean(coll.track_size),
+        createdAt: coll.created_at,
+        totalItems: coll.total_items || 0,
+        caughtItems: coll.caught_items || 0
+      };
+
+      return res.json({
+        app: 'PokemonGoDexTracker',
+        version: 2,
+        type: 'collection',
+        exportedAt: new Date().toISOString(),
+        data: {
+          collection: formattedColl,
+          collections: [formattedColl],
+          collectionItems,
+          progressV2
+        }
+      });
+    }
+
     const progress = db.prepare('SELECT * FROM user_progress').all();
     const progressV2 = db.prepare('SELECT * FROM user_progress_v2').all();
     const accounts = db.prepare('SELECT * FROM user_accounts').all();
@@ -783,6 +824,7 @@ router.get('/export', (req, res) => {
     res.json({
       app: 'PokemonGoDexTracker',
       version: 2,
+      type: 'full',
       exportedAt: new Date().toISOString(),
       data: {
         progress,
@@ -805,14 +847,132 @@ router.post('/import', (req, res) => {
       return res.status(400).json({ error: 'Invalid backup file format' });
     }
 
-    const {
+    const targetCollectionId = req.query.collectionId;
+    let {
       progress = [],
       progressV2 = [],
       accounts = [],
       collections = [],
-      collectionItems = []
+      collectionItems = [],
+      collection
     } = backup.data;
 
+    // Single collection import mode
+    if (backup.type === 'collection' || collection || targetCollectionId) {
+      const selectedColl = collection || (targetCollectionId ? collections.find(c => c.id === targetCollectionId) : collections[0]);
+      if (!selectedColl) {
+        return res.status(404).json({ error: 'Selected collection not found in backup file.' });
+      }
+
+      const collId = selectedColl.id;
+      const relevantItems = collectionItems.filter(i => i.collection_id === collId || !i.collection_id);
+      const relevantProgress = progressV2.filter(p => (p.dex_scope === `custom:${collId}` || p.dexScope === `custom:${collId}`));
+
+      db.exec('BEGIN TRANSACTION;');
+      try {
+        const collStmt = db.prepare(`
+          INSERT INTO custom_collections (
+            id, name, description, color, category_type, variant_mode,
+            track_shiny, track_hundo, track_gender, track_background, track_size, created_at
+          )
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          ON CONFLICT(id) DO UPDATE SET
+            name = excluded.name,
+            description = excluded.description,
+            color = excluded.color,
+            category_type = excluded.category_type,
+            variant_mode = excluded.variant_mode,
+            track_shiny = excluded.track_shiny,
+            track_hundo = excluded.track_hundo,
+            track_gender = excluded.track_gender,
+            track_background = excluded.track_background,
+            track_size = excluded.track_size
+        `);
+
+        collStmt.run(
+          selectedColl.id,
+          selectedColl.name,
+          selectedColl.description || '',
+          selectedColl.color || '#3b82f6',
+          selectedColl.category_type || selectedColl.categoryType || 'normal',
+          selectedColl.variant_mode || selectedColl.variantMode || 'multi',
+          selectedColl.track_shiny !== undefined ? (selectedColl.track_shiny ? 1 : 0) : (selectedColl.trackShiny ? 1 : 0),
+          selectedColl.track_hundo !== undefined ? (selectedColl.track_hundo ? 1 : 0) : (selectedColl.trackHundo ? 1 : 0),
+          selectedColl.track_gender !== undefined ? (selectedColl.track_gender ? 1 : 0) : (selectedColl.trackGender ? 1 : 0),
+          selectedColl.track_background !== undefined ? (selectedColl.track_background ? 1 : 0) : (selectedColl.trackBackground ? 1 : 0),
+          selectedColl.track_size !== undefined ? (selectedColl.track_size ? 1 : 0) : (selectedColl.trackSize ? 1 : 0),
+          selectedColl.created_at || selectedColl.createdAt || new Date().toISOString()
+        );
+
+        // Replace collection items for this collection
+        db.prepare('DELETE FROM custom_collection_items WHERE collection_id = ?').run(collId);
+        const itemStmt = db.prepare(`
+          INSERT OR IGNORE INTO custom_collection_items (collection_id, pokemon_id, added_at)
+          VALUES (?, ?, ?)
+        `);
+        for (const ci of relevantItems) {
+          itemStmt.run(collId, ci.pokemon_id || ci.pokemonId, ci.added_at || ci.addedAt || new Date().toISOString());
+        }
+
+        // Restore custom progress for this collection if provided
+        if (relevantProgress.length > 0) {
+          const progressStmt = db.prepare(`
+            INSERT INTO user_progress_v2 (
+              account_id, dex_scope, pokemon_id, caught, shiny_caught, lucky_caught, hundo_caught,
+              shadow_caught, purified_caught, gender_m_caught, gender_f_caught,
+              xxl_caught, xxs_caught, notes, updated_at
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(account_id, dex_scope, pokemon_id) DO UPDATE SET
+              caught = excluded.caught,
+              shiny_caught = excluded.shiny_caught,
+              lucky_caught = excluded.lucky_caught,
+              hundo_caught = excluded.hundo_caught,
+              shadow_caught = excluded.shadow_caught,
+              purified_caught = excluded.purified_caught,
+              gender_m_caught = excluded.gender_m_caught,
+              gender_f_caught = excluded.gender_f_caught,
+              xxl_caught = excluded.xxl_caught,
+              xxs_caught = excluded.xxs_caught,
+              notes = excluded.notes,
+              updated_at = excluded.updated_at
+          `);
+          for (const p of relevantProgress) {
+            progressStmt.run(
+              p.account_id || p.accountId || 'default',
+              `custom:${collId}`,
+              p.pokemon_id || p.pokemonId,
+              p.caught ? 1 : 0,
+              p.shiny_caught || p.shinyCaught ? 1 : 0,
+              p.lucky_caught || p.luckyCaught ? 1 : 0,
+              p.hundo_caught || p.hundoCaught ? 1 : 0,
+              p.shadow_caught || p.shadowCaught ? 1 : 0,
+              p.purified_caught || p.purifiedCaught ? 1 : 0,
+              p.gender_m_caught || p.genderMCaught ? 1 : 0,
+              p.gender_f_caught || p.genderFCaught ? 1 : 0,
+              p.xxl_caught || p.xxlCaught ? 1 : 0,
+              p.xxs_caught || p.xxsCaught ? 1 : 0,
+              p.notes || null,
+              p.updated_at || p.updatedAt || new Date().toISOString()
+            );
+          }
+        }
+
+        db.exec('COMMIT;');
+        return res.json({
+          success: true,
+          mode: 'collection',
+          collectionName: selectedColl.name,
+          collectionId: collId,
+          itemsCount: relevantItems.length
+        });
+      } catch (err) {
+        db.exec('ROLLBACK;');
+        throw err;
+      }
+    }
+
+    // Full Restore Mode
     db.exec('BEGIN TRANSACTION;');
     try {
       // Restore Accounts if present
