@@ -263,7 +263,6 @@ export const RESEARCH_ONLY_DEX_NRS = new Set<number>([
   803, // Poipole
   890, // Eternatus
   891, // Kubfu
-  892, // Urshifu
   893, // Zarude
 ]);
 
@@ -392,6 +391,7 @@ export const EVOLUTION_ONLY_DEX_NRS = new Set<number>([
   // Mythical & Special Box evolutions
   804,  // Naganadel (from Poipole)
   809,  // Melmetal (from Meltan with 400 Candy)
+  892,  // Urshifu (from Kubfu with 50 Candy)
   1000, // Gholdengo (from Gimmighoul with 999 Coins)
 
   // Special buddy & quest evolutions
@@ -756,6 +756,8 @@ const SPECIAL_NOTES: Record<number, string> = {
   843:  'Silicobra spawns exclusively in desert and arid biomes.',
   874:  'Stonjourner is a regional Pokémon that spawns exclusively in the wild in the United Kingdom.',
   890:  'Eternatus is a Legendary Pokémon introduced as the climax of the Special Research storyline during the Season of Max Out.',
+  891:  'Kubfu is a Legendary Pokémon obtainable via the "Better Together" Special Research storyline.',
+  892:  'Urshifu evolves from Kubfu with 50 Kubfu Candy after defeating 30 Dark-type (Single Strike Style) or 30 Water-type (Rapid Strike Style) Pokémon as your buddy.',
   893:  'Zarude is a Mythical Pokémon obtainable via the "Search for Zarude" Special Research storyline and featured event celebrations.',
   896:  'Glastrier is not yet available in Pokémon GO.',
   897:  'Spectrier is not yet available in Pokémon GO.',
@@ -915,6 +917,7 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
     else if (dex === 961) evoDesc = 'Evolves from Wiglett with 50 Wiglett Candy. Cannot be encountered in the wild!';
     else if (dex === 804) evoDesc = 'Evolves from Poipole with 200 Poipole Candy after catching 20 Dragon-type Pokémon as your buddy.';
     else if (dex === 809) evoDesc = 'Evolves from Meltan with 400 Meltan Candy. Cannot be caught in the wild!';
+    else if (dex === 892) evoDesc = 'Evolves from Kubfu with 50 Kubfu Candy after defeating 30 Dark-type (Single Strike Style) or 30 Water-type (Rapid Strike Style) Pokémon with Kubfu as your buddy.';
     else if (dex === 1000) evoDesc = 'Evolves from Gimmighoul using 999 Gimmighoul Coins. Cannot be caught in the wild!';
 
     methods.push({
