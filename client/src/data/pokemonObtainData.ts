@@ -46,6 +46,66 @@ const REGIONAL_DATA: Record<number, RegionalInfo> = {
 export const REGIONAL_DEX_NRS = new Set<number>(Object.keys(REGIONAL_DATA).map(Number));
 
 // ============================================================
+// PER-FORM REGIONAL DATA (form-specific regional exclusives)
+// Keyed by pokemon ID (e.g. 'poke_931_special_blue_plumage')
+// ============================================================
+const REGIONAL_DATA_BY_ID: Record<string, RegionalInfo> = {
+  // ── Squawkabilly #931 ──────────────────────────────────────
+  'poke_931_base':                    { isRegional: true, regionName: 'Europa / Mittlerer Osten / Afrika', countries: 'Europa, Mittlerer Osten, Afrika', notes: 'Green Plumage ist die Standardform in Europa, MEA' },
+  'poke_931_special_blue_plumage':    { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (westliche Hemisphäre)' },
+  'poke_931_special_yellow_plumage':  { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, China, Südostasien, Australien, Neuseeland' },
+  'poke_931_special_white_plumage':   { isRegional: true, regionName: 'Afrika / Indien / Mittlerer Osten', countries: 'Indien, Teile Afrikas, Naher Osten', notes: 'Auch über Eier aus Geschenken dieser Regionen möglich' },
+
+  // ── Oricorio #741 ──────────────────────────────────────────
+  'poke_741_base':             { isRegional: true, regionName: 'Europa / Mittlerer Osten / Afrika', countries: 'Europa, Mittlerer Osten, Afrika (Baile Style)' },
+  'poke_741_special_pom_pom':  { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Pom-Pom Style)' },
+  'poke_741_special_pa_u':     { isRegional: true, regionName: 'Afrika / Pazifik-Inseln / Südasien', countries: 'Subsahara-Afrika, Pazifik-Inseln, Südasien (Pa\'u Style)' },
+  'poke_741_special_sensu':    { isRegional: true, regionName: 'Asien-Pazifik', countries: 'Japan, China, Südostasien, Australien (Sensu Style)' },
+
+  // ── Shellos #422 ──────────────────────────────────────────
+  'poke_422_base':             { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'West Sea erscheint in westlichen Regionen' },
+  'poke_422_special_east_sea': { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'East Sea erscheint in östlichen Regionen' },
+
+  // ── Basculin #550 ──────────────────────────────────────────
+  'poke_550_base':                   { isRegional: true, regionName: 'Östliche Hemisphäre', hemisphere: 'Östliche Hemisphäre', notes: 'Red-Striped erscheint in östlichen Regionen' },
+  'poke_550_special_blue_striped':   { isRegional: true, regionName: 'Westliche Hemisphäre', hemisphere: 'Westliche Hemisphäre', notes: 'Blue-Striped erscheint in westlichen Regionen' },
+  'poke_550_special_white_striped':  { isRegional: false },
+
+  // ── Flabébé #669 ──────────────────────────────────────────
+  'poke_669_base':            { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Red Flower)' },
+  'poke_669_special_blue':    { isRegional: true, regionName: 'Europa', countries: 'Europa (Blue Flower)' },
+  'poke_669_special_yellow':  { isRegional: true, regionName: 'Asien', countries: 'Asien, Ostasien (Yellow Flower)' },
+  'poke_669_special_white':   { isRegional: true, regionName: 'Ozeanien', countries: 'Australien, Neuseeland, Ozeanien (White Flower)' },
+  'poke_669_special_orange':  { isRegional: true, regionName: 'Afrika', countries: 'Afrika, Mittlerer Osten (Orange Flower)' },
+
+  // ── Floette #670 ──────────────────────────────────────────
+  'poke_670_base':            { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Red Flower)' },
+  'poke_670_special_blue':    { isRegional: true, regionName: 'Europa', countries: 'Europa (Blue Flower)' },
+  'poke_670_special_yellow':  { isRegional: true, regionName: 'Asien', countries: 'Asien, Ostasien (Yellow Flower)' },
+  'poke_670_special_white':   { isRegional: true, regionName: 'Ozeanien', countries: 'Australien, Neuseeland, Ozeanien (White Flower)' },
+  'poke_670_special_orange':  { isRegional: true, regionName: 'Afrika', countries: 'Afrika, Mittlerer Osten (Orange Flower)' },
+
+  // ── Florges #671 ──────────────────────────────────────────
+  'poke_671_base':            { isRegional: true, regionName: 'Amerika', countries: 'Nord- und Südamerika (Red Flower)' },
+  'poke_671_special_blue':    { isRegional: true, regionName: 'Europa', countries: 'Europa (Blue Flower)' },
+  'poke_671_special_yellow':  { isRegional: true, regionName: 'Asien', countries: 'Asien, Ostasien (Yellow Flower)' },
+  'poke_671_special_white':   { isRegional: true, regionName: 'Ozeanien', countries: 'Australien, Neuseeland, Ozeanien (White Flower)' },
+  'poke_671_special_orange':  { isRegional: true, regionName: 'Afrika', countries: 'Afrika, Mittlerer Osten (Orange Flower)' },
+
+  // ── Paldean Tauros #128 ────────────────────────────────────
+  'poke_128_form_tauros_paldea_combat': { isRegional: false, notes: 'Combat Breed: Weltweit bei Events verfügbar' },
+  'poke_128_form_tauros_paldea_blaze':  { isRegional: true, regionName: 'Spanien / Portugal', countries: 'Spanien und Portugal', notes: 'Blaze Breed ist nur in Spanien/Portugal als regional erhältlich' },
+  'poke_128_form_tauros_paldea_aqua':   { isRegional: true, regionName: 'UK / Irland', countries: 'Großbritannien und Irland', notes: 'Aqua Breed ist nur in UK und Irland als regional erhältlich' },
+};
+
+export const REGIONAL_FORM_IDS = new Set<string>(
+  Object.entries(REGIONAL_DATA_BY_ID)
+    .filter(([, v]) => v.isRegional)
+    .map(([k]) => k)
+);
+
+
+// ============================================================
 // SPECIAL OBTAIN NOTES
 // ============================================================
 const SPECIAL_NOTES: Record<number, string> = {
@@ -162,6 +222,7 @@ const ALTERNATIVE_DEX_METHODS: Record<number, DexAlternativeMethod[]> = {
 function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   const methods: ObtainMethodDetail[] = [];
   const dex = pokemon.dexNr as number;
+  const id = (pokemon.id as string) || '';
 
   // Special-only catches (no wild spawn)
   const specialOnlyDex = new Set([151, 201, 235, 480, 481, 482, 489, 490, 493, 720, 789, 808, 999]);
@@ -239,7 +300,8 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
 
   // Wild spawn (default for most standard pokemon)
   if (!specialOnlyDex.has(dex)) {
-    const isRegional = REGIONAL_DEX_NRS.has(dex);
+    const isFormRegional = id ? (REGIONAL_DATA_BY_ID[id]?.isRegional === true) : false;
+    const isRegional = REGIONAL_DEX_NRS.has(dex) || isFormRegional;
     methods.push({
       type: 'wild', label: isRegional ? 'Wild (Regional)' : 'Wild',
       badgeColor: 'emerald',
@@ -312,7 +374,14 @@ export function getPokemonDetailInfo(pokemon: any, allPokemonList: any[]): Pokem
   if (!pokemon) return null;
 
   const dex = pokemon.dexNr as number;
-  const regional: RegionalInfo = REGIONAL_DATA[dex] || { isRegional: false };
+  const id = pokemon.id as string;
+
+  // Per-form regional data takes priority over dex-nr-based regional data
+  const regional: RegionalInfo =
+    (id && REGIONAL_DATA_BY_ID[id] !== undefined)
+      ? REGIONAL_DATA_BY_ID[id]
+      : (REGIONAL_DATA[dex] || { isRegional: false });
+
   const obtainMethods = buildObtainMethods(pokemon);
   const manualAlternatives = ALTERNATIVE_DEX_METHODS[dex] || [];
 
