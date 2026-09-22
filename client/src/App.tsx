@@ -216,6 +216,7 @@ export const App: React.FC = () => {
             generation: 'all',
             type: 'all',
             status: 'all',
+            sortBy: 'dexAsc',
             shinyOnly: false,
             shadowOnly: false
           }))}

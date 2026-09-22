@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData, SingleCollectionBackup, UserAccount, DexScope } from '../types';
 import { storage, StorageStatus } from '../services/storage';
 import { isPokemonInRegion } from '../utils/regions';
-import { getPrimaryAvailabilityTag } from '../data/pokemonObtainData';
+import { getPrimaryAvailabilityTag, getAvailabilitySortRank } from '../data/pokemonObtainData';
 import { compareFormsWithinSpecies } from '../utils/formSorting';
 import confetti from 'canvas-confetti';
 
@@ -607,6 +607,10 @@ export function useDex() {
         return b.dexNr - a.dexNr;
       } else if (filters.sortBy === 'nameAsc') {
         return a.name.localeCompare(b.name);
+      } else if (filters.sortBy === 'availability') {
+        const rankDiff = getAvailabilitySortRank(a) - getAvailabilitySortRank(b);
+        if (rankDiff !== 0) return rankDiff;
+        return a.dexNr - b.dexNr;
       } else {
         return a.dexNr - b.dexNr;
       }
