@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Pokemon, TrackingMode, CustomCollection } from '../types';
 import { PokemonDetailInfo, ObtainMethodDetail, DexAlternativeMethod } from '../types/pokemonInfo';
 import { getPokemonDetailInfo } from '../data/pokemonObtainData';
 import { getTypeBadgeColor, getEffectiveSprite } from '../utils/typeColors';
+import { compareFormsWithinSpecies } from '../utils/formSorting';
 import {
   X, ChevronLeft, ChevronRight, Sparkles, Check, Flame, MapPin,
   Globe, Swords, Egg, Binoculars, Star, Shuffle, AlertCircle, Info,
@@ -65,11 +66,13 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
 }) => {
   const [showShiny, setShowShiny] = useState(false);
   const [spriteError, setSpriteError] = useState(false);
+  const [showAllCostumes, setShowAllCostumes] = useState(false);
 
   useEffect(() => {
     if (!pokemon) return;
     setShowShiny(false);
     setSpriteError(false);
+    setShowAllCostumes(false);
   }, [pokemon?.id]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
@@ -110,8 +113,21 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
   const prevPoke = currentIdx > 0 ? baseDex[currentIdx - 1] : null;
   const nextPoke = currentIdx < baseDex.length - 1 ? baseDex[currentIdx + 1] : null;
 
-  // Related forms of this species
-  const relatedForms = allPokemon.filter(p => p.dexNr === pokemon.dexNr && p.id !== pokemon.id);
+  // Related forms of this species, sorted by canonical in-game Pokédex order
+  const relatedForms = useMemo(() => {
+    return allPokemon
+      .filter(p => p.dexNr === pokemon.dexNr && p.id !== pokemon.id)
+      .sort(compareFormsWithinSpecies);
+  }, [allPokemon, pokemon.dexNr, pokemon.id]);
+
+  const regularForms = useMemo(
+    () => relatedForms.filter(p => p.category !== 'costume' && !p.isCostume),
+    [relatedForms]
+  );
+  const costumeForms = useMemo(
+    () => relatedForms.filter(p => p.category === 'costume' || p.isCostume),
+    [relatedForms]
+  );
 
   return (
     <div
@@ -360,20 +376,63 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
             </section>
           )}
 
-          {/* ===== Related Forms ===== */}
-          {relatedForms.length > 0 && (
+          {/* ===== Related Forms & Variants ===== */}
+          {regularForms.length > 0 && (
             <section>
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2.5 flex items-center gap-1.5">
                 <Shuffle className="w-3.5 h-3.5" />
                 Related Forms & Variants
               </h3>
               <div className="flex flex-wrap gap-2">
-                {relatedForms.slice(0, 12).map(form => (
+                {regularForms.map(form => (
                   <button
                     key={form.id}
                     type="button"
                     onClick={() => onNavigate(form)}
                     className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950/40 transition-all cursor-pointer"
+                  >
+                    <img
+                      src={getEffectiveSprite(form, false) || ''}
+                      alt={form.name}
+                      className="w-7 h-7 object-contain"
+                    />
+                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                      {form.formName || form.name}
+                    </span>
+                    {Boolean(form.caught) && (
+                      <Check className="w-3 h-3 text-emerald-500" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* ===== Event Costumes ===== */}
+          {costumeForms.length > 0 && (
+            <section>
+              <div className="flex items-center justify-between mb-2.5">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-pink-500" />
+                  Event Costumes ({costumeForms.length})
+                </h3>
+                {costumeForms.length > 12 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllCostumes(prev => !prev)}
+                    className="text-xs font-medium text-pink-600 dark:text-pink-400 hover:underline cursor-pointer"
+                  >
+                    {showAllCostumes ? 'Show less' : `Show all (${costumeForms.length})`}
+                  </button>
+                )}
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {(showAllCostumes ? costumeForms : costumeForms.slice(0, 12)).map(form => (
+                  <button
+                    key={form.id}
+                    type="button"
+                    onClick={() => onNavigate(form)}
+                    className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:border-pink-400 hover:bg-pink-50 dark:hover:bg-pink-950/40 transition-all cursor-pointer"
                   >
                     <img
                       src={getEffectiveSprite(form, false) || ''}
