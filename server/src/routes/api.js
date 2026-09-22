@@ -785,7 +785,7 @@ router.get('/export', (req, res) => {
         const presetDefs = {
           standard: {
             name: 'Standard Dex',
-            description: 'Offizielle reguläre Spezies',
+            description: 'Official regular species',
             color: '#3b82f6',
             categoryType: 'normal',
             variantMode: 'multi',
@@ -794,7 +794,7 @@ router.get('/export', (req, res) => {
           },
           shiny: {
             name: 'Shiny Dex',
-            description: 'Freigeschaltete Schillernde Pokémon',
+            description: 'Unlocked Shiny Pokémon',
             color: '#f59e0b',
             categoryType: 'normal',
             variantMode: 'multi',
@@ -803,8 +803,8 @@ router.get('/export', (req, res) => {
             scope: 'shiny'
           },
           shadow: {
-            name: 'Crypto Dex',
-            description: 'Offiziell erschienene Crypto-Pokémon',
+            name: 'Shadow Dex',
+            description: 'Officially released Shadow Pokémon',
             color: '#a855f7',
             categoryType: 'shadow',
             variantMode: 'multi',
@@ -813,7 +813,7 @@ router.get('/export', (req, res) => {
           },
           mega: {
             name: 'Mega Dex',
-            description: 'Mega- und Primal-Entwicklungen',
+            description: 'Mega and Primal evolutions',
             color: '#f43f5e',
             categoryType: 'mega',
             variantMode: 'multi',
@@ -821,8 +821,8 @@ router.get('/export', (req, res) => {
             scope: 'mega'
           },
           form: {
-            name: 'Formen Dex',
-            description: 'Regionale Formen & alternative Gestalten',
+            name: 'Forms Dex',
+            description: 'Regional forms & alternative variants',
             color: '#6366f1',
             categoryType: 'normal',
             variantMode: 'multi',
@@ -830,8 +830,8 @@ router.get('/export', (req, res) => {
             scope: 'form'
           },
           costume: {
-            name: 'Kostüme Dex',
-            description: 'Event-Pokémon mit Kostümen & Specials',
+            name: 'Costumes Dex',
+            description: 'Event Pokémon with costumes & specials',
             color: '#ec4899',
             categoryType: 'event',
             variantMode: 'multi',

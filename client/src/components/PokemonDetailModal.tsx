@@ -204,7 +204,7 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
                   }`}
                 >
                   <Check className={`w-4 h-4 ${isCaught ? 'text-emerald-500' : 'text-slate-300'}`} />
-                  {isCaught ? 'Gefangen ✓' : 'Noch nicht gefangen'}
+                  {isCaught ? 'Caught ✓' : 'Not Caught'}
                 </button>
 
                 {pokemon.hasShiny && (
@@ -218,7 +218,7 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
                     }`}
                   >
                     <Sparkles className={`w-3.5 h-3.5 ${pokemon.shinyCaught ? 'fill-current text-amber-400' : ''}`} />
-                    {pokemon.shinyCaught ? 'Shiny gefangen ✓' : 'Shiny markieren'}
+                    {pokemon.shinyCaught ? 'Shiny Caught ✓' : 'Mark as Shiny'}
                   </button>
                 )}
 
@@ -233,7 +233,7 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
                     }`}
                   >
                     <Flame className={`w-3.5 h-3.5 ${isShadow ? 'fill-current text-purple-500' : ''}`} />
-                    {isShadow ? 'Crypto gefangen ✓' : 'Crypto markieren'}
+                    {isShadow ? 'Shadow Caught ✓' : 'Mark as Shadow'}
                   </button>
                 )}
               </div>
@@ -245,7 +245,7 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
             <section>
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2.5 flex items-center gap-1.5">
                 <Binoculars className="w-3.5 h-3.5" />
-                Wie fangen / Erhältlichkeit
+                How to Obtain / Availability
               </h3>
               <div className="flex flex-wrap gap-2">
                 {detailInfo.obtainMethods.map((m, i) => {
@@ -279,14 +279,14 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
             <section>
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2.5 flex items-center gap-1.5">
                 <Globe className="w-3.5 h-3.5" />
-                Regionaler Status
+                Regional Status
               </h3>
               {detailInfo.regional.isRegional ? (
                 <div className="flex items-start gap-3 p-3.5 rounded-2xl bg-orange-50 dark:bg-orange-950/30 border border-orange-200 dark:border-orange-800/60">
                   <MapPin className="w-5 h-5 text-orange-500 dark:text-orange-400 shrink-0 mt-0.5" />
                   <div>
                     <p className="text-sm font-bold text-orange-800 dark:text-orange-200">
-                      Regional exklusiv{detailInfo.regional.regionName ? `: ${detailInfo.regional.regionName}` : ''}
+                      Regional Exclusive{detailInfo.regional.regionName ? `: ${detailInfo.regional.regionName}` : ''}
                     </p>
                     {detailInfo.regional.countries && (
                       <p className="text-xs text-orange-600 dark:text-orange-300 mt-1 leading-relaxed">
@@ -309,7 +309,7 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
                 <div className="flex items-center gap-2.5 p-3 rounded-2xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/60">
                   <Globe className="w-4 h-4 text-emerald-500 shrink-0" />
                   <p className="text-sm font-medium text-emerald-700 dark:text-emerald-300">
-                    Weltweit verfügbar — kein regionales Exklusiv
+                    Available Worldwide — No Regional Restrictions
                   </p>
                 </div>
               )}
@@ -321,7 +321,7 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
             <section>
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2.5 flex items-center gap-1.5">
                 <Info className="w-3.5 h-3.5" />
-                Alternative Wege zum Dex-Eintrag
+                Alternative Ways to Register Dex Entry
               </h3>
               <div className="space-y-2">
                 {detailInfo.alternativeDexMethods.map((m, i) => {
@@ -350,7 +350,7 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
             <section>
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2.5 flex items-center gap-1.5">
                 <Shuffle className="w-3.5 h-3.5" />
-                Verwandte Formen & Varianten
+                Related Forms & Variants
               </h3>
               <div className="flex flex-wrap gap-2">
                 {relatedForms.slice(0, 12).map(form => (
@@ -399,7 +399,7 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
           </button>
 
           <p className="text-xs text-slate-400 dark:text-slate-500">
-            ← → Pfeiltasten zum Navigieren · ESC schließen
+            ← → Arrow keys to navigate · ESC to close
           </p>
 
           <button

@@ -23,7 +23,7 @@ const GENERATIONS = [
   { id: 8, label: 'Gen 8 · Galar' },
   { id: 85, label: 'Hisui' },
   { id: 9, label: 'Gen 9 · Paldea' },
-  { id: 0, label: 'Unbekannt · Meltan' },
+  { id: 0, label: 'Unknown · Meltan' },
 ];
 
 export const FilterBar: React.FC<FilterBarProps> = ({
@@ -86,14 +86,14 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 ? 'bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-400/60 shadow-sm font-bold'
                 : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
-            title="Nur Pokémon anzeigen, deren schillernde Version (Shiny) in Pokémon GO freigeschaltet ist"
+            title="Show only Pokémon whose shiny form is released in Pokémon GO"
           >
             <Sparkles className={`w-3.5 h-3.5 ${filters.shinyOnly ? 'text-amber-500' : 'text-slate-400'}`} />
-            <span>Nur Schillernde</span>
+            <span>Shiny Only</span>
           </button>
         )}
 
-        {/* Shadow / Crypto Only Toggle */}
+        {/* Shadow Only Toggle */}
         {mode !== 'shadow' && (
           <button
             type="button"
@@ -103,10 +103,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                 ? 'bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-400/60 shadow-sm font-bold'
                 : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
             }`}
-            title="Nur Pokémon anzeigen, die eine Crypto-Version (Schatten) in Pokémon GO besitzen (483 Spezies)"
+            title="Show only Pokémon that have a shadow version in Pokémon GO (483 species)"
           >
             <Flame className={`w-3.5 h-3.5 ${filters.shadowOnly ? 'text-purple-500' : 'text-slate-400'}`} />
-            <span>Nur Crypto</span>
+            <span>Shadow Only</span>
           </button>
         )}
 
@@ -121,10 +121,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   ? 'bg-pink-500/20 text-pink-700 dark:text-pink-300 border-pink-400/60 shadow-sm font-bold'
                   : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
-              title="Weibliche Formen (♀) für Pokémon mit Geschlechtsunterschieden anzeigen"
+              title="Show female forms (♀) for Pokémon with gender differences"
             >
               <span className="font-bold text-sm leading-none">⚧</span>
-              <span>Geschlechts-Formen</span>
+              <span>Gender Differences</span>
             </button>
 
             <button
@@ -135,10 +135,10 @@ export const FilterBar: React.FC<FilterBarProps> = ({
                   ? 'bg-indigo-500/20 text-indigo-700 dark:text-indigo-300 border-indigo-400/60 shadow-sm font-bold'
                   : 'bg-slate-100 dark:bg-slate-800/80 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-700/80 hover:text-slate-900 dark:hover:text-slate-200'
               }`}
-              title="Basis-Formen für Regionalformen anzeigen"
+              title="Show base forms for regional variants"
             >
               <span>👁️</span>
-              <span>Basis-Formen</span>
+              <span>Base Forms</span>
             </button>
           </>
         )}
@@ -201,24 +201,24 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               type="button"
               onClick={() => {
                 const regionName = filters.generation === 'all'
-                  ? 'alle aktuell angezeigten Pokémon'
+                  ? 'all currently displayed Pokémon'
                   : `${GENERATIONS.find(g => g.id === filters.generation)?.label || 'Region'}`;
-                if (window.confirm(`Möchtest du wirklich ${regionName} als GEFANGEN / ERLEDIGT markieren?`)) {
+                if (window.confirm(`Are you sure you want to mark ${regionName} as CAUGHT?`)) {
                   onMarkRegionCaught(filters.generation, true);
                 }
               }}
               className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:hover:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/80 text-xs font-bold rounded-lg transition-all shadow-xs cursor-pointer whitespace-nowrap"
-              title={`Alle Pokémon dieser Region/Auswahl als gefangen markieren`}
+              title={`Mark all Pokémon in this region/selection as caught`}
             >
               <Check className="w-3.5 h-3.5 stroke-[3]" />
               <span>
                 {filters.generation === 'all'
-                  ? 'Alle als erledigt'
+                  ? 'Mark all caught'
                   : `${(() => {
                       const genLabel = GENERATIONS.find(g => g.id === filters.generation)?.label;
                       if (!genLabel) return 'Region';
                       return genLabel.includes('·') ? genLabel.split('·')[1].trim() : genLabel;
-                    })()} erledigt`}
+                    })()} caught`}
               </span>
             </button>
 
@@ -226,14 +226,14 @@ export const FilterBar: React.FC<FilterBarProps> = ({
               type="button"
               onClick={() => {
                 const regionName = filters.generation === 'all'
-                  ? 'alle aktuell angezeigten Pokémon'
+                  ? 'all currently displayed Pokémon'
                   : `${GENERATIONS.find(g => g.id === filters.generation)?.label || 'Region'}`;
-                if (window.confirm(`Möchtest du ${regionName} als UNGEFANGEN zurücksetzen?`)) {
+                if (window.confirm(`Are you sure you want to reset ${regionName} to UNCAUGHT?`)) {
                   onMarkRegionCaught(filters.generation, false);
                 }
               }}
               className="p-1.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-500 hover:text-rose-600 dark:text-slate-400 dark:hover:text-rose-400 border border-slate-200 dark:border-slate-700 text-xs rounded-lg transition-all cursor-pointer shadow-xs"
-              title="Region zurücksetzen / als ungefangen markieren"
+              title="Reset region / mark as uncaught"
             >
               <RotateCcw className="w-3.5 h-3.5" />
             </button>

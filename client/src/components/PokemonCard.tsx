@@ -137,7 +137,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           {(mode === 'shadow' || categoryType === 'shadow') && (
             <span className="text-[10px] font-bold tracking-tight bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-700/80 px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-xs">
               <Flame className="w-2.5 h-2.5 fill-current text-purple-600 dark:text-purple-400" />
-              Crypto
+              Shadow
             </span>
           )}
         </div>
@@ -148,7 +148,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           {onOpenDetailModal && (
             <button
               type="button"
-              title="Pokémon Info & Erhältlichkeit"
+              title="Pokémon Info & Availability"
               onClick={(e) => {
                 e.stopPropagation();
                 onOpenDetailModal(pokemon);
@@ -182,8 +182,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
               type="button"
               title={
                 pokemon.shinyCaught
-                  ? (isShadowContext ? 'Crypto Shiny gefangen!' : 'Shiny caught!')
-                  : (isShadowContext ? 'Crypto Shiny markieren' : 'Mark shiny caught')
+                  ? (isShadowContext ? 'Shadow Shiny caught!' : 'Shiny caught!')
+                  : (isShadowContext ? 'Mark Shadow Shiny caught' : 'Mark shiny caught')
               }
               onClick={(e) => {
                 e.stopPropagation();
@@ -203,7 +203,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           {mode !== 'shadow' && categoryType !== 'shadow' && pokemon.hasShadow && (
             <button
               type="button"
-              title={pokemon.shadowCaught ? 'Crypto gefangen!' : 'Crypto markieren'}
+              title={pokemon.shadowCaught ? 'Shadow caught!' : 'Mark as Shadow'}
               onClick={(e) => {
                 e.stopPropagation();
                 if (onToggleFeature) {
@@ -236,7 +236,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           {isCustomMode && collection?.trackHundo && (
             <button
               type="button"
-              title={pokemon.hundoCaught ? '100% IV gefangen!' : '100% IV markieren'}
+              title={pokemon.hundoCaught ? '100% IV caught!' : 'Mark as 100% IV'}
               onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'hundo')}
               className={`px-1.5 py-0.5 rounded text-[9px] font-black tracking-tight border transition-colors ${
                 pokemon.hundoCaught
@@ -253,7 +253,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
             <div className="flex items-center gap-0.5">
               <button
                 type="button"
-                title="♂ Männlich gefangen"
+                title={pokemon.genderMCaught ? '♂ Male caught!' : 'Mark as ♂ Male'}
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'gender_m')}
                 className={`w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold border transition-colors ${
                   pokemon.genderMCaught
@@ -265,7 +265,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
               </button>
               <button
                 type="button"
-                title="♀ Weiblich gefangen"
+                title={pokemon.genderFCaught ? '♀ Female caught!' : 'Mark as ♀ Female'}
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'gender_f')}
                 className={`w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold border transition-colors ${
                   pokemon.genderFCaught
@@ -283,7 +283,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
             <div className="flex items-center gap-0.5">
               <button
                 type="button"
-                title="XXS gefangen"
+                title={pokemon.xxsCaught ? 'XXS caught!' : 'Mark as XXS'}
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'xxs')}
                 className={`px-1 py-0.2 rounded text-[8px] font-bold border transition-colors ${
                   pokemon.xxsCaught
@@ -295,7 +295,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
               </button>
               <button
                 type="button"
-                title="XXL gefangen"
+                title={pokemon.xxlCaught ? 'XXL caught!' : 'Mark as XXL'}
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'xxl')}
                 className={`px-1 py-0.2 rounded text-[8px] font-bold border transition-colors ${
                   pokemon.xxlCaught

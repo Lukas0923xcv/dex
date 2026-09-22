@@ -83,7 +83,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           filename = `pogo-preset-${preset?.scope || presetKey}-${dateStr}.json`;
         } else {
           const coll = collections.find(c => c.id === selectedExportCollId);
-          const safeName = coll ? coll.name.toLowerCase().replace(/[^a-z0-9]/gi, '_') : 'sammlung';
+          const safeName = coll ? coll.name.toLowerCase().replace(/[^a-z0-9]/gi, '_') : 'collection';
           filename = `pogo-collection-${safeName}-${dateStr}.json`;
         }
       }
@@ -94,7 +94,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       downloadAnchor.click();
       downloadAnchor.remove();
     } catch (err: any) {
-      alert(`Export fehlgeschlagen: ${err.message}`);
+      alert(`Export failed: ${err.message}`);
     }
   };
 
@@ -108,7 +108,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       try {
         const json = JSON.parse(event.target?.result as string);
         if (!json.app || !json.data) {
-          throw new Error('Ungültiges Backup-Dateiformat.');
+          throw new Error('Invalid backup file format.');
         }
 
         const isSingle = json.type === 'collection' || Boolean(json.data.collection);
@@ -132,7 +132,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           mode: isSingle ? 'collection' : 'all'
         });
       } catch (err: any) {
-        alert(`Importieren fehlgeschlagen: ${err.message}`);
+        alert(`Import failed: ${err.message}`);
       }
     };
     reader.readAsText(file);
@@ -145,13 +145,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       const specificId = pendingImport.mode === 'collection' ? pendingImport.selectedCollId : undefined;
       const res = await onImport(pendingImport.backup, specificId);
       const msg = res?.mode === 'collection' || pendingImport.mode === 'collection'
-        ? `Sammlung "${res?.collectionName || 'Sammlung'}" erfolgreich importiert!`
-        : 'Gesamtes Backup erfolgreich wiederhergestellt!';
+        ? `Collection "${res?.collectionName || 'Collection'}" imported successfully!`
+        : 'Entire backup restored successfully!';
       setImportStatus(msg);
       setPendingImport(null);
       setTimeout(() => setImportStatus(null), 4000);
     } catch (err: any) {
-      alert(`Import fehlgeschlagen: ${err.message}`);
+      alert(`Import failed: ${err.message}`);
     }
   };
 
@@ -172,7 +172,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800">
           <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            Einstellungen & Daten-Backup
+            Settings & Data Backup
           </h2>
           <button
             onClick={onClose}
@@ -188,7 +188,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           <div className="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-2">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Speicher-Engine
+                Storage Engine
               </span>
               {storageStatus.isBackendConnected ? (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40">
@@ -198,21 +198,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               ) : (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-700 dark:text-blue-300 border border-blue-500/40">
                   <Server className="w-3.5 h-3.5" />
-                  GitHub Pages / Lokal
+                  GitHub Pages / Local
                 </span>
               )}
             </div>
 
             <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
               {storageStatus.isBackendConnected
-                ? 'Dein Fortschritt wird kontinuierlich mit deiner SQLite-Datenbank auf dem Server synchronisiert.'
-                : 'Läuft lokal im Browser (GitHub Pages). Deine Daten sind sicher im Browser gespeichert und können jederzeit exportiert werden.'}
+                ? 'Your progress is continuously synced with your SQLite database on the server.'
+                : 'Runs locally in browser (GitHub Pages). Your data is safely stored in browser storage and can be exported at any time.'}
             </p>
 
             {/* Custom Server Configuration for GitHub Pages */}
             <div className="pt-2 border-t border-slate-200 dark:border-slate-700/40">
               <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
-                Eigene Server Backend-URL (Optional):
+                Custom Server Backend URL (Optional):
               </label>
               <div className="flex gap-2">
                 <input
@@ -227,7 +227,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   onClick={handleSaveRemoteUrl}
                   className="px-3 py-1.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                 >
-                  Speichern
+                  Save
                 </button>
               </div>
             </div>
@@ -236,7 +236,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
           {/* Backup & Restore (JSON) */}
           <div className="space-y-4">
             <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Backup & Wiederherstellung (JSON)
+              Backup & Restore (JSON)
             </h3>
 
             {importStatus && (
@@ -251,29 +251,29 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div className="p-4 bg-blue-500/10 border border-blue-500/30 rounded-2xl space-y-3 animate-in fade-in duration-200">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">
-                    Import-Vorschau
+                    Import Preview
                   </span>
                   <span className="text-[11px] px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-700 dark:text-blue-300 font-semibold">
-                    {pendingImport.isSingle ? 'Einzelne Sammlung' : 'Komplettes Backup'}
+                    {pendingImport.isSingle ? 'Single Collection' : 'Full Backup'}
                   </span>
                 </div>
 
                 {pendingImport.isSingle ? (
                   <div className="text-xs text-slate-700 dark:text-slate-300 space-y-1">
                     <p>
-                      Gefundene Sammlung:{' '}
+                      Found Collection:{' '}
                       <strong className="text-blue-600 dark:text-blue-400">
-                        {pendingImport.collectionsList[0]?.name || 'Unbenannt'}
+                        {pendingImport.collectionsList[0]?.name || 'Untitled'}
                       </strong>
                     </p>
                     <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                      Diese Sammlung und ihr Fang-Status werden hinzugefügt oder aktualisiert. Alle bestehenden Daten bleiben erhalten.
+                      This collection and its catch status will be added or updated. All existing data will be preserved.
                     </p>
                   </div>
                 ) : (
                   <div className="space-y-2.5">
                     <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">
-                      Wie möchtest du das Backup importieren?
+                      How would you like to import the backup?
                     </p>
                     <div className="space-y-2">
                       <label className="flex items-start gap-2.5 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 cursor-pointer">
@@ -286,10 +286,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                         />
                         <div className="text-xs">
                           <span className="font-bold block text-slate-900 dark:text-white">
-                            Gesamtes Backup wiederherstellen
+                            Restore entire backup
                           </span>
                           <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                            Stellt alle Accounts, Sammlungen und Fänge wieder her (überschreibt bestehende Daten).
+                            Restores all accounts, collections, and catches (overwrites existing data).
                           </span>
                         </div>
                       </label>
@@ -305,10 +305,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                           />
                           <div className="text-xs flex-1">
                             <span className="font-bold block text-slate-900 dark:text-white">
-                              Nur eine bestimmte Sammlung importieren
+                              Import only a specific collection
                             </span>
                             <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-2">
-                              Fügt nur die gewählte Sammlung hinzu. Deine restlichen Daten bleiben unverändert.
+                              Adds only the selected collection. The rest of your data remains unchanged.
                             </span>
                             {pendingImport.mode === 'collection' && (
                               <select
@@ -339,14 +339,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     className="flex-1 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-1.5"
                   >
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    <span>Jetzt importieren</span>
+                    <span>Import Now</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setPendingImport(null)}
                     className="px-4 py-2 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                   >
-                    Abbrechen
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -356,7 +356,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200 dark:border-slate-700/60 space-y-3">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-800 dark:text-slate-200">
-                      Exportieren:
+                      Export:
                     </span>
                     <div className="flex bg-slate-200 dark:bg-slate-700/60 p-0.5 rounded-xl text-[11px] font-semibold">
                       <button
@@ -368,7 +368,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                             : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                         }`}
                       >
-                        Alles
+                        All
                       </button>
                       <button
                         type="button"
@@ -379,7 +379,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                             : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                         }`}
                       >
-                        Einzelner Dex / Sammlung
+                        Single Dex / Collection
                       </button>
                     </div>
                   </div>
@@ -387,14 +387,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   {exportScope === 'collection' && (
                     <div className="space-y-1.5 animate-in fade-in duration-150">
                       <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">
-                        Wähle den zu exportierenden Dex / Sammlung:
+                        Select Dex / collection to export:
                       </label>
                       <select
                         value={selectedExportCollId}
                         onChange={(e) => setSelectedExportCollId(e.target.value)}
                         className="w-full px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:outline-none focus:border-blue-500"
                       >
-                        <optgroup label="Preset-Dexe (Standard)">
+                        <optgroup label="Preset Dexes (Default)">
                           {PRESET_COLLECTION_OPTIONS.map((p) => (
                             <option key={p.id} value={p.id}>
                               ⭐ {p.name} ({p.description})
@@ -402,7 +402,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                           ))}
                         </optgroup>
                         {collections.length > 0 && (
-                          <optgroup label="Eigene Sammlungen">
+                          <optgroup label="Custom Collections">
                             {collections.map((c) => (
                               <option key={c.id} value={c.id}>
                                 📁 {c.name} ({c.totalItems} Pokémon)
@@ -424,17 +424,17 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       <Download className="w-4 h-4" />
                       <span className="truncate">
                         {exportScope === 'all'
-                          ? 'Alles exportieren'
+                          ? 'Export All'
                           : selectedExportCollId.startsWith('preset:')
-                          ? `${PRESET_COLLECTION_OPTIONS.find(p => p.id === selectedExportCollId)?.name || 'Preset'} exportieren`
-                          : 'Sammlung exportieren'}
+                          ? `Export ${PRESET_COLLECTION_OPTIONS.find(p => p.id === selectedExportCollId)?.name || 'Preset'}`
+                          : 'Export Collection'}
                       </span>
                     </button>
 
                     {/* Import Button */}
                     <label className="flex items-center justify-center gap-2 py-2.5 px-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer">
                       <Upload className="w-4 h-4" />
-                      <span>JSON importieren</span>
+                      <span>Import JSON</span>
                       <input
                         type="file"
                         accept=".json,application/json"
@@ -455,7 +455,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 Danger Zone · {activeAccountName}
               </h3>
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                Fortschritte separat für die aktuelle Ansicht oder den gesamten Account zurücksetzen.
+                Reset progress separately for the current view or the entire account.
               </p>
             </div>
 
@@ -463,10 +463,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-2xl space-y-3">
                 <div className="flex items-center gap-2 text-rose-700 dark:text-rose-300 text-xs font-bold">
                   <AlertTriangle className="w-4 h-4 text-rose-500 dark:text-rose-400 shrink-0" />
-                  Möchtest du alle Fänge dieses Accounts wirklich zurücksetzen?
+                  Are you sure you want to reset all catches for this account?
                 </div>
                 <p className="text-[11px] text-rose-800/80 dark:text-rose-200/80">
-                  Alle markierten Pokémon (Standard, Shiny, Crypto, Formen, Megas, Kostüme) für "{activeAccountName}" werden zurückgesetzt.
+                  All marked Pokémon (Standard, Shiny, Shadow, Forms, Megas, Costumes) for "{activeAccountName}" will be reset.
                 </p>
                 <div className="flex gap-2">
                   <button
@@ -478,14 +478,14 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     }}
                     className="flex-1 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded-xl transition-colors cursor-pointer"
                   >
-                    Ja, alles für diesen Account löschen
+                    Yes, delete everything for this account
                   </button>
                   <button
                     type="button"
                     onClick={() => setIsResetConfirmOpen(false)}
                     className="px-3 py-1.5 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-semibold rounded-xl hover:bg-slate-300 dark:hover:bg-slate-700 transition-colors cursor-pointer"
                   >
-                    Abbrechen
+                    Cancel
                   </button>
                 </div>
               </div>
@@ -495,7 +495,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   <button
                     type="button"
                     onClick={() => {
-                      if (window.confirm(`Möchtest du wirklich nur den Fortschritt für "${activeScopeName}" in Account "${activeAccountName}" zurücksetzen?\n\nAlle anderen Dex-Modi (z.B. Formen, Standard, Shiny) bleiben unberührt!`)) {
+                      if (window.confirm(`Are you sure you want to reset only progress for "${activeScopeName}" in account "${activeAccountName}"?\n\nAll other Dex modes (e.g. Forms, Standard, Shiny) will remain untouched!`)) {
                         onResetScope();
                         onClose();
                       }
@@ -503,7 +503,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     className="w-full py-2 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
-                    <span>Nur "{activeScopeName}" zurücksetzen</span>
+                    <span>Reset only "{activeScopeName}"</span>
                   </button>
                 )}
 
@@ -513,7 +513,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   className="w-full py-2 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-rose-600 dark:text-rose-400 text-xs font-bold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Alle Dex-Fortschritte für "{activeAccountName}" zurücksetzen</span>
+                  <span>Reset all Dex progress for "{activeAccountName}"</span>
                 </button>
 
                 {onDeleteAllCollections && (
@@ -522,7 +522,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                     onClick={async () => {
                       if (
                         window.confirm(
-                          'Möchtest du wirklich alle benutzerdefinierten Listen löschen?\n\nDein Fang-Fortschritt (alle markierten Pokémon & Varianten) bleibt dabei vollständig erhalten!'
+                          'Are you sure you want to delete all custom lists?\n\nYour catch progress (all marked Pokémon & variants) will be completely preserved!'
                         )
                       ) {
                         await onDeleteAllCollections();
@@ -530,10 +530,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       }
                     }}
                     className="w-full py-2 bg-slate-100 hover:bg-rose-50 dark:bg-slate-800/80 dark:hover:bg-rose-950/30 border border-slate-200 dark:border-slate-700 hover:border-rose-300 dark:hover:border-rose-800 text-slate-700 hover:text-rose-600 dark:text-slate-300 dark:hover:text-rose-400 text-xs font-semibold rounded-xl transition-colors flex items-center justify-center gap-2 cursor-pointer"
-                    title="Löscht alle erstellten Sammlungen, behält alle gefangenen Pokémon"
+                    title="Delete all created collections, keep all caught Pokémon"
                   >
                     <Trash2 className="w-3.5 h-3.5 text-rose-500" />
-                    <span>Alle eigenen Listen löschen (Fänge behalten)</span>
+                    <span>Delete all custom lists (keep catches)</span>
                   </button>
                 )}
               </div>

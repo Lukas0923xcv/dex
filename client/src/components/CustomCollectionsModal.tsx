@@ -59,14 +59,14 @@ interface CustomCollectionsModalProps {
 
 // Preset Accent Themes
 const COLOR_THEMES = [
-  { id: 'emerald', hex: '#10b981', label: 'Smaragd' },
-  { id: 'sky', hex: '#0284c7', label: 'Himmelblau' },
-  { id: 'amber', hex: '#f59e0b', label: 'Bernstein' },
+  { id: 'emerald', hex: '#10b981', label: 'Emerald' },
+  { id: 'sky', hex: '#0284c7', label: 'Sky Blue' },
+  { id: 'amber', hex: '#f59e0b', label: 'Amber' },
   { id: 'purple', hex: '#9333ea', label: 'Amethyst' },
-  { id: 'rose', hex: '#f43f5e', label: 'Rubinrot' },
-  { id: 'teal', hex: '#0d9488', label: 'Türkis' },
+  { id: 'rose', hex: '#f43f5e', label: 'Ruby' },
+  { id: 'teal', hex: '#0d9488', label: 'Teal' },
   { id: 'indigo', hex: '#6366f1', label: 'Indigo' },
-  { id: 'crimson', hex: '#dc2626', label: 'Karmin' },
+  { id: 'crimson', hex: '#dc2626', label: 'Crimson' },
 ];
 
 export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
@@ -99,7 +99,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
       downloadAnchor.click();
       downloadAnchor.remove();
     } catch (err: any) {
-      alert(`Export fehlgeschlagen: ${err.message}`);
+      alert(`Export failed: ${err.message}`);
     }
   };
 
@@ -117,7 +117,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
       downloadAnchor.click();
       downloadAnchor.remove();
     } catch (err: any) {
-      alert(`Export fehlgeschlagen: ${err.message}`);
+      alert(`Export failed: ${err.message}`);
     }
   };
 
@@ -130,14 +130,14 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
       try {
         const json = JSON.parse(event.target?.result as string);
         if (!json.app || !json.data) {
-          throw new Error('Ungültiges Backup-Dateiformat.');
+          throw new Error('Invalid backup file format.');
         }
         if (onImportBackup) {
           const res = await onImportBackup(json);
-          alert(`Sammlung "${res?.collectionName || 'Sammlung'}" erfolgreich importiert!`);
+          alert(`Collection "${res?.collectionName || 'Collection'}" imported successfully!`);
         }
       } catch (err: any) {
-        alert(`Importieren fehlgeschlagen: ${err.message}`);
+        alert(`Import failed: ${err.message}`);
       }
     };
     reader.readAsText(file);
@@ -180,20 +180,20 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     {
       id: 'normal',
       label: 'Standard Dex',
-      subtitle: 'Reguläre Spezies',
+      subtitle: 'Regular Species',
       icon: Layers,
       accentHex: '#10b981'
     },
     {
       id: 'event',
-      label: 'Event-Kostüme',
-      subtitle: 'Hüte & Specials',
+      label: 'Event Costumes',
+      subtitle: 'Hats & Specials',
       icon: Gift,
       accentHex: '#ec4899'
     },
     {
       id: 'lucky',
-      label: 'Glücks-Ziele',
+      label: 'Lucky Goals',
       subtitle: 'Lucky Pokémon',
       icon: Sparkles,
       accentHex: '#eab308'
@@ -201,35 +201,35 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     {
       id: 'mega',
       label: 'Mega & Primal',
-      subtitle: 'Mega-Entwicklungen',
+      subtitle: 'Mega Evolutions',
       icon: Zap,
       accentHex: '#f97316'
     },
     {
       id: 'shadow',
-      label: 'Crypto',
-      subtitle: 'Schatten-Pokémon',
+      label: 'Shadow',
+      subtitle: 'Shadow Pokémon',
       icon: Flame,
       accentHex: '#a855f7'
     },
     {
       id: 'purified',
-      label: 'Erlöst',
-      subtitle: 'Geläuterte Aura',
+      label: 'Purified',
+      subtitle: 'Purified Aura',
       icon: Sun,
       accentHex: '#06b6d4'
     },
     {
       id: 'dynamax',
       label: 'Dynamax',
-      subtitle: 'Kraftquellen-Fänge',
+      subtitle: 'Power Spot Catches',
       icon: Maximize2,
       accentHex: '#d946ef'
     },
     {
       id: 'gigantamax',
-      label: 'Gigadynamax',
-      subtitle: 'Giga-Spezialformen',
+      label: 'Gigantamax',
+      subtitle: 'Gigantamax Special Forms',
       icon: CloudLightning,
       accentHex: '#ef4444'
     }
@@ -248,27 +248,27 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     if (filterOnlyShiny) {
       parts.push('Shiny');
     } else if (trackShiny) {
-      parts.push('Schillernde');
+      parts.push('Shiny');
     }
 
     const catLabels: Record<CollectionCategoryType, string> = {
-      normal: variantMode === 'multi' ? (includeForms ? 'Formen' : 'Basis') : 'Standard',
-      event: 'Kostüme',
-      lucky: 'Glücks',
+      normal: variantMode === 'multi' ? (includeForms ? 'Forms' : 'Base') : 'Standard',
+      event: 'Costumes',
+      lucky: 'Lucky',
       mega: 'Mega & Primal',
-      shadow: 'Crypto',
-      purified: 'Erlöste',
+      shadow: 'Shadow',
+      purified: 'Purified',
       dynamax: 'Dynamax',
-      gigantamax: 'Gigadynamax'
+      gigantamax: 'Gigantamax'
     };
     parts.push(catLabels[categoryType]);
 
     if (includeCostumes && categoryType !== 'event' && variantMode === 'multi') {
-      parts.push('& Kostüme');
+      parts.push('& Costumes');
     }
 
     if (trackHundo) parts.push('100% IV');
-    parts.push('Sammlung');
+    parts.push('Collection');
 
     setName(parts.join(' '));
   }, [categoryType, selectedRegion, variantMode, includeForms, includeCostumes, filterOnlyShiny, trackShiny, trackHundo, isNameManuallyEdited]);
@@ -351,7 +351,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
     try {
       setIsSubmitting(true);
-      const subLabel = variantMode === 'multi' ? 'Multivarianten' : 'Basis-Spezies';
+      const subLabel = variantMode === 'multi' ? 'Multi-variants' : 'Base Species';
       const regLabel = selectedRegion !== 'all' ? ` · ${REGION_OPTIONS.find(r => r.id === selectedRegion)?.shortLabel}` : '';
       const initialPokemonIds = populateMode === 'all' ? matchingPokemonIds : [];
       const newColl = await onCreateCollection(
@@ -402,13 +402,13 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
             </div>
             <div>
               <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                Sammlungs-Studio
+                Collection Studio
                 <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
                   Custom Dex
                 </span>
               </h2>
               <p className="text-xs text-slate-400">
-                Erstelle maßgeschneiderte Pokédex-Tracker oder verwalte eigene Listen
+                Create custom Pokédex trackers or manage your custom lists
               </p>
             </div>
           </div>
@@ -416,7 +416,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
           <button
             onClick={onClose}
             className="p-2 rounded-2xl text-slate-400 hover:text-white hover:bg-slate-800/80 transition-colors cursor-pointer"
-            title="Schließen"
+            title="Close"
           >
             <X className="w-5 h-5" />
           </button>
@@ -434,7 +434,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
               }`}
             >
               <Plus className="w-4 h-4" />
-              <span>Sammlung konfigurieren</span>
+              <span>Configure Collection</span>
             </button>
             <button
               onClick={() => setActiveTab('list')}
@@ -444,7 +444,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'
               }`}
             >
-              <span>Gespeicherte Sammlungen</span>
+              <span>Saved Collections</span>
               <span className="px-1.5 py-0.5 rounded-full text-[11px] bg-slate-700 text-slate-200 font-mono">
                 {collections.length}
               </span>
@@ -463,11 +463,11 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     <span className="w-5 h-5 rounded-full bg-blue-600/30 text-blue-400 border border-blue-500/40 inline-flex items-center justify-center text-xs font-mono">
                       1
                     </span>
-                    Region & Herkunft wählen (1-Klick Auswahl)
+                    Select Region & Origin (1-Click Selection)
                   </label>
                   <span className="text-xs text-slate-400">
                     {selectedRegion === 'all'
-                      ? 'Gesamter Pokédex'
+                      ? 'Entire Pokédex'
                       : `${REGION_OPTIONS.find(r => r.id === selectedRegion)?.name}`}
                   </span>
                 </div>
@@ -492,7 +492,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                             {reg.shortLabel}
                           </div>
                           <div className="text-[10px] text-slate-500 truncate">
-                            {reg.id === 'all' ? 'Alle' : reg.id === 8 ? 'inkl. Formen' : reg.id === 85 ? 'Hisui' : `Gen ${reg.id}`}
+                            {reg.id === 'all' ? 'All' : reg.id === 8 ? 'incl. Forms' : reg.id === 85 ? 'Hisui' : `Gen ${reg.id}`}
                           </div>
                         </div>
                         {isSelected && <Check className="w-3.5 h-3.5 text-blue-400 shrink-0 stroke-[3]" />}
@@ -509,12 +509,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       </span>
                       <div>
                         <div className="font-bold text-white">
-                          {REGION_OPTIONS.find(r => r.id === selectedRegion)?.name} ausgewählt
+                          {REGION_OPTIONS.find(r => r.id === selectedRegion)?.name} selected
                         </div>
                         <div className="text-blue-300/80 text-[11px]">
                           {selectedRegion === 8
-                            ? 'Beinhaltet Galar-Spezies (#810-#898), Galarian Regionalformen (Galar-Ponita, Galar-Zigzachs etc.) und Galar-Kostüme.'
-                            : `Filtert Sammlungs-Einträge auf Pokémon der Region ${REGION_OPTIONS.find(r => r.id === selectedRegion)?.shortLabel}.`}
+                            ? 'Includes Galar species (#810-#898), Galarian regional forms (Galarian Ponyta, Galarian Zigzagoon, etc.), and Galar costumes.'
+                            : `Filters collection entries to Pokémon from ${REGION_OPTIONS.find(r => r.id === selectedRegion)?.shortLabel}.`}
                         </div>
                       </div>
                     </div>
@@ -525,17 +525,17 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 )}
               </div>
 
-              {/* Section 2: Kategorie-Fokus */}
+              {/* Section 2: Category Focus */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
                       2
                     </span>
-                    Kategorie-Fokus wählen
+                    Choose Category Focus
                   </label>
                   <span className="text-xs text-slate-400">
-                    Welche Art von Pokémon möchtest du erfassen?
+                    What kind of Pokémon do you want to track?
                   </span>
                 </div>
 
@@ -594,22 +594,22 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </div>
               </div>
 
-              {/* Section 3: Formen, Events & Varianten */}
+              {/* Section 3: Forms, Events & Variants */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
                       3
                     </span>
-                    Formen & Event-Kostüme
+                    Forms & Event Costumes
                   </label>
                   <span className="text-xs text-slate-400">
-                    Formen, Kostüme und Geschlechter steuern
+                    Control forms, costumes, and gender differences
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {/* Multivariante */}
+                  {/* Multi-variant */}
                   <button
                     type="button"
                     onClick={() => setVariantMode('multi')}
@@ -631,16 +631,16 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     <div>
                       <div className="flex items-center justify-between">
                         <span className={`text-sm font-bold ${variantMode === 'multi' ? 'text-white' : 'text-slate-300'}`}>
-                          Alle Formen & Varianten
+                          All Forms & Variants
                         </span>
                         {variantMode === 'multi' && (
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
-                            Aktiv
+                            Active
                           </span>
                         )}
                       </div>
                       <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                        Erfasst Alola, Galar, Hisui, Paldea, Vivillon, Icognito etc. als individuelle Sammler-Einträge.
+                        Tracks Alola, Galar, Hisui, Paldea, Vivillon, Unown, etc. as individual collection entries.
                       </p>
                     </div>
                   </button>
@@ -667,16 +667,16 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     <div>
                       <div className="flex items-center justify-between">
                         <span className={`text-sm font-bold ${variantMode === 'single' ? 'text-white' : 'text-slate-300'}`}>
-                          Nur Basis-Spezies
+                          Base Species Only
                         </span>
                         {variantMode === 'single' && (
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
-                            Aktiv
+                            Active
                           </span>
                         )}
                       </div>
                       <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                        Exakt 1 Eintrag pro Pokédex-Nummer. Stimmt exakt mit dem Zähler im offiziellen Spiel überein.
+                        Exactly 1 entry per Pokédex number. Exactly matches the in-game count.
                       </p>
                     </div>
                   </button>
@@ -700,12 +700,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         </div>
                         <div>
                           <div className="text-xs sm:text-sm font-semibold text-white">
-                            Alle Formen & Regionalformen einbeziehen
+                            Include All Forms & Regional Variants
                           </div>
                           <div className="text-[11px] text-slate-400">
                             {selectedRegion === 8
-                              ? 'Regionalformen (Galar-Ponita, Galar-Zigzachs, Galar-Corasonn etc.) und Wechselformen'
-                              : 'Regionalformen (Alola, Galar, Hisui, Paldea) sowie Spezialformen erfassen'}
+                              ? 'Regional forms (Galarian Ponyta, Galarian Zigzagoon, Galarian Corsola, etc.) and alternate forms'
+                              : 'Track regional forms (Alola, Galar, Hisui, Paldea) and special forms'}
                           </div>
                         </div>
                       </div>
@@ -729,12 +729,12 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         </div>
                         <div>
                           <div className="text-xs sm:text-sm font-semibold text-white">
-                            Event-Kostüme & Hüte einbeziehen
+                            Include Event Costumes & Hats
                           </div>
                           <div className="text-[11px] text-slate-400">
                             {selectedRegion === 8
-                              ? '6 Galar-Kostüme (Meloetta-Ponita, Sonnenbrillen-Corasonn, Holiday Wolly etc.)'
-                              : 'Event- und Feiertags-Kostüme zu dieser Sammlung hinzufügen'}
+                              ? '6 Galar costumes (Meloetta Hat Ponyta, Sunglasses Corsola, Holiday Wooloo, etc.)'
+                              : 'Add event and holiday costumes to this collection'}
                           </div>
                         </div>
                       </div>
@@ -758,10 +758,10 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         </div>
                         <div>
                           <div className="text-xs sm:text-sm font-semibold text-white">
-                            Geschlechts-Formen einbeziehen (♀ Unterschiede)
+                            Include Gender Forms (♀ differences)
                           </div>
                           <div className="text-[11px] text-slate-400">
-                            98 optische Geschlechtsunterschiede (Pikachu ♀, Woingenau ♀, Servol ♀ usw.) als eigene Sammler-Einträge
+                            98 visual gender differences (Pikachu ♀, Wobbuffet ♀, Indeedee ♀, etc.) as separate collection entries
                           </div>
                         </div>
                       </div>
@@ -773,17 +773,17 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 )}
               </div>
 
-              {/* Section 4: Shiny-Filter & Tracking-Optionen */}
+              {/* Section 4: Shiny Filter & Tracking Options */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
                       4
                     </span>
-                    Shiny-Filter & Tracking-Optionen
+                    Shiny Filter & Tracking Options
                   </label>
                   <span className="text-xs text-slate-400">
-                    Verfügbarkeit & Karten-Kriterien
+                    Availability & Card Criteria
                   </span>
                 </div>
 
@@ -807,17 +807,17 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       </div>
                       <div>
                         <div className="text-xs sm:text-sm font-bold text-white flex items-center gap-2">
-                          <span>Nur als Shiny verfügbare Pokémon aufnehmen (Shiny-Checklist)</span>
+                          <span>Include only shiny-available Pokémon (Shiny Checklist)</span>
                           {filterOnlyShiny && (
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">
-                              Aktiv
+                              Active
                             </span>
                           )}
                         </div>
                         <div className="text-[11px] text-slate-400 mt-0.5">
                           {filterOnlyShiny
-                            ? `✨ Aktiv: Schließt unveröffentlichte Shinys aus. Fügt nur die ${matchingPokemonIds.length} in GO fangbaren Shinys hinzu.`
-                            : `🌐 Inaktiv: Fügt alle ${matchingPokemonIds.length} Pokémon der Auswahl hinzu (sowohl Shiny als auch reguläre).`}
+                            ? `✨ Active: Excludes unreleased shinies. Adds only the ${matchingPokemonIds.length} shinies catchable in GO.`
+                            : `🌐 Inactive: Adds all ${matchingPokemonIds.length} Pokémon from selection (both shiny and regular).`}
                         </div>
                       </div>
                     </div>
@@ -829,14 +829,14 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
 
                 {/* Card Tracking Dimensions */}
                 <div className="text-xs font-semibold text-slate-400 pt-2 flex items-center justify-between">
-                  <span>Karten-Tracking aktivieren (Felder auf den Pokédex-Karten):</span>
+                  <span>Enable Card Tracking (Fields on Pokédex cards):</span>
                   <span className="text-[11px] text-slate-500 font-normal">
-                    Kriterien separat anhaken
+                    Check criteria separately
                   </span>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                  {/* Schillernd (Shiny) */}
+                  {/* Shiny */}
                   <div
                     onClick={() => setTrackShiny(!trackShiny)}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
@@ -850,8 +850,8 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         <Sparkles className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="text-sm font-semibold text-white">Schillernd (Shiny)</div>
-                        <div className="text-[11px] text-slate-400">Glitzernde Shinies separat erfassen</div>
+                        <div className="text-sm font-semibold text-white">Shiny</div>
+                        <div className="text-[11px] text-slate-400">Track glittering shinies separately</div>
                       </div>
                     </div>
                     <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackShiny ? 'bg-amber-500' : 'bg-slate-800'}`}>
@@ -874,7 +874,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       </div>
                       <div>
                         <div className="text-sm font-semibold text-white">100% IV (Hundo)</div>
-                        <div className="text-[11px] text-slate-400">Perfekte 15/15/15 Bewertung</div>
+                        <div className="text-[11px] text-slate-400">Perfect 15/15/15 appraisal</div>
                       </div>
                     </div>
                     <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackHundo ? 'bg-emerald-500' : 'bg-slate-800'}`}>
@@ -882,7 +882,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Geschlechter */}
+                  {/* Gender */}
                   <div
                     onClick={() => setTrackGender(!trackGender)}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
@@ -896,8 +896,8 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         <Dna className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="text-sm font-semibold text-white">Geschlecht (♂ / ♀)</div>
-                        <div className="text-[11px] text-slate-400">Männlich und Weiblich getrennt</div>
+                        <div className="text-sm font-semibold text-white">Gender (♂ / ♀)</div>
+                        <div className="text-[11px] text-slate-400">Male and Female separately</div>
                       </div>
                     </div>
                     <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackGender ? 'bg-blue-500' : 'bg-slate-800'}`}>
@@ -905,8 +905,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     </div>
                   </div>
 
-                  {/* Spezielle Hintergründe */}
-                  {/* Größenrekorde */}
+                  {/* Size Records */}
                   <div
                     onClick={() => setTrackSize(!trackSize)}
                     className={`flex items-center justify-between p-3.5 rounded-2xl border cursor-pointer transition-all ${
@@ -920,8 +919,8 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         <Ruler className="w-4 h-4" />
                       </div>
                       <div>
-                        <div className="text-sm font-semibold text-white">Größen-Rekorde (XXS & XXL)</div>
-                        <div className="text-[11px] text-slate-400">Pummelige Riesen und winzige Zwerg-Rekorde im Pokédex führen</div>
+                        <div className="text-sm font-semibold text-white">Size Records (XXS & XXL)</div>
+                        <div className="text-[11px] text-slate-400">Track tiny XXS and giant XXL records in Pokédex</div>
                       </div>
                     </div>
                     <div className={`relative inline-flex h-6 w-11 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${trackSize ? 'bg-rose-500' : 'bg-slate-800'}`}>
@@ -931,17 +930,17 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </div>
               </div>
 
-              {/* Section 5: Pokémon-Auswahl */}
+              {/* Section 5: Pokémon Selection */}
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <span className="w-5 h-5 rounded-full bg-slate-800 text-slate-300 inline-flex items-center justify-center text-xs font-mono">
                       5
                     </span>
-                    Pokémon-Auswahl
+                    Pokémon Selection
                   </label>
                   <span className="text-xs text-slate-400">
-                    Welche Pokémon sollen anfangs enthalten sein?
+                    Which Pokémon should be included initially?
                   </span>
                 </div>
 
@@ -967,18 +966,18 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     <div>
                       <div className="flex items-center justify-between">
                         <span className={`text-sm font-bold ${populateMode === 'all' ? 'text-white' : 'text-slate-300'}`}>
-                          Alle passenden Pokémon
+                          All Matching Pokémon
                         </span>
                         {populateMode === 'all' && (
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
-                            Aktiv
+                            Active
                           </span>
                         )}
                       </div>
                       <p className="text-xs text-slate-400 mt-1 leading-relaxed">
                         {selectedRegion !== 'all'
-                          ? `Fügt direkt alle ${matchingPokemonIds.length} Pokémon der Region ${REGION_OPTIONS.find(r => r.id === selectedRegion)?.name} (${filterOnlyShiny ? 'nur als Shiny verfügbar' : 'sowohl Shiny als auch regulär'}${includeForms ? ', inkl. Formen' : ''}${includeCostumes ? ' & Kostümen' : ''}) zur Liste hinzu.`
-                          : `Fügt direkt alle ${matchingPokemonIds.length} Pokémon dieser Auswahl (${filterOnlyShiny ? 'nur als Shiny verfügbar' : 'alle Varianten'}) zur Liste hinzu.`}
+                          ? `Adds all ${matchingPokemonIds.length} Pokémon of the ${REGION_OPTIONS.find(r => r.id === selectedRegion)?.name} region (${filterOnlyShiny ? 'only shiny available' : 'both shiny and regular'}${includeForms ? ', incl. forms' : ''}${includeCostumes ? ' & costumes' : ''}) directly to the list.`
+                          : `Adds all ${matchingPokemonIds.length} Pokémon from this selection (${filterOnlyShiny ? 'only shiny available' : 'all variants'}) directly to the list.`}
                       </p>
                     </div>
                   </button>
@@ -1004,37 +1003,37 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     <div>
                       <div className="flex items-center justify-between">
                         <span className={`text-sm font-bold ${populateMode === 'custom' ? 'text-white' : 'text-slate-300'}`}>
-                          Selbst auswählen
+                          Choose Manually
                         </span>
                         {populateMode === 'custom' && (
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-300">
-                            Aktiv
+                            Active
                           </span>
                         )}
                       </div>
                       <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                        Startet mit Checkliste: Du entscheidest per Klick genau, welche Pokémon drin sind.
+                        Start with checklist: Select exactly which Pokémon to include.
                       </p>
                     </div>
                   </button>
                 </div>
               </div>
 
-              {/* Section 6: Sammlungs-Design & Benennung */}
+              {/* Section 6: Design & Naming */}
               <div className="space-y-3.5 p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
                     <Palette className="w-4 h-4 text-slate-400" />
-                    6 · Design & Sammlungsname
+                    6 · Design & Collection Name
                   </label>
                   <span className="text-xs font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 rounded-full">
-                    {populateMode === 'all' ? `${matchingPokemonIds.length} Pokémon zugeordnet` : 'Manuelle Auswahl'}
+                    {populateMode === 'all' ? `${matchingPokemonIds.length} Pokémon assigned` : 'Manual Selection'}
                   </span>
                 </div>
 
                 {/* Color Theme Selector */}
                 <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-xs text-slate-400 mr-1">Farbe:</span>
+                  <span className="text-xs text-slate-400 mr-1">Color:</span>
                   {COLOR_THEMES.map((c) => {
                     const isSelected = selectedColor === c.hex;
                     return (
@@ -1064,7 +1063,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       setIsNameManuallyEdited(true);
                     }}
                     required
-                    placeholder="z.B. Meine Schillernde Glücks-Sammlung"
+                    placeholder="e.g. My Shiny Lucky Collection"
                     className="w-full px-4 py-3 bg-slate-900 border border-slate-700 focus:border-emerald-500 rounded-xl text-sm font-medium text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 transition-all"
                   />
                   {isNameManuallyEdited && (
@@ -1072,7 +1071,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       type="button"
                       onClick={() => setIsNameManuallyEdited(false)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-emerald-400 font-semibold transition-colors"
-                      title="Automatischen Namen wiederherstellen"
+                      title="Restore automatic name"
                     >
                       Auto
                     </button>
@@ -1092,7 +1091,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
               >
                 <Plus className="w-4 h-4 stroke-[3]" />
                 <span>
-                  {isSubmitting ? 'Wird gespeichert...' : `Sammlung "${name || 'Neu'}" anlegen`}
+                  {isSubmitting ? 'Saving...' : `Create collection "${name || 'New'}"`}
                 </span>
               </button>
             </form>
@@ -1101,16 +1100,16 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
             <div className="space-y-4">
               <div className="flex items-center justify-between gap-2 flex-wrap">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                  Deine gespeicherten Listen ({collections.length})
+                  Your saved lists ({collections.length})
                 </h3>
                 <div className="flex items-center gap-2">
                   {onImportBackup && (
                     <label
                       className="text-xs text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/30 transition-all cursor-pointer"
-                      title="Sammlung aus einer JSON-Datei importieren"
+                      title="Import collection from a JSON file"
                     >
                       <Upload className="w-3.5 h-3.5" />
-                      <span>Importieren</span>
+                      <span>Import</span>
                       <input
                         type="file"
                         accept=".json,application/json"
@@ -1125,17 +1124,17 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                       onClick={async () => {
                         if (
                           window.confirm(
-                            `Möchtest du wirklich ALLE ${collections.length} benutzerdefinierten Listen unwiderruflich löschen?\n\nDein Fang-Fortschritt (gefangene Pokémon/Formen) bleibt vollständig erhalten!`
+                            `Are you sure you want to delete ALL ${collections.length} custom lists?\n\nYour catch progress (caught Pokémon/forms) will be completely preserved!`
                           )
                         ) {
                           await onDeleteAllCollections();
                         }
                       }}
                       className="text-xs text-rose-400 hover:text-rose-300 font-semibold flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 transition-all cursor-pointer"
-                      title="Alle eigenen Sammlungen löschen"
+                      title="Delete all custom collections"
                     >
                       <Trash2 className="w-3.5 h-3.5 text-rose-400" />
-                      <span>Alle löschen</span>
+                      <span>Delete all</span>
                     </button>
                   )}
                   <button
@@ -1144,21 +1143,21 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                     className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1 cursor-pointer"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>Neue hinzufügen</span>
+                    <span>Add new</span>
                   </button>
                 </div>
               </div>
 
-              {/* Preset Dexe Quick Export */}
+              {/* Preset Dexes Quick Export */}
               {onExportCollection && (
                 <div className="p-3.5 rounded-2xl bg-slate-950/40 border border-slate-800/80 space-y-2.5">
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
                       <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                      Preset-Dexe exportieren
+                      Export Preset Dexes
                     </span>
                     <span className="text-[11px] text-slate-500">
-                      Standard-Kategorien als JSON sichern
+                      Backup default categories as JSON
                     </span>
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
@@ -1168,7 +1167,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         type="button"
                         onClick={() => handleExportPresetCollection(preset.id)}
                         className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer group shadow-xs"
-                        title={`"${preset.name}" als JSON exportieren`}
+                        title={`Export "${preset.name}" as JSON`}
                       >
                         <div className="flex items-center gap-2 truncate">
                           <span
@@ -1188,10 +1187,10 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 <div className="py-12 px-4 text-center rounded-2xl border border-dashed border-slate-800 bg-slate-950/40">
                   <FolderKanban className="w-10 h-10 text-slate-600 mx-auto mb-2.5 opacity-60" />
                   <p className="text-sm font-semibold text-slate-300">
-                    Noch keine benutzerdefinierten Listen vorhanden
+                    No custom lists created yet
                   </p>
                   <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                    Klicke auf "Sammlung konfigurieren", um deine erste maßgeschneiderte Pokédex-Liste anzulegen!
+                    Click "Configure Collection" to create your first customized Pokédex checklist!
                   </p>
                 </div>
               ) : (
@@ -1231,19 +1230,19 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                                 </h4>
                                 {isActive && (
                                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
-                                    Aktiver Filter
+                                    Active Filter
                                   </span>
                                 )}
                               </div>
                               <p className="text-xs text-slate-400 mt-0.5">
-                                {c.description || (c.categoryType ? `${c.categoryType.toUpperCase()} · ${c.variantMode === 'single' ? 'Basis-Spezies' : 'Multivarianten'}` : 'Custom Collection')}
+                                {c.description || (c.categoryType ? `${c.categoryType.toUpperCase()} · ${c.variantMode === 'single' ? 'Base Species' : 'Multi-variants'}` : 'Custom Collection')}
                               </p>
 
                               {/* Progress bar */}
                               <div className="mt-2.5">
                                 <div className="flex items-center justify-between text-xs mb-1">
                                   <span className="font-mono text-slate-300 font-medium">
-                                    {c.caughtItems} / {c.totalItems} gefangen
+                                    {c.caughtItems} / {c.totalItems} caught
                                   </span>
                                   <span className="font-mono font-bold" style={{ color: c.color || '#10b981' }}>
                                     {percent}%
@@ -1269,7 +1268,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                                 type="button"
                                 onClick={() => handleExportSingleCollection(c)}
                                 className="p-2 text-slate-400 hover:text-blue-400 hover:bg-slate-800/80 rounded-xl transition-colors cursor-pointer"
-                                title="Diese Sammlung als JSON exportieren"
+                                title="Export this collection as JSON"
                               >
                                 <Download className="w-4 h-4" />
                               </button>
@@ -1281,20 +1280,20 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                                 onClose();
                               }}
                               className="px-3 py-1.5 bg-blue-500/15 hover:bg-blue-500/25 text-blue-300 border border-blue-500/30 text-xs font-bold rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
-                              title="Einzelne Pokémon anpassen"
+                              title="Customize individual Pokémon"
                             >
                               <Bookmark className="w-3.5 h-3.5" />
-                              <span className="hidden sm:inline">Pokémon wählen</span>
+                              <span className="hidden sm:inline">Select Pokémon</span>
                             </button>
                             <button
                               type="button"
                               onClick={() => {
-                                if (confirm(`Sammlung "${c.name}" wirklich löschen?`)) {
+                                if (confirm(`Are you sure you want to delete collection "${c.name}"?`)) {
                                   onDeleteCollection(c.id);
                                 }
                               }}
                               className="p-2 text-slate-400 hover:text-rose-400 hover:bg-slate-800/80 rounded-xl transition-colors cursor-pointer"
-                              title="Löschen"
+                              title="Delete"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
