@@ -777,6 +777,122 @@ router.get('/export', (req, res) => {
     const { collectionId } = req.query;
 
     if (collectionId) {
+      const isPreset = collectionId.startsWith('preset:') ||
+        ['standard', 'shiny', 'shadow', 'mega', 'form', 'costume'].includes(collectionId);
+
+      if (isPreset) {
+        const presetKey = collectionId.replace(/^preset:/, '');
+        const presetDefs = {
+          standard: {
+            name: 'Standard Dex',
+            description: 'Offizielle reguläre Spezies',
+            color: '#3b82f6',
+            categoryType: 'normal',
+            variantMode: 'multi',
+            filterSql: "category = 'standard' AND released_in_go = 1",
+            scope: 'standard'
+          },
+          shiny: {
+            name: 'Shiny Dex',
+            description: 'Freigeschaltete Schillernde Pokémon',
+            color: '#f59e0b',
+            categoryType: 'normal',
+            variantMode: 'multi',
+            trackShiny: 1,
+            filterSql: "has_shiny = 1 AND released_in_go = 1",
+            scope: 'shiny'
+          },
+          shadow: {
+            name: 'Crypto Dex',
+            description: 'Offiziell erschienene Crypto-Pokémon',
+            color: '#a855f7',
+            categoryType: 'shadow',
+            variantMode: 'multi',
+            filterSql: "has_shadow = 1 AND released_in_go = 1",
+            scope: 'shadow'
+          },
+          mega: {
+            name: 'Mega Dex',
+            description: 'Mega- und Primal-Entwicklungen',
+            color: '#f43f5e',
+            categoryType: 'mega',
+            variantMode: 'multi',
+            filterSql: "(category = 'mega' OR is_mega = 1) AND released_in_go = 1",
+            scope: 'mega'
+          },
+          form: {
+            name: 'Formen Dex',
+            description: 'Regionale Formen & alternative Gestalten',
+            color: '#6366f1',
+            categoryType: 'normal',
+            variantMode: 'multi',
+            filterSql: "(category = 'form' OR is_form = 1 OR category = 'standard') AND released_in_go = 1",
+            scope: 'form'
+          },
+          costume: {
+            name: 'Kostüme Dex',
+            description: 'Event-Pokémon mit Kostümen & Specials',
+            color: '#ec4899',
+            categoryType: 'event',
+            variantMode: 'multi',
+            filterSql: "(category = 'costume' OR is_costume = 1) AND released_in_go = 1",
+            scope: 'costume'
+          }
+        };
+
+        const def = presetDefs[presetKey];
+        if (!def) {
+          return res.status(404).json({ error: 'Preset collection not found' });
+        }
+
+        const matching = db.prepare(`SELECT id FROM pokemon WHERE ${def.filterSql}`).all();
+        const collId = `preset_${presetKey}`;
+        const now = new Date().toISOString();
+        const collectionItems = matching.map(p => ({
+          collection_id: collId,
+          pokemon_id: p.id,
+          added_at: now
+        }));
+        const rawProgress = db.prepare('SELECT * FROM user_progress_v2 WHERE dex_scope = ?').all(def.scope);
+        const progressV2 = rawProgress.map(p => ({
+          ...p,
+          dex_scope: `custom:${collId}`,
+          original_scope: def.scope
+        }));
+
+        const formattedColl = {
+          id: collId,
+          name: def.name,
+          description: def.description,
+          color: def.color,
+          categoryType: def.categoryType,
+          variantMode: def.variantMode,
+          trackShiny: Boolean(def.trackShiny),
+          trackHundo: false,
+          trackGender: false,
+          trackBackground: false,
+          trackSize: false,
+          createdAt: now,
+          totalItems: collectionItems.length,
+          caughtItems: rawProgress.filter(p => p.caught).length
+        };
+
+        return res.json({
+          app: 'PokemonGoDexTracker',
+          version: 2,
+          type: 'collection',
+          isPreset: true,
+          presetKey,
+          exportedAt: now,
+          data: {
+            collection: formattedColl,
+            collections: [formattedColl],
+            collectionItems,
+            progressV2
+          }
+        });
+      }
+
       const coll = db.prepare('SELECT * FROM custom_collections WHERE id = ?').get(collectionId);
       if (!coll) {
         return res.status(404).json({ error: 'Collection not found' });

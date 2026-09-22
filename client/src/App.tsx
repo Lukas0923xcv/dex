@@ -300,6 +300,8 @@ export const App: React.FC = () => {
         onSaveTabs={handleSaveDashboardTabs}
         onDeleteCollection={deleteCollection}
         onDeleteAllCollections={deleteAllCollections}
+        onExportPreset={exportBackup}
+        onExportCollection={exportBackup}
       />
     </div>
   );

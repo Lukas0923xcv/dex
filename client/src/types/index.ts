@@ -108,9 +108,12 @@ export interface SingleCollectionBackup {
   app: string;
   version: number;
   type: 'collection';
+  isPreset?: boolean;
+  presetKey?: string;
   exportedAt: string;
   data: {
     collection: CustomCollection;
+    collections?: CustomCollection[];
     collectionItems: Array<{
       collection_id: string;
       pokemon_id: string;
@@ -133,8 +136,85 @@ export interface SingleCollectionBackup {
       notes?: string;
       updated_at?: string;
     }>;
+    progressV2?: Array<{
+      account_id?: string;
+      dex_scope?: string;
+      pokemon_id: string;
+      caught?: number | boolean;
+      shiny_caught?: number | boolean;
+      lucky_caught?: number | boolean;
+      hundo_caught?: number | boolean;
+      shadow_caught?: number | boolean;
+      purified_caught?: number | boolean;
+      gender_m_caught?: number | boolean;
+      gender_f_caught?: number | boolean;
+      xxl_caught?: number | boolean;
+      xxs_caught?: number | boolean;
+      notes?: string;
+      updated_at?: string;
+    }>;
   };
 }
+
+export interface PresetCollectionOption {
+  id: string;
+  scope: string;
+  name: string;
+  description: string;
+  color: string;
+  categoryType: CollectionCategoryType;
+}
+
+export const PRESET_COLLECTION_OPTIONS: PresetCollectionOption[] = [
+  {
+    id: 'preset:standard',
+    scope: 'standard',
+    name: 'Standard Dex',
+    description: 'Offizielle reguläre Spezies',
+    color: '#3b82f6',
+    categoryType: 'normal'
+  },
+  {
+    id: 'preset:shiny',
+    scope: 'shiny',
+    name: 'Shiny Dex',
+    description: 'Freigeschaltete Schillernde Pokémon',
+    color: '#f59e0b',
+    categoryType: 'normal'
+  },
+  {
+    id: 'preset:shadow',
+    scope: 'shadow',
+    name: 'Crypto Dex',
+    description: 'Offiziell erschienene Crypto-Pokémon',
+    color: '#a855f7',
+    categoryType: 'shadow'
+  },
+  {
+    id: 'preset:mega',
+    scope: 'mega',
+    name: 'Mega Dex',
+    description: 'Mega- und Primal-Entwicklungen',
+    color: '#f43f5e',
+    categoryType: 'mega'
+  },
+  {
+    id: 'preset:form',
+    scope: 'form',
+    name: 'Formen Dex',
+    description: 'Regionale & alternative Formen',
+    color: '#6366f1',
+    categoryType: 'normal'
+  },
+  {
+    id: 'preset:costume',
+    scope: 'costume',
+    name: 'Kostüme Dex',
+    description: 'Event-Pokémon mit Kostümen & Specials',
+    color: '#ec4899',
+    categoryType: 'event'
+  }
+];
 
 export interface BackupData {
   app: string;

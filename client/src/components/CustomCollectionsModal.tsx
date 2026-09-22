@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { CustomCollection, CollectionCategoryType, CollectionVariantMode, Pokemon } from '../types';
+import { CustomCollection, CollectionCategoryType, CollectionVariantMode, Pokemon, PRESET_COLLECTION_OPTIONS } from '../types';
 import { REGION_OPTIONS, isPokemonInRegion, isGalarian, isAlolan, isHisuian, isPaldean } from '../utils/regions';
 import {
   X,
@@ -95,6 +95,24 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
       const safeName = coll.name.toLowerCase().replace(/[^a-z0-9]/gi, '_');
       downloadAnchor.setAttribute('href', jsonString);
       downloadAnchor.setAttribute('download', `pogo-collection-${safeName}-${dateStr}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    } catch (err: any) {
+      alert(`Export fehlgeschlagen: ${err.message}`);
+    }
+  };
+
+  const handleExportPresetCollection = async (presetId: string) => {
+    try {
+      if (!onExportCollection) return;
+      const data = await onExportCollection(presetId);
+      const jsonString = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data, null, 2))}`;
+      const downloadAnchor = document.createElement('a');
+      const dateStr = new Date().toISOString().slice(0, 10);
+      const safeKey = presetId.replace(/^preset:/, '');
+      downloadAnchor.setAttribute('href', jsonString);
+      downloadAnchor.setAttribute('download', `pogo-preset-${safeKey}-${dateStr}.json`);
       document.body.appendChild(downloadAnchor);
       downloadAnchor.click();
       downloadAnchor.remove();
@@ -1130,6 +1148,41 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                   </button>
                 </div>
               </div>
+
+              {/* Preset Dexe Quick Export */}
+              {onExportCollection && (
+                <div className="p-3.5 rounded-2xl bg-slate-950/40 border border-slate-800/80 space-y-2.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-slate-300 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                      Preset-Dexe exportieren
+                    </span>
+                    <span className="text-[11px] text-slate-500">
+                      Standard-Kategorien als JSON sichern
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {PRESET_COLLECTION_OPTIONS.map((preset) => (
+                      <button
+                        key={preset.id}
+                        type="button"
+                        onClick={() => handleExportPresetCollection(preset.id)}
+                        className="flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer group shadow-xs"
+                        title={`"${preset.name}" als JSON exportieren`}
+                      >
+                        <div className="flex items-center gap-2 truncate">
+                          <span
+                            className="w-2 h-2 rounded-full shrink-0"
+                            style={{ backgroundColor: preset.color }}
+                          />
+                          <span className="truncate">{preset.name}</span>
+                        </div>
+                        <Download className="w-3.5 h-3.5 text-slate-500 group-hover:text-blue-400 shrink-0 transition-colors" />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {collections.length === 0 ? (
                 <div className="py-12 px-4 text-center rounded-2xl border border-dashed border-slate-800 bg-slate-950/40">

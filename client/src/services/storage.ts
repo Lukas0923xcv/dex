@@ -846,7 +846,148 @@ class StorageAdapter {
         }
       }
 
-      // Local export for single collection
+      // Check if exporting a preset collection (standard, shiny, shadow, mega, form, costume)
+      const isPreset = collectionId.startsWith('preset:') ||
+        ['standard', 'shiny', 'shadow', 'mega', 'form', 'costume'].includes(collectionId);
+
+      if (isPreset) {
+        const presetKey = collectionId.replace(/^preset:/, '');
+        const presetDefs: Record<string, {
+          name: string;
+          description: string;
+          color: string;
+          categoryType: any;
+          trackShiny?: boolean;
+          filter: (p: Pokemon) => boolean;
+        }> = {
+          standard: {
+            name: 'Standard Dex',
+            description: 'Offizielle reguläre Spezies',
+            color: '#3b82f6',
+            categoryType: 'normal',
+            filter: (p) => p.category === 'standard' && Boolean(p.releasedInGo)
+          },
+          shiny: {
+            name: 'Shiny Dex',
+            description: 'Freigeschaltete Schillernde Pokémon',
+            color: '#f59e0b',
+            categoryType: 'normal',
+            trackShiny: true,
+            filter: (p) => Boolean(p.hasShiny) && Boolean(p.releasedInGo)
+          },
+          shadow: {
+            name: 'Crypto Dex',
+            description: 'Offiziell erschienene Crypto-Pokémon',
+            color: '#a855f7',
+            categoryType: 'shadow',
+            filter: (p) => Boolean(p.hasShadow) && Boolean(p.releasedInGo)
+          },
+          mega: {
+            name: 'Mega Dex',
+            description: 'Mega- und Primal-Entwicklungen',
+            color: '#f43f5e',
+            categoryType: 'mega',
+            filter: (p) => (p.category === 'mega' || Boolean(p.isMega)) && Boolean(p.releasedInGo)
+          },
+          form: {
+            name: 'Formen Dex',
+            description: 'Regionale Formen & alternative Gestalten',
+            color: '#6366f1',
+            categoryType: 'normal',
+            filter: (p) => (p.category === 'form' || Boolean(p.isForm) || p.category === 'standard') && Boolean(p.releasedInGo)
+          },
+          costume: {
+            name: 'Kostüme Dex',
+            description: 'Event-Pokémon mit Kostümen & Specials',
+            color: '#ec4899',
+            categoryType: 'event',
+            filter: (p) => (p.category === 'costume' || Boolean(p.isCostume)) && Boolean(p.releasedInGo)
+          }
+        };
+
+        const def = presetDefs[presetKey];
+        if (!def) {
+          throw new Error(`Preset-Dex "${collectionId}" nicht gefunden.`);
+        }
+
+        const baseList = localPokemonData as Pokemon[];
+        const matching = baseList.filter(def.filter);
+        const collId = `preset_${presetKey}`;
+        const now = new Date().toISOString();
+        const collectionItems = matching.map(p => ({
+          collection_id: collId,
+          pokemon_id: p.id,
+          added_at: now
+        }));
+
+        const progressV2: any[] = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key && key.startsWith(STORAGE_KEYS.PROGRESS_PREFIX)) {
+            const rest = key.substring(STORAGE_KEYS.PROGRESS_PREFIX.length);
+            const underscoreIdx = rest.indexOf('_');
+            if (underscoreIdx > 0) {
+              const accId = rest.substring(0, underscoreIdx);
+              const scope = rest.substring(underscoreIdx + 1);
+              if (scope === presetKey) {
+                try {
+                  const data = JSON.parse(localStorage.getItem(key) || '{}');
+                  for (const [pid, val] of Object.entries<any>(data)) {
+                    progressV2.push({
+                      account_id: accId,
+                      dex_scope: `custom:${collId}`,
+                      original_scope: presetKey,
+                      pokemon_id: pid,
+                      caught: val.caught ? 1 : 0,
+                      shiny_caught: val.shinyCaught ? 1 : 0,
+                      lucky_caught: val.luckyCaught ? 1 : 0,
+                      hundo_caught: val.hundoCaught ? 1 : 0,
+                      shadow_caught: val.shadowCaught ? 1 : 0,
+                      purified_caught: val.purifiedCaught ? 1 : 0,
+                      gender_m_caught: val.genderMCaught ? 1 : 0,
+                      gender_f_caught: val.genderFCaught ? 1 : 0,
+                      xxl_caught: val.xxlCaught ? 1 : 0,
+                      xxs_caught: val.xxsCaught ? 1 : 0,
+                      notes: val.notes,
+                      updated_at: val.updatedAt
+                    });
+                  }
+                } catch {}
+              }
+            }
+          }
+        }
+
+        const formattedColl: CustomCollection = {
+          id: collId,
+          name: def.name,
+          description: def.description,
+          color: def.color,
+          categoryType: def.categoryType,
+          variantMode: 'multi',
+          trackShiny: Boolean(def.trackShiny),
+          createdAt: now,
+          totalItems: collectionItems.length,
+          caughtItems: progressV2.filter(p => p.caught).length
+        };
+
+        return {
+          app: 'PokemonGoDexTracker',
+          version: 2,
+          type: 'collection',
+          isPreset: true,
+          presetKey,
+          exportedAt: now,
+          data: {
+            collection: formattedColl,
+            collections: [formattedColl],
+            collectionItems,
+            progressV2
+          }
+        };
+      }
+
+      // Local export for custom collection
       const collections = this.collectionsCache.length > 0 ? this.collectionsCache : this.getLocalCollections();
       const coll = collections.find(c => c.id === collectionId);
       if (!coll) {

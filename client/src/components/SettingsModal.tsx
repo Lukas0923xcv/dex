@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StorageStatus, storage } from '../services/storage';
-import { BackupData, SingleCollectionBackup, CustomCollection } from '../types';
+import { BackupData, SingleCollectionBackup, CustomCollection, PRESET_COLLECTION_OPTIONS } from '../types';
 import { X, Download, Upload, RefreshCw, Server, AlertTriangle, CheckCircle2, ShieldCheck, Trash2 } from 'lucide-react';
 
 interface SettingsModalProps {
@@ -36,9 +36,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   // Export State
   const [exportScope, setExportScope] = useState<'all' | 'collection'>('all');
-  const [selectedExportCollId, setSelectedExportCollId] = useState<string>(
-    collections.length > 0 ? collections[0].id : ''
-  );
+  const [selectedExportCollId, setSelectedExportCollId] = useState<string>('preset:standard');
 
   // Import State
   const [pendingImport, setPendingImport] = useState<{
@@ -50,10 +48,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   } | null>(null);
 
   useEffect(() => {
-    if (collections.length > 0 && (!selectedExportCollId || !collections.some(c => c.id === selectedExportCollId))) {
-      setSelectedExportCollId(collections[0].id);
+    if (!selectedExportCollId) {
+      setSelectedExportCollId('preset:standard');
     }
-  }, [collections, selectedExportCollId]);
+  }, [selectedExportCollId]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -79,9 +77,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
       let filename = `pogo-dex-backup-${dateStr}.json`;
       if (isSingle) {
-        const coll = collections.find(c => c.id === selectedExportCollId);
-        const safeName = coll ? coll.name.toLowerCase().replace(/[^a-z0-9]/gi, '_') : 'sammlung';
-        filename = `pogo-collection-${safeName}-${dateStr}.json`;
+        if (selectedExportCollId.startsWith('preset:')) {
+          const presetKey = selectedExportCollId.replace(/^preset:/, '');
+          const preset = PRESET_COLLECTION_OPTIONS.find(p => p.id === selectedExportCollId);
+          filename = `pogo-preset-${preset?.scope || presetKey}-${dateStr}.json`;
+        } else {
+          const coll = collections.find(c => c.id === selectedExportCollId);
+          const safeName = coll ? coll.name.toLowerCase().replace(/[^a-z0-9]/gi, '_') : 'sammlung';
+          filename = `pogo-collection-${safeName}-${dateStr}.json`;
+        }
       }
 
       downloadAnchor.setAttribute('href', jsonString);
@@ -369,33 +373,43 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       <button
                         type="button"
                         onClick={() => setExportScope('collection')}
-                        disabled={collections.length === 0}
                         className={`px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                           exportScope === 'collection'
                             ? 'bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 shadow-sm font-bold'
-                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white disabled:opacity-40 disabled:cursor-not-allowed'
+                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                         }`}
                       >
-                        Einzelne Sammlung
+                        Einzelner Dex / Sammlung
                       </button>
                     </div>
                   </div>
 
-                  {exportScope === 'collection' && collections.length > 0 && (
+                  {exportScope === 'collection' && (
                     <div className="space-y-1.5 animate-in fade-in duration-150">
                       <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">
-                        Wähle die zu exportierende Sammlung:
+                        Wähle den zu exportierenden Dex / Sammlung:
                       </label>
                       <select
                         value={selectedExportCollId}
                         onChange={(e) => setSelectedExportCollId(e.target.value)}
                         className="w-full px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white font-medium focus:outline-none focus:border-blue-500"
                       >
-                        {collections.map((c) => (
-                          <option key={c.id} value={c.id}>
-                            {c.name} ({c.totalItems} Pokémon)
-                          </option>
-                        ))}
+                        <optgroup label="Preset-Dexe (Standard)">
+                          {PRESET_COLLECTION_OPTIONS.map((p) => (
+                            <option key={p.id} value={p.id}>
+                              ⭐ {p.name} ({p.description})
+                            </option>
+                          ))}
+                        </optgroup>
+                        {collections.length > 0 && (
+                          <optgroup label="Eigene Sammlungen">
+                            {collections.map((c) => (
+                              <option key={c.id} value={c.id}>
+                                📁 {c.name} ({c.totalItems} Pokémon)
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
                       </select>
                     </div>
                   )}
@@ -408,8 +422,12 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       className="flex items-center justify-center gap-2 py-2.5 px-3 bg-blue-600 hover:bg-blue-500 text-white rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
                     >
                       <Download className="w-4 h-4" />
-                      <span>
-                        {exportScope === 'all' ? 'Alles exportieren' : 'Sammlung exportieren'}
+                      <span className="truncate">
+                        {exportScope === 'all'
+                          ? 'Alles exportieren'
+                          : selectedExportCollId.startsWith('preset:')
+                          ? `${PRESET_COLLECTION_OPTIONS.find(p => p.id === selectedExportCollId)?.name || 'Preset'} exportieren`
+                          : 'Sammlung exportieren'}
                       </span>
                     </button>
 
