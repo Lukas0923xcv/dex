@@ -307,17 +307,19 @@ export const App: React.FC = () => {
         onExportCollection={exportBackup}
       />
 
-      <PokemonDetailModal
-        pokemon={selectedPokemonForDetail}
-        allPokemon={pokemonList}
-        mode={mode}
-        collection={activeCollection}
-        onClose={() => setSelectedPokemonForDetail(null)}
-        onNavigate={(p) => setSelectedPokemonForDetail(p)}
-        onToggleCaught={toggleCaught}
-        onToggleShiny={toggleShiny}
-        onToggleFeature={toggleFeature}
-      />
+      {selectedPokemonForDetail && (
+        <PokemonDetailModal
+          pokemon={selectedPokemonForDetail}
+          allPokemon={pokemonList}
+          mode={mode}
+          collection={activeCollection}
+          onClose={() => setSelectedPokemonForDetail(null)}
+          onNavigate={(p) => setSelectedPokemonForDetail(p)}
+          onToggleCaught={toggleCaught}
+          onToggleShiny={toggleShiny}
+          onToggleFeature={toggleFeature}
+        />
+      )}
     </div>
   );
 };

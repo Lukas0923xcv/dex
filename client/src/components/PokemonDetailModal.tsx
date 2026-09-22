@@ -95,6 +95,23 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
+  // Related forms of this species, sorted by canonical in-game Pokédex order
+  const relatedForms = useMemo(() => {
+    if (!pokemon) return [];
+    return (allPokemon || [])
+      .filter(p => p.dexNr === pokemon.dexNr && p.id !== pokemon.id)
+      .sort(compareFormsWithinSpecies);
+  }, [allPokemon, pokemon?.dexNr, pokemon?.id]);
+
+  const regularForms = useMemo(
+    () => relatedForms.filter(p => p.category !== 'costume' && !p.isCostume),
+    [relatedForms]
+  );
+  const costumeForms = useMemo(
+    () => relatedForms.filter(p => p.category === 'costume' || p.isCostume),
+    [relatedForms]
+  );
+
   if (!pokemon) return null;
 
   const detailInfo: PokemonDetailInfo | null = getPokemonDetailInfo(pokemon, allPokemon);
@@ -108,26 +125,10 @@ export const PokemonDetailModal: React.FC<PokemonDetailModalProps> = ({
     : (!spriteError ? getEffectiveSprite(pokemon, false) : (pokemon.fallbackSpriteUrl || pokemon.officialArtworkUrl));
 
   // Navigation
-  const baseDex = allPokemon.filter(p => p.category === 'standard');
+  const baseDex = (allPokemon || []).filter(p => p.category === 'standard');
   const currentIdx = baseDex.findIndex(p => p.id === pokemon.id);
   const prevPoke = currentIdx > 0 ? baseDex[currentIdx - 1] : null;
-  const nextPoke = currentIdx < baseDex.length - 1 ? baseDex[currentIdx + 1] : null;
-
-  // Related forms of this species, sorted by canonical in-game Pokédex order
-  const relatedForms = useMemo(() => {
-    return allPokemon
-      .filter(p => p.dexNr === pokemon.dexNr && p.id !== pokemon.id)
-      .sort(compareFormsWithinSpecies);
-  }, [allPokemon, pokemon.dexNr, pokemon.id]);
-
-  const regularForms = useMemo(
-    () => relatedForms.filter(p => p.category !== 'costume' && !p.isCostume),
-    [relatedForms]
-  );
-  const costumeForms = useMemo(
-    () => relatedForms.filter(p => p.category === 'costume' || p.isCostume),
-    [relatedForms]
-  );
+  const nextPoke = (currentIdx >= 0 && currentIdx < baseDex.length - 1) ? baseDex[currentIdx + 1] : null;
 
   return (
     <div
