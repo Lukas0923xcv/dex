@@ -30,6 +30,45 @@ const staticAssetPaths = [
   path.join(__dirname, '..', 'public'),
   path.join(__dirname, '..', '..', 'client', 'public')
 ];
+
+// Ensure Service Worker is served with appropriate headers (scope, no-cache)
+app.get('/sw.js', (req, res, next) => {
+  for (const assetPath of staticAssetPaths) {
+    const swFile = path.join(assetPath, 'sw.js');
+    if (fs.existsSync(swFile)) {
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      res.setHeader('Service-Worker-Allowed', '/');
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+      return res.sendFile(swFile);
+    }
+  }
+  next();
+});
+
+// Ensure Web App Manifest has proper application/manifest+json MIME type
+app.get(['/manifest.json', '/manifest.webmanifest'], (req, res, next) => {
+  for (const assetPath of staticAssetPaths) {
+    const manifestFile = path.join(assetPath, 'manifest.json');
+    if (fs.existsSync(manifestFile)) {
+      res.setHeader('Content-Type', 'application/manifest+json; charset=utf-8');
+      return res.sendFile(manifestFile);
+    }
+  }
+  next();
+});
+
+// Ensure Apple Touch Icons are served directly from root if requested by iOS Safari
+app.get(['/apple-touch-icon.png', '/apple-touch-icon-precomposed.png'], (req, res, next) => {
+  for (const assetPath of staticAssetPaths) {
+    const iconFile = path.join(assetPath, 'apple-touch-icon.png');
+    if (fs.existsSync(iconFile)) {
+      res.setHeader('Content-Type', 'image/png');
+      return res.sendFile(iconFile);
+    }
+  }
+  next();
+});
+
 for (const assetPath of staticAssetPaths) {
   if (fs.existsSync(assetPath)) {
     app.use(express.static(assetPath));
