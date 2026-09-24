@@ -67,11 +67,35 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 .pokemon-card {
   content-visibility: auto;
   contain-intrinsic-size: 140px 190px;
+  touch-action: manipulation;
 }
 
-.pokemon-card:hover .pokemon-sprite {
-  transform: scale(1.08) translateY(-2px);
-  filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
+/* Only enable hover scaling on devices that support true hover (desktop/mouse) */
+@media (hover: hover) and (pointer: fine) {
+  .pokemon-card:hover .pokemon-sprite {
+    transform: scale(1.08) translateY(-2px);
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.4));
+  }
+}
+
+/* Hide scrollbars on touch devices while keeping smooth scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Mobile & PWA optimizations */
+html {
+  -webkit-text-size-adjust: 100%;
+  touch-action: manipulation;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* PWA Standalone & Mobile Safe Area Support */
@@ -86,8 +110,8 @@ html.dark ::-webkit-scrollbar-thumb:hover {
 
 @media (display-mode: standalone) {
   body {
-    -webkit-tap-highlight-color: transparent;
     user-select: none;
+    overscroll-behavior-y: none;
   }
   input, textarea {
     user-select: text;

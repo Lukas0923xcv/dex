@@ -13,6 +13,7 @@ import { PokemonDetailModal } from './components/PokemonDetailModal';
 import { InstallAppModal } from './components/InstallAppModal';
 import { Pokemon, CustomCollection, DashboardTabConfig } from './types';
 import { storage } from './services/storage';
+import { ArrowUp } from 'lucide-react';
 
 export const App: React.FC = () => {
   const {
@@ -61,6 +62,19 @@ export const App: React.FC = () => {
   const [targetPokemonForAdd, setTargetPokemonForAdd] = useState<Pokemon | null>(null);
   const [selectedPokemonForDetail, setSelectedPokemonForDetail] = useState<Pokemon | null>(null);
   const [dashboardTabs, setDashboardTabs] = useState<DashboardTabConfig[]>(() => storage.getDashboardTabs(collections));
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 350);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleResetFilters = useCallback(() => {
     setFilters(f => ({
@@ -198,7 +212,7 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-2.5 sm:px-6 lg:px-8 pb-16">
         {/* Progress Bar Header */}
         <ProgressBar
           caught={currentViewStats.caught}
@@ -331,6 +345,18 @@ export const App: React.FC = () => {
         isOpen={isInstallModalOpen}
         onClose={() => setIsInstallModalOpen(false)}
       />
+
+      {/* Floating Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          type="button"
+          onClick={scrollToTop}
+          aria-label="Scroll to top"
+          className="fixed bottom-6 right-5 z-40 p-3 rounded-full bg-blue-600/90 hover:bg-blue-600 text-white shadow-lg shadow-blue-600/30 backdrop-blur-sm transition-all hover:scale-110 active:scale-95 cursor-pointer"
+        >
+          <ArrowUp className="w-5 h-5" />
+        </button>
+      )}
     </div>
   );
 };
