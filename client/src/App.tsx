@@ -10,6 +10,7 @@ import { DashboardCustomizerModal } from './components/DashboardCustomizerModal'
 import { AddToCollectionModal } from './components/AddToCollectionModal';
 import { SettingsModal } from './components/SettingsModal';
 import { PokemonDetailModal } from './components/PokemonDetailModal';
+import { InstallAppModal } from './components/InstallAppModal';
 import { Pokemon, CustomCollection, DashboardTabConfig } from './types';
 import { storage } from './services/storage';
 
@@ -53,6 +54,7 @@ export const App: React.FC = () => {
 
   // Modals state
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isInstallModalOpen, setIsInstallModalOpen] = useState(false);
   const [isCollectionsModalOpen, setIsCollectionsModalOpen] = useState(false);
   const [isDashboardCustomizerOpen, setIsDashboardCustomizerOpen] = useState(false);
   const [targetCollectionForEdit, setTargetCollectionForEdit] = useState<CustomCollection | null>(null);
@@ -181,6 +183,7 @@ export const App: React.FC = () => {
         onOpenCollectionEditor={handleOpenDashboardCustomizer}
         onOpenDashboardCustomizer={() => setIsDashboardCustomizerOpen(true)}
         onOpenSettingsModal={() => setIsSettingsOpen(true)}
+        onOpenInstallModal={() => setIsInstallModalOpen(true)}
         isBackendConnected={storageStatus.isBackendConnected}
         theme={theme}
         onToggleTheme={toggleTheme}
@@ -293,6 +296,7 @@ export const App: React.FC = () => {
         onReset={resetAllProgress}
         onResetScope={resetScopeProgress}
         onDeleteAllCollections={deleteAllCollections}
+        onOpenInstallModal={() => setIsInstallModalOpen(true)}
         activeAccountName={accounts.find(a => a.id === activeAccountId)?.name || 'Haupt-Account'}
         activeScopeName={getProgressLabel()}
       />
@@ -322,6 +326,11 @@ export const App: React.FC = () => {
           onToggleFeature={toggleFeature}
         />
       )}
+
+      <InstallAppModal
+        isOpen={isInstallModalOpen}
+        onClose={() => setIsInstallModalOpen(false)}
+      />
     </div>
   );
 };

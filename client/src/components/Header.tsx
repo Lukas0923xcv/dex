@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TrackingMode, CustomCollection, Theme, DashboardTabConfig, UserAccount } from '../types';
-import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus, Trash2, User, ChevronDown, Check, Edit2, X } from 'lucide-react';
+import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus, Trash2, User, ChevronDown, Check, Edit2, X, Smartphone } from 'lucide-react';
+import { isRunningStandalone } from '../registerServiceWorker';
 
 interface HeaderProps {
   mode: TrackingMode;
@@ -12,6 +13,7 @@ interface HeaderProps {
   onOpenCollectionEditor?: () => void;
   onOpenDashboardCustomizer?: () => void;
   onOpenSettingsModal: () => void;
+  onOpenInstallModal?: () => void;
   isBackendConnected: boolean;
   theme: Theme;
   onToggleTheme: () => void;
@@ -35,6 +37,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenCollectionEditor,
   onOpenDashboardCustomizer,
   onOpenSettingsModal,
+  onOpenInstallModal,
   isBackendConnected,
   theme,
   onToggleTheme,
@@ -47,7 +50,12 @@ export const Header: React.FC<HeaderProps> = ({
   onRenameAccount,
   onDeleteAccount
 }) => {
+  const [isStandalone, setIsStandalone] = useState(false);
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+
+  useEffect(() => {
+    setIsStandalone(isRunningStandalone());
+  }, []);
   const [isCreatingAccount, setIsCreatingAccount] = useState(false);
   const [newAccName, setNewAccName] = useState('');
   const [editingAccId, setEditingAccId] = useState<string | null>(null);
@@ -384,6 +392,18 @@ export const Header: React.FC<HeaderProps> = ({
                 <Moon className="w-4 h-4 text-slate-700" />
               )}
             </button>
+
+            {!isStandalone && onOpenInstallModal && (
+              <button
+                type="button"
+                onClick={onOpenInstallModal}
+                className="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl bg-gradient-to-r from-blue-600/10 via-indigo-600/10 to-purple-600/10 hover:from-blue-600/20 hover:to-indigo-600/20 border border-blue-200 dark:border-blue-800/70 text-blue-700 dark:text-blue-300 font-bold text-xs transition-all shadow-xs cursor-pointer active:scale-95"
+                title="Als App installieren (Homescreen & Vollbild)"
+              >
+                <Smartphone className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                <span className="hidden md:inline">App installieren</span>
+              </button>
+            )}
 
             <button
               type="button"
