@@ -111,18 +111,18 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
   return (
     <div
       onClick={() => onToggleCaught(pokemon.id)}
-      className={`pokemon-card group relative flex flex-col justify-between p-3 rounded-2xl border transition-all duration-200 cursor-pointer select-none overflow-hidden ${getCardStyle()}`}
+      className={`pokemon-card group relative flex flex-col justify-between p-2 sm:p-3 rounded-2xl border transition-all duration-150 cursor-pointer select-none overflow-hidden active:scale-[0.98] ${getCardStyle()}`}
     >
       {/* Top Bar: Dex #, Badges & Action Icons */}
       <div className="flex items-start justify-between gap-1 mb-1 z-10">
-        <div className="flex items-center gap-1.5 flex-wrap flex-1 min-w-0">
-          <span className="text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 shrink-0">
+        <div className="flex items-center gap-1 sm:gap-1.5 flex-wrap flex-1 min-w-0">
+          <span className="text-[11px] sm:text-xs font-mono font-semibold text-slate-500 dark:text-slate-400 shrink-0">
             {formatDexNumber(pokemon.dexNr)}
           </span>
           {pokemon.formName && pokemon.formName !== 'Standard' && (
             <span
               title={pokemon.formName}
-              className="text-[10px] font-medium tracking-tight bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[90px]"
+              className="text-[9px] sm:text-[10px] font-medium tracking-tight bg-slate-100 dark:bg-slate-800/90 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 px-1.5 py-0.5 rounded-md truncate max-w-[85px] sm:max-w-[90px]"
             >
               {pokemon.formName}
             </span>
@@ -130,13 +130,13 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           {availabilityTag && (
             <span
               title={availabilityTag.label}
-              className={`text-[9px] font-semibold tracking-tight ${availabilityTag.bg} ${availabilityTag.textColor} border ${availabilityTag.border} px-1.5 py-0.5 rounded-md truncate max-w-[95px] shadow-2xs`}
+              className={`text-[9px] font-semibold tracking-tight ${availabilityTag.bg} ${availabilityTag.textColor} border ${availabilityTag.border} px-1.5 py-0.5 rounded-md truncate max-w-[85px] sm:max-w-[95px] shadow-2xs`}
             >
               {availabilityTag.shortLabel || availabilityTag.label}
             </span>
           )}
           {(mode === 'shadow' || categoryType === 'shadow') && (
-            <span className="text-[10px] font-bold tracking-tight bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-700/80 px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-xs shrink-0">
+            <span className="text-[9px] sm:text-[10px] font-bold tracking-tight bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-300 dark:border-purple-700/80 px-1.5 py-0.5 rounded-md flex items-center gap-0.5 shadow-xs shrink-0">
               <Flame className="w-2.5 h-2.5 fill-current text-purple-600 dark:text-purple-400" />
               Shadow
             </span>
@@ -144,7 +144,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
         </div>
 
         {/* Action icons */}
-        <div className="flex items-center gap-1 shrink-0 ml-1">
+        <div className="flex items-center gap-0.5 sm:gap-1 shrink-0 ml-1">
           {/* Info button */}
           {onOpenDetailModal && (
             <button
@@ -154,7 +154,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
                 e.stopPropagation();
                 onOpenDetailModal(pokemon);
               }}
-              className="p-1 rounded-md transition-colors text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-700/50"
+              className="p-1 rounded-lg transition-colors text-slate-400 dark:text-slate-400 hover:text-blue-500 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-700/50 active:scale-90 min-w-[26px] min-h-[26px] flex items-center justify-center cursor-pointer"
             >
               <Info className="w-3.5 h-3.5" />
             </button>
@@ -168,7 +168,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
               e.stopPropagation();
               onOpenAddModal(pokemon);
             }}
-            className={`p-1 rounded-md transition-colors ${
+            className={`p-1 rounded-lg transition-colors active:scale-90 min-w-[26px] min-h-[26px] flex items-center justify-center cursor-pointer ${
               pokemon.inCollection
                 ? 'text-amber-500 dark:text-amber-400 bg-amber-500/10 hover:bg-amber-500/20'
                 : 'text-slate-400 dark:text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700/50'
@@ -188,7 +188,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
                   onToggleFeature(pokemon.id, 'shadow');
                 }
               }}
-              className={`p-1 rounded-md transition-colors ${
+              className={`p-1 rounded-lg transition-colors active:scale-90 min-w-[26px] min-h-[26px] flex items-center justify-center cursor-pointer ${
                 pokemon.shadowCaught
                   ? 'text-purple-500 dark:text-purple-400 bg-purple-500/10 hover:bg-purple-500/20'
                   : 'text-slate-400 dark:text-slate-500 hover:text-purple-500 dark:hover:text-purple-300 hover:bg-slate-100 dark:hover:bg-slate-700/50'
@@ -226,7 +226,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
                 type="button"
                 title={pokemon.genderMCaught ? '♂ Male caught!' : 'Mark as ♂ Male'}
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'gender_m')}
-                className={`w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold border transition-colors ${
+                className={`w-5 h-5 sm:w-4 sm:h-4 rounded flex items-center justify-center text-[10px] font-bold border transition-colors active:scale-90 cursor-pointer ${
                   pokemon.genderMCaught
                     ? 'bg-blue-100 text-blue-700 border-blue-400 dark:bg-blue-500/30 dark:text-blue-300 dark:border-blue-400 shadow-sm font-black'
                     : 'bg-slate-100 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/60 hover:text-blue-600 dark:hover:text-blue-300'
@@ -238,7 +238,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
                 type="button"
                 title={pokemon.genderFCaught ? '♀ Female caught!' : 'Mark as ♀ Female'}
                 onClick={() => onToggleFeature && onToggleFeature(pokemon.id, 'gender_f')}
-                className={`w-4 h-4 rounded flex items-center justify-center text-[10px] font-bold border transition-colors ${
+                className={`w-5 h-5 sm:w-4 sm:h-4 rounded flex items-center justify-center text-[10px] font-bold border transition-colors active:scale-90 cursor-pointer ${
                   pokemon.genderFCaught
                     ? 'bg-pink-100 text-pink-700 border-pink-400 dark:bg-pink-500/30 dark:text-pink-300 dark:border-pink-400 shadow-sm font-black'
                     : 'bg-slate-100 dark:bg-slate-800/80 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-700/60 hover:text-pink-600 dark:hover:text-pink-300'
@@ -282,11 +282,11 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
       )}
 
       {/* Pokémon Sprite */}
-      <div className="relative flex items-center justify-center my-2 h-28">
+      <div className="relative flex items-center justify-center my-1 sm:my-2 h-24 sm:h-28">
         {/* Glow backdrop when caught */}
         {isCaught && (
           <div
-            className={`absolute inset-4 rounded-full blur-xl opacity-30 ${getGlowColor()}`}
+            className={`absolute inset-3 sm:inset-4 rounded-full blur-xl opacity-30 ${getGlowColor()}`}
           />
         )}
 
@@ -297,7 +297,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           decoding="async"
           referrerPolicy="no-referrer"
           onError={handleImageError}
-          className={`pokemon-sprite object-contain h-24 w-24 max-h-full max-w-full z-10 transition-all duration-300 ${
+          className={`pokemon-sprite object-contain h-20 w-20 sm:h-24 sm:w-24 max-h-full max-w-full z-10 transition-all duration-300 ${
             !isCaught
               ? 'grayscale contrast-75 brightness-75 opacity-70 group-hover:grayscale-0 group-hover:opacity-100 group-hover:contrast-100 group-hover:brightness-100'
               : ''
@@ -309,7 +309,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
       <div className="mt-1 pt-1 border-t border-slate-100 dark:border-slate-800/80">
         <h3
           title={pokemon.name}
-          className={`text-sm font-semibold truncate leading-snug mb-1.5 transition-colors ${
+          className={`text-xs sm:text-sm font-semibold truncate leading-snug mb-1 sm:mb-1.5 transition-colors ${
             isCaught
               ? 'text-slate-900 dark:text-white font-bold'
               : 'text-slate-700 dark:text-slate-300 group-hover:text-slate-900 dark:group-hover:text-white'
@@ -322,7 +322,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           {/* Primary Type */}
           {pokemon.type1 && (
             <span
-              className={`text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm border ${
+              className={`text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-2xs border ${
                 getTypeBadgeColor(pokemon.type1).bg
               } ${getTypeBadgeColor(pokemon.type1).text} ${getTypeBadgeColor(pokemon.type1).border}`}
             >
@@ -333,7 +333,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           {/* Secondary Type */}
           {pokemon.type2 && (
             <span
-              className={`text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm border ${
+              className={`text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-2xs border ${
                 getTypeBadgeColor(pokemon.type2).bg
               } ${getTypeBadgeColor(pokemon.type2).text} ${getTypeBadgeColor(pokemon.type2).border}`}
             >
