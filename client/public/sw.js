@@ -3,16 +3,20 @@
  * Provides offline caching, lightning-fast app shell loading, and native-app feel.
  */
 
-const CACHE_NAME = 'pogo-dex-v1';
+const CACHE_NAME = 'pogo-dex-v2';
 
 // Core assets to pre-cache immediately during installation
 const PRECACHE_ASSETS = [
   './',
   './index.html',
-  './manifest.webmanifest',
+  './manifest.json',
+  './apple-touch-icon.png',
+  './favicon.ico',
+  './icons/apple-touch-icon.png',
   './icons/icon-192x192.png',
   './icons/icon-512x512.png',
-  './icons/apple-touch-icon.png',
+  './icons/icon-maskable-192x192.png',
+  './icons/icon-maskable-512x512.png',
   './icons/icon.svg'
 ];
 

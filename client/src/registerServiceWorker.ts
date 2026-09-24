@@ -22,10 +22,11 @@ export function registerServiceWorker(): void {
 
   if ('serviceWorker' in navigator && (window.isSecureContext || window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
     window.addEventListener('load', () => {
-      // Use relative path './sw.js' so it works on GitHub Pages (/dex/) and standalone root (/)
-      const swUrl = './sw.js';
+      const isGitHubPages = window.location.hostname.includes('github.io');
+      const swUrl = isGitHubPages ? './sw.js' : '/sw.js';
+      const swScope = isGitHubPages ? './' : '/';
       navigator.serviceWorker
-        .register(swUrl)
+        .register(swUrl, { scope: swScope })
         .then((registration) => {
           console.log('[PWA] Service Worker registered successfully, scope:', registration.scope);
 
