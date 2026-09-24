@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { StorageStatus, storage } from '../services/storage';
 import { BackupData, SingleCollectionBackup, CustomCollection, PRESET_COLLECTION_OPTIONS } from '../types';
-import { X, Download, Upload, RefreshCw, Server, AlertTriangle, CheckCircle2, ShieldCheck, Trash2 } from 'lucide-react';
+import { X, Download, Upload, RefreshCw, Server, AlertTriangle, CheckCircle2, ShieldCheck, Trash2, Smartphone, Sparkles } from 'lucide-react';
+import { isRunningStandalone } from '../registerServiceWorker';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -13,6 +14,7 @@ interface SettingsModalProps {
   onReset: () => void;
   onResetScope?: () => void;
   onDeleteAllCollections?: () => Promise<void>;
+  onOpenInstallModal?: () => void;
   activeAccountName?: string;
   activeScopeName?: string;
 }
@@ -27,6 +29,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onReset,
   onResetScope,
   onDeleteAllCollections,
+  onOpenInstallModal,
   activeAccountName = 'Haupt-Account',
   activeScopeName = 'Standard Dex'
 }) => {
@@ -446,6 +449,50 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
               </div>
             )}
+          </div>
+
+          {/* Progressive Web App / App Installation */}
+          <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400 mb-0.5 flex items-center gap-1.5">
+                <Smartphone className="w-3.5 h-3.5" />
+                Progressive Web App (PWA)
+              </h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                Nutze den Pokémon GO Dex Tracker wie eine eigenständige App auf deinem Smartphone, Tablet oder PC.
+              </p>
+            </div>
+
+            <div className="p-3.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-800 rounded-xl flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700 p-1 flex items-center justify-center shrink-0">
+                  <img src="icons/icon-192x192.png" alt="PoGo Dex App Icon" className="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white">
+                    {isRunningStandalone() ? 'App ist aktiv' : 'Als App verfügbar'}
+                  </div>
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                    {isRunningStandalone()
+                      ? 'Läuft im Vollbild-Modus mit Offline-Cache'
+                      : 'Schneller Start, Vollbild & Offline-Support'}
+                  </div>
+                </div>
+              </div>
+
+              {onOpenInstallModal && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onOpenInstallModal();
+                  }}
+                  className="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl shadow-xs transition-colors shrink-0 cursor-pointer"
+                >
+                  {isRunningStandalone() ? 'App-Info' : 'Installieren'}
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Reset Danger Zone */}

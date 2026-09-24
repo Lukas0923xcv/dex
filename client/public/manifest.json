@@ -1,0 +1,58 @@
+{
+  "id": "./",
+  "name": "Pokémon GO Dex Tracker",
+  "short_name": "PoGo Dex",
+  "description": "Progress tracker for Pokémon GO · Standard, Shinies, Megas, Shadow, Forms, Costumes & Custom Collections.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#020617",
+  "theme_color": "#0f172a",
+  "categories": ["games", "utilities", "entertainment"],
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-maskable-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Shiny Dex",
+      "short_name": "Shinies",
+      "description": "Schillernde Pokémon anzeigen",
+      "url": "./#shiny",
+      "icons": [{ "src": "icons/icon-192x192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Crypto Dex",
+      "short_name": "Shadow",
+      "description": "Crypto-Pokémon anzeigen",
+      "url": "./#shadow",
+      "icons": [{ "src": "icons/icon-192x192.png", "sizes": "192x192" }]
+    }
+  ]
+}
