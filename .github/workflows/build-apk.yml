@@ -1,8 +1,7 @@
-
 name: Build Android APK
 
 on:
-  workflow_dispatch: # Erlaubt manuellen Start per Klick
+  workflow_dispatch:
 
 jobs:
   build-apk:
@@ -15,6 +14,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -25,19 +26,34 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install & Build Client
+      - name: Prepare Data & Build Client
         run: |
+          # 1. Daten kompilieren, falls noch nicht vorhanden
+          if [ ! -f "data/pokemon-data.json" ]; then
+            npm run compile:data
+          fi
+
+          # 2. Client bauen
           cd client
-          npm ci
-          # Pokémon-Daten für den Build kopieren
-          cp ../data/pokemon-data.json ./src/data/pokemon-data.json
+          npm install
+          mkdir -p src/data
+          cp ../data/pokemon-data.json src/data/pokemon-data.json
           npm run build
 
       - name: Setup Capacitor & Build APK
         run: |
           cd client
           npm install @capacitor/core @capacitor/cli @capacitor/android
-          npx cap init "PoGo Dex" "com.lukas.pogodex" --web-dir dist
+          
+          # Capacitor Konfiguration erstellen
+          cat << 'EOF' > capacitor.config.json
+          {
+            "appId": "com.lukas.pogodex",
+            "appName": "PoGo Dex",
+            "webDir": "dist"
+          }
+          EOF
+
           npx cap add android
           npx cap sync android
           cd android
