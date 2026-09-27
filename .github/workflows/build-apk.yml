@@ -14,26 +14,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'npm'
-          cache-dependency-path: client/package-lock.json
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '17'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+      - name: Accept Android SDK Licenses
+        run: |
+          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Prepare Data & Build Client
         run: |
-          # 1. Daten kompilieren, falls noch nicht vorhanden
           if [ ! -f "data/pokemon-data.json" ]; then
             npm run compile:data
           fi
-
-          # 2. Client bauen
           cd client
           npm install
           mkdir -p src/data
@@ -45,7 +41,6 @@ jobs:
           cd client
           npm install @capacitor/core @capacitor/cli @capacitor/android
           
-          # Capacitor Konfiguration erstellen
           cat << 'EOF' > capacitor.config.json
           {
             "appId": "com.lukas.pogodex",
@@ -58,7 +53,7 @@ jobs:
           npx cap sync android
           cd android
           chmod +x ./gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
