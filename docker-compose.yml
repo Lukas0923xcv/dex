@@ -6,7 +6,7 @@ services:
     container_name: pogo-dex
     restart: unless-stopped
     ports:
-      - "${PORT:-3000}:3000"
+      - "${HOST_BIND_IP:-127.0.0.1}:${PORT:-3000}:3000"
     volumes:
       - ./data:/app/data
     environment:

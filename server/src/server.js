@@ -9,10 +9,47 @@ const seedDatabase = require('./db/seed');
 const app = express();
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
+// Enable trust proxy for Cloudflare Tunnel / reverse proxy headers
+app.set('trust proxy', 1);
+
+// Security: Disable X-Powered-By banner
+app.disable('x-powered-by');
+
+// Security Headers middleware (protect against Clickjacking, MIME sniffing, etc.)
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  next();
+});
+
 // Enable gzip compression and CORS
 app.use(compression());
-app.use(cors());
-app.use(express.json({ limit: '50mb' }));
+
+const configuredOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+  : [];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, same-origin)
+    if (!origin) return callback(null, true);
+    // Allow local development and loopback origins
+    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+      return callback(null, true);
+    }
+    // Allow official GitHub Pages deployment and user-configured origins
+    if (origin === 'https://lukas0923xcv.github.io' || configuredOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    // Fallback allow for Cloudflare Tunnel custom domain routing
+    return callback(null, true);
+  },
+  credentials: true
+}));
+
+app.use(express.json({ limit: '10mb' }));
 
 // Automatically seed database on startup if empty
 try {
@@ -20,6 +57,14 @@ try {
 } catch (e) {
   console.warn('Initial seeding note:', e.message);
 }
+
+// Prevent Cloudflare Edge CDN & browsers from caching dynamic API state
+app.use('/api', (req, res, next) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  next();
+});
 
 // API Routes
 app.use('/api', apiRouter);
