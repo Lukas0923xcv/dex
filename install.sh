@@ -80,6 +80,8 @@ APP_DIR="/opt/pogo-dex"
 REPO_URL="https://github.com/Lukas0923xcv/dex.git"
 
 echo -e "${COLOR_BLUE}[3/5] Setting up application repository at ${APP_DIR}...${COLOR_RESET}"
+$SUDO git config --global --add safe.directory "$APP_DIR" 2>/dev/null || true
+git config --global --add safe.directory "$APP_DIR" 2>/dev/null || true
 if [ -d "$APP_DIR/.git" ]; then
   echo -e "${COLOR_YELLOW}[i] Updating existing installation...${COLOR_RESET}"
   cd "$APP_DIR"
@@ -105,6 +107,7 @@ $SUDO chmod -R 775 "$APP_DIR/data"
 # 6. Build and launch Docker Compose stack
 echo -e "${COLOR_BLUE}[5/5] Building and launching Pokémon GO Dex Tracker container...${COLOR_RESET}"
 cd "$APP_DIR"
+$SUDO $COMPOSE_CMD down 2>/dev/null || true
 $SUDO $COMPOSE_CMD up -d --build
 
 # 7. Success Banner
