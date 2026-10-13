@@ -13,31 +13,37 @@ A lightweight, modern, responsive Pokémon GO Collection & Living Dex Tracker. E
 
 ## 🚀 Instant Deployment
 
-### Option A: One-Command Installer (Ubuntu Server 26 / Linux)
-On your Ubuntu server, run this single command:
+### Option A: Clone & Run Installer (Ubuntu Server / Linux)
+On your Linux server, run:
 ```bash
-curl -sSL https://raw.githubusercontent.com/Lukas0923xcv/dex/main/install.sh | bash
+git clone https://github.com/Lukas0923xcv/dex.git /opt/pogo-dex
+cd /opt/pogo-dex
+sudo ./install.sh
 ```
 > **What this does:**
-> - Automatically checks and installs Docker & Docker Compose if missing.
-> - Clones the repository to `/opt/pogo-dex`.
-> - Sets up the persistent SQLite volume (`/opt/pogo-dex/data`).
+> - Checks and installs Docker & Docker Compose if missing.
+> - Configures persistent SQLite storage (`/opt/pogo-dex/data`) with WAL mode.
 > - Builds and starts the production container on port `3000`.
-> - Displays your server IP and access URL (e.g. `http://<your-server-ip>:3000`).
+> - Drops root privileges inside the container to unprivileged user `node` for security.
+> - Binds to `127.0.0.1` by default to securely serve through Cloudflare Tunnel or reverse proxies.
 
 ---
 
-### Option B: Docker Compose (Manual Deployment)
-If you prefer running with `git` and `docker compose`:
+### Option B: Docker Compose Deployment
+If you prefer running directly with `docker compose`:
 ```bash
-# 1. Clone repository
-git clone https://github.com/Lukas0923xcv/dex.git
-cd dex
-
-# 2. Start container in background
-docker compose up -d
+cd /opt/pogo-dex
+sudo docker compose up -d --build
 ```
-Open **`http://localhost:3000`** (or your server's IP).
+Open **`http://localhost:3000`** (or access via your Cloudflare Tunnel hostname).
+
+---
+
+### 🔄 Updating & Rebuilding (1-Liner)
+To pull the newest security fixes and rebuild your container in one step:
+```bash
+cd /opt/pogo-dex && sudo git config --global --add safe.directory /opt/pogo-dex && sudo git pull && sudo docker compose down && sudo docker compose up -d --build
+```
 
 ---
 
@@ -94,7 +100,8 @@ dex/
 │   └── compile-pogo-data.js       # Pokémon GO Game Master data compiler
 ├── Dockerfile                     # Multi-stage production container build
 ├── docker-compose.yml             # Single-command Docker Compose stack
-├── install.sh                     # Ubuntu Server 26 / Linux 1-command installer
+├── docker-entrypoint.sh           # Container entrypoint with unprivileged privilege drop
+├── install.sh                     # Ubuntu Server / Linux 1-command installer
 └── README.md
 ```
 
@@ -102,8 +109,10 @@ dex/
 | Variable | Default | Description |
 |---|---|---|
 | `PORT` | `3000` | HTTP port for server and container |
+| `HOST_BIND_IP` | `127.0.0.1` | Host IP address to bind container port (`127.0.0.1` for Cloudflare Tunnel security, or `0.0.0.0` for open LAN) |
 | `DATA_DIR` | `./data` | Directory for persistent SQLite database (`dex.db`) |
-| `NODE_ENV` | `production` | Runtimes mode (`production` / `development`) |
+| `NODE_ENV` | `production` | Runtime mode (`production` / `development`) |
+| `CORS_ORIGIN` | *none* | Optional comma-separated additional allowed CORS origins |
 
 ---
 
