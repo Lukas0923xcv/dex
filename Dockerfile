@@ -23,8 +23,8 @@ ENV NODE_ENV=production
 ENV PORT=3000
 ENV DATA_DIR=/app/data
 
-# Install curl for Docker healthcheck
-RUN apk add --no-cache curl
+# Install curl for Docker healthcheck and su-exec for dropping root privileges
+RUN apk add --no-cache curl su-exec
 
 # Copy and install server dependencies
 COPY server/package*.json ./server/
@@ -37,8 +37,9 @@ COPY data/ /app/data/
 # Copy static frontend build from stage 1 into server public directory
 COPY --from=client-builder /app/client/dist ./server/public
 
-# Create data directory for persistent SQLite storage
-RUN mkdir -p /app/data
+# Copy entrypoint script and create data directory
+COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+RUN chmod +x /app/docker-entrypoint.sh && mkdir -p /app/data && chown -R node:node /app
 
 # Expose web port
 EXPOSE 3000
@@ -47,6 +48,7 @@ EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3000/api/health || exit 1
 
-# Start production server
+# Start production server using secure entrypoint that runs as unprivileged node user
 WORKDIR /app/server
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["node", "src/server.js"]

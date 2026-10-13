@@ -18,10 +18,19 @@ data/*.db-shm
 *.sqlite-shm
 !data/.gitkeep
 
-# Environment variables
-.env
-.env.local
-.env.*.local
+# Environment variables & secrets
+.env*
+*.env
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+*.apk
+cloudflared/
+tunnel*.json
+cert.pem
 
 # Logs
 logs/

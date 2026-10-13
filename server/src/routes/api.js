@@ -11,7 +11,8 @@ router.get('/health', (req, res) => {
       status: 'ok',
       uptime: process.uptime(),
       pokemonCount: row ? row.count : 0,
-      walMode: true
+      walMode: true,
+      cloudflareUser: req.headers['cf-access-authenticated-user-email'] || undefined
     });
   } catch (err) {
     res.status(500).json({ status: 'error', error: err.message });
@@ -189,8 +190,11 @@ router.get('/pokemon', (req, res) => {
     }
 
     if (generation && generation !== 'all') {
-      sql += ` AND p.generation = ?`;
-      params.push(parseInt(generation, 10));
+      const genNum = parseInt(generation, 10);
+      if (!isNaN(genNum)) {
+        sql += ` AND p.generation = ?`;
+        params.push(genNum);
+      }
     }
 
     if (type && type !== 'all') {
@@ -278,9 +282,11 @@ router.get('/pokemon', (req, res) => {
       sql += ` AND p.released_in_go = 1`;
     }
 
-    // Sort order
+    // Sort order and pagination with bounded safe integers
+    const safeLimit = Math.min(Math.max(1, parseInt(limit, 10) || 2500), 5000);
+    const safeOffset = Math.max(0, parseInt(offset, 10) || 0);
     sql += ` ORDER BY p.dex_nr ASC, p.category ASC, p.id ASC LIMIT ? OFFSET ?`;
-    params.push(parseInt(limit, 10), parseInt(offset, 10));
+    params.push(safeLimit, safeOffset);
 
     const rows = db.prepare(sql).all(...params);
 
@@ -374,10 +380,13 @@ router.post('/progress/toggle', (req, res) => {
 // POST /api/progress/batch
 router.post('/progress/batch', (req, res) => {
   try {
-    const { pokemonIds, caught, shinyCaught, shadowCaught, accountId = 'default', dexScope = 'standard' } = req.body;
     if (!Array.isArray(pokemonIds) || pokemonIds.length === 0) {
       return res.status(400).json({ error: 'pokemonIds array required' });
     }
+    if (pokemonIds.length > 5000) {
+      return res.status(400).json({ error: 'Maximum 5000 pokemonIds allowed per batch request' });
+    }
+    const safePokemonIds = pokemonIds.filter(id => typeof id === 'string' && id.length > 0 && id.length < 100);
 
     const now = new Date().toISOString();
     const upsertStmt = db.prepare(`
@@ -391,7 +400,7 @@ router.post('/progress/batch', (req, res) => {
     `);
 
     db.exec('BEGIN TRANSACTION;');
-    for (const id of pokemonIds) {
+    for (const id of safePokemonIds) {
       const cVal = caught !== undefined ? (caught ? 1 : 0) : null;
       const sVal = shinyCaught !== undefined ? (shinyCaught ? 1 : 0) : null;
       const shVal = shadowCaught !== undefined ? (shadowCaught ? 1 : 0) : null;
@@ -399,7 +408,7 @@ router.post('/progress/batch', (req, res) => {
     }
     db.exec('COMMIT;');
 
-    res.json({ success: true, count: pokemonIds.length, accountId, dexScope });
+    res.json({ success: true, count: safePokemonIds.length, accountId, dexScope });
   } catch (err) {
     db.exec('ROLLBACK;');
     console.error('Error batch updating progress:', err);
@@ -702,8 +711,14 @@ router.delete('/collections/:id/items/:pokemonId', (req, res) => {
 // POST /api/collections/:id/items/batch
 router.post('/collections/:id/items/batch', (req, res) => {
   try {
-    const { id: collectionId } = req.params;
     const { pokemonIds = [], mode = 'replace' } = req.body;
+    if (!Array.isArray(pokemonIds)) {
+      return res.status(400).json({ error: 'pokemonIds must be an array' });
+    }
+    if (pokemonIds.length > 5000) {
+      return res.status(400).json({ error: 'Maximum 5000 pokemonIds allowed per batch request' });
+    }
+    const safePokemonIds = pokemonIds.filter(id => typeof id === 'string' && id.length > 0 && id.length < 100);
 
     const now = new Date().toISOString();
     const insertStmt = db.prepare(`
@@ -716,11 +731,11 @@ router.post('/collections/:id/items/batch', (req, res) => {
       if (mode === 'replace') {
         db.prepare('DELETE FROM custom_collection_items WHERE collection_id = ?').run(collectionId);
       }
-      for (const pid of pokemonIds) {
+      for (const pid of safePokemonIds) {
         insertStmt.run(collectionId, pid, now);
       }
       db.exec('COMMIT;');
-      res.json({ success: true, collectionId, count: pokemonIds.length });
+      res.json({ success: true, collectionId, count: safePokemonIds.length });
     } catch (err) {
       db.exec('ROLLBACK;');
       throw err;
@@ -1238,30 +1253,83 @@ router.post('/import', (req, res) => {
 
 // GET /api/proxy-image?url=...
 const https = require('https');
-const http = require('http');
+
+// Strict allowlist of public image CDNs to prevent SSRF (Server-Side Request Forgery)
+const ALLOWED_IMAGE_HOSTS = new Set([
+  'raw.githubusercontent.com',
+  'pokemon-go-api.github.io',
+  'assets.pokemon.com',
+  'images.pokemontcg.io'
+]);
+
+function isValidImageUrl(rawUrl) {
+  try {
+    const parsed = new URL(rawUrl);
+    if (parsed.protocol !== 'https:') return false;
+    const hostname = parsed.hostname.toLowerCase();
+    // Reject IP addresses, localhost, internal hostnames
+    if (/^(\d{1,3}\.){3}\d{1,3}$/.test(hostname) || hostname === 'localhost' || hostname.endsWith('.local') || hostname.endsWith('.internal')) {
+      return false;
+    }
+    return ALLOWED_IMAGE_HOSTS.has(hostname);
+  } catch {
+    return false;
+  }
+}
 
 router.get('/proxy-image', (req, res) => {
   const imageUrl = req.query.url;
-  if (!imageUrl || (!imageUrl.startsWith('http://') && !imageUrl.startsWith('https://'))) {
-    return res.status(400).send('Invalid image URL');
+  if (!imageUrl || typeof imageUrl !== 'string' || !isValidImageUrl(imageUrl)) {
+    return res.status(400).send('Invalid or untrusted image URL');
   }
-  const client = imageUrl.startsWith('https') ? https : http;
-  const proxyReq = client.get(imageUrl, { headers: { 'User-Agent': 'Mozilla/5.0' } }, remoteRes => {
-    if (remoteRes.statusCode >= 300 && remoteRes.statusCode < 400 && remoteRes.headers.location) {
-      const redirectClient = remoteRes.headers.location.startsWith('https') ? https : http;
-      return redirectClient.get(remoteRes.headers.location, { headers: { 'User-Agent': 'Mozilla/5.0' } }, redirectRes => {
-        res.set('Content-Type', redirectRes.headers['content-type'] || 'image/png');
-        res.set('Cache-Control', 'public, max-age=86400');
-        redirectRes.pipe(res);
-      });
+
+  const fetchWithSafeRedirect = (targetUrl, maxRedirects = 2) => {
+    if (!isValidImageUrl(targetUrl)) {
+      return res.status(400).send('Invalid redirect destination');
     }
-    res.set('Content-Type', remoteRes.headers['content-type'] || 'image/png');
-    res.set('Cache-Control', 'public, max-age=86400');
-    remoteRes.pipe(res);
-  });
-  proxyReq.on('error', err => {
-    res.status(502).send(err.message);
-  });
+
+    const proxyReq = https.get(targetUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DexTracker/1.0)' },
+      timeout: 5000
+    }, remoteRes => {
+      if (remoteRes.statusCode >= 300 && remoteRes.statusCode < 400 && remoteRes.headers.location && maxRedirects > 0) {
+        remoteRes.resume();
+        try {
+          const resolvedRedirect = new URL(remoteRes.headers.location, targetUrl).toString();
+          return fetchWithSafeRedirect(resolvedRedirect, maxRedirects - 1);
+        } catch {
+          return res.status(400).send('Invalid redirect URL');
+        }
+      }
+
+      if (remoteRes.statusCode !== 200) {
+        remoteRes.resume();
+        return res.status(remoteRes.statusCode).send('Upstream image error');
+      }
+
+      const contentType = remoteRes.headers['content-type'] || 'image/png';
+      if (!contentType.startsWith('image/')) {
+        remoteRes.resume();
+        return res.status(400).send('Remote resource is not an image');
+      }
+
+      res.set('Content-Type', contentType);
+      res.set('Cache-Control', 'public, max-age=86400');
+      res.set('X-Content-Type-Options', 'nosniff');
+      remoteRes.pipe(res);
+    });
+
+    proxyReq.on('timeout', () => {
+      proxyReq.destroy();
+      if (!res.headersSent) res.status(504).send('Gateway timeout');
+    });
+
+    proxyReq.on('error', err => {
+      if (!res.headersSent) res.status(502).send('Error fetching upstream image');
+    });
+  };
+
+  fetchWithSafeRedirect(imageUrl);
 });
 
 module.exports = router;
