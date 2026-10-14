@@ -10,17 +10,20 @@ build/
 server/public/
 
 # Local databases & persistent data
-data/*.db
-data/*.db-wal
-data/*.db-shm
-*.sqlite
-*.sqlite-wal
-*.sqlite-shm
+data/*.db*
+*.sqlite*
+data/*.sqlite*
+data/backups/
+data/export*.json
+data/user*.json
 !data/.gitkeep
+!data/pokemon-data.json
+!data/gender-diffs.json
 
 # Environment variables & secrets
 .env*
 *.env
+!.env.example
 *.pem
 *.key
 *.cert

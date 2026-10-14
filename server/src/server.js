@@ -28,25 +28,38 @@ app.use((req, res, next) => {
 app.use(compression());
 
 const configuredOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim())
+  ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()).filter(Boolean)
   : [];
 
-app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps, curl, same-origin)
-    if (!origin) return callback(null, true);
-    // Allow local development and loopback origins
-    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
-      return callback(null, true);
-    }
-    // Allow official GitHub Pages deployment and user-configured origins
-    if (origin === 'https://lukas0923xcv.github.io' || configuredOrigins.includes(origin)) {
-      return callback(null, true);
-    }
-    // Fallback allow for Cloudflare Tunnel custom domain routing
-    return callback(null, true);
-  },
-  credentials: true
+// Secure dynamic CORS origin validation
+app.use(cors((req, callback) => {
+  const origin = req.header('Origin');
+  let isAllowed = false;
+
+  if (!origin) {
+    // 1. Allow requests with no origin (mobile PWA, curl, same-origin)
+    isAllowed = true;
+  } else if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+    // 2. Allow local development and loopback origins
+    isAllowed = true;
+  } else if (origin === 'https://lukas0923xcv.github.io' || origin === 'http://lukas0923xcv.github.io') {
+    // 3. Allow official GitHub Pages deployment
+    isAllowed = true;
+  } else if (configuredOrigins.includes(origin) || configuredOrigins.includes('*')) {
+    // 4. Allow user-configured origins from CORS_ORIGIN
+    isAllowed = true;
+  } else {
+    // 5. Allow if origin matches Host or X-Forwarded-Host (Cloudflare Tunnel domain)
+    try {
+      const parsedOrigin = new URL(origin);
+      const hostHeader = (req.header('x-forwarded-host') || req.header('host') || '').split(':')[0].toLowerCase();
+      if (hostHeader && parsedOrigin.hostname.toLowerCase() === hostHeader) {
+        isAllowed = true;
+      }
+    } catch {}
+  }
+
+  callback(null, { origin: isAllowed, credentials: true });
 }));
 
 app.use(express.json({ limit: '10mb' }));
@@ -150,11 +163,12 @@ if (!staticServed) {
   });
 }
 
-const server = app.listen(PORT, '0.0.0.0', () => {
+const BIND_HOST = process.env.BIND_IP || process.env.HOST || '0.0.0.0';
+const server = app.listen(PORT, BIND_HOST, () => {
   console.log(`=========================================`);
   console.log(` Pokémon GO Dex Tracker Server Running! `);
-  console.log(` Local URL:    http://localhost:${PORT}  `);
-  console.log(` Health Check: http://localhost:${PORT}/api/health `);
+  console.log(` Local URL:    http://${BIND_HOST === '0.0.0.0' ? 'localhost' : BIND_HOST}:${PORT} `);
+  console.log(` Health Check: http://${BIND_HOST === '0.0.0.0' ? 'localhost' : BIND_HOST}:${PORT}/api/health `);
   console.log(`=========================================`);
 });
 
