@@ -1,13 +1,13 @@
 #!/bin/sh
 set -e
 
-# Ensure persistent SQLite data directory exists and has correct ownership for node user
+# Ensure persistent SQLite data directory exists and is fully writable for SQLite WAL mode
 mkdir -p /app/data
+chmod -R 777 /app/data 2>/dev/null || true
 chown -R node:node /app/data 2>/dev/null || true
-chmod -R 775 /app/data 2>/dev/null || true
 
 # If container started as root, drop privileges and execute as unprivileged 'node' user
-if [ "$(id -u)" = '0' ]; then
+if [ "$(id -u)" = '0' ] && command -v su-exec >/dev/null 2>&1; then
     exec su-exec node "$@"
 fi
 
