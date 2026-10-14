@@ -49,11 +49,15 @@ app.use(cors((req, callback) => {
     // 4. Allow user-configured origins from CORS_ORIGIN
     isAllowed = true;
   } else {
-    // 5. Allow if origin matches Host or X-Forwarded-Host (Cloudflare Tunnel domain)
+    // 5. Allow if origin matches Host, X-Forwarded-Host, or Cloudflare Tunnel
     try {
       const parsedOrigin = new URL(origin);
       const hostHeader = (req.header('x-forwarded-host') || req.header('host') || '').split(':')[0].toLowerCase();
-      if (hostHeader && parsedOrigin.hostname.toLowerCase() === hostHeader) {
+      if (
+        (hostHeader && parsedOrigin.hostname.toLowerCase() === hostHeader) ||
+        parsedOrigin.hostname.endsWith('server-lukas.com') ||
+        req.header('cf-ray')
+      ) {
         isAllowed = true;
       }
     } catch {}
