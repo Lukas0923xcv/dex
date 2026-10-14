@@ -5,14 +5,23 @@ services:
       dockerfile: Dockerfile
     container_name: pogo-dex
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
     ports:
-      - "${PORT:-3000}:3000"
+      - "${HOST_BIND_IP:-127.0.0.1}:${PORT:-3000}:3000"
     volumes:
       - ./data:/app/data
     environment:
       - NODE_ENV=production
       - PORT=3000
       - DATA_DIR=/app/data
+      - CORS_ORIGIN=${CORS_ORIGIN:-}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s

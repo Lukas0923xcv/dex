@@ -7,12 +7,16 @@ const crypto = require('crypto');
 router.get('/health', (req, res) => {
   try {
     const row = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
+    const rawCfUser = req.headers['cf-access-authenticated-user-email'];
+    const safeCfUser = (typeof rawCfUser === 'string' && rawCfUser.length < 256)
+      ? rawCfUser.replace(/[^a-zA-Z0-9@._+-]/g, '')
+      : undefined;
     res.json({
       status: 'ok',
       uptime: process.uptime(),
       pokemonCount: row ? row.count : 0,
       walMode: true,
-      cloudflareUser: req.headers['cf-access-authenticated-user-email'] || undefined
+      cloudflareUser: safeCfUser
     });
   } catch (err) {
     res.status(500).json({ status: 'error', error: err.message });
@@ -39,7 +43,8 @@ router.get('/accounts', (req, res) => {
 router.post('/accounts', (req, res) => {
   try {
     const { name } = req.body;
-    const cleanName = (name && name.trim()) ? name.trim() : 'Neuer Account';
+    let cleanName = (name && typeof name === 'string' && name.trim()) ? name.trim() : 'Neuer Account';
+    cleanName = cleanName.slice(0, 100);
     const id = `acc_${Date.now()}_${crypto.randomBytes(3).toString('hex')}`;
     const now = new Date().toISOString();
     db.prepare('INSERT INTO user_accounts (id, name, created_at) VALUES (?, ?, ?)').run(id, cleanName, now);
@@ -54,11 +59,12 @@ router.put('/accounts/:id', (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
-    if (!name || !name.trim()) {
+    if (!name || typeof name !== 'string' || !name.trim()) {
       return res.status(400).json({ error: 'Name ist erforderlich' });
     }
-    db.prepare('UPDATE user_accounts SET name = ? WHERE id = ?').run(name.trim(), id);
-    res.json({ id, name: name.trim() });
+    const cleanName = name.trim().slice(0, 100);
+    db.prepare('UPDATE user_accounts SET name = ? WHERE id = ?').run(cleanName, id);
+    res.json({ id, name: cleanName });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -326,9 +332,11 @@ router.get('/pokemon', (req, res) => {
 router.post('/progress/toggle', (req, res) => {
   try {
     const { pokemonId, type = 'caught', accountId = 'default', dexScope = 'standard' } = req.body;
-    if (!pokemonId) {
-      return res.status(400).json({ error: 'pokemonId is required' });
+    if (!pokemonId || typeof pokemonId !== 'string' || pokemonId.length > 100 || !/^[a-zA-Z0-9_.-]+$/.test(pokemonId)) {
+      return res.status(400).json({ error: 'Valid pokemonId is required' });
     }
+    const safeAccountId = (typeof accountId === 'string' && accountId.length <= 100) ? accountId : 'default';
+    const safeScope = (typeof dexScope === 'string' && dexScope.length <= 100) ? dexScope : 'standard';
 
     const fieldMap = {
       caught: 'caught',
@@ -345,7 +353,7 @@ router.post('/progress/toggle', (req, res) => {
     const field = fieldMap[type] || 'caught';
     const now = new Date().toISOString();
 
-    const existing = db.prepare('SELECT * FROM user_progress_v2 WHERE account_id = ? AND dex_scope = ? AND pokemon_id = ?').get(accountId, dexScope, pokemonId);
+    const existing = db.prepare('SELECT * FROM user_progress_v2 WHERE account_id = ? AND dex_scope = ? AND pokemon_id = ?').get(safeAccountId, safeScope, pokemonId);
 
     let newVal = 1;
     if (existing) {
@@ -354,20 +362,20 @@ router.post('/progress/toggle', (req, res) => {
         UPDATE user_progress_v2
         SET ${field} = ?, updated_at = ?
         WHERE account_id = ? AND dex_scope = ? AND pokemon_id = ?
-      `).run(newVal, now, accountId, dexScope, pokemonId);
+      `).run(newVal, now, safeAccountId, safeScope, pokemonId);
     } else {
       db.prepare(`
         INSERT INTO user_progress_v2 (account_id, dex_scope, pokemon_id, ${field}, updated_at)
         VALUES (?, ?, ?, ?, ?)
-      `).run(accountId, dexScope, pokemonId, 1, now);
+      `).run(safeAccountId, safeScope, pokemonId, 1, now);
       newVal = 1;
     }
 
     res.json({
       pokemonId,
       type,
-      accountId,
-      dexScope,
+      accountId: safeAccountId,
+      dexScope: safeScope,
       value: Boolean(newVal),
       updatedAt: now
     });
@@ -380,13 +388,16 @@ router.post('/progress/toggle', (req, res) => {
 // POST /api/progress/batch
 router.post('/progress/batch', (req, res) => {
   try {
+    const { pokemonIds = [], caught, shinyCaught, shadowCaught, accountId = 'default', dexScope = 'standard' } = req.body;
     if (!Array.isArray(pokemonIds) || pokemonIds.length === 0) {
       return res.status(400).json({ error: 'pokemonIds array required' });
     }
     if (pokemonIds.length > 5000) {
       return res.status(400).json({ error: 'Maximum 5000 pokemonIds allowed per batch request' });
     }
-    const safePokemonIds = pokemonIds.filter(id => typeof id === 'string' && id.length > 0 && id.length < 100);
+    const safePokemonIds = pokemonIds.filter(id => typeof id === 'string' && id.length > 0 && id.length < 100 && /^[a-zA-Z0-9_.-]+$/.test(id));
+    const safeAccountId = (typeof accountId === 'string' && accountId.length <= 100) ? accountId : 'default';
+    const safeScope = (typeof dexScope === 'string' && dexScope.length <= 100) ? dexScope : 'standard';
 
     const now = new Date().toISOString();
     const upsertStmt = db.prepare(`
@@ -404,11 +415,11 @@ router.post('/progress/batch', (req, res) => {
       const cVal = caught !== undefined ? (caught ? 1 : 0) : null;
       const sVal = shinyCaught !== undefined ? (shinyCaught ? 1 : 0) : null;
       const shVal = shadowCaught !== undefined ? (shadowCaught ? 1 : 0) : null;
-      upsertStmt.run(accountId, dexScope, id, cVal || 0, sVal || 0, shVal || 0, now, cVal, sVal, shVal, now);
+      upsertStmt.run(safeAccountId, safeScope, id, cVal || 0, sVal || 0, shVal || 0, now, cVal, sVal, shVal, now);
     }
     db.exec('COMMIT;');
 
-    res.json({ success: true, count: safePokemonIds.length, accountId, dexScope });
+    res.json({ success: true, count: safePokemonIds.length, accountId: safeAccountId, dexScope: safeScope });
   } catch (err) {
     db.exec('ROLLBACK;');
     console.error('Error batch updating progress:', err);
@@ -573,9 +584,15 @@ router.post('/collections', (req, res) => {
       pokemonIds = []
     } = req.body;
 
-    if (!name || !name.trim()) {
+    if (!name || typeof name !== 'string' || !name.trim()) {
       return res.status(400).json({ error: 'Collection name is required' });
     }
+
+    const cleanName = name.trim().slice(0, 100);
+    const cleanDesc = (typeof description === 'string' ? description.trim() : '').slice(0, 500);
+    const cleanColor = (typeof color === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(color.trim())) ? color.trim() : '#3b82f6';
+    const cleanCategoryType = (typeof categoryType === 'string' && ['normal', 'lucky', 'shadow', 'purified', 'mega', 'event'].includes(categoryType)) ? categoryType : 'normal';
+    const cleanVariantMode = (typeof variantMode === 'string' && ['single', 'multi'].includes(variantMode)) ? variantMode : 'multi';
 
     const id = `coll_${Date.now()}_${crypto.randomBytes(3).toString('hex')}`;
     const now = new Date().toISOString();
@@ -587,11 +604,11 @@ router.post('/collections', (req, res) => {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       id,
-      name.trim(),
-      description.trim(),
-      color,
-      categoryType,
-      variantMode,
+      cleanName,
+      cleanDesc,
+      cleanColor,
+      cleanCategoryType,
+      cleanVariantMode,
       trackShiny ? 1 : 0,
       trackHundo ? 1 : 0,
       trackGender ? 1 : 0,
@@ -711,14 +728,18 @@ router.delete('/collections/:id/items/:pokemonId', (req, res) => {
 // POST /api/collections/:id/items/batch
 router.post('/collections/:id/items/batch', (req, res) => {
   try {
+    const { id: collectionId } = req.params;
     const { pokemonIds = [], mode = 'replace' } = req.body;
+    if (!collectionId || typeof collectionId !== 'string' || collectionId.length > 100) {
+      return res.status(400).json({ error: 'Invalid collection id' });
+    }
     if (!Array.isArray(pokemonIds)) {
       return res.status(400).json({ error: 'pokemonIds must be an array' });
     }
     if (pokemonIds.length > 5000) {
       return res.status(400).json({ error: 'Maximum 5000 pokemonIds allowed per batch request' });
     }
-    const safePokemonIds = pokemonIds.filter(id => typeof id === 'string' && id.length > 0 && id.length < 100);
+    const safePokemonIds = pokemonIds.filter(id => typeof id === 'string' && id.length > 0 && id.length < 100 && /^[a-zA-Z0-9_.-]+$/.test(id));
 
     const now = new Date().toISOString();
     const insertStmt = db.prepare(`
@@ -987,6 +1008,13 @@ router.post('/import', (req, res) => {
       collectionItems = [],
       collection
     } = backup.data;
+
+    // Bound array inputs to prevent DoS via memory exhaustion
+    if (Array.isArray(progress) && progress.length > 10000) progress = progress.slice(0, 10000);
+    if (Array.isArray(progressV2) && progressV2.length > 20000) progressV2 = progressV2.slice(0, 20000);
+    if (Array.isArray(accounts) && accounts.length > 100) accounts = accounts.slice(0, 100);
+    if (Array.isArray(collections) && collections.length > 500) collections = collections.slice(0, 500);
+    if (Array.isArray(collectionItems) && collectionItems.length > 20000) collectionItems = collectionItems.slice(0, 20000);
 
     // Single collection import mode
     if (backup.type === 'collection' || collection || targetCollectionId) {
