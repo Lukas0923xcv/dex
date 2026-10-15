@@ -110,7 +110,7 @@ if [ ! -f "$APP_DIR/.env" ] && [ -f "$APP_DIR/.env.example" ]; then
 elif [ -f "$APP_DIR/.env" ]; then
   # Ensure HOST_BIND_IP is configured if missing
   if ! grep -q "^HOST_BIND_IP=" "$APP_DIR/.env" 2>/dev/null; then
-    echo "HOST_BIND_IP=127.0.0.1" | $SUDO tee -a "$APP_DIR/.env" > /dev/null
+    echo "HOST_BIND_IP=0.0.0.0" | $SUDO tee -a "$APP_DIR/.env" > /dev/null
   fi
 fi
 
@@ -121,17 +121,18 @@ $SUDO $COMPOSE_CMD down 2>/dev/null || true
 $SUDO $COMPOSE_CMD up -d --build
 
 # 7. Success Banner
-HOST_BIND=$(grep "^HOST_BIND_IP=" "$APP_DIR/.env" 2>/dev/null | cut -d= -f2 | tr -d ' "' || echo "127.0.0.1")
+HOST_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "localhost")
+HOST_BIND=$(grep "^HOST_BIND_IP=" "$APP_DIR/.env" 2>/dev/null | cut -d= -f2 | tr -d ' "' || echo "0.0.0.0")
 
 echo -e "\n${COLOR_GREEN}========================================================================${COLOR_RESET}"
 echo -e "${COLOR_GREEN}  🎉 Pokémon GO Dex Tracker is now running!${COLOR_RESET}"
 echo -e "${COLOR_GREEN}========================================================================${COLOR_RESET}"
-if [ "$HOST_BIND" = "127.0.0.1" ] || [ -z "$HOST_BIND" ]; then
-  echo -e "  🔒 Local Access:       ${COLOR_YELLOW}http://localhost:3000${COLOR_RESET} (or http://127.0.0.1:3000)"
-  echo -e "  🛡️ Cloudflare Tunnel:  Route tunnel ingress to ${COLOR_YELLOW}http://localhost:3000${COLOR_RESET} (LAN bypass protected)"
+if [ "$HOST_BIND" = "127.0.0.1" ]; then
+  echo -e "  🔒 Local Loopback:     ${COLOR_YELLOW}http://localhost:3000${COLOR_RESET} (or http://127.0.0.1:3000)"
+  echo -e "  🛡️ Cloudflare Ingress: Route tunnel to ${COLOR_YELLOW}http://localhost:3000${COLOR_RESET}"
 else
-  HOST_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "localhost")
-  echo -e "  🌐 Web Access:         ${COLOR_YELLOW}http://${HOST_IP}:3000${COLOR_RESET} (or http://localhost:3000)"
+  echo -e "  🌐 LAN / Web Access:   ${COLOR_YELLOW}http://${HOST_IP}:3000${COLOR_RESET} (or http://localhost:3000)"
+  echo -e "  🛡️ Cloudflare Gateway: Route tunnel to ${COLOR_YELLOW}http://${HOST_IP}:3000${COLOR_RESET}"
 fi
 echo -e "  📁 Persistent Data:    ${COLOR_YELLOW}${APP_DIR}/data/dex.db${COLOR_RESET}"
 echo -e "  📊 View Logs:          ${COLOR_BLUE}cd ${APP_DIR} && docker compose logs -f${COLOR_RESET}"

@@ -25,7 +25,7 @@ sudo ./install.sh
 > - Configures persistent SQLite storage (`/opt/pogo-dex/data`) with WAL mode.
 > - Builds and starts the production container on port `3000`.
 > - Drops root privileges inside the container to unprivileged user `node` for security.
-> - Binds to `127.0.0.1` by default to securely serve through Cloudflare Tunnel or reverse proxies.
+> - Binds to `0.0.0.0` by default to allow Cloudflare Tunnel daemons or reverse proxies on your LAN to reach the application.
 
 ---
 
@@ -35,14 +35,12 @@ If you prefer running directly with `docker compose`:
 cd /opt/pogo-dex
 sudo docker compose up -d --build
 ```
-Open **`http://localhost:3000`** (or access via your Cloudflare Tunnel hostname).
+Open **`http://localhost:3000`** (or access via your Cloudflare Tunnel hostname / LAN IP).
 
-### 🔒 Cloudflare Tunnel & Access Ingress
-To ensure zero unauthenticated access from your local network (LAN) and enforce Cloudflare Access:
-- **Loopback Binding:** By default, `HOST_BIND_IP` is set to `127.0.0.1` (`127.0.0.1:3000`), ensuring the application is only accessible via the local loopback interface and cannot be bypassed from the LAN.
-- **Tunnel Ingress Rule:** In your Cloudflare Zero Trust Dashboard (or `config.yml`), configure the tunnel ingress service to route to:
-  - **Service:** `HTTP`
-  - **URL:** `http://localhost:3000` (or `http://127.0.0.1:3000`)
+### 🔒 Cloudflare Tunnel & Network Access
+Depending on your network architecture:
+- **LAN / Gateway Cloudflare Tunnel (Default):** By default, `HOST_BIND_IP=0.0.0.0` (mapped as `0.0.0.0:3000`). If your Cloudflare Tunnel daemon (`cloudflared`) runs on a separate machine or central gateway server on your LAN, configure the tunnel ingress to route to `http://<server-lan-ip>:3000` (e.g. `http://192.168.1.213:3000`).
+- **Localhost Cloudflare Tunnel (Same Host):** If `cloudflared` runs directly on the same host machine as this container, you can set `HOST_BIND_IP=127.0.0.1` in `.env` to restrict binding to the loopback interface, and route tunnel ingress to `http://localhost:3000` (or `http://127.0.0.1:3000`).
 - **Optional `tunnel` Docker Profile:** If you want `cloudflared` to run directly in Docker alongside the container:
   ```bash
   # In .env, set: TUNNEL_TOKEN=your_cloudflare_tunnel_token
@@ -121,7 +119,7 @@ dex/
 | Variable | Default | Description |
 |---|---|---|
 | `PORT` | `3000` | HTTP port for server and container |
-| `HOST_BIND_IP` | `127.0.0.1` | Host IP address to bind container port (`127.0.0.1` loopback ensures zero LAN bypass and forces Cloudflare Tunnel routing; set to `0.0.0.0` only for open LAN access) |
+| `HOST_BIND_IP` | `0.0.0.0` | Host IP address to bind container port (defaults to `0.0.0.0` allowing Cloudflare Tunnel daemons or reverse proxies across the LAN to reach the container; set to `127.0.0.1` if tunnel runs on the same host) |
 | `DATA_DIR` | `./data` | Directory for persistent SQLite database (`dex.db`) |
 | `NODE_ENV` | `production` | Runtime mode (`production` / `development`) |
 | `CORS_ORIGIN` | *none* | Optional comma-separated additional allowed CORS origins |
