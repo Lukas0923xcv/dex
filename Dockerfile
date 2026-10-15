@@ -9,7 +9,7 @@ COPY client/package*.json ./
 RUN npm ci
 
 # Copy compiled pokemon dataset and client source code
-COPY data/ /app/data/
+COPY data/pokemon-data.json data/gender-diffs.json /app/data/
 COPY client/ ./
 RUN cp /app/data/pokemon-data.json ./src/data/pokemon-data.json
 RUN npm run build
@@ -32,7 +32,7 @@ RUN cd server && npm ci --omit=dev
 
 # Copy server source code and seed data
 COPY server/ ./server/
-COPY data/ /app/data/
+COPY data/pokemon-data.json data/gender-diffs.json /app/data/
 
 # Copy static frontend build from stage 1 into server public directory
 COPY --from=client-builder /app/client/dist ./server/public

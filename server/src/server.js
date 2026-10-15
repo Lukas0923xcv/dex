@@ -36,7 +36,7 @@ const configuredOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()).filter(Boolean)
   : [];
 
-// Secure dynamic CORS origin validation
+// Secure dynamic CORS origin validation (prevents DNS rebinding and header spoofing)
 app.use(cors((req, callback) => {
   const origin = req.header('Origin');
   let isAllowed = false;
@@ -44,7 +44,7 @@ app.use(cors((req, callback) => {
   if (!origin) {
     // 1. Allow requests with no origin (mobile PWA, curl, same-origin)
     isAllowed = true;
-  } else if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
+  } else if (/^https?:\/\/(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(origin)) {
     // 2. Allow local development and loopback origins
     isAllowed = true;
   } else if (origin === 'https://lukas0923xcv.github.io' || origin === 'http://lukas0923xcv.github.io') {
@@ -54,13 +54,12 @@ app.use(cors((req, callback) => {
     // 4. Allow user-configured origins from CORS_ORIGIN
     isAllowed = true;
   } else {
-    // 5. Allow if origin matches Host, X-Forwarded-Host, or exact server-lukas.com domain / subdomains
+    // 5. Allow if origin matches exact server-lukas.com domain / subdomains
     try {
       const parsedOrigin = new URL(origin);
-      const hostHeader = (req.header('x-forwarded-host') || req.header('host') || '').split(':')[0].toLowerCase();
       const originHost = parsedOrigin.hostname.toLowerCase();
       const isDomainAllowed = originHost === 'server-lukas.com' || originHost.endsWith('.server-lukas.com');
-      if ((hostHeader && originHost === hostHeader) || isDomainAllowed) {
+      if (isDomainAllowed) {
         isAllowed = true;
       }
     } catch {}
@@ -69,14 +68,15 @@ app.use(cors((req, callback) => {
   callback(null, { origin: isAllowed, credentials: isAllowed });
 }));
 
-// In-Memory Sliding-Window Rate Limiter
+// In-Memory Sliding-Window Rate Limiter with bounded storage and LRU pruning
 function createRateLimiter(options = {}) {
   const windowMs = options.windowMs || 15 * 60 * 1000;
   const max = options.max || 300;
+  const maxKeys = options.maxKeys || 10000; // Cap maximum tracked IPs to prevent memory exhaustion
   const message = options.message || { error: 'Too many requests, please try again later.' };
   const hits = new Map();
 
-  const interval = setInterval(() => {
+  const cleanup = () => {
     const now = Date.now();
     for (const [ip, timestamps] of hits.entries()) {
       const valid = timestamps.filter(t => now - t < windowMs);
@@ -86,7 +86,9 @@ function createRateLimiter(options = {}) {
         hits.set(ip, valid);
       }
     }
-  }, 5 * 60 * 1000);
+  };
+
+  const interval = setInterval(cleanup, 5 * 60 * 1000);
   if (interval.unref) interval.unref();
 
   return (req, res, next) => {
@@ -97,6 +99,12 @@ function createRateLimiter(options = {}) {
     if (timestamps.length >= max) {
       res.setHeader('Retry-After', Math.ceil(windowMs / 1000));
       return res.status(429).json(message);
+    }
+
+    // Evict oldest entries if map size exceeds maxKeys (DoS memory exhaustion defense)
+    if (hits.size >= maxKeys && !hits.has(ip)) {
+      const oldestKey = hits.keys().next().value;
+      if (oldestKey !== undefined) hits.delete(oldestKey);
     }
 
     timestamps.push(now);

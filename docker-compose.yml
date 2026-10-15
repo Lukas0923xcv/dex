@@ -7,6 +7,12 @@ services:
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETUID
+      - SETGID
     ports:
       - "${HOST_BIND_IP:-127.0.0.1}:${PORT:-3000}:3000"
     volumes:
@@ -27,9 +33,12 @@ services:
     image: cloudflare/cloudflared:latest
     container_name: pogo-dex-tunnel
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
     profiles:
       - tunnel
-    network_mode: host
     environment:
       - TUNNEL_TOKEN=${TUNNEL_TOKEN:-}
     command: tunnel run

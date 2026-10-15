@@ -1,0 +1,38 @@
+# Git and CI
+.git/
+.github/
+
+# Environment files and secrets
+.env*
+*.env
+*.pem
+*.key
+*.cert
+*.crt
+cloudflared/
+tunnel*.json
+
+# Local persistent databases and user exports
+data/*.db*
+data/*.sqlite*
+data/backups/
+data/user*.json
+data/export*.json
+
+# Dependencies and build outputs
+node_modules/
+client/node_modules/
+server/node_modules/
+client/dist/
+server/public/
+dist/
+build/
+.output/
+
+# Logs and OS metadata
+logs/
+*.log
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

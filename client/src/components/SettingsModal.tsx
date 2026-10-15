@@ -34,6 +34,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   activeScopeName = 'Standard Dex'
 }) => {
   const [remoteUrl, setRemoteUrl] = useState(storageStatus.backendUrl || '');
+  const [apiKey, setApiKey] = useState(storage.getApiKey() || '');
   const [importStatus, setImportStatus] = useState<string | null>(null);
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
 
@@ -160,6 +161,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   const handleSaveRemoteUrl = () => {
     storage.setCustomBackendUrl(remoteUrl);
+    storage.setApiKey(apiKey);
     window.location.reload();
   };
 
@@ -213,25 +215,40 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             </p>
 
             {/* Custom Server Configuration for GitHub Pages */}
-            <div className="pt-2 border-t border-slate-200 dark:border-slate-700/40">
-              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
-                Custom Server Backend URL (Optional):
-              </label>
-              <div className="flex gap-2">
+            <div className="pt-2 border-t border-slate-200 dark:border-slate-700/40 space-y-2">
+              <div>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  Custom Server Backend URL (Optional):
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="url"
+                    placeholder="https://your-server-domain:3000"
+                    value={remoteUrl}
+                    onChange={(e) => setRemoteUrl(e.target.value)}
+                    className="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleSaveRemoteUrl}
+                    className="px-3 py-1.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block mb-1">
+                  API Secret Key (Optional - for secured servers):
+                </label>
                 <input
-                  type="url"
-                  placeholder="https://your-server-domain:3000"
-                  value={remoteUrl}
-                  onChange={(e) => setRemoteUrl(e.target.value)}
-                  className="flex-1 px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                  type="password"
+                  placeholder="Enter API Secret Key if configured on server"
+                  value={apiKey}
+                  onChange={(e) => setApiKey(e.target.value)}
+                  className="w-full px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:border-blue-500"
                 />
-                <button
-                  type="button"
-                  onClick={handleSaveRemoteUrl}
-                  className="px-3 py-1.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-700 dark:hover:bg-slate-600 text-white text-xs font-semibold rounded-xl transition-colors cursor-pointer"
-                >
-                  Save
-                </button>
               </div>
             </div>
           </div>
