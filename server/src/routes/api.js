@@ -3,6 +3,35 @@ const router = express.Router();
 const db = require('../db/index');
 const crypto = require('crypto');
 
+// Error Response Sanitization Helper
+function sendError(res, err, status = 500) {
+  console.error('API Error:', err);
+  const message = (process.env.NODE_ENV === 'production')
+    ? 'An unexpected error occurred. Please try again later.'
+    : (err && err.message ? err.message : 'Unknown error');
+  return res.status(status).json({ error: message });
+}
+
+// Optional Authentication Middleware: Enforces authorization if API_SECRET_KEY is configured
+function requireAuth(req, res, next) {
+  const secretKey = process.env.API_SECRET_KEY;
+  if (!secretKey) {
+    return next();
+  }
+
+  const authHeader = req.headers['authorization'];
+  const apiKeyHeader = req.headers['x-api-key'];
+  const token = authHeader && authHeader.startsWith('Bearer ')
+    ? authHeader.slice(7).trim()
+    : (typeof apiKeyHeader === 'string' ? apiKeyHeader.trim() : '');
+
+  if (!token || token !== secretKey.trim()) {
+    return res.status(401).json({ error: 'Unauthorized: valid API key required.' });
+  }
+
+  next();
+}
+
 // Health Check
 router.get('/health', (req, res) => {
   try {
@@ -19,7 +48,7 @@ router.get('/health', (req, res) => {
       cloudflareUser: safeCfUser
     });
   } catch (err) {
-    res.status(500).json({ status: 'error', error: err.message });
+    sendError(res, err);
   }
 });
 
@@ -35,12 +64,12 @@ router.get('/accounts', (req, res) => {
     }
     res.json(accounts);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // POST /api/accounts
-router.post('/accounts', (req, res) => {
+router.post('/accounts', requireAuth, (req, res) => {
   try {
     const { name } = req.body;
     let cleanName = (name && typeof name === 'string' && name.trim()) ? name.trim() : 'Neuer Account';
@@ -50,12 +79,12 @@ router.post('/accounts', (req, res) => {
     db.prepare('INSERT INTO user_accounts (id, name, created_at) VALUES (?, ?, ?)').run(id, cleanName, now);
     res.status(201).json({ id, name: cleanName, createdAt: now });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // PUT /api/accounts/:id
-router.put('/accounts/:id', (req, res) => {
+router.put('/accounts/:id', requireAuth, (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
@@ -66,12 +95,12 @@ router.put('/accounts/:id', (req, res) => {
     db.prepare('UPDATE user_accounts SET name = ? WHERE id = ?').run(cleanName, id);
     res.json({ id, name: cleanName });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // DELETE /api/accounts/:id
-router.delete('/accounts/:id', (req, res) => {
+router.delete('/accounts/:id', requireAuth, (req, res) => {
   try {
     const { id } = req.params;
     const total = db.prepare('SELECT COUNT(*) as count FROM user_accounts').get().count;
@@ -89,7 +118,7 @@ router.delete('/accounts/:id', (req, res) => {
       throw err;
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
@@ -323,13 +352,12 @@ router.get('/pokemon', (req, res) => {
 
     res.json(result);
   } catch (err) {
-    console.error('Error fetching pokemon:', err);
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // POST /api/progress/toggle
-router.post('/progress/toggle', (req, res) => {
+router.post('/progress/toggle', requireAuth, (req, res) => {
   try {
     const { pokemonId, type = 'caught', accountId = 'default', dexScope = 'standard' } = req.body;
     if (!pokemonId || typeof pokemonId !== 'string' || pokemonId.length > 100 || !/^[a-zA-Z0-9_.-]+$/.test(pokemonId)) {
@@ -380,13 +408,12 @@ router.post('/progress/toggle', (req, res) => {
       updatedAt: now
     });
   } catch (err) {
-    console.error('Error toggling progress:', err);
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // POST /api/progress/batch
-router.post('/progress/batch', (req, res) => {
+router.post('/progress/batch', requireAuth, (req, res) => {
   try {
     const { pokemonIds = [], caught, shinyCaught, shadowCaught, accountId = 'default', dexScope = 'standard' } = req.body;
     if (!Array.isArray(pokemonIds) || pokemonIds.length === 0) {
@@ -422,15 +449,17 @@ router.post('/progress/batch', (req, res) => {
     res.json({ success: true, count: safePokemonIds.length, accountId: safeAccountId, dexScope: safeScope });
   } catch (err) {
     db.exec('ROLLBACK;');
-    console.error('Error batch updating progress:', err);
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // POST /api/progress/reset
-router.post('/progress/reset', (req, res) => {
+router.post('/progress/reset', requireAuth, (req, res) => {
   try {
-    const { accountId = 'default', dexScope } = req.body;
+    const { accountId = 'default', dexScope, confirm } = req.body;
+    if (!dexScope && confirm !== true && req.query.confirm !== 'true') {
+      return res.status(400).json({ error: 'Confirmation required. Pass { confirm: true } to reset all progress.' });
+    }
     if (dexScope) {
       db.prepare('DELETE FROM user_progress_v2 WHERE account_id = ? AND dex_scope = ?').run(accountId, dexScope);
     } else {
@@ -438,8 +467,7 @@ router.post('/progress/reset', (req, res) => {
     }
     res.json({ success: true, accountId, dexScope });
   } catch (err) {
-    console.error('Error resetting progress:', err);
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
@@ -537,7 +565,7 @@ router.get('/collections', (req, res) => {
 
     res.json(collections);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
@@ -552,7 +580,7 @@ router.get('/collection-items', (req, res) => {
     }
     res.json(map);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
@@ -563,12 +591,12 @@ router.get('/collections/:id/items', (req, res) => {
     const rows = db.prepare('SELECT pokemon_id FROM custom_collection_items WHERE collection_id = ?').all(id);
     res.json({ pokemonIds: rows.map(r => r.pokemon_id) });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // POST /api/collections
-router.post('/collections', (req, res) => {
+router.post('/collections', requireAuth, (req, res) => {
   try {
     const {
       name,
@@ -646,13 +674,16 @@ router.post('/collections', (req, res) => {
       caughtItems: 0
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // DELETE /api/collections (delete all custom collections)
-router.delete('/collections', (req, res) => {
+router.delete('/collections', requireAuth, (req, res) => {
   try {
+    if (req.query.confirm !== 'true' && req.body?.confirm !== true) {
+      return res.status(400).json({ error: 'Confirmation required. Pass ?confirm=true to delete all collections.' });
+    }
     const deleteItems = db.prepare('DELETE FROM custom_collection_items');
     const deleteCollections = db.prepare('DELETE FROM custom_collections');
     db.exec('BEGIN TRANSACTION;');
@@ -666,12 +697,12 @@ router.delete('/collections', (req, res) => {
       throw err;
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // DELETE /api/collections/:id
-router.delete('/collections/:id', (req, res) => {
+router.delete('/collections/:id', requireAuth, (req, res) => {
   try {
     const { id } = req.params;
     db.exec('BEGIN TRANSACTION;');
@@ -685,12 +716,12 @@ router.delete('/collections/:id', (req, res) => {
       throw err;
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // POST /api/collections/:id/items
-router.post('/collections/:id/items', (req, res) => {
+router.post('/collections/:id/items', requireAuth, (req, res) => {
   try {
     const { id: collectionId } = req.params;
     const { pokemonId } = req.body;
@@ -706,12 +737,12 @@ router.post('/collections/:id/items', (req, res) => {
 
     res.json({ success: true, collectionId, pokemonId });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // DELETE /api/collections/:id/items/:pokemonId
-router.delete('/collections/:id/items/:pokemonId', (req, res) => {
+router.delete('/collections/:id/items/:pokemonId', requireAuth, (req, res) => {
   try {
     const { id: collectionId, pokemonId } = req.params;
     db.prepare(`
@@ -721,12 +752,12 @@ router.delete('/collections/:id/items/:pokemonId', (req, res) => {
 
     res.json({ success: true, collectionId, pokemonId });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // POST /api/collections/:id/items/batch
-router.post('/collections/:id/items/batch', (req, res) => {
+router.post('/collections/:id/items/batch', requireAuth, (req, res) => {
   try {
     const { id: collectionId } = req.params;
     const { pokemonIds = [], mode = 'replace' } = req.body;
@@ -762,7 +793,7 @@ router.post('/collections/:id/items/batch', (req, res) => {
       throw err;
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
@@ -803,7 +834,7 @@ router.get('/stats', (req, res) => {
       generations: genQuery
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
@@ -987,12 +1018,12 @@ router.get('/export', (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
 // POST /api/import
-router.post('/import', (req, res) => {
+router.post('/import', requireAuth, (req, res) => {
   try {
     const backup = req.body;
     if (!backup || !backup.data) {
@@ -1274,8 +1305,7 @@ router.post('/import', (req, res) => {
       throw err;
     }
   } catch (err) {
-    console.error('Error importing backup:', err);
-    res.status(500).json({ error: err.message });
+    sendError(res, err);
   }
 });
 
@@ -1311,11 +1341,14 @@ router.get('/proxy-image', (req, res) => {
     return res.status(400).send('Invalid or untrusted image URL');
   }
 
+  const MAX_IMAGE_BYTES = 10 * 1024 * 1024; // 10MB limit
+
   const fetchWithSafeRedirect = (targetUrl, maxRedirects = 2) => {
     if (!isValidImageUrl(targetUrl)) {
       return res.status(400).send('Invalid redirect destination');
     }
 
+    let isTerminated = false;
     const proxyReq = https.get(targetUrl, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DexTracker/1.0)' },
       timeout: 5000
@@ -1335,6 +1368,13 @@ router.get('/proxy-image', (req, res) => {
         return res.status(remoteRes.statusCode).send('Upstream image error');
       }
 
+      const contentLength = parseInt(remoteRes.headers['content-length'], 10);
+      if (!isNaN(contentLength) && contentLength > MAX_IMAGE_BYTES) {
+        remoteRes.resume();
+        isTerminated = true;
+        return res.status(413).send('Image exceeds maximum allowed size (10MB)');
+      }
+
       const contentType = remoteRes.headers['content-type'] || 'image/png';
       if (!contentType.startsWith('image/')) {
         remoteRes.resume();
@@ -1344,7 +1384,29 @@ router.get('/proxy-image', (req, res) => {
       res.set('Content-Type', contentType);
       res.set('Cache-Control', 'public, max-age=86400');
       res.set('X-Content-Type-Options', 'nosniff');
+
+      let downloadedBytes = 0;
+      remoteRes.on('data', chunk => {
+        downloadedBytes += chunk.length;
+        if (downloadedBytes > MAX_IMAGE_BYTES && !isTerminated) {
+          isTerminated = true;
+          remoteRes.destroy();
+          proxyReq.destroy();
+          if (!res.headersSent) {
+            res.status(413).send('Image exceeds maximum allowed size (10MB)');
+          } else {
+            res.destroy();
+          }
+        }
+      });
+
       remoteRes.pipe(res);
+    });
+
+    req.on('close', () => {
+      if (!proxyReq.destroyed) {
+        proxyReq.destroy();
+      }
     });
 
     proxyReq.on('timeout', () => {

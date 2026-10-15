@@ -15,12 +15,17 @@ app.set('trust proxy', 1);
 // Security: Disable X-Powered-By banner
 app.disable('x-powered-by');
 
-// Security Headers middleware (protect against Clickjacking, MIME sniffing, etc.)
+// Security Headers middleware (protect against Clickjacking, MIME sniffing, XSS, etc.)
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Permissions-Policy', 'geolocation=(), microphone=(), camera=()');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  res.setHeader(
+    'Content-Security-Policy',
+    "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; connect-src 'self' https:; font-src 'self' data:; worker-src 'self' blob:; manifest-src 'self';"
+  );
   next();
 });
 
@@ -45,26 +50,76 @@ app.use(cors((req, callback) => {
   } else if (origin === 'https://lukas0923xcv.github.io' || origin === 'http://lukas0923xcv.github.io') {
     // 3. Allow official GitHub Pages deployment
     isAllowed = true;
-  } else if (configuredOrigins.includes(origin) || configuredOrigins.includes('*')) {
+  } else if (configuredOrigins.includes(origin)) {
     // 4. Allow user-configured origins from CORS_ORIGIN
     isAllowed = true;
   } else {
-    // 5. Allow if origin matches Host, X-Forwarded-Host, or Cloudflare Tunnel
+    // 5. Allow if origin matches Host, X-Forwarded-Host, or exact server-lukas.com domain / subdomains
     try {
       const parsedOrigin = new URL(origin);
       const hostHeader = (req.header('x-forwarded-host') || req.header('host') || '').split(':')[0].toLowerCase();
-      if (
-        (hostHeader && parsedOrigin.hostname.toLowerCase() === hostHeader) ||
-        parsedOrigin.hostname.endsWith('server-lukas.com') ||
-        req.header('cf-ray')
-      ) {
+      const originHost = parsedOrigin.hostname.toLowerCase();
+      const isDomainAllowed = originHost === 'server-lukas.com' || originHost.endsWith('.server-lukas.com');
+      if ((hostHeader && originHost === hostHeader) || isDomainAllowed) {
         isAllowed = true;
       }
     } catch {}
   }
 
-  callback(null, { origin: isAllowed, credentials: true });
+  callback(null, { origin: isAllowed, credentials: isAllowed });
 }));
+
+// In-Memory Sliding-Window Rate Limiter
+function createRateLimiter(options = {}) {
+  const windowMs = options.windowMs || 15 * 60 * 1000;
+  const max = options.max || 300;
+  const message = options.message || { error: 'Too many requests, please try again later.' };
+  const hits = new Map();
+
+  const interval = setInterval(() => {
+    const now = Date.now();
+    for (const [ip, timestamps] of hits.entries()) {
+      const valid = timestamps.filter(t => now - t < windowMs);
+      if (valid.length === 0) {
+        hits.delete(ip);
+      } else {
+        hits.set(ip, valid);
+      }
+    }
+  }, 5 * 60 * 1000);
+  if (interval.unref) interval.unref();
+
+  return (req, res, next) => {
+    const ip = req.ip || req.socket.remoteAddress || 'unknown';
+    const now = Date.now();
+    const timestamps = (hits.get(ip) || []).filter(t => now - t < windowMs);
+
+    if (timestamps.length >= max) {
+      res.setHeader('Retry-After', Math.ceil(windowMs / 1000));
+      return res.status(429).json(message);
+    }
+
+    timestamps.push(now);
+    hits.set(ip, timestamps);
+    next();
+  };
+}
+
+// Global API rate limiter (300 requests / 15 min per IP)
+const globalApiLimiter = createRateLimiter({
+  windowMs: 15 * 60 * 1000,
+  max: 300
+});
+
+// Stricter rate limiter for resource-heavy mutation and proxy endpoints (60 req / min)
+const heavyLimiter = createRateLimiter({
+  windowMs: 60 * 1000,
+  max: 60,
+  message: { error: 'Rate limit exceeded for resource-intensive requests. Please slow down.' }
+});
+
+app.use('/api', globalApiLimiter);
+app.use(['/api/import', '/api/proxy-image', '/api/progress/batch'], heavyLimiter);
 
 app.use(express.json({ limit: '10mb' }));
 

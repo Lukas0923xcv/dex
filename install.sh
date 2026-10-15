@@ -102,7 +102,7 @@ fi
 echo -e "${COLOR_BLUE}[4/5] Preparing persistent data directory with SQLite WAL mode...${COLOR_RESET}"
 $SUDO mkdir -p "$APP_DIR/data"
 $SUDO chown -R 1000:1000 "$APP_DIR/data" 2>/dev/null || true
-$SUDO chmod -R 777 "$APP_DIR/data"
+$SUDO chmod 750 "$APP_DIR/data"
 
 if [ ! -f "$APP_DIR/.env" ] && [ -f "$APP_DIR/.env.example" ]; then
   $SUDO cp "$APP_DIR/.env.example" "$APP_DIR/.env"
