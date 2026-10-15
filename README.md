@@ -37,6 +37,18 @@ sudo docker compose up -d --build
 ```
 Open **`http://localhost:3000`** (or access via your Cloudflare Tunnel hostname).
 
+### 🔒 Cloudflare Tunnel & Access Ingress
+To ensure zero unauthenticated access from your local network (LAN) and enforce Cloudflare Access:
+- **Loopback Binding:** By default, `HOST_BIND_IP` is set to `127.0.0.1` (`127.0.0.1:3000`), ensuring the application is only accessible via the local loopback interface and cannot be bypassed from the LAN.
+- **Tunnel Ingress Rule:** In your Cloudflare Zero Trust Dashboard (or `config.yml`), configure the tunnel ingress service to route to:
+  - **Service:** `HTTP`
+  - **URL:** `http://localhost:3000` (or `http://127.0.0.1:3000`)
+- **Optional `tunnel` Docker Profile:** If you want `cloudflared` to run directly in Docker alongside the container:
+  ```bash
+  # In .env, set: TUNNEL_TOKEN=your_cloudflare_tunnel_token
+  sudo docker compose --profile tunnel up -d
+  ```
+
 ---
 
 ### 🔄 Updating & Rebuilding (1-Liner)
@@ -109,10 +121,11 @@ dex/
 | Variable | Default | Description |
 |---|---|---|
 | `PORT` | `3000` | HTTP port for server and container |
-| `HOST_BIND_IP` | `127.0.0.1` | Host IP address to bind container port (`127.0.0.1` for Cloudflare Tunnel security, or `0.0.0.0` for open LAN) |
+| `HOST_BIND_IP` | `127.0.0.1` | Host IP address to bind container port (`127.0.0.1` loopback ensures zero LAN bypass and forces Cloudflare Tunnel routing; set to `0.0.0.0` only for open LAN access) |
 | `DATA_DIR` | `./data` | Directory for persistent SQLite database (`dex.db`) |
 | `NODE_ENV` | `production` | Runtime mode (`production` / `development`) |
 | `CORS_ORIGIN` | *none* | Optional comma-separated additional allowed CORS origins |
+| `TUNNEL_TOKEN` | *none* | Optional Cloudflare Tunnel token for running `cloudflared` via `docker compose --profile tunnel` |
 
 ---
 
