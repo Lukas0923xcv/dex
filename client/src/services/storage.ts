@@ -694,7 +694,7 @@ class StorageAdapter {
 
     if (this.isConnectedToBackend) {
       try {
-        await fetch(`${this.backendUrl}/api/collections`, { method: 'DELETE' });
+        await fetch(`${this.backendUrl}/api/collections?confirm=true`, { method: 'DELETE' });
       } catch {
         // Continue to local cleanup
       }
@@ -1294,7 +1294,7 @@ class StorageAdapter {
         await fetch(`${this.backendUrl}/api/progress/reset`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ accountId, dexScope: scope })
+          body: JSON.stringify({ accountId, dexScope: scope, confirm: true })
         });
       } catch (err) {
         console.warn('Backend resetProgress failed:', err);

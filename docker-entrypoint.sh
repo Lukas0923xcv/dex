@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 
-# Ensure persistent SQLite data directory exists and is fully writable for SQLite WAL mode
+# Ensure persistent SQLite data directory exists with secure permissions (node:node)
 mkdir -p /app/data
-chmod -R 777 /app/data 2>/dev/null || true
+chmod 750 /app/data 2>/dev/null || true
 chown -R node:node /app/data 2>/dev/null || true
 
 # If container started as root, drop privileges and execute as unprivileged 'node' user
