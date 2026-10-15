@@ -12,6 +12,14 @@ function sendError(res, err, status = 500) {
   return res.status(status).json({ error: message });
 }
 
+// Constant-time token comparison helper to prevent timing side-channel attacks
+function safeCompareTokens(provided, secret) {
+  if (typeof provided !== 'string' || typeof secret !== 'string') return false;
+  const hashProvided = crypto.createHash('sha256').update(provided).digest();
+  const hashSecret = crypto.createHash('sha256').update(secret).digest();
+  return crypto.timingSafeEqual(hashProvided, hashSecret);
+}
+
 // Optional Authentication Middleware: Enforces authorization if API_SECRET_KEY is configured
 function requireAuth(req, res, next) {
   const secretKey = process.env.API_SECRET_KEY;
@@ -25,7 +33,7 @@ function requireAuth(req, res, next) {
     ? authHeader.slice(7).trim()
     : (typeof apiKeyHeader === 'string' ? apiKeyHeader.trim() : '');
 
-  if (!token || token !== secretKey.trim()) {
+  if (!token || !safeCompareTokens(token, secretKey.trim())) {
     return res.status(401).json({ error: 'Unauthorized: valid API key required.' });
   }
 
@@ -839,7 +847,7 @@ router.get('/stats', (req, res) => {
 });
 
 // GET /api/export
-router.get('/export', (req, res) => {
+router.get('/export', requireAuth, (req, res) => {
   try {
     const { collectionId } = req.query;
 

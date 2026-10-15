@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
   COLLECTIONS: 'pogo_dex_collections_v1',
   COLLECTION_ITEMS: 'pogo_dex_collection_items_v1',
   REMOTE_API_URL: 'pogo_dex_remote_api_url_v1',
+  API_SECRET_KEY: 'pogo_dex_api_key_v1',
   FORCE_LOCAL: 'pogo_dex_force_local_v1',
   DASHBOARD_TABS: 'pogo_dashboard_tabs_v1',
   STATUS_FILTER: 'pogo_dex_status_filter_v1',
@@ -42,12 +43,26 @@ class StorageAdapter {
     }
   }
 
-  private async fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs: number = 4000): Promise<Response> {
+  private getAuthHeaders(): Record<string, string> {
+    const key = localStorage.getItem(STORAGE_KEYS.API_SECRET_KEY);
+    if (key && key.trim()) {
+      return { 'Authorization': `Bearer ${key.trim()}` };
+    }
+    return {};
+  }
+
+  private async fetchWithTimeout(url: string, options: RequestInit = {}, timeoutMs: number = 6000): Promise<Response> {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
     try {
+      const authHeaders = this.getAuthHeaders();
+      const headers = {
+        ...authHeaders,
+        ...(options.headers || {})
+      };
       return await fetch(url, {
         ...options,
+        headers,
         signal: controller.signal
       });
     } finally {
@@ -76,7 +91,7 @@ class StorageAdapter {
     const forceLocal = localStorage.getItem(STORAGE_KEYS.FORCE_LOCAL) === 'true';
     if (!forceLocal && this.backendUrl) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/health`, { method: 'GET' });
+        const res = await this.fetchWithTimeout(`${this.backendUrl}/api/health`, { method: 'GET' });
         if (res.ok) {
           const data = await res.json();
           if (data.status === 'ok') {
@@ -123,6 +138,18 @@ class StorageAdapter {
       localStorage.removeItem(STORAGE_KEYS.FORCE_LOCAL);
     }
     this.isInitialized = false;
+  }
+
+  public getApiKey(): string {
+    return localStorage.getItem(STORAGE_KEYS.API_SECRET_KEY) || '';
+  }
+
+  public setApiKey(key: string): void {
+    if (key && key.trim()) {
+      localStorage.setItem(STORAGE_KEYS.API_SECRET_KEY, key.trim());
+    } else {
+      localStorage.removeItem(STORAGE_KEYS.API_SECRET_KEY);
+    }
   }
 
   // --- Accounts Management ---
@@ -179,7 +206,7 @@ class StorageAdapter {
   public async getAccounts(): Promise<UserAccount[]> {
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/accounts`);
+        const res = await this.fetchWithTimeout(`${this.backendUrl}/api/accounts`);
         if (res.ok) {
           const accounts: UserAccount[] = await res.json();
           localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
@@ -210,7 +237,7 @@ class StorageAdapter {
     const cleanName = (name && name.trim()) ? name.trim() : 'Neuer Account';
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/accounts`, {
+        const res = await this.fetchWithTimeout(`${this.backendUrl}/api/accounts`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: cleanName })
@@ -244,7 +271,7 @@ class StorageAdapter {
     const cleanName = name.trim();
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/accounts/${id}`, {
+        const res = await this.fetchWithTimeout(`${this.backendUrl}/api/accounts/${id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ name: cleanName })
@@ -275,7 +302,7 @@ class StorageAdapter {
   public async deleteAccount(id: string): Promise<boolean> {
     if (this.isConnectedToBackend) {
       try {
-        await fetch(`${this.backendUrl}/api/accounts/${id}`, { method: 'DELETE' });
+        await this.fetchWithTimeout(`${this.backendUrl}/api/accounts/${id}`, { method: 'DELETE' });
       } catch (err) {
         console.warn('Backend deleteAccount failed:', err);
       }
@@ -310,7 +337,7 @@ class StorageAdapter {
   public async getPokemonList(accountId: string = 'default', scope: DexScope = 'standard'): Promise<Pokemon[]> {
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/pokemon?limit=2500&releasedOnly=true&accountId=${encodeURIComponent(accountId)}&dexScope=${encodeURIComponent(scope)}`);
+        const res = await this.fetchWithTimeout(`${this.backendUrl}/api/pokemon?limit=2500&releasedOnly=true&accountId=${encodeURIComponent(accountId)}&dexScope=${encodeURIComponent(scope)}`);
         if (res.ok) {
           const backendList: Pokemon[] = await res.json();
           const localMap = new Map((localPokemonData as Pokemon[]).map(p => [p.id, p]));
@@ -600,7 +627,7 @@ class StorageAdapter {
 
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/collections`, {
+        const res = await this.fetchWithTimeout(`${this.backendUrl}/api/collections`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
@@ -662,7 +689,7 @@ class StorageAdapter {
 
     if (this.isConnectedToBackend) {
       try {
-        await fetch(`${this.backendUrl}/api/collections/${collectionId}`, { method: 'DELETE' });
+        await this.fetchWithTimeout(`${this.backendUrl}/api/collections/${collectionId}`, { method: 'DELETE' });
       } catch {
         // Continue to local cleanup
       }
@@ -694,7 +721,7 @@ class StorageAdapter {
 
     if (this.isConnectedToBackend) {
       try {
-        await fetch(`${this.backendUrl}/api/collections?confirm=true`, { method: 'DELETE' });
+        await this.fetchWithTimeout(`${this.backendUrl}/api/collections?confirm=true`, { method: 'DELETE' });
       } catch {
         // Continue to local cleanup
       }
@@ -775,7 +802,7 @@ class StorageAdapter {
 
     if (this.isConnectedToBackend) {
       try {
-        await fetch(`${this.backendUrl}/api/collections/${collectionId}/items/batch`, {
+        await this.fetchWithTimeout(`${this.backendUrl}/api/collections/${collectionId}/items/batch`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ pokemonIds, mode: 'replace' })
@@ -1051,7 +1078,7 @@ class StorageAdapter {
     // Full export
     if (this.isConnectedToBackend) {
       try {
-        const res = await fetch(`${this.backendUrl}/api/export`);
+        const res = await this.fetchWithTimeout(`${this.backendUrl}/api/export`);
         if (res.ok) {
           return await res.json();
         }
@@ -1291,7 +1318,7 @@ class StorageAdapter {
   public async resetProgress(accountId: string = 'default', scope?: string): Promise<void> {
     if (this.isConnectedToBackend) {
       try {
-        await fetch(`${this.backendUrl}/api/progress/reset`, {
+        await this.fetchWithTimeout(`${this.backendUrl}/api/progress/reset`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ accountId, dexScope: scope, confirm: true })

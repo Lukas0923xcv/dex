@@ -124,6 +124,7 @@ dex/
 | `HOST_BIND_IP` | `127.0.0.1` | Host IP address to bind container port (`127.0.0.1` loopback ensures zero LAN bypass and forces Cloudflare Tunnel routing; set to `0.0.0.0` only for open LAN access) |
 | `DATA_DIR` | `./data` | Directory for persistent SQLite database (`dex.db`) |
 | `NODE_ENV` | `production` | Runtime mode (`production` / `development`) |
+| `API_SECRET_KEY` | *none* | Optional shared bearer secret token to authenticate sensitive administrative endpoints (`/api/export`, `/api/import`, `/api/reset`) |
 | `CORS_ORIGIN` | *none* | Optional comma-separated additional allowed CORS origins |
 | `TUNNEL_TOKEN` | *none* | Optional Cloudflare Tunnel token for running `cloudflared` via `docker compose --profile tunnel` |
 
