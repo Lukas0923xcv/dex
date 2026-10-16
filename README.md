@@ -52,9 +52,9 @@ To ensure zero unauthenticated access from your local network (LAN) and enforce 
 ---
 
 ### 🔄 Updating & Rebuilding (1-Liner)
-To pull the newest security fixes and rebuild your container in one step:
+To pull the newest updates and rebuild your container in one step (safely preserving `data/dex.db` and `.env`):
 ```bash
-cd /opt/pogo-dex && sudo git config --global --add safe.directory /opt/pogo-dex && sudo git pull && sudo docker compose down && sudo docker compose up -d --build
+cd /opt/pogo-dex && sudo git config --global --add safe.directory /opt/pogo-dex && sudo git fetch origin main && sudo git reset --hard origin/main && sudo docker compose down && sudo docker compose up -d --build
 ```
 
 ---
