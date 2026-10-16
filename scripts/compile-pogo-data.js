@@ -7,12 +7,12 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-// 69 Species from National Dex #001 to #1025 currently unreleased in Pokémon GO (source: Bulbapedia)
+// 67 Species from National Dex #001 to #1025 currently unreleased in Pokémon GO (source: Bulbapedia)
 const UNRELEASED_DEX_NRS = new Set([
   489, 490, 493, // Phione, Manaphy, Arceus
   746, 771, 772, 773, 774, 801, // Wishiwashi, Pyukumuku, Type: Null, Silvally, Minior, Magearna
   833, 834, 868, 869, 871, 875, 878, 879, 880, 881, 882, 883, 896, 897, 898, 902, // Galar/Hisui unreleased
-  946, 947, 951, 952, 953, 954, 963, 964, 967, 976, 981, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 995,
+  951, 952, 953, 954, 963, 964, 967, 976, 981, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 995,
   1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1014, 1015, 1016, 1017, 1018, 1020, 1021, 1022, 1023, 1024, 1025
 ]);
 
@@ -192,7 +192,7 @@ async function main() {
       const HOME_FORM_SPECIES = new Set([
         479, 483, 484, 641, 642, 645, 646, 647, 648, 669, 670, 671, 676, 678,
         705, 706, 718, 720, 741, 745, 800, 849, 876, 888, 889, 892, 905,
-        916, 931, 978, 982
+        916, 931, 946, 947, 978, 982
       ]);
       if (HOME_FORM_SPECIES.has(dexNr)) {
         pogoIcon = homeArtwork;
@@ -1606,7 +1606,7 @@ async function main() {
   // Shiny locked species in Pokemon GO (never shiny):
   const shinyLockedNrs = new Set([
     489, 490, 493, 494, 718, 720, 721, 772, 773, 774, 778, 789, 790, 801, 802,
-    803, 804, 807, 890, 891, 892, 893, 896, 897, 898, 905, 1001, 1002, 1003,
+    803, 804, 807, 890, 891, 892, 893, 896, 897, 898, 905, 946, 947, 1001, 1002, 1003,
     1004, 1005, 1006, 1007, 1008, 1009, 1010, 1014, 1015, 1016, 1017, 1018,
     1019, 1020, 1021, 1022, 1023, 1024, 1025
   ]);

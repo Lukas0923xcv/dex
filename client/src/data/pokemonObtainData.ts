@@ -409,7 +409,7 @@ export const EVOLUTION_ONLY_DEX_NRS = new Set<number>([
   980, // Clodsire (Paldean Wooper)
   982, // Dudunsparce (Dunsparce)
   923, // Pawmot (Pawmo + 25km explore)
-  947, // Brambleghast (Bramblin + 25km explore)
+  947, // Brambleghast (Bramblin + 20km explore)
   954, // Rabsca (Rellor + 25km explore)
   939, // Bellibolt (Tadbulb)
   961, // Wugtrio (Wiglett)
@@ -763,6 +763,8 @@ const SPECIAL_NOTES: Record<number, string> = {
   897:  'Spectrier is not yet available in Pokémon GO.',
   898:  'Calyrex is not yet available in Pokémon GO.',
   905:  'Enamorus (Incarnate Forme) debuted exclusively in in-person Elite Raids at EX Gyms.',
+  946:  'Bramblin debuted during the Fall Marathon: Buddy Trek event via Incense encounters, Field Research tasks, and GO Pass rewards.',
+  947:  'Brambleghast evolves from Bramblin with 50 Bramblin Candy after walking 20km with Bramblin as your Buddy Pokémon.',
   999:  'Gimmighoul (Roaming Form) appears exclusively around Golden PokéStops and when using the Coin Bag.',
   1000: 'Gholdengo evolves from Gimmighoul using 999 Gimmighoul Coins.',
 };
@@ -911,7 +913,7 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
     else if (dex === 980) evoDesc = 'Evolves from Paldean Wooper with 50 Wooper Candy.';
     else if (dex === 982) evoDesc = 'Evolves from Dunsparce with 50 Dunsparce Candy.';
     else if (dex === 923) evoDesc = 'Evolves from Pawmo with 100 Pawmi Candy after exploring 25km as your buddy.';
-    else if (dex === 947) evoDesc = 'Evolves from Bramblin with 50 Bramblin Candy after exploring 25km as your buddy.';
+    else if (dex === 947) evoDesc = 'Evolves from Bramblin with 50 Bramblin Candy after exploring 20km as your buddy.';
     else if (dex === 954) evoDesc = 'Evolves from Rellor with 50 Rellor Candy after exploring 25km as your buddy.';
     else if (dex === 939) evoDesc = 'Evolves from Tadbulb with 50 Tadbulb Candy.';
     else if (dex === 961) evoDesc = 'Evolves from Wiglett with 50 Wiglett Candy. Cannot be encountered in the wild!';
