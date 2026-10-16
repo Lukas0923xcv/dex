@@ -13,12 +13,14 @@ function seedDatabase(force = false) {
 
   const pokemonList = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
   const countRow = db.prepare('SELECT COUNT(*) as count FROM pokemon').get();
+  const releasedCountRow = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE released_in_go = 1').get();
   const shadowCountRow = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow = 1').get();
   const shadowShinyCountRow = db.prepare('SELECT COUNT(*) as count FROM pokemon WHERE has_shadow_shiny = 1').get();
+  const expectedReleasedCount = pokemonList.filter(p => p.releasedInGo).length;
   const expectedShadowCount = pokemonList.filter(p => p.hasShadow).length;
   const expectedShadowShinyCount = pokemonList.filter(p => p.hasShadowShiny).length;
-  if (!force && countRow && countRow.count === pokemonList.length && shadowCountRow && shadowCountRow.count >= expectedShadowCount && shadowShinyCountRow && shadowShinyCountRow.count >= expectedShadowShinyCount) {
-    console.log(`Database already up-to-date with ${countRow.count} Pokémon, ${shadowCountRow.count} Shadow/Crypto records, and ${shadowShinyCountRow.count} Shadow Shiny records.`);
+  if (!force && countRow && countRow.count === pokemonList.length && releasedCountRow && releasedCountRow.count === expectedReleasedCount && shadowCountRow && shadowCountRow.count >= expectedShadowCount && shadowShinyCountRow && shadowShinyCountRow.count >= expectedShadowShinyCount) {
+    console.log(`Database already up-to-date with ${countRow.count} Pokémon (${releasedCountRow.count} released), ${shadowCountRow.count} Shadow/Crypto records, and ${shadowShinyCountRow.count} Shadow Shiny records.`);
     return;
   }
 
