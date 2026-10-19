@@ -37,8 +37,12 @@ class StorageAdapter {
   constructor() {
     this.detectEnvironment();
     if (typeof window !== 'undefined') {
-      window.addEventListener('beforeunload', () => {
-        this.flushPendingSaves();
+      // beforeunload rarely fires on mobile/PWA (app switch, OS kill), so also flush when the page is hidden
+      const flush = () => this.flushPendingSaves();
+      window.addEventListener('beforeunload', flush);
+      window.addEventListener('pagehide', flush);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') flush();
       });
     }
   }
@@ -359,11 +363,11 @@ class StorageAdapter {
     // Local / GitHub Pages mode: use bundled dataset and join with scoped localStorage progress
     const baseList = (localPokemonData as Pokemon[]).filter(p => p.releasedInGo);
     const progressMap = this.getLocalProgress(accountId, scope);
-    const collectionItems = this.getLocalCollectionItems();
+    const collectionPokemonIds = new Set(this.getLocalCollectionItems().map(ci => ci.pokemon_id));
 
     return baseList.map(p => {
       const prog = progressMap[p.id] || {};
-      const inAnyColl = collectionItems.some(ci => ci.pokemon_id === p.id);
+      const inAnyColl = collectionPokemonIds.has(p.id);
       return {
         ...p,
         caught: Boolean(prog.caught),

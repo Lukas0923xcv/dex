@@ -110,8 +110,20 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-pressed={isCaught}
+      aria-label={`${formatDexNumber(pokemon.dexNr)} ${pokemon.name}`}
       onClick={() => onToggleCaught(pokemon.id)}
-      className={`pokemon-card group relative flex flex-col justify-between p-2 sm:p-3 rounded-2xl border transition-all duration-150 cursor-pointer select-none overflow-hidden active:scale-[0.98] ${getCardStyle()}`}
+      onKeyDown={(e) => {
+        // Only react to keys on the card itself, not on the nested action buttons
+        if (e.target !== e.currentTarget) return;
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onToggleCaught(pokemon.id);
+        }
+      }}
+      className={`pokemon-card group relative flex flex-col justify-between p-2 sm:p-3 rounded-2xl border transition-all duration-150 cursor-pointer select-none overflow-hidden active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 dark:focus-visible:ring-offset-slate-950 ${getCardStyle()}`}
     >
       {/* Top Bar: Dex #, Badges & Action Icons */}
       <div className="flex items-start justify-between gap-1 mb-1 z-10">
@@ -150,6 +162,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
             <button
               type="button"
               title="Pokémon Info & Availability"
+              aria-label="Pokémon Info & Availability"
               onClick={(e) => {
                 e.stopPropagation();
                 onOpenDetailModal(pokemon);
@@ -164,6 +177,7 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
           <button
             type="button"
             title="Add to Custom Collection"
+            aria-label="Add to Custom Collection"
             onClick={(e) => {
               e.stopPropagation();
               onOpenAddModal(pokemon);
@@ -182,6 +196,8 @@ export const PokemonCard: React.FC<PokemonCardProps> = React.memo(({
             <button
               type="button"
               title={pokemon.shadowCaught ? 'Shadow caught!' : 'Mark as Shadow'}
+              aria-label={pokemon.shadowCaught ? 'Shadow caught!' : 'Mark as Shadow'}
+              aria-pressed={Boolean(pokemon.shadowCaught)}
               onClick={(e) => {
                 e.stopPropagation();
                 if (onToggleFeature) {

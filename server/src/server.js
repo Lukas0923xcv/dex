@@ -194,9 +194,19 @@ app.get(['/apple-touch-icon.png', '/apple-touch-icon-precomposed.png'], (req, re
   next();
 });
 
+// Vite emits content-hashed files under /assets, so they can be cached forever;
+// everything else (index.html, icons, manifest) is revalidated on each load
+const setStaticCacheHeaders = (res, filePath) => {
+  if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+  } else {
+    res.setHeader('Cache-Control', 'no-cache');
+  }
+};
+
 for (const assetPath of staticAssetPaths) {
   if (fs.existsSync(assetPath)) {
-    app.use(express.static(assetPath));
+    app.use(express.static(assetPath, { setHeaders: setStaticCacheHeaders }));
   }
 }
 
@@ -213,6 +223,7 @@ for (const distPath of clientDistPaths) {
     console.log(`Serving static client from: ${distPath}`);
     app.get('*', (req, res, next) => {
       if (req.path.startsWith('/api')) return next();
+      res.setHeader('Cache-Control', 'no-cache');
       res.sendFile(path.join(distPath, 'index.html'));
     });
     staticServed = true;
