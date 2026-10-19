@@ -3,7 +3,36 @@
  * Provides offline caching, lightning-fast app shell loading, and native-app feel.
  */
 
-const CACHE_NAME = 'pogo-dex-v2';
+const CACHE_NAME = 'pogo-dex-v3';
+// Content-hashed build output (/assets/*): immutable, cache-first, trimmed so old deploys don't pile up
+const ASSET_CACHE = 'pogo-dex-assets-v1';
+const MAX_ASSET_ENTRIES = 40;
+// Remote Pokémon sprites: cache-first so the dex keeps its images offline
+const SPRITE_CACHE = 'pogo-dex-sprites-v1';
+const MAX_SPRITE_ENTRIES = 4000;
+const SPRITE_HOSTS = ['raw.githubusercontent.com'];
+const KNOWN_CACHES = [CACHE_NAME, ASSET_CACHE, SPRITE_CACHE];
+
+async function trimCache(cacheName, maxEntries) {
+  const cache = await caches.open(cacheName);
+  const keys = await cache.keys();
+  // cache.keys() is in insertion order, so drop the oldest entries first
+  for (let i = 0; i < keys.length - maxEntries; i++) {
+    await cache.delete(keys[i]);
+  }
+}
+
+async function cacheFirst(request, cacheName, maxEntries, fetchRequest = request) {
+  const cache = await caches.open(cacheName);
+  const cached = await cache.match(request);
+  if (cached) return cached;
+  const response = await fetch(fetchRequest);
+  if (response && response.ok) {
+    await cache.put(request, response.clone());
+    trimCache(cacheName, maxEntries);
+  }
+  return response;
+}
 
 // Core assets to pre-cache immediately during installation
 const PRECACHE_ASSETS = [
@@ -35,7 +64,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames
-          .filter((name) => name !== CACHE_NAME)
+          .filter((name) => !KNOWN_CACHES.includes(name))
           .map((name) => {
             console.log('[SW] Deleting legacy cache:', name);
             return caches.delete(name);
@@ -97,7 +126,26 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 3. Static assets (JS, CSS, images, sprites, fonts): Stale-While-Revalidate
+  // 3. Remote sprites: request with CORS (GitHub raw serves ACAO: *) so the response is
+  //    cacheable without opaque-response quota padding; fall back to a plain request
+  if (SPRITE_HOSTS.includes(url.hostname)) {
+    const corsRequest = new Request(request.url, { mode: 'cors', credentials: 'omit' });
+    event.respondWith(
+      cacheFirst(request, SPRITE_CACHE, MAX_SPRITE_ENTRIES, corsRequest).catch(() => fetch(request))
+    );
+    return;
+  }
+
+  // Ignore other cross-origin requests
+  if (url.origin !== self.location.origin) return;
+
+  // 4. Hashed build assets never change: Cache-first
+  if (url.pathname.includes('/assets/')) {
+    event.respondWith(cacheFirst(request, ASSET_CACHE, MAX_ASSET_ENTRIES));
+    return;
+  }
+
+  // 5. Other static files (icons, costume images, manifest): Stale-While-Revalidate
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       const fetchPromise = fetch(request)

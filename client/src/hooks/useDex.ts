@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback, useRef, useDeferredValue } from 'react';
 import { Pokemon, CustomCollection, TrackingMode, FilterState, BackupData, SingleCollectionBackup, UserAccount, DexScope } from '../types';
 import { storage, StorageStatus } from '../services/storage';
 import { isPokemonInRegion } from '../utils/regions';
@@ -369,14 +369,26 @@ export function useDex() {
     setCollections(updatedColls);
   }, [mode, collections, filters.activeCollectionId, activeAccountId, activeScope]);
 
-  // Filtered Pokémon list
-  const filteredPokemon = useMemo(() => {
-    let result = [...pokemonList];
+  const activeColl = useMemo(
+    () => collections.find(c => c.id === filters.activeCollectionId) || collections[0],
+    [collections, filters.activeCollectionId]
+  );
 
-    // 0. Filter by Released in GO (specifically a Pokémon GO dex)
-    result = result.filter(p => p.releasedInGo);
+  // Which progress flag the current view tracks (regular, shiny, shadow, purified, lucky)
+  const isCaughtInView = useCallback((p: Pokemon) => {
+    if (filters.shinyOnly || mode === 'shiny') return Boolean(p.shinyCaught);
+    if (mode === 'shadow') return Boolean(p.shadowCaught);
+    if (mode === 'custom' && (activeColl?.categoryType === 'shadow' || activeColl?.name.toLowerCase().includes('crypto') || activeColl?.name.toLowerCase().includes('shadow'))) return Boolean(p.shadowCaught);
+    if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
+    if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
+    if (mode === 'custom' && activeColl?.trackShiny) return Boolean(p.shinyCaught);
+    return Boolean(p.caught);
+  }, [mode, filters.shinyOnly, activeColl]);
 
-    const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
+  // Everything that belongs to the current dex view (mode, collection, shiny/shadow toggles, region).
+  // Shared by the grid and the progress stats so both always count exactly the same entries.
+  const scopePool = useMemo(() => {
+    let result = pokemonList.filter(p => p.releasedInGo);
 
     // 1. Filter by Mode
     if (mode === 'standard') {
@@ -508,6 +520,16 @@ export function useDex() {
       result = result.filter(p => isPokemonInRegion(p, filters.generation));
     }
 
+    return result;
+  }, [pokemonList, mode, activeColl, filters.showGenderTracking, filters.includeBaseInForms, filters.shinyOnly, filters.shadowOnly, filters.generation]);
+
+  // Typing in the search box stays responsive; the grid re-filters at lower priority
+  const deferredSearch = useDeferredValue(filters.search);
+
+  // Filtered Pokémon list (scope pool + type, availability, status, search, sort)
+  const filteredPokemon = useMemo(() => {
+    let result = scopePool;
+
     // 3. Filter by Type
     if (filters.type !== 'all') {
       result = result.filter(
@@ -522,25 +544,15 @@ export function useDex() {
     }
 
     // 4. Filter by Caught Status
-    const getPokemonCaughtStatus = (p: Pokemon) => {
-      if (filters.shinyOnly || mode === 'shiny') return Boolean(p.shinyCaught);
-      if (mode === 'shadow') return Boolean(p.shadowCaught);
-      if (mode === 'custom' && (activeColl?.categoryType === 'shadow' || activeColl?.name.toLowerCase().includes('crypto') || activeColl?.name.toLowerCase().includes('shadow'))) return Boolean(p.shadowCaught);
-      if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
-      if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
-      if (mode === 'custom' && activeColl?.trackShiny) return Boolean(p.shinyCaught);
-      return Boolean(p.caught);
-    };
-
     if (filters.status === 'caught') {
-      result = result.filter(p => getPokemonCaughtStatus(p));
+      result = result.filter(isCaughtInView);
     } else if (filters.status === 'uncaught') {
-      result = result.filter(p => !getPokemonCaughtStatus(p));
+      result = result.filter(p => !isCaughtInView(p));
     }
 
     // 5. Search Filter (Name, Dex Number, Form Name, Smart Keywords: crypto/shadow, shiny, mega)
-    if (filters.search.trim()) {
-      const rawQuery = filters.search.trim().toLowerCase();
+    if (deferredSearch.trim()) {
+      const rawQuery = deferredSearch.trim().toLowerCase();
       let q = rawQuery;
       let requireShadow = false;
       let requireShiny = false;
@@ -604,7 +616,8 @@ export function useDex() {
     }
 
     // 6. Sort Order: Guarantee Base Form ALWAYS precedes Alternate & Gender Forms!
-    result.sort((a, b) => {
+    // (copy first: scopePool is shared with the stats memo and must not be mutated)
+    return [...result].sort((a, b) => {
       if (a.dexNr === b.dexNr) {
         return compareFormsWithinSpecies(a, b);
       }
@@ -617,9 +630,7 @@ export function useDex() {
         return a.dexNr - b.dexNr;
       }
     });
-
-    return result;
-  }, [pokemonList, mode, filters, collections]);
+  }, [scopePool, filters.type, filters.availability, filters.status, filters.sortBy, deferredSearch, isCaughtInView]);
 
   const markRegionCaught = useCallback(async (generation: number | 'all', caught: boolean) => {
     const targetIds = filteredPokemon
@@ -630,143 +641,29 @@ export function useDex() {
 
   // Stats calculation for current view
   const currentViewStats = useMemo(() => {
-    let pool = [...pokemonList];
-
-    // Filter by Released in GO (specifically a Pokémon GO dex)
-    pool = pool.filter(p => p.releasedInGo);
-
-    const activeColl = collections.find(c => c.id === filters.activeCollectionId) || collections[0];
-
-    if (mode === 'standard') {
-      pool = pool.filter(p => p.category === 'standard');
-    } else if (mode === 'shiny') {
-      pool = pool.filter(p => p.hasShiny);
-    } else if (mode === 'shadow') {
-      pool = pool.filter(p => Boolean(p.hasShadow));
-    } else if (mode === 'mega') {
-      pool = pool.filter(p => p.category === 'mega' || p.isMega);
-    } else if (mode === 'form') {
-      const includeGender = Boolean(filters.showGenderTracking);
-      const isQualifyingForm = (p: Pokemon) => {
-        if (p.category !== 'form' && !p.isForm) return false;
-        if (p.isGenderDifference && !includeGender) {
-          return false;
-        }
-        return true;
-      };
-
-      const qualifyingForms = pokemonList.filter(isQualifyingForm);
-      const regionalDexNrs = new Set(
-        qualifyingForms.filter(isRegionalForm).map(p => p.dexNr)
-      );
-      const nonRegionalFormDexNrs = new Set(
-        qualifyingForms.filter(p => !isRegionalForm(p)).map(p => p.dexNr)
-      );
-
-      pool = pool.filter(p => {
-        if (isQualifyingForm(p)) return true;
-        if (p.category === 'standard') {
-          if (Boolean(filters.includeBaseInForms) && regionalDexNrs.has(p.dexNr)) {
-            return true;
-          }
-          if (nonRegionalFormDexNrs.has(p.dexNr)) {
-            return true;
-          }
-        }
-        return false;
-      });
-    } else if (mode === 'costume') {
-      pool = pool.filter(p => p.category === 'costume' || p.isCostume);
-    } else if (mode === 'custom') {
-      if (activeColl) {
-        const itemIds = storage.getCollectionItemIds(activeColl.id);
-        const includeGender = Boolean(filters.showGenderTracking);
-        const isExcludedGenderForm = (p: Pokemon) =>
-          Boolean(p.isGenderDifference) && !includeGender;
-
-        if (itemIds.size > 0) {
-          pool = pool.filter(p => itemIds.has(p.id) && !isExcludedGenderForm(p));
-        } else if (activeColl.categoryType === 'mega') {
-          pool = pool.filter(p => p.category === 'mega' || p.isMega);
-        } else if (activeColl.categoryType === 'event') {
-          pool = pool.filter(p => p.category === 'costume' || p.isCostume);
-        } else if (activeColl.categoryType === 'shadow' || activeColl.categoryType === 'purified' || activeColl.name.toLowerCase().includes('crypto') || activeColl.name.toLowerCase().includes('shadow') || activeColl.name.toLowerCase().includes('schatten')) {
-          pool = pool.filter(p => Boolean(p.hasShadow));
-          if (activeColl.variantMode === 'single') {
-            pool = pool.filter(p => p.category === 'standard');
-          } else {
-            pool = pool.filter(p => {
-              if (p.category === 'standard') return true;
-              if (p.category === 'form' || p.isForm) {
-                return !isExcludedGenderForm(p);
-              }
-              return false;
-            });
-          }
-        } else if (activeColl.variantMode === 'single') {
-          pool = pool.filter(p => p.category === 'standard');
-        } else {
-          pool = pool.filter(p => {
-            if (p.category === 'standard') return true;
-            if (p.category === 'form' || p.isForm) {
-              return !isExcludedGenderForm(p);
-            }
-            return false;
-          });
-        }
-
-        if (activeColl.trackShiny) {
-          if (activeColl.categoryType === 'shadow') {
-            pool = pool.filter(p => Boolean(p.hasShadowShiny));
-          } else {
-            pool = pool.filter(p => p.hasShiny);
-          }
-        }
-      }
-    }
-
-    if (filters.shinyOnly) {
-      if (mode === 'shadow' || (mode === 'custom' && activeColl?.categoryType === 'shadow')) {
-        pool = pool.filter(p => Boolean(p.hasShadowShiny));
-      } else {
-        pool = pool.filter(p => p.hasShiny);
-      }
-    }
-
-    if (filters.shadowOnly) {
-      pool = pool.filter(p => Boolean(p.hasShadow));
-    }
-
-    if (filters.generation !== 'all') {
-      pool = pool.filter(p => isPokemonInRegion(p, filters.generation));
-    }
-
-    const total = pool.length;
-    const caught = pool.filter(p => {
-      if (filters.shinyOnly || mode === 'shiny') return Boolean(p.shinyCaught);
-      if (mode === 'shadow') return Boolean(p.shadowCaught);
-      if (mode === 'custom' && (activeColl?.categoryType === 'shadow' || activeColl?.name.toLowerCase().includes('crypto') || activeColl?.name.toLowerCase().includes('shadow'))) return Boolean(p.shadowCaught);
-      if (mode === 'custom' && activeColl?.categoryType === 'purified') return Boolean(p.purifiedCaught);
-      if (mode === 'custom' && activeColl?.categoryType === 'lucky') return Boolean(p.luckyCaught);
-      if (mode === 'custom' && activeColl?.trackShiny) return Boolean(p.shinyCaught);
-      return Boolean(p.caught);
-    }).length;
-
+    const total = scopePool.length;
+    const caught = scopePool.filter(isCaughtInView).length;
     const percentage = total > 0 ? Math.round((caught / total) * 100) : 0;
-
     return { total, caught, percentage };
-  }, [pokemonList, mode, filters.generation, filters.activeCollectionId, filters.includeBaseInForms, filters.showGenderTracking, filters.shinyOnly, filters.shadowOnly, collections]);
+  }, [scopePool, isCaughtInView]);
 
-  // Trigger celebration on 100%
+  // Trigger celebration only when the user actually completes the current view
+  // (not on app start or when switching to a view that is already complete)
+  const statsKey = `${activeAccountId}|${activeScope}|${filters.generation}|${filters.shinyOnly}|${filters.shadowOnly}|${filters.showGenderTracking}|${filters.includeBaseInForms}`;
+  const lastStatsRef = useRef<{ key: string; caught: number; total: number } | null>(null);
   useEffect(() => {
-    if (currentViewStats.total > 0 && currentViewStats.caught === currentViewStats.total) {
+    const prev = lastStatsRef.current;
+    const { caught, total } = currentViewStats;
+    lastStatsRef.current = { key: statsKey, caught, total };
+    if (loading || !prev || prev.key !== statsKey) return;
+    if (total > 0 && caught === total && prev.caught < prev.total) {
       confetti({
         particleCount: 100,
         spread: 70,
         origin: { y: 0.6 }
       });
     }
-  }, [currentViewStats.caught, currentViewStats.total]);
+  }, [currentViewStats, statsKey, loading]);
 
   // Export / Import
   const exportBackup = useCallback(async (collectionId?: string): Promise<BackupData | SingleCollectionBackup> => {
