@@ -331,6 +331,7 @@ export const EVENT_EXCLUSIVE_DEX_NRS = new Set<number>([
   710, // Pumpkaboo (Halloween events)
   711, // Gourgeist (Halloween events)
   749, // Mudbray (Event exclusive wild / research)
+  774, // Minior (Meteor shower events: Orionids, Leonids, Geminids, etc.)
   807, // Zeraora (Event exclusive distributions)
 ]);
 
@@ -541,6 +542,29 @@ const FORM_OBTAIN_METHODS: Record<string, ObtainMethodDetail[]> = {
     { type: 'special', label: 'Form Change', badgeColor: 'pink', description: 'Can change form from Hoopa Confined using 50 Hoopa Candy and 10,000 Stardust.', available: true }
   ],
 
+  // ── Minior Core Forms (Meteor Shower Events) ───────────────
+  'poke_774_special_green': [
+    { type: 'wild', label: 'Meteor Shower (Orionids)', badgeColor: 'emerald', description: 'Debuted during the Orionids meteor shower (October 2026). Encountered in the wild in Meteor Form from 5:00 PM to 9:00 PM local time and reveals its Green Core upon capture.', available: true }
+  ],
+  'poke_774_special_red': [
+    { type: 'special', label: 'Upcoming Meteor Shower', badgeColor: 'slate', description: 'Rolls out in an upcoming "Minior Showers" event window (2026–2027).', available: false }
+  ],
+  'poke_774_special_orange': [
+    { type: 'special', label: 'Upcoming Meteor Shower', badgeColor: 'slate', description: 'Rolls out in an upcoming "Minior Showers" event window (2026–2027).', available: false }
+  ],
+  'poke_774_special_yellow': [
+    { type: 'special', label: 'Upcoming Meteor Shower', badgeColor: 'slate', description: 'Rolls out in an upcoming "Minior Showers" event window (2026–2027).', available: false }
+  ],
+  'poke_774_special_blue': [
+    { type: 'special', label: 'Upcoming Meteor Shower', badgeColor: 'slate', description: 'Rolls out in an upcoming "Minior Showers" event window (2026–2027).', available: false }
+  ],
+  'poke_774_special_indigo': [
+    { type: 'special', label: 'Upcoming Meteor Shower', badgeColor: 'slate', description: 'Rolls out in an upcoming "Minior Showers" event window (2026–2027).', available: false }
+  ],
+  'poke_774_special_violet': [
+    { type: 'special', label: 'Upcoming Meteor Shower', badgeColor: 'slate', description: 'Rolls out in an upcoming "Minior Showers" event window (2026–2027).', available: false }
+  ],
+
   // ── Research & Event Exclusive Regional Forms ─────────────
   'poke_122_form_mr_mime_galarian': [
     { type: 'research', label: 'Event Research', badgeColor: 'blue', description: 'Available during winter/holiday events via Special or Timed Research.', available: true },
@@ -741,6 +765,7 @@ const SPECIAL_NOTES: Record<number, string> = {
   676:  'Furfrou can adopt different trims using form change, several of which are locked to specific real-world regions.',
   720:  'Hoopa Confined and Unbound are obtainable via special events and research storylines.',
   721:  'Volcanion is a Mythical Pokémon obtainable via the "Pressure Rising" Special Research storyline (originally debuted during Pokémon GO Fest 2025).',
+  774:  'Minior (Meteor Form) debuted during the Orionids meteor shower event in October 2026, spawning in the wild from 5:00 PM to 9:00 PM local time. Catching it reveals its Green Core form; other core colors debut in future meteor shower events.',
   789:  'Cosmog is a rare reward from special research storylines.',
   794:  'Buzzwole appears in 5-Star Raids in the Americas & Greenland. Remote Raids are globally accessible.',
   795:  'Pheromosa appears in 5-Star Raids in Europe, MEA & India. Remote Raids are globally accessible.',
@@ -967,6 +992,9 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
     } else if (dex === 749) {
       eventLabel = 'Event Exclusive Wild / Research';
       eventDesc = 'Mudbray spawns exclusively during featured events and themed Field Research tasks (not part of the standard wild spawn pool).';
+    } else if (dex === 774) {
+      eventLabel = 'Meteor Shower Events';
+      eventDesc = 'Minior spawns in the wild during evening hours (5:00 PM – 9:00 PM local time) exclusively during active Meteor Shower events (Orionids, Leonids, Geminids, etc.). Catching it exposes its Core Form.';
     } else if (dex === 807) {
       eventLabel = 'Event Exclusive';
       eventDesc = 'Zeraora is a Mythical Pokémon made available during limited-time special event celebrations (not part of the standard wild spawn pool).';
