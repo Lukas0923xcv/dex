@@ -7,10 +7,10 @@ if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
 }
 
-// 67 Species from National Dex #001 to #1025 currently unreleased in Pokémon GO (source: Bulbapedia)
+// 66 Species from National Dex #001 to #1025 currently unreleased in Pokémon GO (source: Bulbapedia)
 const UNRELEASED_DEX_NRS = new Set([
   489, 490, 493, // Phione, Manaphy, Arceus
-  746, 771, 772, 773, 774, 801, // Wishiwashi, Pyukumuku, Type: Null, Silvally, Minior, Magearna
+  746, 771, 772, 773, 801, // Wishiwashi, Pyukumuku, Type: Null, Silvally, Magearna
   833, 834, 868, 869, 871, 875, 878, 879, 880, 881, 882, 883, 896, 897, 898, 902, // Galar/Hisui unreleased
   951, 952, 953, 954, 963, 964, 967, 976, 981, 984, 985, 986, 987, 988, 989, 990, 991, 992, 993, 994, 995,
   1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1014, 1015, 1016, 1017, 1018, 1020, 1021, 1022, 1023, 1024, 1025
@@ -191,7 +191,7 @@ async function main() {
       // Species whose alternate forms use PokeAPI Home 3D renders - use matching Home 3D base artwork so all forms are identical size
       const HOME_FORM_SPECIES = new Set([
         479, 483, 484, 641, 642, 645, 646, 647, 648, 669, 670, 671, 676, 678,
-        705, 706, 718, 720, 741, 745, 800, 849, 876, 888, 889, 892, 905,
+        705, 706, 718, 720, 741, 745, 774, 800, 849, 876, 888, 889, 892, 905,
         916, 931, 946, 947, 978, 982
       ]);
       if (HOME_FORM_SPECIES.has(dexNr)) {
@@ -264,6 +264,7 @@ async function main() {
           720: 'Confined',
           741: 'Baile Style',
           745: 'Midday Form',
+          774: 'Meteor Form',
           800: 'Standard Forme',
           849: 'Amped Form',
           854: 'Phony Form',
@@ -1281,6 +1282,35 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10017.png'
   });
 
+  // Minior (Core Forms - Meteor Form is base)
+  // Green Core debuted in Orionids (Oct 2026), other Cores roll out during future meteor showers
+  const miniorCores = [
+    { id: 'RED', label: 'Red Core', german: 'Roter Kern', pokeApiId: 10136, released: false },
+    { id: 'ORANGE', label: 'Orange Core', german: 'Orangener Kern', pokeApiId: 10137, released: false },
+    { id: 'YELLOW', label: 'Yellow Core', german: 'Gelber Kern', pokeApiId: 10138, released: false },
+    { id: 'GREEN', label: 'Green Core', german: 'Grüner Kern', pokeApiId: 10139, released: true },
+    { id: 'BLUE', label: 'Blue Core', german: 'Hellblauer Kern', pokeApiId: 10140, released: false },
+    { id: 'INDIGO', label: 'Indigo Core', german: 'Blauer Kern', pokeApiId: 10141, released: false },
+    { id: 'VIOLET', label: 'Violet Core', german: 'Violetter Kern', pokeApiId: 10142, released: false }
+  ];
+  miniorCores.forEach(c => {
+    specialForms.push({
+      dexNr: 774,
+      base: 'Minior',
+      formId: c.id,
+      label: c.label,
+      displayName: `Minior (${c.label})`,
+      germanName: `Meteno (${c.german})`,
+      type1: 'Rock',
+      type2: 'Flying',
+      spriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${c.pokeApiId}.png`,
+      shinySpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${c.pokeApiId}.png`,
+      fallbackSpriteUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${c.pokeApiId}.png`,
+      fallbackShinyUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${c.pokeApiId}.png`,
+      releasedInGo: c.released
+    });
+  });
+
   specialForms.forEach(sf => {
     const specialId = `poke_${sf.dexNr}_special_${sf.formId.toLowerCase()}`;
     if (!processedIds.has(specialId)) {
@@ -1558,9 +1588,9 @@ async function main() {
     }
   }
 
-  // 458 officially released Shadow species in Pokémon GO
+  // 467 officially released Shadow species in Pokémon GO
   const shadowSpeciesNrs = new Set([
-    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23,24,27,28,29,30,31,32,33,34,37,38,41,42,43,44,45,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,109,110,111,112,114,116,117,120,121,123,125,126,127,129,130,131,137,138,139,140,141,142,143,144,145,146,147,148,149,150,152,153,154,155,156,157,158,159,160,163,164,165,166,169,177,178,179,180,181,182,185,186,187,188,189,190,194,195,198,199,200,202,203,204,205,207,208,209,210,211,212,213,215,216,217,220,221,225,227,228,229,230,231,232,233,234,237,243,244,245,246,247,248,249,250,252,253,254,255,256,257,258,259,260,261,262,263,264,273,274,275,276,277,280,281,282,287,288,289,293,294,295,296,297,299,302,303,304,305,306,309,310,318,319,320,321,322,323,325,326,328,329,330,331,332,333,334,339,340,341,342,343,344,345,346,347,348,349,350,353,354,355,356,359,361,362,363,364,365,371,372,373,374,375,376,377,378,379,380,381,382,383,387,388,389,390,391,392,393,394,395,396,397,398,399,400,403,404,405,408,409,410,411,424,425,426,429,430,431,432,434,435,443,444,445,449,450,451,452,453,454,459,460,461,462,464,465,466,467,472,473,474,475,476,477,478,483,484,485,486,487,488,491,495,496,497,498,499,500,501,502,503,504,505,509,510,519,520,521,522,523,524,525,526,529,530,532,533,534,538,539,543,544,545,554,555,557,558,562,563,564,565,566,567,568,569,574,575,576,577,578,579,580,581,588,589,590,591,595,596,597,598,607,608,609,610,611,612,616,617,622,623,633,634,635,641,642,643,645,650,651,652,653,654,655,656,657,658,659,660,661,662,663,686,687,694,695,696,697,698,699,708,709,714,715,731,732,733,736,737,738,751,752,755,756,759,760,821,822,823,862,901,903,979
+    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,23,24,27,28,29,30,31,32,33,34,37,38,41,42,43,44,45,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,109,110,111,112,114,116,117,120,121,123,125,126,127,129,130,131,137,138,139,140,141,142,143,144,145,146,147,148,149,150,152,153,154,155,156,157,158,159,160,163,164,165,166,169,177,178,179,180,181,182,185,186,187,188,189,190,194,195,198,199,200,202,203,204,205,207,208,209,210,211,212,213,215,216,217,220,221,225,227,228,229,230,231,232,233,234,237,243,244,245,246,247,248,249,250,252,253,254,255,256,257,258,259,260,261,262,263,264,273,274,275,276,277,280,281,282,287,288,289,293,294,295,296,297,299,302,303,304,305,306,309,310,318,319,320,321,322,323,325,326,328,329,330,331,332,333,334,339,340,341,342,343,344,345,346,347,348,349,350,353,354,355,356,359,361,362,363,364,365,371,372,373,374,375,376,377,378,379,380,381,382,383,387,388,389,390,391,392,393,394,395,396,397,398,399,400,403,404,405,408,409,410,411,424,425,426,429,430,431,432,434,435,443,444,445,449,450,451,452,453,454,459,460,461,462,464,465,466,467,472,473,474,475,476,477,478,483,484,485,486,487,488,491,495,496,497,498,499,500,501,502,503,504,505,509,510,519,520,521,522,523,524,525,526,529,530,532,533,534,538,539,543,544,545,554,555,557,558,562,563,564,565,566,567,568,569,574,575,576,577,578,579,580,581,588,589,590,591,595,596,597,598,607,608,609,610,611,612,616,617,622,623,633,634,635,641,642,643,644,645,650,651,652,653,654,655,656,657,658,659,660,661,662,663,674,675,686,687,694,695,696,697,698,699,708,709,714,715,731,732,733,736,737,738,751,752,753,754,755,756,759,760,767,768,769,770,821,822,823,862,901,903,979
   ]);
 
   // Officially released Shiny Shadow standard species in Pokémon GO

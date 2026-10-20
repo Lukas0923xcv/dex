@@ -275,7 +275,7 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                           <div className="text-[11px] text-slate-400">
                             {tab.id === 'standard' && 'Official 1,025 base species'}
                             {tab.id === 'shiny' && 'Only released shiny variants'}
-                            {tab.id === 'shadow' && '458 officially released shadow Pokémon'}
+                            {tab.id === 'shadow' && '467 officially released shadow Pokémon'}
                             {tab.id === 'mega' && 'Mega & Primal evolutions'}
                             {tab.id === 'form' && 'Regional & alternative forms'}
                             {tab.id === 'costume' && 'Event & costume Pokémon'}
