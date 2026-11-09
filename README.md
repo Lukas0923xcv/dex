@@ -126,6 +126,7 @@ dex/
 | `NODE_ENV` | `production` | Runtime mode (`production` / `development`) |
 | `API_SECRET_KEY` | *none* | Optional shared bearer secret token to authenticate sensitive administrative endpoints (`/api/export`, `/api/import`, `/api/reset`) |
 | `CORS_ORIGIN` | *none* | Optional comma-separated additional allowed CORS origins |
+| `CORS_ALLOWED_DOMAINS` | *none* | Optional comma-separated domains; the domain and all its subdomains are allowed (e.g. `yourdomain.com`) |
 | `TUNNEL_TOKEN` | *none* | Optional Cloudflare Tunnel token for running `cloudflared` via `docker compose --profile tunnel` |
 
 ---

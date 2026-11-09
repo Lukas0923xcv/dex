@@ -22,6 +22,7 @@ services:
       - PORT=3000
       - DATA_DIR=/app/data
       - CORS_ORIGIN=${CORS_ORIGIN:-}
+      - CORS_ALLOWED_DOMAINS=${CORS_ALLOWED_DOMAINS:-}
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
       interval: 30s

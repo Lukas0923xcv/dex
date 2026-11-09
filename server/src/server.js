@@ -36,6 +36,11 @@ const configuredOrigins = process.env.CORS_ORIGIN
   ? process.env.CORS_ORIGIN.split(',').map(o => o.trim()).filter(Boolean)
   : [];
 
+// Optional parent domains whose subdomains are all allowed, e.g. "example.com"
+const allowedDomains = process.env.CORS_ALLOWED_DOMAINS
+  ? process.env.CORS_ALLOWED_DOMAINS.split(',').map(d => d.trim().toLowerCase().replace(/^\.+/, '')).filter(Boolean)
+  : [];
+
 // Secure dynamic CORS origin validation (prevents DNS rebinding and header spoofing)
 app.use(cors((req, callback) => {
   const origin = req.header('Origin');
@@ -54,11 +59,11 @@ app.use(cors((req, callback) => {
     // 4. Allow user-configured origins from CORS_ORIGIN
     isAllowed = true;
   } else {
-    // 5. Allow if origin matches exact server-lukas.com domain / subdomains
+    // 5. Allow if origin matches a CORS_ALLOWED_DOMAINS domain or one of its subdomains
     try {
       const parsedOrigin = new URL(origin);
       const originHost = parsedOrigin.hostname.toLowerCase();
-      const isDomainAllowed = originHost === 'server-lukas.com' || originHost.endsWith('.server-lukas.com');
+      const isDomainAllowed = allowedDomains.some(d => originHost === d || originHost.endsWith('.' + d));
       if (isDomainAllowed) {
         isAllowed = true;
       }
