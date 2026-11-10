@@ -11,9 +11,20 @@ A lightweight, modern, responsive Pokémon GO Collection & Living Dex Tracker. E
 
 ---
 
-## 🚀 Instant Deployment
+## 🚀 Getting Started
 
-### Option A: Clone & Run Installer (Ubuntu Server / Linux)
+### Option A: Use via GitHub Pages (No Server Required!)
+Visit:
+👉 **[https://lukas0923xcv.github.io/dex/](https://lukas0923xcv.github.io/dex/)**
+
+- Stores your caught Pokémon and checklists in browser storage.
+- Works offline as a PWA-ready checklist on your phone while playing Pokémon GO.
+- 1-click JSON backup export/import to transfer your progress between devices anytime!
+- Optional: Connect your GitHub Pages interface to your private self-hosted server in **Settings → Remote Backend URL**.
+
+---
+
+### Option B: Clone & Run Installer (Ubuntu Server / Linux)
 On your Linux server, run:
 ```bash
 git clone https://github.com/Lukas0923xcv/dex.git /opt/pogo-dex
@@ -21,7 +32,7 @@ cd /opt/pogo-dex
 sudo ./install.sh
 ```
 > **What this does:**
-> - Checks and installs Docker & Docker Compose if missing.
+> - Checks and installs Docker & Docker Compose if missing (the installer uses `apt`, so Debian/Ubuntu).
 > - Configures persistent SQLite storage (`/opt/pogo-dex/data`) with WAL mode.
 > - Builds and starts the production container on port `3000`.
 > - Drops root privileges inside the container to unprivileged user `node` for security.
@@ -29,13 +40,17 @@ sudo ./install.sh
 
 ---
 
-### Option B: Docker Compose Deployment
+### Option C: Docker Compose Deployment
 If you prefer running directly with `docker compose`:
 ```bash
+git clone https://github.com/Lukas0923xcv/dex.git /opt/pogo-dex
 cd /opt/pogo-dex
+cp .env.example .env   # optional: adjust bind IP, port, CORS, tunnel token
 sudo docker compose up -d --build
 ```
 Open **`http://localhost:3000`** (or access via your Cloudflare Tunnel hostname).
+
+---
 
 ### 🔒 Cloudflare Tunnel & Access Ingress
 To ensure zero unauthenticated access from your local network (LAN) and enforce Cloudflare Access:
@@ -48,6 +63,8 @@ To ensure zero unauthenticated access from your local network (LAN) and enforce 
   # In .env, set: TUNNEL_TOKEN=your_cloudflare_tunnel_token
   sudo docker compose --profile tunnel up -d
   ```
+  With this profile, `cloudflared` runs in its own container, so point the tunnel at `http://dex:3000` (the Compose service name) rather than `localhost`.
+- **Access Policy:** The app has no login of its own. Add an Access application with an Allow rule for your account in **Zero Trust → Access → Applications**.
 
 ---
 
@@ -56,17 +73,12 @@ To pull the newest updates and rebuild your container in one step (safely preser
 ```bash
 cd /opt/pogo-dex && sudo git config --global --add safe.directory /opt/pogo-dex && sudo git fetch origin main && sudo git reset --hard origin/main && sudo docker compose down && sudo docker compose up -d --build
 ```
+> ⚠️ `git reset --hard` discards any local edits to tracked files in `/opt/pogo-dex` (your untracked `.env` and `data/` are kept).
 
 ---
 
-### Option C: Use via GitHub Pages (No Server Required!)
-Visit:
-👉 **[https://lukas0923xcv.github.io/dex/](https://lukas0923xcv.github.io/dex/)**
-
-- Stores your caught Pokémon and checklists in browser storage.
-- Works offline as a PWA-ready checklist on your phone while playing Pokémon GO.
-- 1-click JSON backup export/import to transfer your progress between devices anytime!
-- Optional: Connect your GitHub Pages interface to your private self-hosted server in **Settings → Remote Backend URL**.
+### 📱 Android APK
+The **Build Android APK** workflow (run it manually under *Actions*) wraps the web app with Capacitor and uploads a debug APK as a workflow artifact. Installing the PWA from the GitHub Pages site works just as well on most phones.
 
 ---
 
@@ -99,7 +111,7 @@ dex/
 ├── client/                        # React 18 + Vite + Tailwind CSS Frontend
 │   ├── src/
 │   │   ├── components/            # Header, ProgressBar, FilterBar, PokemonGrid, Modals
-│   │   ├── data/                  # Bundled Pokémon GO metadata (1,492 entries)
+│   │   ├── data/                  # Bundled Pokémon GO metadata (~1,700 entries)
 │   │   ├── hooks/useDex.ts        # Reactive dex state manager
 │   │   ├── services/storage.ts    # Isomorphic storage (SQLite API ↔ LocalStorage fallback)
 │   │   └── utils/typeColors.ts    # Official Pokémon type palette & helpers
@@ -120,11 +132,12 @@ dex/
 ### Environment Variables
 | Variable | Default | Description |
 |---|---|---|
-| `PORT` | `3000` | HTTP port for server and container |
+| `PORT` | `3000` | HTTP port. With Docker Compose it is the published host port; the app inside the container always listens on `3000` |
 | `HOST_BIND_IP` | `127.0.0.1` | Host IP address to bind container port (`127.0.0.1` loopback ensures zero LAN bypass and forces Cloudflare Tunnel routing; set to `0.0.0.0` only for open LAN access) |
 | `DATA_DIR` | `./data` | Directory for persistent SQLite database (`dex.db`) |
+| `BIND_IP` / `HOST` | `0.0.0.0` | Address the Node server listens on when run without Docker |
 | `NODE_ENV` | `production` | Runtime mode (`production` / `development`) |
-| `API_SECRET_KEY` | *none* | Optional shared bearer secret token to authenticate sensitive administrative endpoints (`/api/export`, `/api/import`, `/api/reset`) |
+| `API_SECRET_KEY` | *none* | Optional shared secret. When set, every write endpoint (progress, collections, accounts, `/api/import`) and `/api/export` require `Authorization: Bearer <key>` or `x-api-key: <key>`. **Note:** `docker-compose.yml` does not pass it into the container yet; add `- API_SECRET_KEY=${API_SECRET_KEY:-}` under `environment:` to use it with Docker |
 | `CORS_ORIGIN` | *none* | Optional comma-separated additional allowed CORS origins |
 | `CORS_ALLOWED_DOMAINS` | *none* | Optional comma-separated domains; the domain and all its subdomains are allowed (e.g. `yourdomain.com`) |
 | `TUNNEL_TOKEN` | *none* | Optional Cloudflare Tunnel token for running `cloudflared` via `docker compose --profile tunnel` |
