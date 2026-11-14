@@ -181,6 +181,58 @@ export function parseDexListJson(json: unknown): DexListCollectionSpec[] | null 
 }
 
 /** Parse pasted text: JSON in any accepted shape, or a bare "1, 4, 7" list. */
+/**
+ * Repairs the JSON mistakes AI answers and copy/paste typically introduce:
+ * curly quotes, comments, unquoted keys, single-quoted strings and trailing commas.
+ */
+export function repairJsonText(text: string): string {
+  let t = text
+    .replace(/^\uFEFF/, '')
+    .replace(/[\u201C\u201D\u201E\u201F\u2033\u00AB\u00BB]/g, '"')
+    .replace(/[\u2018\u2019\u201A\u201B\u2032]/g, "'")
+    .replace(/\u00A0/g, ' ');
+
+  // Remove // and /* */ comments outside of strings
+  let out = '';
+  let inString: string | null = null;
+  for (let i = 0; i < t.length; i++) {
+    const c = t[i];
+    if (inString) {
+      out += c;
+      if (c === '\\') { out += t[++i] ?? ''; continue; }
+      if (c === inString) inString = null;
+      continue;
+    }
+    if (c === '"' || c === "'") { inString = c; out += c; continue; }
+    if (c === '/' && t[i + 1] === '/') { while (i < t.length && t[i] !== '\n') i++; out += '\n'; continue; }
+    if (c === '/' && t[i + 1] === '*') { i += 2; while (i < t.length && !(t[i] === '*' && t[i + 1] === '/')) i++; i++; continue; }
+    out += c;
+  }
+  t = out;
+
+  // 'single quoted' strings -> "double quoted"
+  t = t.replace(/'((?:[^'\\\n]|\\.)*)'/g, (_m, inner: string) => JSON.stringify(inner.replace(/\\'/g, "'")));
+  // unquoted keys: { name: ... } -> { "name": ... }
+  t = t.replace(/([{,]\s*)([A-Za-z_][A-Za-z0-9_]*)\s*:/g, '$1"$2":');
+  // trailing commas
+  t = t.replace(/,\s*([}\]])/g, '$1');
+  return t;
+}
+
+/** JSON.parse that falls back to repairJsonText for sloppy (AI / copy-pasted) JSON. */
+export function parseLenientJson(text: string): unknown {
+  const unfenced = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
+  try {
+    return JSON.parse(unfenced);
+  } catch (e: any) {
+    try {
+      return JSON.parse(repairJsonText(unfenced));
+    } catch {
+      throw new Error(`Invalid JSON: ${e.message}`);
+    }
+  }
+}
+
 export function parseDexListText(text: string, fallbackName = 'Imported Collection'): DexListCollectionSpec[] {
   const trimmed = text.trim();
   if (!trimmed) throw new Error('Nothing to import — paste JSON or a list of dex numbers.');
@@ -189,12 +241,7 @@ export function parseDexListText(text: string, fallbackName = 'Imported Collecti
   const unfenced = trimmed.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
 
   if (/^[[{]/.test(unfenced)) {
-    let json: unknown;
-    try {
-      json = JSON.parse(unfenced);
-    } catch (e: any) {
-      throw new Error(`Invalid JSON: ${e.message}`);
-    }
+    const json = parseLenientJson(unfenced);
     const specs = parseDexListJson(json);
     if (!specs) {
       throw new Error('No collection found. Each collection needs a "name" and a "dex" field, e.g. {"name": "Starters", "dex": "1, 4, 7"}.');

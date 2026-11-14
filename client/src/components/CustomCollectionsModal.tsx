@@ -227,10 +227,17 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     const reader = new FileReader();
     reader.onload = async (event) => {
       try {
-        const json = JSON.parse(event.target?.result as string);
-        if (!json.app || !json.data) {
+        const text = String(event.target?.result || '');
+        let json: any;
+        try {
+          json = JSON.parse(text);
+        } catch {
+          // Not strict JSON: most likely an AI-generated dex list with curly quotes, comments, etc.
+          json = null;
+        }
+        if (!json || !json.app || !json.data) {
           // Not an app backup: try the simple dex-list format ({"name": "...", "dex": "1, 4, 7"})
-          const specs = parseDexListJson(json);
+          const specs = json ? parseDexListJson(json) : parseDexListText(text, file.name.replace(/\.json$/i, ''));
           if (!specs) throw new Error('Invalid backup file format.');
           const res = await importDexListSpecs(specs);
           alert(
