@@ -4,7 +4,8 @@ const formRankCache = new Map<string, number>();
 const sizeRankCache = new Map<string, number>();
 
 export const isBaseForm = (p: Pokemon): boolean =>
-  p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
+  p.category === 'standard' ||
+  (p.category !== 'dynamax' && p.category !== 'gigantamax' && !p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
 
 export function computeSizeRank(p: Pokemon): number {
   const s = `${p.id} ${p.formName || ''} ${p.name || ''}`.toLowerCase();

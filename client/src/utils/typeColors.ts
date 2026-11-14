@@ -62,9 +62,12 @@ const HOME_FORM_SPECIES = new Set([
 ]);
 
 export function getEffectiveSprite(pokemon: Pokemon, isShiny: boolean): string {
+  // Base-species overrides below only apply to the plain species (and Dynamax, which looks the same).
+  // Megas, Gigantamax and costumes always use their own sprite.
+  const isBaseLike = pokemon.category === 'standard' || pokemon.category === 'dynamax';
   // 1. If species uses PokeMiners for alternate forms and this is the base form, use the matching PokeMiners icon
   const pokeMinersId = POKEMINERS_BASE_OVERRIDES[pokemon.dexNr];
-  if (pokeMinersId && (pokemon.category === 'standard' || !pokemon.isForm)) {
+  if (pokeMinersId && isBaseLike) {
     if (isShiny) {
       return `https://raw.githubusercontent.com/PokeMiners/pogo_assets/master/Images/Pokemon/pokemon_icon_${pokeMinersId}_shiny.png`;
     }
@@ -72,14 +75,14 @@ export function getEffectiveSprite(pokemon: Pokemon, isShiny: boolean): string {
   }
 
   // 2. Gimmighoul base form is Roaming Form in Pokemon GO (uses Home 10263 to match Chest Form 999)
-  if (pokemon.dexNr === 999 && (pokemon.category === 'standard' || !pokemon.isForm)) {
+  if (pokemon.dexNr === 999 && isBaseLike) {
     return isShiny
       ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10263.png'
       : 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10263.png';
   }
 
   // 3. If species uses PokeAPI Home 3D for alternate forms or gender differences, ensure base form uses matching Home 3D sprite
-  if ((HOME_FORM_SPECIES.has(pokemon.dexNr) || pokemon.isGenderDifference) && (pokemon.category === 'standard' || !pokemon.isForm)) {
+  if ((HOME_FORM_SPECIES.has(pokemon.dexNr) || pokemon.isGenderDifference) && isBaseLike) {
     if (isShiny) {
       return pokemon.fallbackShinyUrl || pokemon.shinySpriteUrl || pokemon.spriteUrl;
     }

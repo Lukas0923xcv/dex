@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CustomCollection, DashboardTabConfig } from '../types';
-import { X, CheckCircle2, Sparkles, Zap, Layers, Bookmark, ArrowUp, ArrowDown, RotateCcw, Pin, Eye, EyeOff, Flame, Trash2, Download } from 'lucide-react';
+import { X, CheckCircle2, Sparkles, Zap, Layers, Bookmark, ArrowUp, ArrowDown, RotateCcw, Pin, Eye, EyeOff, Flame, Trash2, Download, Maximize2, CloudLightning } from 'lucide-react';
 
 interface DashboardCustomizerModalProps {
   isOpen: boolean;
@@ -116,6 +116,8 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
       { id: 'shiny', label: 'Shiny Dex', type: 'preset', visible: true, color: '#f59e0b' },
       { id: 'shadow', label: 'Shadow Dex', type: 'preset', visible: true, color: '#a855f7' },
       { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
+      { id: 'dynamax', label: 'Dynamax', type: 'preset', visible: true, color: '#d946ef' },
+      { id: 'gigantamax', label: 'Gigantamax', type: 'preset', visible: true, color: '#ef4444' },
       { id: 'form', label: 'All Forms', type: 'preset', visible: true, color: '#6366f1' },
       { id: 'costume', label: 'Costumes', type: 'preset', visible: true, color: '#ec4899' },
     ];
@@ -264,6 +266,8 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                           {tab.id === 'shiny' && <Sparkles className="w-4 h-4 text-amber-500" />}
                           {tab.id === 'shadow' && <Flame className="w-4 h-4 text-purple-500" />}
                           {tab.id === 'mega' && <Zap className="w-4 h-4 text-rose-500" />}
+                          {tab.id === 'dynamax' && <Maximize2 className="w-4 h-4 text-fuchsia-500" />}
+                          {tab.id === 'gigantamax' && <CloudLightning className="w-4 h-4 text-red-500" />}
                           {tab.id === 'form' && <Layers className="w-4 h-4 text-indigo-500" />}
                           {tab.id === 'costume' && <Sparkles className="w-4 h-4 text-pink-500" />}
                           {tab.id === 'custom' && <Bookmark className="w-4 h-4 text-blue-500" />}
@@ -277,6 +281,8 @@ export const DashboardCustomizerModal: React.FC<DashboardCustomizerModalProps> =
                             {tab.id === 'shiny' && 'Only released shiny variants'}
                             {tab.id === 'shadow' && '467 officially released shadow Pokémon'}
                             {tab.id === 'mega' && 'Mega & Primal evolutions'}
+                            {tab.id === 'dynamax' && 'Pokémon released as Dynamax'}
+                            {tab.id === 'gigantamax' && 'Released Gigantamax forms'}
                             {tab.id === 'form' && 'Regional & alternative forms'}
                             {tab.id === 'costume' && 'Event & costume Pokémon'}
                             {tab.id === 'custom' && 'Custom lists & checklists'}

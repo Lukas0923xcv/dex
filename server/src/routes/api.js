@@ -522,6 +522,8 @@ router.get('/collections', (req, res) => {
         let condition = '';
         if (c.categoryType === 'mega') {
           condition = "(p.category = 'mega' OR p.is_mega = 1)";
+        } else if (c.categoryType === 'dynamax' || c.categoryType === 'gigantamax') {
+          condition = c.categoryType === 'dynamax' ? "p.category = 'dynamax'" : "p.category = 'gigantamax'";
         } else if (c.categoryType === 'event') {
           condition = "(p.category = 'costume' OR p.is_costume = 1)";
         } else if (isShadowColl) {
@@ -627,7 +629,7 @@ router.post('/collections', requireAuth, (req, res) => {
     const cleanName = name.trim().slice(0, 100);
     const cleanDesc = (typeof description === 'string' ? description.trim() : '').slice(0, 500);
     const cleanColor = (typeof color === 'string' && /^#[0-9a-fA-F]{3,8}$/.test(color.trim())) ? color.trim() : '#3b82f6';
-    const cleanCategoryType = (typeof categoryType === 'string' && ['normal', 'lucky', 'shadow', 'purified', 'mega', 'event'].includes(categoryType)) ? categoryType : 'normal';
+    const cleanCategoryType = (typeof categoryType === 'string' && ['normal', 'lucky', 'shadow', 'purified', 'mega', 'event', 'dynamax', 'gigantamax'].includes(categoryType)) ? categoryType : 'normal';
     const cleanVariantMode = (typeof variantMode === 'string' && ['single', 'multi'].includes(variantMode)) ? variantMode : 'multi';
 
     const id = `coll_${Date.now()}_${crypto.randomBytes(3).toString('hex')}`;
@@ -853,7 +855,7 @@ router.get('/export', requireAuth, (req, res) => {
 
     if (collectionId) {
       const isPreset = collectionId.startsWith('preset:') ||
-        ['standard', 'shiny', 'shadow', 'mega', 'form', 'costume'].includes(collectionId);
+        ['standard', 'shiny', 'shadow', 'mega', 'dynamax', 'gigantamax', 'form', 'costume'].includes(collectionId);
 
       if (isPreset) {
         const presetKey = collectionId.replace(/^preset:/, '');
@@ -894,6 +896,24 @@ router.get('/export', requireAuth, (req, res) => {
             variantMode: 'multi',
             filterSql: "(category = 'mega' OR is_mega = 1) AND released_in_go = 1",
             scope: 'mega'
+          },
+          dynamax: {
+            name: 'Dynamax Dex',
+            description: 'Pokémon released as Dynamax',
+            color: '#d946ef',
+            categoryType: 'dynamax',
+            variantMode: 'multi',
+            filterSql: "category = 'dynamax' AND released_in_go = 1",
+            scope: 'dynamax'
+          },
+          gigantamax: {
+            name: 'Gigantamax Dex',
+            description: 'Released Gigantamax forms',
+            color: '#ef4444',
+            categoryType: 'gigantamax',
+            variantMode: 'multi',
+            filterSql: "category = 'gigantamax' AND released_in_go = 1",
+            scope: 'gigantamax'
           },
           form: {
             name: 'Forms Dex',

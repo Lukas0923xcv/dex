@@ -5,7 +5,7 @@ export interface Pokemon {
   names?: Record<string, string>;
   formId?: string;
   formName?: string;
-  category: 'standard' | 'mega' | 'form' | 'costume';
+  category: 'standard' | 'mega' | 'form' | 'costume' | 'dynamax' | 'gigantamax';
   generation: number;
   type1: string;
   type2?: string | null;
@@ -67,7 +67,7 @@ export interface CustomCollection {
   caughtItems: number;
 }
 
-export type TrackingMode = 'standard' | 'shiny' | 'shadow' | 'mega' | 'form' | 'costume' | 'custom';
+export type TrackingMode = 'standard' | 'shiny' | 'shadow' | 'mega' | 'dynamax' | 'gigantamax' | 'form' | 'costume' | 'custom';
 
 export type StatusFilter = 'all' | 'caught' | 'uncaught';
 
@@ -116,7 +116,7 @@ export interface UserAccount {
   createdAt: string;
 }
 
-export type DexScope = 'standard' | 'shiny' | 'shadow' | 'mega' | 'form' | 'costume' | string;
+export type DexScope = 'standard' | 'shiny' | 'shadow' | 'mega' | 'dynamax' | 'gigantamax' | 'form' | 'costume' | string;
 
 export interface SingleCollectionBackup {
   app: string;
@@ -211,6 +211,22 @@ export const PRESET_COLLECTION_OPTIONS: PresetCollectionOption[] = [
     description: 'Mega and Primal evolutions',
     color: '#f43f5e',
     categoryType: 'mega'
+  },
+  {
+    id: 'preset:dynamax',
+    scope: 'dynamax',
+    name: 'Dynamax Dex',
+    description: 'Pokémon released as Dynamax',
+    color: '#d946ef',
+    categoryType: 'dynamax'
+  },
+  {
+    id: 'preset:gigantamax',
+    scope: 'gigantamax',
+    name: 'Gigantamax Dex',
+    description: 'Released Gigantamax forms',
+    color: '#ef4444',
+    categoryType: 'gigantamax'
   },
   {
     id: 'preset:form',

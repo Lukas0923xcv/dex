@@ -93,17 +93,188 @@ function formatCostumeName(costume) {
     .join(' ');
 }
 
+// Megas present in the game data but not yet released in Pokémon GO (hidden until their debut)
+const UNRELEASED_MEGA_IDS = new Set([
+  'CLEFABLE_MEGA' // Mega Clefable debuts November 28, 2026
+]);
+
+// Event forms the generic costume detection misses (they use form IDs without a year/costume keyword)
+const EXTRA_EVENT_FORM_LABELS = {
+  '25:DOCTOR': 'Ph. D.',
+  '25:FLYING_01': 'Flying · Green Balloons',
+  '25:FLYING_02': 'Flying · Purple Balloons',
+  '25:FLYING_03': 'Flying · Teal Balloons',
+  '25:FLYING_04': 'Flying · Red & Black Balloons',
+  '25:FLYING_5TH_ANNIV': 'Flying · 5th Anniversary',
+  '25:FLYING_OKINAWA': 'Flying · Okinawa',
+  '25:JEJU': 'Jeju Shirt',
+  '25:KARIYUSHI': 'Kariyushi Shirt',
+  '25:KURTA': 'Kurta',
+  '25:POP_STAR': 'Pop Star',
+  '25:ROCK_STAR': 'Rock Star',
+  '25:TSHIRT_01': 'Yellow Shirt',
+  '25:TSHIRT_02': 'Purple Shirt',
+  '25:TSHIRT_03': 'Batik Shirt'
+  // '25:HORIZONS' is Captain Pikachu, which is already added from Bulbapedia
+};
+
+// Species available as Dynamax in Pokémon GO (as of November 14, 2026).
+// Source: Game Master Dynamax data (Aug 2026) + debuts since then (Dialga, Palkia, Meltan, Melmetal, Regidrago).
+// Espurr/Meowstic have Game Master data but have not debuted yet.
+const DYNAMAX_DEX_NRS = [
+  1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 25, 26, 52, 58, 59, 63, 64, 65, 66, 67, 68, 92, 93, 94, 98, 99,
+  106, 107, 111, 112, 113, 121, 125, 126, 129, 130, 131, 133, 134, 135, 136, 138, 139, 140, 141, 143,
+  144, 145, 146, 163, 164, 196, 197, 213, 215, 236, 237, 239, 240, 242, 243, 244, 245, 249, 250,
+  280, 281, 282, 302, 320, 321, 328, 329, 330, 349, 350, 363, 364, 365, 374, 375, 376, 377, 378, 379,
+  380, 381, 415, 416, 461, 464, 466, 467, 470, 471, 475, 483, 484, 519, 520, 521, 524, 525, 526, 527,
+  528, 529, 530, 546, 547, 554, 555, 568, 569, 615, 633, 634, 635, 686, 687, 700, 761, 762, 763, 766,
+  780, 808, 809, 810, 811, 812, 813, 814, 815, 816, 817, 818, 819, 820, 821, 822, 823, 831, 832, 848,
+  849, 850, 851, 856, 857, 858, 861, 870, 884, 891, 892, 895
+];
+
+// Gigantamax forms released in Pokémon GO (as of November 14, 2026)
+const GIGANTAMAX_DEX_NRS = [3, 6, 9, 12, 25, 52, 68, 94, 99, 131, 143, 569, 812, 815, 818, 849, 861, 884];
+// PokeAPI HOME sprite IDs for each Gigantamax form (fallback when no GO sprite exists yet)
+const GIGANTAMAX_HOME_IDS = {
+  3: 10195, 6: 10196, 9: 10197, 12: 10198, 25: 10199, 52: 10200, 68: 10201, 94: 10202, 99: 10203,
+  131: 10204, 143: 10206, 569: 10207, 812: 10209, 815: 10210, 818: 10211, 849: 10219, 861: 10222, 884: 10225
+};
+// Gigantamax forms without a pokemon-go-api GO sprite yet
+const GIGANTAMAX_NO_GO_SPRITE = new Set([25, 884]);
+
+/**
+ * Builds the Dynamax and Gigantamax entries from the compiled standard entries.
+ * Dynamax entries reuse the base species sprite; Gigantamax entries use the G-Max sprite.
+ */
+function buildMaxEntries(items) {
+  const baseByDex = new Map(items.filter(p => p.category === 'standard').map(p => [p.dexNr, p]));
+  const out = [];
+  for (const dexNr of DYNAMAX_DEX_NRS) {
+    const base = baseByDex.get(dexNr);
+    if (!base) continue;
+    const name = `Dynamax ${base.name}`;
+    out.push({
+      id: `poke_${dexNr}_dynamax`,
+      dexNr,
+      name,
+      names: { English: name },
+      formId: 'DYNAMAX',
+      formName: 'Dynamax',
+      category: 'dynamax',
+      generation: base.generation,
+      type1: base.type1,
+      type2: base.type2 || null,
+      spriteUrl: base.spriteUrl,
+      shinySpriteUrl: base.shinySpriteUrl,
+      fallbackSpriteUrl: base.fallbackSpriteUrl,
+      fallbackShinyUrl: base.fallbackShinyUrl,
+      officialArtworkUrl: base.officialArtworkUrl,
+      hasShiny: Boolean(base.hasShiny),
+      isMega: false,
+      isForm: false,
+      isCostume: false,
+      releasedInGo: true,
+      hasShadow: false,
+      hasShadowShiny: false
+    });
+  }
+  for (const dexNr of GIGANTAMAX_DEX_NRS) {
+    const base = baseByDex.get(dexNr);
+    if (!base) continue;
+    const homeId = GIGANTAMAX_HOME_IDS[dexNr];
+    const home = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/${homeId}.png`;
+    const homeShiny = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/${homeId}.png`;
+    const go = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm${dexNr}.fGIGANTAMAX.icon.png`;
+    const goShiny = `https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm${dexNr}.fGIGANTAMAX.s.icon.png`;
+    const hasGo = !GIGANTAMAX_NO_GO_SPRITE.has(dexNr);
+    const name = `Gigantamax ${base.name}`;
+    out.push({
+      id: `poke_${dexNr}_gigantamax`,
+      dexNr,
+      name,
+      names: { English: name },
+      formId: 'GIGANTAMAX',
+      formName: 'Gigantamax',
+      category: 'gigantamax',
+      generation: base.generation,
+      type1: base.type1,
+      type2: base.type2 || null,
+      spriteUrl: hasGo ? go : home,
+      shinySpriteUrl: hasGo ? goShiny : homeShiny,
+      fallbackSpriteUrl: home,
+      fallbackShinyUrl: homeShiny,
+      officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${homeId}.png`,
+      hasShiny: Boolean(base.hasShiny),
+      isMega: false,
+      isForm: false,
+      isCostume: false,
+      releasedInGo: true,
+      hasShadow: false,
+      hasShadowShiny: false
+    });
+  }
+  return out;
+}
+
+const CATEGORY_ORDER = { standard: 1, mega: 2, dynamax: 3, gigantamax: 4, form: 5, costume: 6 };
+
+function compareItems(a, b) {
+  if (a.category !== b.category) {
+    return (CATEGORY_ORDER[a.category] || 9) - (CATEGORY_ORDER[b.category] || 9);
+  }
+  if (a.dexNr !== b.dexNr) return a.dexNr - b.dexNr;
+
+  // Size forms (Pumpkaboo #710, Gourgeist #711) sort from Small to Big
+  if (a.dexNr === 710 || a.dexNr === 711) {
+    const getSizeRank = p => {
+      const s = `${p.id} ${p.formName || ''} ${p.name || ''}`.toLowerCase();
+      if (s.includes('small') || s.includes('klein')) return 1;
+      if (s.includes('average') || s.includes('fall_2022') || s.includes('fall 2022') || s.includes('normalgroß') || s.includes('mittel')) return 2;
+      if (s.includes('large') || s.includes('groß') || s.includes('grosse')) return 3;
+      if (s.includes('super') || s.includes('xl') || s.includes('übergröße')) return 4;
+      return 99;
+    };
+    const aRank = getSizeRank(a);
+    const bRank = getSizeRank(b);
+    if (aRank !== bRank) return aRank - bRank;
+  }
+
+  const isBase = p => p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
+  const aBase = isBase(a);
+  const bBase = isBase(b);
+  if (aBase !== bBase) return aBase ? -1 : 1;
+  if (Boolean(a.isGenderDifference) !== Boolean(b.isGenderDifference)) {
+    return a.isGenderDifference ? 1 : -1;
+  }
+  return (a.formName || a.name).localeCompare(b.formName || b.name);
+}
+
 async function main() {
   console.log('Fetching Pokémon GO Game Master Dex...');
   const pogoDexUrl = 'https://pokemon-go-api.github.io/pokemon-go-api/api/pokedex.json';
   
+  // Same data, served from the GitHub mirror of the gh-pages branch (used when github.io is unreachable)
+  const pogoDexMirrorUrl = 'https://raw.githubusercontent.com/pokemon-go-api/pokemon-go-api/gh-pages/api/pokedex.json';
+
   let pogoData = [];
-  try {
-    pogoData = await fetchJson(pogoDexUrl);
-    console.log(`Fetched ${pogoData.length} Pokémon GO entries.`);
-  } catch (err) {
-    console.error('Failed to fetch from pokemon-go-api:', err.message);
+  for (const url of [pogoDexUrl, pogoDexMirrorUrl]) {
+    try {
+      pogoData = await fetchJson(url);
+      console.log(`Fetched ${pogoData.length} Pokémon GO entries from ${url}.`);
+      break;
+    } catch (err) {
+      console.error(`Failed to fetch ${url}:`, err.message);
+    }
   }
+  if (!pogoData.length) {
+    throw new Error('Could not fetch the Pokémon GO pokedex from any source; refusing to overwrite the dataset.');
+  }
+
+  // Previously compiled dataset: used as a fallback for shiny availability when pogoapi.net is unreachable
+  let previousItems = [];
+  try {
+    previousItems = JSON.parse(fs.readFileSync(path.join(dataDir, 'pokemon-data.json'), 'utf8'));
+  } catch {}
 
   const allItems = [];
   const processedIds = new Set();
@@ -340,7 +511,7 @@ async function main() {
             isMega: true,
             isForm: false,
             isCostume: false,
-            releasedInGo: true
+            releasedInGo: !UNRELEASED_MEGA_IDS.has(mega.id)
           });
         }
       });
@@ -480,6 +651,7 @@ async function main() {
       const isEventForm = (af) => {
         if (af.costume) return true;
         if (!af.form) return false;
+        if (EXTRA_EVENT_FORM_LABELS[`${dexNr}:${af.form}`]) return true;
         const f = af.form.toUpperCase();
         if (f.includes('ALOLA') || f.includes('GALAR') || f.includes('HISUI') || f.includes('PALDEA') || f.includes('MEGA') || f === 'NORMAL' || f.startsWith('CROWNED') || dexNr === 666 || dexNr === 585 || dexNr === 586) {
           return false;
@@ -507,7 +679,7 @@ async function main() {
         const costumeId = `poke_${dexNr}_costume_${costumeKey.toLowerCase()}`;
         if (!processedIds.has(costumeId)) {
           processedIds.add(costumeId);
-          const costumeLabel = formatCostumeName(costumeKey);
+          const costumeLabel = EXTRA_EVENT_FORM_LABELS[`${dexNr}:${costumeKey}`] || formatCostumeName(costumeKey);
           const fullName = `${baseName} (${costumeLabel})`;
 
           allItems.push({
@@ -1153,24 +1325,24 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1013.png'
   });
 
-  // Hisuian Sliggoo & Goodra (Unreleased in GO until Nov 2026 GO Wild Area)
+  // Hisuian Sliggoo & Goodra (debuted Nov 2026 at the in-person GO Wild Area events, Shiny available)
   specialForms.push({
     dexNr: 705, base: 'Sliggoo', formId: 'HISUIAN', label: 'Hisuian Form', type1: 'Steel', type2: 'Dragon',
     displayName: 'Hisuian Sliggoo', germanName: 'Hisui-Viscargot',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10241.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10241.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10241.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10241.png',
-    releasedInGo: false
+    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm705.fHISUIAN.icon.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm705.fHISUIAN.s.icon.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10241.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10241.png',
+    releasedInGo: true
   });
   specialForms.push({
     dexNr: 706, base: 'Goodra', formId: 'HISUIAN', label: 'Hisuian Form', type1: 'Steel', type2: 'Dragon',
     displayName: 'Hisuian Goodra', germanName: 'Hisui-Viscogon',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10242.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10242.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10242.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10242.png',
-    releasedInGo: false
+    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm706.fHISUIAN.icon.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm706.fHISUIAN.s.icon.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10242.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10242.png',
+    releasedInGo: true
   });
 
   // Spinda Patterns (2-9 & Heart - Pattern 1 is base)
@@ -1529,6 +1701,24 @@ async function main() {
     {
       dexNr: 25, name: 'Pikachu (Baseball Shirt)', formId: 'BASEBALL_SHIRT', formName: 'Baseball Shirt', gen: 1, type1: 'Electric', type2: null,
       spriteUrl: 'https://archives.bulbagarden.net/media/upload/c/c0/GO0025BaseballJersey.png'
+    },
+
+    // Halloween 2026 Part I debuts (Shiny available). No costume sprite has been published yet,
+    // so these use the base GO icon until a costume sprite can be added.
+    {
+      dexNr: 25, name: 'Pikachu (Halloween 2026 Hat & Capelet)', formId: 'HALLOWEEN_2026', formName: 'Halloween 2026 Hat & Capelet', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.icon.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.s.icon.png'
+    },
+    {
+      dexNr: 41, name: 'Zubat (Top Hat)', formId: 'HALLOWEEN_2026', formName: 'Top Hat', gen: 1, type1: 'Poison', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm41.icon.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm41.s.icon.png'
+    },
+    {
+      dexNr: 854, name: 'Sinistea (Bow)', formId: 'HALLOWEEN_2026', formName: 'Bow', gen: 8, type1: 'Ghost', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm854.fPHONY.icon.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm854.fPHONY.s.icon.png'
     }
   ];
 
@@ -1542,7 +1732,7 @@ async function main() {
     if (!processedIds.has(costumeId)) {
       processedIds.add(costumeId);
       let localSpriteUrl = bc.spriteUrl;
-      if (bc.spriteUrl && bc.spriteUrl.startsWith('http')) {
+      if (bc.spriteUrl && bc.spriteUrl.startsWith('https://archives.bulbagarden.net/')) {
         const filename = path.basename(bc.spriteUrl);
         const clientFilePath = path.join(costumesDir, filename);
         const serverFilePath = path.join(serverCostumesDir, filename);
@@ -1575,7 +1765,7 @@ async function main() {
         type1: bc.type1,
         type2: bc.type2 || null,
         spriteUrl: localSpriteUrl,
-        shinySpriteUrl: localSpriteUrl,
+        shinySpriteUrl: bc.shinySpriteUrl || localSpriteUrl,
         fallbackSpriteUrl: homeFallback,
         fallbackShinyUrl: homeShinyFallback,
         officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${bc.dexNr}.png`,
@@ -1630,7 +1820,7 @@ async function main() {
     647, 648, 679, 680, 681, 701, 704, 705, 706, 707, 719, 757, 758, 769, 770,
     782, 783, 784, 785, 786, 787, 788, 791, 792, 793, 794, 795, 796, 797, 798,
     799, 800, 808, 809, 813, 814, 815, 816, 817, 818, 827, 828, 850, 851, 866,
-    872, 873, 894, 895, 901, 948, 949, 965, 966, 968, 973
+    872, 873, 894, 895, 901, 948, 949, 965, 966, 968, 971, 972, 973 // 971/972: Shiny Greavard debuted Halloween 2026
   ];
 
   // Shiny locked species in Pokemon GO (never shiny):
@@ -1658,6 +1848,18 @@ async function main() {
     }
   } catch (e) {
     console.warn('Could not fetch pogoapi.net data, using fallback lists:', e.message);
+    // Reuse shiny availability from the previous build so a network failure doesn't wipe all shinies
+    shinyDexNrs = new Set(previousItems.filter(p => p.category === 'standard' && p.hasShiny).map(p => p.dexNr));
+    for (const nr of recentReleasedShinies) shinyDexNrs.add(nr);
+    for (const locked of shinyLockedNrs) shinyDexNrs.delete(locked);
+  }
+
+  // 8. Dynamax & Gigantamax entries (built from the standard entries)
+  for (const maxEntry of buildMaxEntries(allItems)) {
+    if (!processedIds.has(maxEntry.id)) {
+      processedIds.add(maxEntry.id);
+      allItems.push(maxEntry);
+    }
   }
 
   for (const p of allItems) {
@@ -1675,37 +1877,7 @@ async function main() {
   }
 
   // Sort: Category order (standard, mega, form, costume), then dexNr, then base form first, then name
-  allItems.sort((a, b) => {
-    if (a.category !== b.category) {
-      const order = { standard: 1, mega: 2, form: 3, costume: 4 };
-      return (order[a.category] || 9) - (order[b.category] || 9);
-    }
-    if (a.dexNr !== b.dexNr) return a.dexNr - b.dexNr;
-
-    // Size forms (Pumpkaboo #710, Gourgeist #711) sort from Small to Big
-    if (a.dexNr === 710 || a.dexNr === 711) {
-      const getSizeRank = p => {
-        const s = `${p.id} ${p.formName || ''} ${p.name || ''}`.toLowerCase();
-        if (s.includes('small') || s.includes('klein')) return 1;
-        if (s.includes('average') || s.includes('fall_2022') || s.includes('fall 2022') || s.includes('normalgroß') || s.includes('mittel')) return 2;
-        if (s.includes('large') || s.includes('groß') || s.includes('grosse')) return 3;
-        if (s.includes('super') || s.includes('xl') || s.includes('übergröße')) return 4;
-        return 99;
-      };
-      const aRank = getSizeRank(a);
-      const bRank = getSizeRank(b);
-      if (aRank !== bRank) return aRank - bRank;
-    }
-
-    const isBase = p => p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
-    const aBase = isBase(a);
-    const bBase = isBase(b);
-    if (aBase !== bBase) return aBase ? -1 : 1;
-    if (Boolean(a.isGenderDifference) !== Boolean(b.isGenderDifference)) {
-      return a.isGenderDifference ? 1 : -1;
-    }
-    return (a.formName || a.name).localeCompare(b.formName || b.name);
-  });
+  allItems.sort(compareItems);
 
   console.log(`Total Pokémon compiled: ${allItems.length}`);
   const summary = {
@@ -1714,6 +1886,8 @@ async function main() {
     megas: allItems.filter(p => p.category === 'mega').length,
     forms: allItems.filter(p => p.category === 'form').length,
     costumes: allItems.filter(p => p.category === 'costume').length,
+    dynamax: allItems.filter(p => p.category === 'dynamax').length,
+    gigantamax: allItems.filter(p => p.category === 'gigantamax').length,
     shadow: allItems.filter(p => p.hasShadow).length,
     shiny: allItems.filter(p => p.hasShiny).length,
     releasedInGo: allItems.filter(p => p.releasedInGo).length,
@@ -1733,7 +1907,11 @@ async function main() {
   }
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+module.exports = { buildMaxEntries, compareItems, EXTRA_EVENT_FORM_LABELS, UNRELEASED_MEGA_IDS };
+
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}

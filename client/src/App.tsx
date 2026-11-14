@@ -127,9 +127,9 @@ export const App: React.FC = () => {
       const newColl = await createCollection(
         targetName,
         `Personal dashboard based on ${targetName}`,
-        mode === 'shadow' ? '#a855f7' : mode === 'costume' ? '#ec4899' : mode === 'mega' ? '#ef4444' : mode === 'shiny' ? '#f59e0b' : '#3b82f6',
+        mode === 'shadow' ? '#a855f7' : mode === 'costume' ? '#ec4899' : mode === 'mega' ? '#ef4444' : mode === 'dynamax' ? '#d946ef' : mode === 'gigantamax' ? '#dc2626' : mode === 'shiny' ? '#f59e0b' : '#3b82f6',
         {
-          categoryType: mode === 'shadow' ? 'shadow' : mode === 'costume' ? 'event' : mode === 'mega' ? 'mega' : 'normal',
+          categoryType: mode === 'shadow' ? 'shadow' : mode === 'costume' ? 'event' : mode === 'mega' ? 'mega' : mode === 'dynamax' ? 'dynamax' : mode === 'gigantamax' ? 'gigantamax' : 'normal',
           variantMode: 'multi',
           trackShiny: mode === 'shiny',
           pokemonIds: initialIds
@@ -156,6 +156,8 @@ export const App: React.FC = () => {
     }
     if (mode === 'shadow') return filters.generation === 8 ? 'Galar Shadow Dex' : filters.generation === 85 ? 'Hisui Shadow Dex' : 'Shadow Dex Completion';
     if (mode === 'mega') return 'Mega & Primal Dex';
+    if (mode === 'dynamax') return 'Dynamax Dex';
+    if (mode === 'gigantamax') return 'Gigantamax Dex';
     if (mode === 'form') {
       if (filters.generation === 8) return 'Galar Forms Dex';
       if (filters.generation === 7) return 'Alola Forms Dex';

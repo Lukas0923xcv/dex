@@ -88,8 +88,17 @@ The **Build Android APK** workflow (run it manually under *Actions*) wraps the w
 - **Standard Dex:** All 1,024+ base species released across Generations 1 to 9 (Kanto to Paldea).
 - **Shiny Dex:** Dedicated shiny checklist toggle with shiny sprites.
 - **Mega Dex:** All Mega Evolutions and Primal forms (Mega Charizard X/Y, Mega Rayquaza, Primal Kyogre/Groudon, etc.).
+- **Dynamax & Gigantamax Dex:** Every species released as Dynamax and every released Gigantamax form, each tracked in its own tab.
 - **All Forms Dex:** Regional variants (Alolan, Galarian, Hisuian, Paldean) and special forms (Castform, Deoxys, Vivillon patterns, Unown, Furfrou trims, Necrozma, etc.).
 - **Custom Collections:** Create arbitrary custom checklists (e.g. *"Lucky Trade Wishlist"*, *"PvP Great League Targets"*, *"Shadow 100%"*). Add or remove any Pokémon to custom lists with one click.
+- **Dex-List Import (AI friendly):** In **Collection Studio → Dex List**, paste or load JSON like `{"name": "Pseudo Legendaries", "dex": "149, 248, 373, 376, 445"}` (ranges like `1-151` and arrays of several collections work too). The **Copy AI prompt** button gives you a ready-made prompt so an AI answers in exactly this format. Optional fields: `description`, `color`, `shiny`, `type` (`lucky`, `shadow`, `purified`, `mega`, `dynamax`, `gigantamax`), and `forms` / `megas` / `costumes` / `dynamax` / `gigantamax` set to `true` to also add those variants.
+
+  ```json
+  [
+    { "name": "G-Max Targets", "dex": "3, 6, 9, 12, 25, 68, 94, 131, 143", "type": "gigantamax" },
+    { "name": "Eeveelutions", "dex": "133-136, 196, 197, 470, 471, 700", "shiny": true }
+  ]
+  ```
 
 ### 2. Streamlined UI & Interactions
 - **One-Click Caught Toggle:** Tap or click any card to instantly mark it as caught. Uncaught cards display in 45% grayscale; caught cards illuminate with vibrant full color, glowing borders, and checkmark badges.
