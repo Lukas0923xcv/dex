@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TrackingMode, CustomCollection, Theme, DashboardTabConfig, UserAccount } from '../types';
-import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus, Trash2, User, ChevronDown, Check, Edit2, X, Smartphone } from 'lucide-react';
+import { Sparkles, Zap, Layers, Bookmark, Settings, CheckCircle2, Sun, Moon, SlidersHorizontal, Flame, Plus, Trash2, User, ChevronDown, Check, Edit2, X, Smartphone, Maximize2, CloudLightning } from 'lucide-react';
 import { isRunningStandalone } from '../registerServiceWorker';
 
 interface HeaderProps {
@@ -99,6 +99,8 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'shiny' as TrackingMode, label: 'Shiny Dex', icon: Sparkles, color: 'text-amber-500 dark:text-amber-400' },
     { id: 'shadow' as TrackingMode, label: 'Shadow Dex', icon: Flame, color: 'text-purple-500 dark:text-purple-400' },
     { id: 'mega' as TrackingMode, label: 'Mega Dex', icon: Zap, color: 'text-rose-500 dark:text-rose-400' },
+    { id: 'dynamax' as TrackingMode, label: 'Dynamax', icon: Maximize2, color: 'text-fuchsia-500 dark:text-fuchsia-400' },
+    { id: 'gigantamax' as TrackingMode, label: 'Gigantamax', icon: CloudLightning, color: 'text-red-500 dark:text-red-400' },
     { id: 'form' as TrackingMode, label: 'All Forms', icon: Layers, color: 'text-indigo-500 dark:text-indigo-400' },
     { id: 'costume' as TrackingMode, label: 'Costumes', icon: Sparkles, color: 'text-pink-500 dark:text-pink-400' },
   ];

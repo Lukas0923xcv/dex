@@ -15,8 +15,9 @@ import type { CollectionCategoryType, Pokemon } from '../types';
  *   { "collections": [ { "name": "...", "dex": "..." } ] }    (several at once)
  *
  * Optional fields per collection: description, color (#hex), shiny (bool),
- * type ("normal" | "lucky" | "shadow" | "purified" | ...), forms, megas,
- * costumes (bool: also add those variants of each listed species).
+ * type ("normal" | "lucky" | "shadow" | "purified" | "mega" | "dynamax" | "gigantamax"),
+ * forms, megas, costumes, dynamax, gigantamax (bool: also add those variants of each listed species).
+ * With type "mega", "dynamax" or "gigantamax" the collection holds only that variant of each species.
  */
 
 export interface DexListCollectionSpec {
@@ -30,6 +31,8 @@ export interface DexListCollectionSpec {
   includeForms: boolean;
   includeMegas: boolean;
   includeCostumes: boolean;
+  includeDynamax: boolean;
+  includeGigantamax: boolean;
 }
 
 export interface ResolvedDexListCollection {
@@ -39,6 +42,8 @@ export interface ResolvedDexListCollection {
   unknownNumbers: number[];
   /** Dex numbers that exist but are not yet released in Pokémon GO (hidden until released) */
   unreleasedNumbers: number[];
+  /** Dex numbers that have no Mega / Dynamax / Gigantamax entry (only for those collection types) */
+  missingVariantNumbers: number[];
 }
 
 const DEX_KEYS = ['dex', 'dexNumbers', 'dexNrs', 'dexNr', 'numbers', 'pokemon', 'pokedex', 'list'];
@@ -62,8 +67,9 @@ Reply with ONLY valid JSON (no markdown, no comments) in exactly this shape:
 Rules:
 - "dex" is a single string of National Pokédex numbers separated by commas. Ranges like "1-151" are allowed.
 - One object per collection; you may return several.
-- Optional per collection: "color" (hex like "#f59e0b"), "shiny": true (track shinies),
-  "forms": true / "megas": true / "costumes": true (also add those variants of each listed species).
+- Optional per collection: "description", "color" (hex like "#f59e0b"), "shiny": true (track shinies),
+  "type": "lucky" | "shadow" | "purified" | "mega" | "dynamax" | "gigantamax" (what the list tracks),
+  "forms" / "megas" / "costumes" / "dynamax" / "gigantamax": true (also add those variants of each species).
 
 Collections I want: `;
 
@@ -146,7 +152,9 @@ function specFromObject(obj: any, index: number): DexListCollectionSpec | null {
     categoryType: VALID_CATEGORY_TYPES.includes(rawType) ? rawType : 'normal',
     includeForms: toBool(obj.forms ?? obj.includeForms),
     includeMegas: toBool(obj.megas ?? obj.includeMegas),
-    includeCostumes: toBool(obj.costumes ?? obj.includeCostumes)
+    includeCostumes: toBool(obj.costumes ?? obj.includeCostumes),
+    includeDynamax: toBool(obj.dynamax ?? obj.includeDynamax),
+    includeGigantamax: toBool(obj.gigantamax ?? obj.includeGigantamax)
   };
 }
 
@@ -204,7 +212,9 @@ export function parseDexListText(text: string, fallbackName = 'Imported Collecti
     categoryType: 'normal',
     includeForms: false,
     includeMegas: false,
-    includeCostumes: false
+    includeCostumes: false,
+    includeDynamax: false,
+    includeGigantamax: false
   }];
 }
 
@@ -221,6 +231,11 @@ export function resolveDexListCollection(spec: DexListCollectionSpec, allPokemon
   const seen = new Set<string>();
   const unknownNumbers: number[] = [];
   const unreleasedNumbers: number[] = [];
+  const missingVariantNumbers: number[] = [];
+  // For Mega / Dynamax / Gigantamax collections the variant itself is the entry, not the base species
+  const variantCategory = (['mega', 'dynamax', 'gigantamax'] as string[]).includes(spec.categoryType)
+    ? spec.categoryType
+    : null;
   const add = (p: Pokemon) => {
     if (!seen.has(p.id)) {
       seen.add(p.id);
@@ -235,14 +250,26 @@ export function resolveDexListCollection(spec: DexListCollectionSpec, allPokemon
       unknownNumbers.push(nr);
       continue;
     }
-    if (!base.releasedInGo) unreleasedNumbers.push(nr);
-    add(base);
+    if (variantCategory) {
+      const variants = entries.filter(p => p.category === variantCategory);
+      if (variants.length === 0) {
+        missingVariantNumbers.push(nr);
+        continue;
+      }
+      if (variants.every(p => !p.releasedInGo)) unreleasedNumbers.push(nr);
+      variants.forEach(add);
+    } else {
+      if (!base.releasedInGo) unreleasedNumbers.push(nr);
+      add(base);
+    }
     for (const p of entries) {
       if (p.category === 'form' && spec.includeForms) add(p);
       else if (p.category === 'mega' && spec.includeMegas) add(p);
       else if (p.category === 'costume' && spec.includeCostumes) add(p);
+      else if (p.category === 'dynamax' && spec.includeDynamax) add(p);
+      else if (p.category === 'gigantamax' && spec.includeGigantamax) add(p);
     }
   }
 
-  return { spec, pokemonIds: ids, unknownNumbers, unreleasedNumbers };
+  return { spec, pokemonIds: ids, unknownNumbers, unreleasedNumbers, missingVariantNumbers };
 }

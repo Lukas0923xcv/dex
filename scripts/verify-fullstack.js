@@ -104,8 +104,8 @@ async function main() {
 
     // 3e. Costume Accuracy & Starter Visor Verification
     const allCostumesRes = await request('http://localhost:3456/api/pokemon?category=costume&limit=500');
-    if (allCostumesRes.data.length !== 295) {
-      throw new Error(`Expected exactly 295 costumes, got ${allCostumesRes.data.length}`);
+    if (allCostumesRes.data.length !== 319) {
+      throw new Error(`Expected exactly 319 costumes, got ${allCostumesRes.data.length}`);
     }
     const crownedInCostumes = allCostumesRes.data.filter(p => p.dexNr === 888 || p.dexNr === 889);
     if (crownedInCostumes.length > 0) {
@@ -137,12 +137,12 @@ async function main() {
       throw new Error(`Local costume image failed to load: HTTP ${localImgRes.status}, Content-Type: ${localImgRes.headers['content-type']}`);
     }
 
-    console.log(`[TEST 3e] Costume accuracy passed (Count: 295, Crowned not costume, Pikavisor Ivysaur: verified, Venusaur Copy deduplication: 1, Local costume sprite 200 OK, Deerling fake: 0)`);
+    console.log(`[TEST 3e] Costume accuracy passed (Count: 319, Crowned not costume, Pikavisor Ivysaur: verified, Venusaur Copy deduplication: 1, Local costume sprite 200 OK, Deerling fake: 0)`);
 
     // 3f. Gender Differences & Form Count Validation
     const allFormsRes = await request('http://localhost:3456/api/pokemon?category=form&limit=500');
-    if (allFormsRes.data.length !== 311) {
-      throw new Error(`Expected exactly 311 forms (210 regional/alternate + 101 gender diffs), got: ${allFormsRes.data.length}`);
+    if (allFormsRes.data.length !== 304) {
+      throw new Error(`Expected exactly 304 released forms (203 regional/alternate + 101 gender diffs), got: ${allFormsRes.data.length}`);
     }
     const genderDiffForms = allFormsRes.data.filter(p => p.isGenderDifference);
     if (genderDiffForms.length !== 101) {
@@ -160,7 +160,8 @@ async function main() {
 
     // 3g. Base Form First Sorting Order Verification
     const fullDexRes = await request('http://localhost:3456/api/pokemon?limit=2500');
-    const isBase = p => p.category === 'standard' || (!p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
+    const isBase = p => p.category === 'standard' ||
+      (p.category !== 'dynamax' && p.category !== 'gigantamax' && !p.isForm && !p.isMega && !p.isCostume && !p.isGenderDifference);
     const sortedSample = [...fullDexRes.data].sort((a, b) => {
       if (a.dexNr !== b.dexNr) return a.dexNr - b.dexNr;
       const aBase = isBase(a);
@@ -194,7 +195,22 @@ async function main() {
     const collsRes = await request('http://localhost:3456/api/collections');
     console.log(`[TEST 5] Collections: HTTP ${collsRes.status}, collections count: ${collsRes.data.length}`);
     console.log('Collections:', collsRes.data.map(c => c.name).join(', '));
-    const targetColl = collsRes.data[0];
+
+    // A fresh database has no collections: create a rule-based Dynamax collection (also verifies the new category)
+    const dynCreateRes = await request('http://localhost:3456/api/collections', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: { name: 'Verify Dynamax', categoryType: 'dynamax' }
+    });
+    if (dynCreateRes.status !== 201) throw new Error(`Creating Dynamax collection failed: HTTP ${dynCreateRes.status}`);
+    const collsAfterRes = await request('http://localhost:3456/api/collections');
+    const dynColl = collsAfterRes.data.find(c => c.id === dynCreateRes.data.id);
+    const dynPool = (await request('http://localhost:3456/api/pokemon?limit=2500&releasedOnly=true')).data.filter(p => p.category === 'dynamax');
+    if (!dynColl || dynColl.categoryType !== 'dynamax' || dynColl.totalItems !== dynPool.length || dynPool.length === 0) {
+      throw new Error(`Dynamax collection mismatch: ${JSON.stringify(dynColl)} vs ${dynPool.length} Dynamax entries`);
+    }
+    console.log(`✓ Dynamax collection rule-based pool: ${dynColl.totalItems} entries`);
+    const targetColl = collsRes.data[0] || dynColl;
 
     // Batch item set test (like Vivillon preset)
     const batchRes = await request(`http://localhost:3456/api/collections/${targetColl.id}/items/batch`, {
@@ -285,15 +301,15 @@ async function main() {
     // 10. Accurate Shiny & Crypto Data Verification
     const allPokeRes = await request('http://localhost:3456/api/pokemon?limit=2500');
     const allList = allPokeRes.data;
-    const shinyCount = allList.filter(p => p.hasShiny).length;
+    const shinyCount = allList.filter(p => p.hasShiny && p.category !== 'dynamax' && p.category !== 'gigantamax').length;
     const shadowCount = allList.filter(p => p.hasShadow).length;
     console.log(`[TEST 10] Shiny & Shadow counts: Total=${allList.length}, Shinies=${shinyCount}, Shadows=${shadowCount}`);
 
-    if (shinyCount !== 1516) {
-      throw new Error(`Expected exactly 1516 released shiny species/forms, got: ${shinyCount}`);
+    if (shinyCount !== 1566) {
+      throw new Error(`Expected exactly 1566 released shiny species/forms, got: ${shinyCount}`);
     }
-    if (shadowCount !== 483) {
-      throw new Error(`Expected exactly 483 released shadow species/forms, got: ${shadowCount}`);
+    if (shadowCount !== 491) {
+      throw new Error(`Expected exactly 491 released shadow species/forms, got: ${shadowCount}`);
     }
 
     // Check shiny-locked species: Victini (#494), Marshadow (#802), Cosmog (#789)
@@ -324,8 +340,8 @@ async function main() {
     // 11. Shadow Category Query API Test
     const shadowQueryRes = await request('http://localhost:3456/api/pokemon?category=shadow&limit=1000');
     console.log(`[TEST 11] Shadow Query API: HTTP ${shadowQueryRes.status}, count: ${shadowQueryRes.data.length}`);
-    if (shadowQueryRes.data.length !== 483) {
-      throw new Error(`Expected 483 shadow pokemon from category=shadow query, got: ${shadowQueryRes.data.length}`);
+    if (shadowQueryRes.data.length !== 491) {
+      throw new Error(`Expected 491 shadow pokemon from category=shadow query, got: ${shadowQueryRes.data.length}`);
     }
     console.log('✓ Shadow category API query passed');
 
@@ -337,8 +353,8 @@ async function main() {
     const searchCompound = await request('http://localhost:3456/api/pokemon?search=crypto%20mewtu');
 
     console.log(`[TEST 12] Crypto Search: crypto=${searchCrypto.data.length}, shadow=${searchShadow.data.length}, schatten=${searchSchatten.data.length}, shadowOnly=${filterShadowOnly.data.length}, compound=${searchCompound.data.length}`);
-    if (searchCrypto.data.length !== 483 || searchShadow.data.length !== 483 || searchSchatten.data.length !== 483 || filterShadowOnly.data.length !== 483) {
-      throw new Error(`Smart crypto search failed to return all 483 shadow pokemon`);
+    if (searchCrypto.data.length !== 491 || searchShadow.data.length !== 491 || searchSchatten.data.length !== 491 || filterShadowOnly.data.length !== 491) {
+      throw new Error(`Smart crypto search failed to return all 491 shadow pokemon`);
     }
     if (searchCompound.data.length === 0 || !(searchCompound.data[0].name.toLowerCase().includes('mewt') || searchCompound.data[0].names?.German === 'Mewtu')) {
       throw new Error(`Compound search "crypto mewtu" failed`);

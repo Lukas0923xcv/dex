@@ -869,6 +869,20 @@ function buildObtainMethods(pokemon: any): ObtainMethodDetail[] {
   // 1. Explicit form-specific obtain method overrides
   if (isFormOverride) {
     methods.push(...FORM_OBTAIN_METHODS[id]);
+  } else if (pokemon.category === 'gigantamax') {
+    methods.push({
+      type: 'raid', label: 'Gigantamax Max Battle', badgeColor: 'rose',
+      description: 'Caught by winning 6-star Gigantamax Max Battles at Power Spots (usually during its Max Battle Day). Gigantamax Pokémon cannot be transferred to Pokémon HOME.',
+      available: true
+    });
+    return methods;
+  } else if (pokemon.category === 'dynamax') {
+    methods.push({
+      type: 'raid', label: 'Max Battle', badgeColor: 'pink',
+      description: 'Caught by winning Max Battles at Power Spots (1- to 5-star, often on Max Mondays), or from Dynamax-specific research and GO Pass rewards. Evolving a Dynamax Pokémon keeps its Dynamax ability.',
+      available: true
+    });
+    return methods;
   } else if (pokemon.releasedInGo === false || UNRELEASED_DEX_NRS.has(dex)) {
     // Unreleased in GO
     methods.push({
@@ -1330,6 +1344,19 @@ export function getPrimaryAvailabilityTag(pokemon: {
       bg: 'bg-pink-100/70 dark:bg-pink-950/60',
       textColor: 'text-pink-700 dark:text-pink-300',
       border: 'border-pink-300 dark:border-pink-700/80'
+    };
+  }
+
+  if (pokemon.category === 'dynamax' || pokemon.category === 'gigantamax') {
+    const isGmax = pokemon.category === 'gigantamax';
+    return {
+      type: 'raid',
+      label: isGmax ? 'Gigantamax Max Battle (6-Star)' : 'Max Battle / Power Spot',
+      shortLabel: 'Max Battle',
+      badgeColor: isGmax ? 'rose' : 'pink',
+      bg: isGmax ? 'bg-rose-100/70 dark:bg-rose-950/60' : 'bg-fuchsia-100/70 dark:bg-fuchsia-950/60',
+      textColor: isGmax ? 'text-rose-700 dark:text-rose-300' : 'text-fuchsia-700 dark:text-fuchsia-300',
+      border: isGmax ? 'border-rose-300 dark:border-rose-700/80' : 'border-fuchsia-300 dark:border-fuchsia-700/80'
     };
   }
 

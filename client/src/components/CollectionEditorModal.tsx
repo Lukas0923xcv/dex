@@ -22,7 +22,7 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
 }) => {
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [search, setSearch] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState<'all' | 'standard' | 'mega' | 'form' | 'costume' | 'shadow'>('all');
+  const [categoryFilter, setCategoryFilter] = useState<'all' | 'standard' | 'mega' | 'dynamax' | 'gigantamax' | 'form' | 'costume' | 'shadow'>('all');
   const [genFilter, setGenFilter] = useState<number | 'all'>('all');
   const [isSaving, setIsSaving] = useState(false);
 
@@ -47,6 +47,8 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
         let matching = [...allPokemon];
         if (collection.categoryType === 'mega') {
           matching = matching.filter(p => p.category === 'mega' || p.isMega);
+        } else if (collection.categoryType === 'dynamax' || collection.categoryType === 'gigantamax') {
+          matching = matching.filter(p => p.category === collection.categoryType);
         } else if (collection.categoryType === 'event') {
           matching = matching.filter(p => p.category === 'costume' || p.isCostume);
         } else if (
@@ -82,6 +84,8 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
 
       if (collection.categoryType === 'event') setCategoryFilter('costume');
       else if (collection.categoryType === 'mega') setCategoryFilter('mega');
+      else if (collection.categoryType === 'dynamax') setCategoryFilter('dynamax');
+      else if (collection.categoryType === 'gigantamax') setCategoryFilter('gigantamax');
       else if (collection.categoryType === 'shadow' || collection.categoryType === 'purified') setCategoryFilter('shadow');
     }
   }, [collection?.id, isOpen]);
@@ -409,6 +413,8 @@ export const CollectionEditorModal: React.FC<CollectionEditorModalProps> = ({
               <option value="all">All Categories</option>
               <option value="standard">Standard Dex</option>
               <option value="mega">Megas & Primals</option>
+              <option value="dynamax">Dynamax</option>
+              <option value="gigantamax">Gigantamax</option>
               <option value="form">Forms & Variants</option>
               <option value="costume">Costume Pokémon</option>
               <option value="shadow">Shadow</option>

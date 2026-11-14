@@ -395,11 +395,16 @@ export function useDex() {
       result = result.filter(p => p.category === 'standard');
     } else if (mode === 'shiny') {
       // In Shiny mode, show all standard, megas, forms, and costumes that have shiny variations
-      result = result.filter(p => p.hasShiny);
+      // (Dynamax/Gigantamax have their own dexes and would otherwise duplicate every species)
+      result = result.filter(p => p.hasShiny && p.category !== 'dynamax' && p.category !== 'gigantamax');
     } else if (mode === 'shadow') {
       result = result.filter(p => Boolean(p.hasShadow));
     } else if (mode === 'mega') {
       result = result.filter(p => p.category === 'mega' || p.isMega);
+    } else if (mode === 'dynamax') {
+      result = result.filter(p => p.category === 'dynamax');
+    } else if (mode === 'gigantamax') {
+      result = result.filter(p => p.category === 'gigantamax');
     } else if (mode === 'form') {
       const includeGender = Boolean(filters.showGenderTracking);
       const isQualifyingForm = (p: Pokemon) => {
@@ -464,6 +469,8 @@ export function useDex() {
           result = result.filter(p => itemIds.has(p.id) && !isExcludedGenderForm(p));
         } else if (activeColl.categoryType === 'mega') {
           result = result.filter(p => p.category === 'mega' || p.isMega);
+        } else if (activeColl.categoryType === 'dynamax' || activeColl.categoryType === 'gigantamax') {
+          result = result.filter(p => p.category === activeColl.categoryType);
         } else if (activeColl.categoryType === 'event') {
           result = result.filter(p => p.category === 'costume' || p.isCostume);
         } else if (activeColl.categoryType === 'shadow' || activeColl.categoryType === 'purified' || activeColl.name.toLowerCase().includes('crypto') || activeColl.name.toLowerCase().includes('shadow') || activeColl.name.toLowerCase().includes('schatten')) {

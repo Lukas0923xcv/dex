@@ -120,7 +120,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     let lastId: string | null = null;
     for (const r of usable) {
       const { spec } = r;
-      const hasVariants = spec.includeForms || spec.includeMegas || spec.includeCostumes;
+      const hasVariants = spec.includeForms || spec.includeMegas || spec.includeCostumes || spec.includeDynamax || spec.includeGigantamax;
       const created = await onCreateCollection(
         spec.name,
         spec.description || `Imported dex list · ${spec.dexNumbers.length} species`,
@@ -395,11 +395,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
     } else if (categoryType === 'event') {
       list = list.filter(p => p.category === 'costume' || p.isCostume);
     } else if (categoryType === 'dynamax' || categoryType === 'gigantamax') {
-      if (variantMode === 'single' || !includeForms) {
-        list = list.filter(p => p.category === 'standard' || (selectedRegion !== 'all' && isRegionalForm(p)));
-      } else {
-        list = list.filter(p => p.category === 'standard' || p.category === 'form');
-      }
+      list = list.filter(p => p.category === categoryType);
     } else if (categoryType === 'shadow' || categoryType === 'purified') {
       list = list.filter(p => p.hasShadow);
       if (variantMode === 'single' || !includeForms) {
@@ -586,7 +582,7 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                 </p>
                 <pre className="p-2.5 rounded-xl bg-black/50 border border-slate-800 text-[11px] text-emerald-200 overflow-x-auto">{`{ "name": "Pseudo Legendaries", "dex": "149, 248, 373, 376, 445, 635, 706, 784, 887, 998" }`}</pre>
                 <p className="text-slate-400">
-                  Optional: <code>description</code>, <code>color</code> (#hex), <code>shiny</code>, <code>forms</code>, <code>megas</code>, <code>costumes</code> (true to also add those variants).
+                  Optional: <code>description</code>, <code>color</code> (#hex), <code>shiny</code>, <code>type</code> (lucky, shadow, purified, mega, dynamax, gigantamax), and <code>forms</code> / <code>megas</code> / <code>costumes</code> / <code>dynamax</code> / <code>gigantamax</code> (true to also add those variants).
                 </p>
                 <div className="flex flex-wrap gap-2 pt-1">
                   <button
@@ -660,7 +656,13 @@ export const CustomCollectionsModal: React.FC<CustomCollectionsModalProps> = ({
                         {r.spec.includeForms && ' · +forms'}
                         {r.spec.includeMegas && ' · +megas'}
                         {r.spec.includeCostumes && ' · +costumes'}
+                        {r.spec.includeDynamax && ' · +dynamax'}
+                        {r.spec.includeGigantamax && ' · +gigantamax'}
+                        {r.spec.categoryType !== 'normal' && ` · ${r.spec.categoryType} list`}
                       </div>
+                      {r.missingVariantNumbers.length > 0 && (
+                        <div className="text-amber-300">No {r.spec.categoryType} form, will be skipped: {r.missingVariantNumbers.join(', ')}</div>
+                      )}
                       {r.unknownNumbers.length > 0 && (
                         <div className="text-amber-300">Unknown, will be ignored: {r.unknownNumbers.join(', ')}</div>
                       )}

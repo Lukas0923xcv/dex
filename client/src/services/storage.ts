@@ -189,7 +189,7 @@ class StorageAdapter {
   public getSavedMode(): TrackingMode {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.ACTIVE_MODE) as TrackingMode;
-      const validModes: TrackingMode[] = ['standard', 'shiny', 'shadow', 'mega', 'form', 'costume', 'custom'];
+      const validModes: TrackingMode[] = ['standard', 'shiny', 'shadow', 'mega', 'dynamax', 'gigantamax', 'form', 'costume', 'custom'];
       if (validModes.includes(saved)) {
         return saved;
       }
@@ -555,6 +555,8 @@ class StorageAdapter {
         let matching = baseList;
         if (c.categoryType === 'mega') {
           matching = matching.filter(p => p.category === 'mega' || p.isMega);
+        } else if (c.categoryType === 'dynamax' || c.categoryType === 'gigantamax') {
+          matching = matching.filter(p => p.category === c.categoryType);
         } else if (c.categoryType === 'event') {
           matching = matching.filter(p => p.category === 'costume' || p.isCostume);
         } else if (c.categoryType === 'shadow' || c.categoryType === 'purified' || isShadowColl) {
@@ -879,7 +881,7 @@ class StorageAdapter {
 
       // Check if exporting a preset collection (standard, shiny, shadow, mega, form, costume)
       const isPreset = collectionId.startsWith('preset:') ||
-        ['standard', 'shiny', 'shadow', 'mega', 'form', 'costume'].includes(collectionId);
+        ['standard', 'shiny', 'shadow', 'mega', 'dynamax', 'gigantamax', 'form', 'costume'].includes(collectionId);
 
       if (isPreset) {
         const presetKey = collectionId.replace(/^preset:/, '');
@@ -919,6 +921,20 @@ class StorageAdapter {
             color: '#f43f5e',
             categoryType: 'mega',
             filter: (p) => (p.category === 'mega' || Boolean(p.isMega)) && Boolean(p.releasedInGo)
+          },
+          dynamax: {
+            name: 'Dynamax Dex',
+            description: 'Pokémon released as Dynamax',
+            color: '#d946ef',
+            categoryType: 'dynamax',
+            filter: (p) => p.category === 'dynamax' && Boolean(p.releasedInGo)
+          },
+          gigantamax: {
+            name: 'Gigantamax Dex',
+            description: 'Released Gigantamax forms',
+            color: '#ef4444',
+            categoryType: 'gigantamax',
+            filter: (p) => p.category === 'gigantamax' && Boolean(p.releasedInGo)
           },
           form: {
             name: 'Forms Dex',
@@ -1567,6 +1583,8 @@ class StorageAdapter {
       { id: 'shiny', label: 'Shiny Dex', type: 'preset', visible: true, color: '#f59e0b' },
       { id: 'shadow', label: 'Shadow Dex', type: 'preset', visible: true, color: '#a855f7' },
       { id: 'mega', label: 'Mega Dex', type: 'preset', visible: true, color: '#f43f5e' },
+      { id: 'dynamax', label: 'Dynamax', type: 'preset', visible: true, color: '#d946ef' },
+      { id: 'gigantamax', label: 'Gigantamax', type: 'preset', visible: true, color: '#ef4444' },
       { id: 'form', label: 'All Forms', type: 'preset', visible: true, color: '#6366f1' },
       { id: 'costume', label: 'Costumes', type: 'preset', visible: true, color: '#ec4899' },
     ];
@@ -1578,6 +1596,15 @@ class StorageAdapter {
         if (Array.isArray(parsed) && parsed.length > 0) {
           const existingCollIds = new Set(collections.map(c => c.id));
           const filtered = parsed.filter(t => t.id !== 'custom' && (t.type === 'preset' || (t.collectionId && existingCollIds.has(t.collectionId))));
+
+          // Presets added in newer versions (e.g. Dynamax / Gigantamax) are inserted after the
+          // preset they follow in the defaults, so saved dashboards still show them.
+          defaultTabs.forEach((def, i) => {
+            if (filtered.some(t => t.id === def.id)) return;
+            const prevId = i > 0 ? defaultTabs[i - 1].id : null;
+            const prevIdx = prevId ? filtered.findIndex(t => t.id === prevId) : -1;
+            filtered.splice(prevIdx + 1, 0, { ...def });
+          });
 
           const storedCollIds = new Set(filtered.filter(t => t.type === 'custom' && t.collectionId).map(t => t.collectionId));
           for (const coll of collections) {
