@@ -1153,24 +1153,24 @@ async function main() {
     fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/1013.png'
   });
 
-  // Hisuian Sliggoo & Goodra (Unreleased in GO until Nov 2026 GO Wild Area)
+  // Hisuian Sliggoo & Goodra (debuted Nov 2026 at the in-person GO Wild Area events, Shiny available)
   specialForms.push({
     dexNr: 705, base: 'Sliggoo', formId: 'HISUIAN', label: 'Hisuian Form', type1: 'Steel', type2: 'Dragon',
     displayName: 'Hisuian Sliggoo', germanName: 'Hisui-Viscargot',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10241.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10241.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10241.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10241.png',
-    releasedInGo: false
+    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm705.fHISUIAN.icon.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm705.fHISUIAN.s.icon.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10241.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10241.png',
+    releasedInGo: true
   });
   specialForms.push({
     dexNr: 706, base: 'Goodra', formId: 'HISUIAN', label: 'Hisuian Form', type1: 'Steel', type2: 'Dragon',
     displayName: 'Hisuian Goodra', germanName: 'Hisui-Viscogon',
-    spriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10242.png',
-    shinySpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10242.png',
-    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/10242.png',
-    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/10242.png',
-    releasedInGo: false
+    spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm706.fHISUIAN.icon.png',
+    shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm706.fHISUIAN.s.icon.png',
+    fallbackSpriteUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/10242.png',
+    fallbackShinyUrl: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/home/shiny/10242.png',
+    releasedInGo: true
   });
 
   // Spinda Patterns (2-9 & Heart - Pattern 1 is base)
@@ -1529,6 +1529,24 @@ async function main() {
     {
       dexNr: 25, name: 'Pikachu (Baseball Shirt)', formId: 'BASEBALL_SHIRT', formName: 'Baseball Shirt', gen: 1, type1: 'Electric', type2: null,
       spriteUrl: 'https://archives.bulbagarden.net/media/upload/c/c0/GO0025BaseballJersey.png'
+    },
+
+    // Halloween 2026 Part I debuts (Shiny available). No costume sprite has been published yet,
+    // so these use the base GO icon until a costume sprite can be added.
+    {
+      dexNr: 25, name: 'Pikachu (Halloween 2026 Hat & Capelet)', formId: 'HALLOWEEN_2026', formName: 'Halloween 2026 Hat & Capelet', gen: 1, type1: 'Electric', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.icon.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm25.s.icon.png'
+    },
+    {
+      dexNr: 41, name: 'Zubat (Top Hat)', formId: 'HALLOWEEN_2026', formName: 'Top Hat', gen: 1, type1: 'Poison', type2: 'Flying',
+      spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm41.icon.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm41.s.icon.png'
+    },
+    {
+      dexNr: 854, name: 'Sinistea (Bow)', formId: 'HALLOWEEN_2026', formName: 'Bow', gen: 8, type1: 'Ghost', type2: null,
+      spriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm854.fPHONY.icon.png',
+      shinySpriteUrl: 'https://raw.githubusercontent.com/pokemon-go-api/assets/main/Pokemon/pm854.fPHONY.s.icon.png'
     }
   ];
 
@@ -1542,7 +1560,7 @@ async function main() {
     if (!processedIds.has(costumeId)) {
       processedIds.add(costumeId);
       let localSpriteUrl = bc.spriteUrl;
-      if (bc.spriteUrl && bc.spriteUrl.startsWith('http')) {
+      if (bc.spriteUrl && bc.spriteUrl.startsWith('https://archives.bulbagarden.net/')) {
         const filename = path.basename(bc.spriteUrl);
         const clientFilePath = path.join(costumesDir, filename);
         const serverFilePath = path.join(serverCostumesDir, filename);
@@ -1575,7 +1593,7 @@ async function main() {
         type1: bc.type1,
         type2: bc.type2 || null,
         spriteUrl: localSpriteUrl,
-        shinySpriteUrl: localSpriteUrl,
+        shinySpriteUrl: bc.shinySpriteUrl || localSpriteUrl,
         fallbackSpriteUrl: homeFallback,
         fallbackShinyUrl: homeShinyFallback,
         officialArtworkUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${bc.dexNr}.png`,
@@ -1630,7 +1648,7 @@ async function main() {
     647, 648, 679, 680, 681, 701, 704, 705, 706, 707, 719, 757, 758, 769, 770,
     782, 783, 784, 785, 786, 787, 788, 791, 792, 793, 794, 795, 796, 797, 798,
     799, 800, 808, 809, 813, 814, 815, 816, 817, 818, 827, 828, 850, 851, 866,
-    872, 873, 894, 895, 901, 948, 949, 965, 966, 968, 973
+    872, 873, 894, 895, 901, 948, 949, 965, 966, 968, 971, 972, 973 // 971/972: Shiny Greavard debuted Halloween 2026
   ];
 
   // Shiny locked species in Pokemon GO (never shiny):

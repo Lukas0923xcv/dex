@@ -653,7 +653,7 @@ const FORM_OBTAIN_METHODS: Record<string, ObtainMethodDetail[]> = {
     { type: 'egg', label: '7km Egg', badgeColor: 'amber', description: 'Also hatches from 7km Eggs.', available: true }
   ],
   'poke_705_special_hisuian': [
-    { type: 'raid', label: '3-Star Raid / Evolution', badgeColor: 'rose', description: 'Appears in 3-Star Raids or by evolving Goomy with Candy during rain.', available: true }
+    { type: 'event', label: 'GO Wild Area 2026', badgeColor: 'purple', description: 'Debuted in the wild (Shiny possible) for ticket holders at the in-person GO Wild Area 2026 events in November 2026.', available: true }
   ],
 
   // ── Evolved Regional Forms (Evolution from Regional Base) ─
@@ -709,7 +709,7 @@ const FORM_OBTAIN_METHODS: Record<string, ObtainMethodDetail[]> = {
     { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Hisuian Zorua with 50 Candy.', available: true }
   ],
   'poke_706_special_hisuian': [
-    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Hisuian Sliggoo with 100 Candy during rain / Rainy Lure Module.', available: true }
+    { type: 'evolution', label: 'Evolution', badgeColor: 'indigo', description: 'Evolves from Hisuian Sliggoo with 100 Goomy Candy.', available: true }
   ],
 
   // ── Paldean Tauros Breeds ──────────────────────────────────
