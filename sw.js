@@ -3,15 +3,33 @@
  * Provides offline caching, lightning-fast app shell loading, and native-app feel.
  */
 
-const CACHE_NAME = 'pogo-dex-v3';
+// v4 / assets-v2: drops caches that could contain responses of an auth proxy (e.g. authentik) on the same domain
+const CACHE_NAME = 'pogo-dex-v4';
 // Content-hashed build output (/assets/*): immutable, cache-first, trimmed so old deploys don't pile up
-const ASSET_CACHE = 'pogo-dex-assets-v1';
+const ASSET_CACHE = 'pogo-dex-assets-v2';
 const MAX_ASSET_ENTRIES = 40;
 // Remote Pokémon sprites: cache-first so the dex keeps its images offline
 const SPRITE_CACHE = 'pogo-dex-sprites-v1';
 const MAX_SPRITE_ENTRIES = 4000;
 const SPRITE_HOSTS = ['raw.githubusercontent.com'];
 const KNOWN_CACHES = [CACHE_NAME, ASSET_CACHE, SPRITE_CACHE];
+
+// Paths that belong to an authentication proxy in front of the app (authentik, Authelia, oauth2-proxy,
+// Cloudflare Access). The service worker must never intercept or cache these, otherwise login pages break
+// (stale scripts, cached API calls, redirects answered with the offline app shell).
+const AUTH_PATH_PREFIXES = [
+  '/outpost.goauthentik.io/', '/if/', '/flows/', '/static/', '/api/v3/', '/application/', '/source/', '/-/', '/ws/',
+  '/oauth2/', '/cdn-cgi/', '/.well-known/'
+];
+
+function isAuthProxyPath(pathname) {
+  return AUTH_PATH_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+}
+
+// The app's own API lives at <base>/api/<resource>; only cache successful JSON from it
+function isAppApi(url) {
+  return /\/api\/(?!v3\/)/.test(url.pathname);
+}
 
 async function trimCache(cacheName, maxEntries) {
   const cache = await caches.open(cacheName);
@@ -85,12 +103,17 @@ self.addEventListener('fetch', (event) => {
   // Ignore non-http(s) requests (e.g. extensions)
   if (!url.protocol.startsWith('http')) return;
 
+  // Never touch an auth proxy's login flow on our own domain; let the browser handle it directly
+  if (url.origin === self.location.origin && isAuthProxyPath(url.pathname)) return;
+
   // 1. Navigation requests (HTML page): Network-first with offline fallback
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          if (response.status === 200) {
+          // Only cache the app itself: no redirects (login), no foreign HTML
+          const isAppPage = response.status === 200 && !response.redirected && response.type === 'basic';
+          if (isAppPage) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
           }
@@ -110,12 +133,13 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // 2. API calls: Network-first
-  if (url.pathname.includes('/api/')) {
+  // 2. API calls of the app (same origin only): Network-first
+  if (url.origin === self.location.origin && isAppApi(url)) {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          if (response.status === 200) {
+          const isJson = (response.headers.get('content-type') || '').includes('application/json');
+          if (response.status === 200 && !response.redirected && isJson) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
           }
